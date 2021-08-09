@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .menu {
+            width: 30px;
+            height: 30px;
+            display: block;
+            position: relative;
+        }
+
+        .menu::after, .menu::before {
+            content: '';
+            display: block;
+            position: absolute;
+            right: 0;
+            width: 30px;
+            height: 2px;
+            background: #555;
+            transition: transform 0.5s ease;
+        }
+
+        .menu::before {
+            top: 10px;
+        }
+
+        .menu.isOpen::before {
+            transform: translateY(5px) rotate(45deg);
+        }
+
+        .menu::after {
+            top: 20px;
+        }
+
+        .menu.isOpen::after {
+            transform: translateY(-5px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <span class="menu"></span>
+    </div>
+    <script>
+        const menu = document.querySelector('.menu')
+
+        menu.addEventListener('click', () => {
+            if (menu.classList.contains('isOpen')) {
+                menu.classList.remove('isOpen')
+            } else {
+                menu.classList.add('isOpen')
+            }
+        })
+    </script>
+</body>
+</html>
