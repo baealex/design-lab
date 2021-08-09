@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Effect</title>
+</head>
+<body>
+    <ul>
+        
+    </ul>
+    <script type="text/javascript">
+        const capitalize = (s) => {
+            if (typeof s !== 'string') return ''
+            return s.charAt(0).toUpperCase() + s.slice(1)
+        }
+
+        const pageList = [
+            'analog-clock.html',
+            'dynamic-menu.html',
+            'shuffle-card.html',
+        ]
+        document.querySelector('ul').innerHTML = pageList.map(
+            page => `
+                <li>
+                    <a href="./${page}">
+                        ${page.replace('.html', '').split('-').map(text => capitalize(text)).join(' ')}
+                    </a>
+                </li>
+            `
+        ).join('')
+    </script>
+</body>
+</html>

@@ -6,20 +6,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <style>
-            body {
+            html, body {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 width: 100%;
                 height: 100%;
             }
 
             .item {
-                display: inline-block;
-                background: #ccc;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
+                border-radius: 8px;
                 width: 100px;
                 height: 100px;
+                margin: 15px;
             }
 
             .hovered {
-                background: #cff;
+                transition: all 0.5s ease;
+                box-shadow: 0 15px 25px 0 hsla(0, 0%, 0%, 0.05);
+                transform: translateY(-5px);
             }
 
             .invisible {
@@ -28,11 +45,13 @@
         </style>
     </head>
     <body>
-        <div data-key="1" class="item" draggable="true">1</div>
-        <div data-key="2" class="item" draggable="true">2</div>
-        <div data-key="3" class="item" draggable="true">3</div>
-        <div data-key="4" class="item" draggable="true">4</div>
-        <div data-key="5" class="item" draggable="true">5</div>
+        <div class="container">
+            <div data-key="1" class="item" draggable="true">1</div>
+            <div data-key="2" class="item" draggable="true">2</div>
+            <div data-key="3" class="item" draggable="true">3</div>
+            <div data-key="4" class="item" draggable="true">4</div>
+            <div data-key="5" class="item" draggable="true">5</div>
+        </div>
         <script>
             const items = document.querySelectorAll('.item')
 
