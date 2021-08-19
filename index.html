@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./base.css" rel="stylesheet"/>
-    <title>Web Effect</title>
+    <title>Inspiration</title>
 </head>
 <body>
     <div id="root"></div>
@@ -16,20 +16,22 @@
         }
 
         const pageList = [
-            'analog-clock.html',
-            'button-ripple.html',
-            'draggable.html',
-            'dynamic-menu.html',
-            'google-style-input.html',
+            'analog-clock',
+            'button-ripple',
+            'draggable',
+            'dynamic-menu',
+            'google-style-input',
+            'slide-clock',
         ]
+
         document.querySelector('#root').innerHTML = 
         `
             <ul>
                 ${pageList.map(
                     page => `
                         <li>
-                            <a href="./${page}">
-                                ${page.replace('.html', '').split('-').map(text => capitalize(text)).join(' ')}
+                            <a href="./${page}.html">
+                                ${page.split('-').map(text => capitalize(text)).join(' ')}
                             </a>
                         </li>
                     `
