@@ -15,7 +15,6 @@
         .minute-pin,
         .second-pin {
             transform-origin: bottom center;
-            transition: transform 0.5s ease;
             position: absolute;
             left: 50%;
             box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
@@ -59,16 +58,19 @@
         const minutePin = document.querySelector('.minute-pin')
         const secondPin = document.querySelector('.second-pin')
 
-        setInterval(() => {
-            const date = new Date();
-            const hour = date.getHours();
-            const minute = date.getMinutes();
-            const second = date.getSeconds();
+        function clock() {
+            const date = new Date()
+            const hour = date.getHours()
+            const minute = date.getMinutes()
+            const second = date.getSeconds()
 
             hourPin.style.transform = `rotate(${(((hour % 12) * 60 + minute) / 720) * 360}deg)`
             minutePin.style.transform = `rotate(${((minute * 60 + second) / 3600) * 360}deg)`
-            secondPin.style.transform = `rotate(${second / 60 * 360}deg)`
-        }, 500);
+            secondPin.style.transform = `rotate(${(second) / 60 * 360}deg)`
+        }
+
+        clock()
+        setInterval(clock, 1000)
     </script>
 </body>
 </html>

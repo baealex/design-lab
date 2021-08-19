@@ -78,7 +78,7 @@
         const s1s = document.querySelectorAll('#s1 span')
         const s2s = document.querySelectorAll('#s2 span')
 
-        setInterval(() => {
+        function clock() {
             const date = new Date()
             const min = ('0' + date.getMinutes()).slice(-2)
             const sec = ('0' + date.getSeconds()).slice(-2)
@@ -92,7 +92,10 @@
             m2s.forEach(span => span.style.transform = `translateY(-${m2 * 100}%)`)
             s1s.forEach(span => span.style.transform = `translateY(-${s1 * 100}%)`)
             s2s.forEach(span => span.style.transform = `translateY(-${s2 * 100}%)`)
-        }, 1000)
+        }
+
+        clock()
+        setInterval(clock, 1000)
     </script>
 </body>
 </html>
