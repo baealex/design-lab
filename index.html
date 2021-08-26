@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>BaeJino Studio</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./base.css" rel="stylesheet"/>
-    <title>Inspiration</title>
+    <link href="/assets/styles/base.css" rel="stylesheet"/>
 </head>
 <body>
     <div id="root"></div>
@@ -30,7 +30,7 @@
                 ${pageList.map(
                     page => `
                         <li>
-                            <a href="./${page}.html">
+                            <a href="/pages/${page}/">
                                 ${page.split('-').map(text => capitalize(text)).join(' ')}
                             </a>
                         </li>
