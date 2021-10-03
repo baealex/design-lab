@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Snack Bar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/assets/styles/base.css" rel="stylesheet"/>
+    <style>
+        @keyframes slide {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 100%);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translate(-50%, 0%);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translate(-50%, 0%);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, 100%);
+            }
+        }
+
+        .snack-bar {
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 50%;
+            padding: 16px;
+            border-radius: 8px;
+            color: #fff;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.75);
+            transform: translate(-50%);
+            animation: slide 4s ease 1;
+        }
+        
+        button {
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <button id="ok">
+            Are you understand?
+        </button>
+    </div>
+    <script>
+        const root = document.querySelector('#root')
+
+        document.querySelector('#ok').addEventListener('click', () => {
+            const snackBar = document.createElement('div')
+            snackBar.textContent = 'I understood!'
+            snackBar.classList.add('snack-bar')
+
+            root.appendChild(snackBar)
+            setTimeout(() => {
+                root.removeChild(snackBar)
+            }, 4000)
+        })
+    </script>
+</body>
+</html>
