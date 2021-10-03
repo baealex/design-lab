@@ -27,6 +27,10 @@ html, body {
     height: 100%;
 }
 
+body {
+    background: #fafafa;
+}
+
 #root {
     display: flex;
     justify-content: center;
