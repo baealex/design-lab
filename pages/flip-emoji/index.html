@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Flip Emoji</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/assets/styles/base.css" rel="stylesheet"/>
+    <style>
+        @keyframes flip {
+            0% {
+                transform: rotate3d(0, 1, 0, 0deg);
+            }
+
+            50% {
+                transform: rotate3d(0, 1, 0, 180deg);
+            }
+
+            100% {
+                transform: rotate3d(0, 1, 0, 360deg);
+            }
+        }
+
+        @keyframes flip-blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            51% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .fliper {
+            background: #fff;
+            box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
+            border-radius: 8px;
+            width: 50px;
+            height: 50px;
+            position: relative;
+            animation: flip 2s linear infinite;
+        }
+
+        .fliper > .emoji1,
+        .fliper > .emoji2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .emoji1 {
+            opacity: 1;
+            animation: flip-blink 2s -0.5s linear infinite;
+        }
+
+        .emoji2 {
+            opacity: 0;
+            animation: flip-blink 2s 0.5s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <span class="fliper">
+            <span class="emoji1">
+                😃
+            </span>
+            <span class="emoji2">
+                😢
+            </span>
+        </span>
+    </div>
+    <script>
+        const emoji = [
+            '😃', '😅', '😉', '😍', '😎', '😟', '😣', '😨' ,'😥', '🤗', '🤔'
+        ]
+
+        const emoji1 = document.querySelector('.emoji1')
+        const emoji2 = document.querySelector('.emoji2')
+
+        let prevPick = 0
+
+        const changeEmoji = (element) => {
+            let pick = 0;
+            do {
+                pick = Math.floor(Math.random() * emoji.length)
+            } while(prevPick == pick)
+            prevPick = pick
+            element.textContent = emoji[pick]
+        }
+
+        setTimeout(() => {
+            changeEmoji(emoji1)
+
+            setInterval(() => {
+                changeEmoji(emoji1)
+            }, 2000);
+        }, 500)
+
+        setTimeout(() => {
+            changeEmoji(emoji2)
+            
+            setInterval(() => {
+                changeEmoji(emoji2)
+            }, 2000);
+        }, 1500);
+    </script>
+</body>
+</html>
