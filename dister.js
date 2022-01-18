@@ -37,7 +37,9 @@ async function watch(path) {
     fs.watch(indexPath, (eventType) => {
         if (eventType === 'change') {
             console.log(`rebuild... ${indexPath}`);
-            compile(path);
+            compile(path, {
+                ignoreError: true,
+            });
         }
     });
 }

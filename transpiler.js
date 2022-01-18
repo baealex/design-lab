@@ -4,27 +4,41 @@ const uglify = require('uglify-js');
 
 const { tagSplit } = require('./text-parser');
 
-function transpile(source) {
+function transpile(source, options) {
     let newSource = source;
 
     const styles = tagSplit(source, '<style>', '</style>');
     for (const style of styles) {
-        const { css } = sass.renderSync({
-            data: style,
-            outputStyle: 'compressed'
-        });
-        newSource = newSource.replace(style, css);
+        try {
+            const { css } = sass.renderSync({
+                data: style,
+                outputStyle: 'compressed'
+            });
+            newSource = newSource.replace(style, css);
+        } catch(e) {
+            if (options && !options.ignoreError) {
+                throw e;
+            }
+            console.log(e);
+        }
     }
 
     const scripts = tagSplit(source, '<script>', '</script>');
     for (const script of scripts) {
-        const transpile = ts.transpileModule(script, {
-            compilerOptions:{
-                module: ts.ModuleKind.CommonJS
+        try {
+            const transpile = ts.transpileModule(script, {
+                compilerOptions:{
+                    module: ts.ModuleKind.CommonJS
+                }
+            });
+            const { code } = uglify.minify(transpile.outputText);
+            newSource = newSource.replace(script, code);
+        } catch(e) {
+            if (options && !options.ignoreError) {
+                throw e;
             }
-        });
-        const { code } = uglify.minify(transpile.outputText);
-        newSource = newSource.replace(script, code);
+            console.log(e);
+        }
     }
 
     return newSource;
