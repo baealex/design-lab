@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/baealex/design-studio#readme",
   "devDependencies": {
+    "express": "^4.17.2",
     "fs-extra": "^10.0.0",
     "node-sass": "^7.0.1",
     "typescript": "^4.5.4",

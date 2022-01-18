@@ -5,7 +5,7 @@ const { transpile } = require('./transpiler');
 const TARGET_PATH = './src/pages';
 const DIST_PATH = './dist';
 
-async function getPaths() {
+async function getPages() {
     return await fs.readdir(TARGET_PATH);
 }
 
@@ -44,7 +44,7 @@ async function watch(path) {
 
 module.exports = {
     compile,
-    getPaths,
+    getPages,
     init,
     watch,
 }
