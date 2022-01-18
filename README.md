@@ -7,5 +7,6 @@
 - [Dynamic Menu](https://design.baejino.com/dynamic-menu/)
 - [Flip Emoji](https://design.baejino.com/flip-emoji/)
 - [Google Style Input](https://design.baejino.com/google-style-input/)
+- [Reveal Effect](https://design.baejino.com/reveal-effect/)
 - [Slide Clock](https://design.baejino.com/slide-clock/)
 - [Snack Bar](https://design.baejino.com/snack-bar/)

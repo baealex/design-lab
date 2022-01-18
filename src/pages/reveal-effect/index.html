@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Reveal Effect</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/assets/styles/base.css" rel="stylesheet"/>
+    <style>
+        @keyframes anim-effect-1 {
+            0% {
+                transform: translate3d(-100%, 0, 0);
+            }
+            65% {
+                transform: translate3d(0, 0, 0);
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes anim-effect-2 {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+            35%,
+            65% {
+                transform: translate3d(100%, 0, 0);
+            }
+            100% {
+                transform: translate3d(200%, 0, 0);
+            }
+        }
+
+        .reveal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #474787;
+            z-index: 1000;
+            width: 100%;
+            height: 100%;
+            transform: translate3d(-100%, 0, 0);
+
+            &.start {
+                animation-name: anim-effect-1;
+                animation-duration: 1s;
+                animation-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+                animation-fill-mode: forwards;
+            }
+
+            &.end {
+                animation-name: anim-effect-2;
+                animation-duration: 1.5s;
+                animation-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+                animation-fill-mode: forwards;
+            }
+        }
+
+        #page {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                box-sizing: border-box;
+            }
+        }
+
+        button {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            padding: 8px 16px;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 50px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div id="page">
+            <div id="page1">
+                <img src="/assets/images/아이유_091.jpg"/>
+            </div>
+            <div id="page2">
+                <img src="/assets/images/아이유_109b.jpg"/>
+            </div>
+            <div id="page3">
+                <img src="/assets/images/아이유_116.jpg"/>
+            </div>
+            <div id="page4">
+                <img src="/assets/images/아이유_181.jpg"/>
+            </div>
+        </div>
+        <button>TO THE NEXT</button>
+    </div>
+    <div id="snackbar-container"></div>
+    <script>
+        function reveal(onLoad) {
+            window.scrollTo(0, 0);
+
+            let runFlag = false;
+            let i = 0;
+
+            const reveal = setInterval(() => {
+                const div = document.createElement('div');
+                div.classList.add('reveal', 'start');
+
+                if (i == 0 || i == 4) {
+                    div.style.background = '#474787';
+                }
+                if (i == 1 || i == 3) {
+                    div.style.background = '#515199';
+                }
+                if (i == 2) {
+                    div.style.background = '#706fd3';
+                }
+
+                document.body.appendChild(div);
+
+                setTimeout(() => {
+                    if (!runFlag && onLoad) {
+                        runFlag = true;
+                        onLoad();
+                    }
+                    div.classList.add('end');
+                    setTimeout(() => {
+                        document.body.removeChild(div);
+                    }, 500);
+                }, 500);
+
+                i++;
+
+                if (i >= 5) {
+                    clearInterval(reveal);
+                }
+            }, 150);
+        }
+
+        const router = (() => {
+            let active = -1;
+            const pages = [
+                document.querySelector('#page1'),
+                document.querySelector('#page2'),
+                document.querySelector('#page3'),
+                document.querySelector('#page4')
+            ];
+
+            function next() {
+                active += 1;
+                if (active >= pages.length) active = 0;
+                for (const page of pages) {
+                    page.style.display = 'none';
+                }
+                pages[active].style.display = 'block';
+            }
+            next();
+            
+            return { next };
+        })();
+
+        document.querySelector('button').addEventListener('click', () => {
+            reveal(router.next);
+        })
+    </script>
+</body>
+</html>
