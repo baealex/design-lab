@@ -42,15 +42,15 @@
 
         const pages = {{ pages }};
 
-        document.getElementById('root').innerHTML = `
-            <ul>
-                ${(pages).map((page, idx) => `
-                    <li data-href="${page}">
-                        ${idx + 1}. ${page.split('-').map(capitalize).join(' ')}
-                    </li>
-                `).join('')}
-            </ul>
-        `;
+        const ul = document.createElement('ul');
+        pages.forEach((page, idx) => {
+            const li = document.createElement('li');
+            li.dataset.href = page;
+            li.textContent = `${idx + 1}. ${page.split('-').map(capitalize).join(' ')}`;
+            ul.appendChild(li);
+        });
+
+        document.getElementById('root').appendChild(ul);
 
         document.querySelector('ul').addEventListener('click', (e) => {
             if (e.target.nodeName === 'LI') {

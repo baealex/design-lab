@@ -57,12 +57,13 @@ function transpile(source, {
         try {
             const newScript = injectParams(script, params);
             const transpile = ts.transpileModule(newScript, {
-                compilerOptions:{
+                compilerOptions: {
+                    target: 'ES5',
                     module: ts.ModuleKind.CommonJS
                 }
             });
             const { code } = uglify.minify(transpile.outputText);
-            newSource = newSource.replace(script, code);
+            newSource = newSource.replace(script, `(function(){${code}})();`);
         } catch(e) {
             if (!ignoreError) {
                 throw e;

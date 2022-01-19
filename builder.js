@@ -7,6 +7,10 @@ const INDEX_PATH = `${SOURCE_PATH}/public/index.html`;
 const PAGES_PATH = `${SOURCE_PATH}/pages`;
 const DIST_PATH = './dist';
 
+const INIT_OPTIONS = {
+    isDev: false,
+}
+
 const pages = fs.readdirSync(PAGES_PATH);
 
 async function distDirInit() {
@@ -23,12 +27,12 @@ async function distDirInit() {
 }
 
 /**
- * @param {{ ignoreError?: boolean }} options 
+ * @param {{ isDev?: boolean }} options 
  */
-async function makeIndex(options) {
+async function makeIndex({ isDev } = INIT_OPTIONS) {
     const indexFile = (await fs.readFile(INDEX_PATH)).toString();
     const newIndex = transpile(indexFile, {
-        ...options,
+        ignoreError: isDev,
         params: { pages }
     });
     await fs.writeFile(`${DIST_PATH}/index.html`, newIndex);
@@ -45,30 +49,30 @@ async function watchIndex() {
 }
 
 /**
- * @param {{ ignoreError?: boolean }} options 
- */
-async function makePages(options) {
-    for (const path of pages) {
-        await makePage(path, options);
-    }
-}
-
-async function watchPages() {
-    for (const path of pages) {
-        await watchPage(path);
-    }
-}
-
-/**
  * @param {string} path 
- * @param {{ ignoreError?: boolean }} options 
+ * @param {{ isDev?: boolean }} options 
  */
-async function makePage(path, options) {
+async function makePage(path, { isDev } = INIT_OPTIONS) {
     const indexPath = `${PAGES_PATH}/${path}/index.html`;
     const indexFile = (await fs.readFile(indexPath)).toString();
-    const newIndex = transpile(indexFile, options);
+    const newIndex = transpile(indexFile, {
+        ignoreError: isDev,
+    });
     if (!fs.existsSync(`${DIST_PATH}/${path}`)) {
         await fs.mkdir(`${DIST_PATH}/${path}`);
+    }
+    if (isDev) {
+        await fs.writeFile(`${DIST_PATH}/${path}/index.html`, newIndex.replace('</body>', `
+            <script src="/socket.io/socket.io.js"></script>
+            <script>
+                var socket = io();
+                socket.on('onchange', function() {
+                    location.reload();
+                });
+            </script>
+            </body>
+        `));
+        return;
     }
     await fs.writeFile(`${DIST_PATH}/${path}/index.html`, newIndex);
 }
@@ -76,13 +80,16 @@ async function makePage(path, options) {
 /**
  * @param {string} path
  */
-async function watchPage(path) {
+async function watchPage(path, onChange) {
     const indexPath = `${PAGES_PATH}/${path}/index.html`;
-    fs.watch(indexPath, (eventType) => {
+    fs.watch(indexPath, async (eventType) => {
         if (eventType === 'change') {
             const time = new Date();
-            makePage(path, { ignoreError: true });
+            await makePage(path, { isDev: true });
             console.log(`Rebuild... ${path} : ${new Date() - time}`);
+            if (onChange) {
+                onChange(path);
+            }
         }
     });
 }
@@ -91,6 +98,7 @@ module.exports = {
     distDirInit,
     makeIndex,
     watchIndex,
-    makePages,
-    watchPages,
+    pages,
+    makePage,
+    watchPage,
 }
