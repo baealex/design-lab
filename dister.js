@@ -20,6 +20,29 @@ async function init() {
     await fs.copy(`./src/public/`, `${DIST_PATH}/`, {
         recursive: true,
     });
+    await makeIndex();
+}
+
+const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+async function makeIndex() {
+    const indexPath = `./src/public/index.html`;
+    const indexFile = (await fs.readFile(indexPath)).toString();
+    const newIndex = transpile(indexFile).replace('{{ pages }}', `
+        <ul>
+            ${(await getPages()).map((page, idx) => `
+                <li>
+                    <a href="/${page}">
+                        ${idx + 1}. ${page.split('-').map(capitalize).join(' ')}
+                    </a>
+                </li>
+            `.trim()).join('')}
+        </ul>
+    `.trim());
+    await fs.writeFile(`${DIST_PATH}/index.html`, newIndex);
 }
 
 async function compile(path) {

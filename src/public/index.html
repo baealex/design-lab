@@ -5,10 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BaeJino Design</title>
+    <link href="/assets/styles/base.css" rel="stylesheet"/>
+    <style>
+        #root {
+            align-items: flex-start;
+        }
+
+        ul {
+            width: 450px;
+
+            li {
+                max-width: 100%;
+                margin: 8px;
+                padding: 16px 8px;
+                background: #fff;
+                list-style: none;
+                box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
+                border-radius: 8px;
+
+                a {
+                    color: #333;
+                    text-decoration: none;
+                }
+            }
+        }
+    </style>
 </head>
 <body>
-    <script>
-        location.href = 'https://github.com/baealex/design/blob/master/README.md';
-    </script>
+    <div id="root">
+        {{ pages }}
+    </div>
 </body>
 </html>
