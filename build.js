@@ -1,9 +1,7 @@
-const dister = require('./dister');
+const builder = require('./builder');
 
 (async () => {
-    await dister.init();
-
-    for (const page of (await dister.getPages())) {
-        dister.compile(page);
-    }
+    await builder.distDirInit();
+    await builder.makeIndex();
+    await builder.makePages();
 })()

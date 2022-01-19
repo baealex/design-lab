@@ -16,12 +16,13 @@
 
             li {
                 max-width: 100%;
-                margin: 8px;
+                margin: 16px;
                 padding: 16px 8px;
                 background: #fff;
                 list-style: none;
                 box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
                 border-radius: 8px;
+                cursor: pointer;
 
                 a {
                     color: #333;
@@ -32,8 +33,30 @@
     </style>
 </head>
 <body>
-    <div id="root">
-        {{ pages }}
-    </div>
+    <div id="root"></div>
+    <script>
+        function capitalize(s) {
+            if (typeof s !== 'string') return ''
+            return s.charAt(0).toUpperCase() + s.slice(1)
+        }
+
+        const pages = {{ pages }};
+
+        document.getElementById('root').innerHTML = `
+            <ul>
+                ${(pages).map((page, idx) => `
+                    <li data-href="${page}">
+                        ${idx + 1}. ${page.split('-').map(capitalize).join(' ')}
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+
+        document.querySelector('ul').addEventListener('click', (e) => {
+            if (e.target.nodeName === 'LI') {
+                location.href = e.target.dataset.href;
+            }
+        });
+    </script>
 </body>
 </html>

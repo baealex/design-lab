@@ -4,7 +4,36 @@ const uglify = require('uglify-js');
 
 const { tagSplit } = require('./text-parser');
 
-function transpile(source, options) {
+const INIT_OPTIONS = {
+    ignoreError: false,
+    params: undefined,
+}
+
+/**
+ * @param {string} soruce 
+ * @param {object} params 
+ */
+function injectParams(source, params) {
+    let newSource = source;
+    if (params && typeof params === 'object') {
+        Object.keys(params).forEach(key => {
+            newSource = newSource.replace(
+                `{{ ${key} }}`,
+                JSON.stringify(params[key]),
+            );
+        })
+    }
+    return newSource;
+}
+
+/**
+ * @param {string} soruce 
+ * @param {{ ignoreError: boolean, params: object }} options
+ */
+function transpile(source, {
+    ignoreError,
+    params,
+}=INIT_OPTIONS) {
     let newSource = source;
 
     const styles = tagSplit(source, '<style>', '</style>');
@@ -16,7 +45,7 @@ function transpile(source, options) {
             });
             newSource = newSource.replace(style, css);
         } catch(e) {
-            if (options && !options.ignoreError) {
+            if (!ignoreError) {
                 throw e;
             }
             console.log(e);
@@ -26,7 +55,8 @@ function transpile(source, options) {
     const scripts = tagSplit(source, '<script>', '</script>');
     for (const script of scripts) {
         try {
-            const transpile = ts.transpileModule(script, {
+            const newScript = injectParams(script, params);
+            const transpile = ts.transpileModule(newScript, {
                 compilerOptions:{
                     module: ts.ModuleKind.CommonJS
                 }
@@ -34,7 +64,7 @@ function transpile(source, options) {
             const { code } = uglify.minify(transpile.outputText);
             newSource = newSource.replace(script, code);
         } catch(e) {
-            if (options && !options.ignoreError) {
+            if (!ignoreError) {
                 throw e;
             }
             console.log(e);

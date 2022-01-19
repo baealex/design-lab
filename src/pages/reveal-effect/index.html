@@ -74,15 +74,22 @@
 
         button {
             position: fixed;
-            bottom: 16px;
-            right: 16px;
+            bottom: 24px;
+            right: 24px;
             padding: 8px 16px;
             font-size: 18px;
             color: #333;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.75);
+            border: none;
+            font-weight: bold;
             border-radius: 50px;
-            border: 1px solid #333;
+            background: rgba(255, 255, 255, 0.87);
+            box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
+            transition: all 0.5s ease;
+
+            &:hover {
+                transform: translate(0px, -5px);
+            }
         }
     </style>
 </head>
