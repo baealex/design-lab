@@ -72,23 +72,16 @@
             }
         }
 
-        button {
+        .options {
+            width: 200px;
+            max-width: 100%;
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 8px 16px;
-            font-size: 18px;
-            color: #333;
-            cursor: pointer;
-            border: none;
-            font-weight: bold;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.87);
-            box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
-            transition: all 0.5s ease;
+            bottom: 16px;
+            right: 16px;
 
-            &:hover {
-                transform: translate(0px, -5px);
+            button {
+                display: block;
+                margin: 8px;
             }
         }
     </style>
@@ -109,49 +102,119 @@
                 <img src="/assets/images/아이유_181.jpg"/>
             </div>
         </div>
-        <button>TO THE NEXT</button>
+        <div class="options">
+            <button class="g-button">DEFAULT</button>
+            <button data-type="random" class="g-button">RANDOM COLOR</button>
+            <button data-type="natural" class="g-button">END NATURAL</button>
+        </div>
     </div>
     <div id="snackbar-container"></div>
     <script>
-        function reveal(onLoad) {
-            window.scrollTo(0, 0);
+        function makeRandomColor() {
+            const picks = [];
+            const hexChars = '0123456789ABCDEF';
+            for (let i=0; i<6; i++) {
+                picks.push(hexChars.charAt(Math.floor(Math.random() * hexChars.length)));
+            }
+            return `#${picks.join('')}`;
+        }
 
-            let runFlag = false;
-            let i = 0;
+        function useInterval(func, time) {
+            if (func() === 1) {
+                const interval = setInterval(() => {
+                    const result = func();
+                    if (result === 0) {
+                        clearInterval(interval)
+                    }
+                }, time);
+            }
+        }
+        useInterval.CONTINUE = 1;
+        useInterval.BREAK = 0;
 
-            const reveal = setInterval(() => {
-                const div = document.createElement('div');
-                div.classList.add('reveal', 'start');
+        const INIT_OPTIONS = {
+            onReady: () => unll,
+            colors: ['#222', '#444', '#666'],
+            useRandomColor: false,
+            endNatural: false,
+        };
 
+        function reveal(options=INIT_OPTIONS) {
+            options = {
+                ...INIT_OPTIONS,
+                ...options,
+            };
+
+            const colors = [];
+
+            if (!options.useRandomColor) {
+                colors.push(...options.colors);
+            }
+            
+            if (colors.length < 3 || options.useRandomColor) {
+                const numberOfRemain = 3 - colors.length;
+                for (let i=0; i<numberOfRemain; i++) {
+                    colors.push(makeRandomColor())
+                }
+            }
+
+            const items = [[], []];
+
+            for (let i=0; i<5; i++) {
+                const item = document.createElement('div');
+                item.classList.add('reveal');
                 if (i == 0 || i == 4) {
-                    div.style.background = '#474787';
+                    item.style.background = colors[0];
                 }
                 if (i == 1 || i == 3) {
-                    div.style.background = '#515199';
+                    item.style.background = colors[1];
                 }
                 if (i == 2) {
-                    div.style.background = '#706fd3';
+                    item.style.background = colors[2];
                 }
+                item.classList.add('start');
+                items[0].push(item);
+            }
 
-                document.body.appendChild(div);
+            useInterval(() => {
+                if (items[0].length > 0) {
+                    const item = items[0].pop();
+                    document.body.appendChild(item);
+
+                    items[1].push(item);
+                    return useInterval.CONTINUE;
+                }
 
                 setTimeout(() => {
-                    if (!runFlag && onLoad) {
-                        runFlag = true;
-                        onLoad();
+                    if (options.onReady) {
+                        options.onReady();
                     }
-                    div.classList.add('end');
-                    setTimeout(() => {
-                        document.body.removeChild(div);
-                    }, 500);
-                }, 500);
 
-                i++;
-
-                if (i >= 5) {
-                    clearInterval(reveal);
-                }
-            }, 150);
+                    if (!options.endNatural) {
+                        const item = items[1].pop();
+                        items[1].forEach(item => {
+                            document.body.removeChild(item)
+                        });
+                        item.classList.add('end');
+                        setTimeout(() => {
+                            document.body.removeChild(item);
+                        }, 1000);
+                    } else {
+                        useInterval(() => {
+                            if (items[1].length > 0) {
+                                const item = items[1].pop();
+                                item.classList.add('end');
+                                setTimeout(() => {
+                                    document.body.removeChild(item);
+                                }, 1000);
+                                return useInterval.CONTINUE;
+                            }
+                            return useInterval.BREAK;
+                        }, 100);
+                    }
+                }, 500)
+                return useInterval.BREAK;
+            }, 100);
         }
 
         const router = (() => {
@@ -176,8 +239,29 @@
             return { next };
         })();
 
-        document.querySelector('button').addEventListener('click', () => {
-            reveal(router.next);
+        document.querySelector('.options').addEventListener('click', (e) => {
+            if (e.target.nodeName === 'BUTTON') {
+                console.log(e.target.dataset.type)
+                switch(e.target.dataset.type) {
+                    default:
+                        reveal({
+                            onReady: router.next,
+                        });
+                        break;
+                    case 'random':
+                        reveal({
+                            onReady: router.next,
+                            useRandomColor: true,
+                        });
+                        break;
+                    case 'natural':
+                        reveal({
+                            onReady: router.next,
+                            endNatural: true,
+                        });
+                        break;
+                }
+            }
         })
     </script>
 </body>
