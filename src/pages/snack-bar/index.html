@@ -45,18 +45,24 @@
             &.have-event {
                 cursor: pointer;
             }
-        }
-        
-        button {
-            padding: 8px;
+
+            button {
+                display: block;
+                margin: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="root">
-        <button id="ok">
-            Are you understand?
-        </button>
+    <div id="root" class="g-flex-center">
+        <div class="options">
+            <button class="g-button">
+                Show SnackBar
+            </button>
+            <button data-type="onclick" class="g-button">
+                have OnClick event
+            </button>
+        </div>
     </div>
     <div id="snackbar-container"></div>
     <script>
@@ -100,12 +106,22 @@
         
         const root = document.querySelector('#root');
 
-        document.querySelector('#ok').addEventListener('click', () => {
-            snackBar('I understood!', {
-                onClick: () => {
-                    alert('You are click me!')
+        document.querySelector('.options').addEventListener('click', (e) => {
+            if (e.target.nodeName === 'BUTTON') {
+                console.log(e.target.dataset.type)
+                switch(e.target.dataset.type) {
+                    default:
+                        snackBar('Hi, there 👋.')
+                        break;
+                    case 'onclick':
+                        snackBar('Please click me!', {
+                            onClick: () => {
+                                alert('Thanks for your click!')
+                            }
+                        })
+                        break;
                 }
-            })
+            }
         })
     </script>
 </body>
