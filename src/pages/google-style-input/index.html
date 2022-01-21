@@ -14,14 +14,16 @@
             padding: 15px;
             background: none;
             outline: none;
-            border: 2px solid #000;
+            border: 2px solid #eee;
+            color: #eee;
         }
 
         .input input:focus {
-            border: 2px solid #f00;
+            border: 2px solid #a076f1;
         }
 
         .input label {
+            color: #eee;
             margin: 10px;
             padding: 5px;
             top: 0;
@@ -33,18 +35,18 @@
         }
 
         .input input:focus + label {
-            color: #f00
+            color: #a076f1;
         }
 
         .input label.has-text,
         .input input:focus + label {
-            background: #fafafa;
+            background: #222;
             transform: translateY(-77%) scale(0.8);
         }
     </style>
 </head>
 <body>
-    <div id="root">
+    <div id="root" class="g-flex-center">
         <div class="input">
             <input id="username"/>
             <label for="username">username</label>

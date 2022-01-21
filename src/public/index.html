@@ -7,7 +7,7 @@
     <title>BaeJino Design</title>
     <link href="/assets/styles/base.css" rel="stylesheet"/>
     <style>
-        #root {
+        div#root {
             align-items: flex-start;
         }
 
@@ -18,22 +18,14 @@
                 max-width: 100%;
                 margin: 16px;
                 padding: 16px 8px;
-                background: #fff;
                 list-style: none;
-                box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
-                border-radius: 8px;
                 cursor: pointer;
-
-                a {
-                    color: #333;
-                    text-decoration: none;
-                }
             }
         }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root" class="g-flex-center"></div>
     <script>
         function capitalize(s) {
             if (typeof s !== 'string') return ''
@@ -45,6 +37,7 @@
         const ul = document.createElement('ul');
         pages.forEach((page, idx) => {
             const li = document.createElement('li');
+            li.classList.add('g-card', 'use-hover');
             li.dataset.href = page;
             li.textContent = `${idx + 1}. ${page.split('-').map(capitalize).join(' ')}`;
             ul.appendChild(li);

@@ -7,16 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/assets/styles/base.css" rel="stylesheet"/>
     <style>
+        @mixin CARD {
+            box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.5);
+            border-radius: 8px;
+            background: #333;
+            color: #fff;
+        }
+
         #root {
             flex-wrap: wrap;
         }
 
         .item {
+            @include CARD;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #fff;
-            box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
             border-radius: 8px;
             width: 100px;
             height: 100px;
@@ -25,7 +31,7 @@
 
         .hovered {
             transition: all 0.5s ease;
-            box-shadow: 0 15px 25px 0 hsla(0, 0%, 0%, 0.05);
+            box-shadow: 0 15px 25px 0 hsla(0, 0%, 0%, 0.5);
             transform: translateY(-5px);
         }
 
@@ -35,7 +41,7 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root" class="g-flex-center"></div>
     <script>
         const cards = []
         for (let i=1; i<=6; i++) {
@@ -49,7 +55,7 @@
 
         let dragItem = null;
 
-        for(const item of items) {
+        for (const item of items) {
             item.addEventListener('dragstart', dragStart)
             item.addEventListener('dragend', dragEnd)
             item.addEventListener('dragover', dragOver)
