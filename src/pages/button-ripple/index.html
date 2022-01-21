@@ -6,22 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/assets/styles/base.css" rel="stylesheet"/>
     <style>
-        body { 
-            background: #222;
-        }
-
         button {
-            margin: 12px;
-            padding: 16px;
-            width: 160px;
-            border: none;
-            border-radius: 8px;
-            background: #333;
-            color: #fff;
+            margin: 16px;
+            display: block;
             position: relative;
             overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.5);
         }
 
         .ripple {
@@ -37,32 +26,37 @@
     </style>
 </head>
 <body>
-    <div id="root">
-        <button>Click Me!</button>
-        <button>Click Me!</button>
-        <button>Click Me!</button>
+    <div id="root" class="g-flex-center">
+        <div>
+            <button class="g-button">Click Me!</button>
+            <button class="g-button">Click Me!</button>
+            <button class="g-button">Click Me!</button>
+        </div>
     </div>
     <script>
-        const buttons = document.querySelectorAll('button')
-
-        for (const button of buttons) {
-            button.addEventListener('click', (e) => {
+        function setRippleEffect(element) {
+            element.addEventListener('click', (e) => {
                 const ripple = document.createElement('span')
                 ripple.classList.add('ripple')
-                button.appendChild(ripple)
+                element.appendChild(ripple)
+
+                const mousePosX = e.pageX - element.offsetLeft - 25 + 'px'
+                const mousePosY = e.pageY - element.offsetTop - 25 + 'px'
 
                 setTimeout(() => {
-                    ripple.style.top = e.pageY - button.offsetTop - 25 + 'px';
-                    ripple.style.left = e.pageX - button.offsetLeft - 25 + 'px';
-                    ripple.style.opacity = 0;
-                    ripple.style.transform = 'scale(5)';
+                    ripple.style.top = mousePosY
+                    ripple.style.left = mousePosX
+                    ripple.style.opacity = 0
+                    ripple.style.transform = 'scale(5)'
+
+                    setTimeout(() => {
+                        element.removeChild(ripple)
+                    }, 1000)
                 }, 0)
-
-                setTimeout(() => {
-                    button.removeChild(ripple)
-                }, 1000)
             })
         }
+
+        document.querySelectorAll('button').forEach(setRippleEffect)
     </script>
 </body>
 </html>
