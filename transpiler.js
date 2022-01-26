@@ -8,6 +8,7 @@ const uglify = require('uglify-js');
 const { between, tagSplit } = require('./text-parser');
 
 const INIT_OPTIONS = {
+    isDev: false,
     ignoreError: false,
     params: undefined,
 }
@@ -32,15 +33,17 @@ function injectParams(source, params) {
 /**
  * @param {string} pageName 
  * @param {string} soruce 
- * @param {{ ignoreError: boolean, params: object }} options
+ * @param {{ isDev: boolean, ignoreError: boolean, params: object }} options
  */
 function transpile(pageName, source, {
+    isDev,
     ignoreError,
     params,
 }=INIT_OPTIONS) {
     const template = between(source, `{% extends '`, `' %}`);
     if (template) {
         return transpileWithTemplate(pageName, source, {
+            isDev,
             ignoreError,
             params,
         });
@@ -90,9 +93,10 @@ function transpile(pageName, source, {
 /**
  * @param {string} pageName 
  * @param {string} soruce 
- * @param {{ ignoreError: boolean, params: object }} options
+ * @param {{ isDev: boolean, ignoreError: boolean, params: object }} options
  */
  function transpileWithTemplate(pageName, source, {
+    isDev,
     ignoreError,
     params,
 }=INIT_OPTIONS) {
@@ -122,11 +126,15 @@ function transpile(pageName, source, {
                         }
                     });
                     const { code } = uglify.minify(transpile.outputText);
-                    const hash = md5Hasher.update(code).digest('hex');
-                    const fileName = `${pageName}.${hash}.js`;
-                    const filePath = `./dist/assets/scripts/${fileName}`;
-                    fs.writeFile(filePath, `(function(){${code}})();`);
-                    mergeItems.push(`<script src="/assets/scripts/${fileName}"></script>`);
+                    if (!isDev) {
+                        const hash = md5Hasher.update(code).digest('hex');
+                        const fileName = `${pageName}.${hash}.js`;
+                        const filePath = `./dist/assets/scripts/${fileName}`;
+                        fs.writeFile(filePath, `(function(){${code}})();`);
+                        mergeItems.push(`<script src="/assets/scripts/${fileName}"></script>`);
+                    } else {
+                        mergeItems.push(`<script>(function(){${code}})();</script>`);
+                    }
                 } catch(e) {
                     if (!ignoreError) {
                         throw e;
@@ -141,11 +149,15 @@ function transpile(pageName, source, {
                         data: item,
                         outputStyle: 'compressed'
                     });
-                    const hash = md5Hasher.update(css).digest('hex');
-                    const fileName = `${pageName}.${hash}.css`;
-                    const filePath = `./dist/assets/styles/${fileName}`;
-                    fs.writeFile(filePath, css);
-                    mergeItems.push(`<link href="/assets/styles/${fileName}" rel="stylesheet"/>`)
+                    if (!isDev) {
+                        const hash = md5Hasher.update(css).digest('hex');
+                        const fileName = `${pageName}.${hash}.css`;
+                        const filePath = `./dist/assets/styles/${fileName}`;
+                        fs.writeFile(filePath, css);
+                        mergeItems.push(`<link href="/assets/styles/${fileName}" rel="stylesheet"/>`)
+                    } else {
+                        mergeItems.push(`<style>${css}</style>`)
+                    }
                 } catch(e) {
                     if (!ignoreError) {
                         throw e;

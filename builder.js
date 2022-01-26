@@ -17,7 +17,7 @@ const pages = fs.readdirSync(PAGES_PATH);
 
 async function distDirInit() {
     if (fs.existsSync(DIST_PATH)) {
-        await fs.rmdir(DIST_PATH, {
+        await fs.rm(DIST_PATH, {
             recursive: true,
             force: true,
         });
@@ -37,6 +37,7 @@ async function distDirInit() {
 async function makeIndex({ isDev } = INIT_OPTIONS) {
     const indexFile = (await fs.readFile(INDEX_PATH)).toString();
     const newIndex = transpile('index', indexFile, {
+        isDev,
         ignoreError: isDev,
         params: { pages }
     });
@@ -62,6 +63,7 @@ async function makePage(path, { isDev } = INIT_OPTIONS) {
     const indexFile = (await fs.readFile(indexPath)).toString();
 
     const newIndex = transpile(path, indexFile, {
+        isDev,
         ignoreError: isDev,
     });
     
