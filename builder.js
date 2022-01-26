@@ -1,6 +1,8 @@
 const fs = require('fs-extra');
 
-const { transpile } = require('./transpiler');
+const {
+    transpile,
+} = require('./transpiler');
 
 const SOURCE_PATH = './src'
 const INDEX_PATH = `${SOURCE_PATH}/public/index.html`;
@@ -21,6 +23,9 @@ async function distDirInit() {
         });
     }
     await fs.mkdir(DIST_PATH);
+    await fs.mkdir(DIST_PATH + '/assets');
+    await fs.mkdir(DIST_PATH + '/assets' + '/styles');
+    await fs.mkdir(DIST_PATH + '/assets' + '/scripts');
     await fs.copy(`./src/public/`, `${DIST_PATH}/`, {
         recursive: true,
     });
@@ -31,7 +36,7 @@ async function distDirInit() {
  */
 async function makeIndex({ isDev } = INIT_OPTIONS) {
     const indexFile = (await fs.readFile(INDEX_PATH)).toString();
-    const newIndex = transpile(indexFile, {
+    const newIndex = transpile('index', indexFile, {
         ignoreError: isDev,
         params: { pages }
     });
@@ -55,9 +60,11 @@ async function watchIndex() {
 async function makePage(path, { isDev } = INIT_OPTIONS) {
     const indexPath = `${PAGES_PATH}/${path}/index.html`;
     const indexFile = (await fs.readFile(indexPath)).toString();
-    const newIndex = transpile(indexFile, {
+
+    const newIndex = transpile(path, indexFile, {
         ignoreError: isDev,
     });
+    
     if (!fs.existsSync(`${DIST_PATH}/${path}`)) {
         await fs.mkdir(`${DIST_PATH}/${path}`);
     }

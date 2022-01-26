@@ -1,55 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BaeJino Design</title>
-    <link href="/assets/styles/global.css" rel="stylesheet"/>
-    <style>
-        div#root {
-            align-items: flex-start;
-        }
+{% extends 'base.html' %}
 
-        ul {
-            width: 450px;
+<title>BaeJino Design</title>
 
-            li {
-                max-width: 100%;
-                margin: 16px;
-                padding: 16px 8px;
-                list-style: none;
-                cursor: pointer;
-            }
+<style>
+    div#root {
+        align-items: flex-start;
+    }
+
+    ul {
+        width: 450px;
+
+        li {
+            max-width: 100%;
+            margin: 16px;
+            padding: 16px 8px;
+            list-style: none;
+            cursor: pointer;
         }
-    </style>
-</head>
-<body>
+    }
+</style>
+
+<html>
     <div id="root" class="g-flex-center"></div>
-    <script>
-        function capitalize(s) {
-            if (typeof s !== 'string') return ''
-            return s.charAt(0).toUpperCase() + s.slice(1)
-        }
-
-        const pages = {{ pages }};
-
-        const ul = document.createElement('ul');
-        pages.forEach((page, idx) => {
-            const li = document.createElement('li');
-            li.classList.add('g-card', 'use-hover');
-            li.dataset.href = page;
-            li.textContent = `${idx + 1}. ${page.split('-').map(capitalize).join(' ')}`;
-            ul.appendChild(li);
-        });
-
-        document.getElementById('root').appendChild(ul);
-
-        document.querySelector('ul').addEventListener('click', (e) => {
-            if (e.target.nodeName === 'LI') {
-                location.href = e.target.dataset.href;
-            }
-        });
-    </script>
-</body>
 </html>
+
+<script>
+    function capitalize(s) {
+        if (typeof s !== 'string') return ''
+        return s.charAt(0).toUpperCase() + s.slice(1)
+    }
+
+    const pages = {{ pages }};
+
+    const ul = document.createElement('ul');
+    pages.forEach((page, idx) => {
+        const li = document.createElement('li');
+        li.classList.add('g-card', 'use-hover');
+        li.dataset.href = page;
+        li.textContent = `${idx + 1}. ${page.split('-').map(capitalize).join(' ')}`;
+        ul.appendChild(li);
+    });
+
+    document.getElementById('root').appendChild(ul);
+
+    document.querySelector('ul').addEventListener('click', (e) => {
+        if (e.target.nodeName === 'LI') {
+            location.href = e.target.dataset.href;
+        }
+    });
+</script>

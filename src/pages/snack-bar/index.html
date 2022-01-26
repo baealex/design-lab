@@ -1,59 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Snack Bar</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/assets/styles/global.css" rel="stylesheet"/>
-    <style>
-        @keyframes slide {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 100%);
-            }
+{% extends 'base.html' %}
 
-            10% {
-                opacity: 1;
-                transform: translate(-50%, 0%);
-            }
-
-            90% {
-                opacity: 1;
-                transform: translate(-50%, 0%);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(-50%, 100%);
-            }
-        }
-
-        .snack-bar {
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            left: 50%;
-            padding: 16px;
-            border-radius: 8px;
-            color: #fff;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.75);
+<title>Snack Bar</title>
+    
+<style>
+    @keyframes slide {
+        0% {
             opacity: 0;
             transform: translate(-50%, 100%);
-            animation: slide 4s ease 1;
-
-            &.have-event {
-                cursor: pointer;
-            }
-
-            button {
-                display: block;
-                margin: 8px;
-            }
         }
-    </style>
-</head>
-<body>
+
+        10% {
+            opacity: 1;
+            transform: translate(-50%, 0%);
+        }
+
+        90% {
+            opacity: 1;
+            transform: translate(-50%, 0%);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate(-50%, 100%);
+        }
+    }
+
+    .snack-bar {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        left: 50%;
+        padding: 16px;
+        border-radius: 8px;
+        color: #fff;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.75);
+        opacity: 0;
+        transform: translate(-50%, 100%);
+        animation: slide 4s ease 1;
+
+        &.have-event {
+            cursor: pointer;
+        }
+
+        button {
+            display: block;
+            margin: 8px;
+        }
+    }
+</style>
+
+<html>
     <div id="root" class="g-flex-center">
         <div class="options">
             <button class="g-button">
@@ -65,64 +62,64 @@
         </div>
     </div>
     <div id="snackbar-container"></div>
-    <script>
-        const handleRemove = [];
-
-        const container = (function () {
-            const containerName = 'snackbar-container';
-
-            if (!document.getElementById(containerName)) {
-                const div = document.createElement('div');
-                div.id = containerName;
-                document.body.appendChild(div);
-            }
-            return document.getElementById(containerName);
-        }());
-
-        function snackBar(text, options) {
-            clearSnackBar();
-            
-            const snackBar = document.createElement('div');
-            snackBar.textContent = text;
-            snackBar.classList.add('snack-bar');
-
-            if (options?.onClick) {
-                snackBar.classList.add('have-event');
-                snackBar.addEventListener('click', options.onClick);
-            }
-
-            container.appendChild(snackBar);
-            handleRemove.unshift(setTimeout(() => {
-                container.removeChild(snackBar);
-            }, 4250));
-        }
-
-        function clearSnackBar() {
-            Array.from(document.getElementsByClassName('snack-bar')).forEach(el => {
-                clearTimeout(handleRemove.shift());
-                container.removeChild(el);
-            });
-        }
-        
-        const root = document.querySelector('#root');
-
-        document.querySelector('.options').addEventListener('click', (e) => {
-            if (e.target.nodeName === 'BUTTON') {
-                console.log(e.target.dataset.type)
-                switch(e.target.dataset.type) {
-                    default:
-                        snackBar('Hi, there 👋.')
-                        break;
-                    case 'onclick':
-                        snackBar('Please click me!', {
-                            onClick: () => {
-                                alert('Thanks for your click!')
-                            }
-                        })
-                        break;
-                }
-            }
-        })
-    </script>
-</body>
 </html>
+
+<script>
+    const handleRemove = [];
+
+    const container = (function () {
+        const containerName = 'snackbar-container';
+
+        if (!document.getElementById(containerName)) {
+            const div = document.createElement('div');
+            div.id = containerName;
+            document.body.appendChild(div);
+        }
+        return document.getElementById(containerName);
+    }());
+
+    function snackBar(text, options) {
+        clearSnackBar();
+        
+        const snackBar = document.createElement('div');
+        snackBar.textContent = text;
+        snackBar.classList.add('snack-bar');
+
+        if (options?.onClick) {
+            snackBar.classList.add('have-event');
+            snackBar.addEventListener('click', options.onClick);
+        }
+
+        container.appendChild(snackBar);
+        handleRemove.unshift(setTimeout(() => {
+            container.removeChild(snackBar);
+        }, 4250));
+    }
+
+    function clearSnackBar() {
+        Array.from(document.getElementsByClassName('snack-bar')).forEach(el => {
+            clearTimeout(handleRemove.shift());
+            container.removeChild(el);
+        });
+    }
+    
+    const root = document.querySelector('#root');
+
+    document.querySelector('.options').addEventListener('click', (e) => {
+        if (e.target.nodeName === 'BUTTON') {
+            console.log(e.target.dataset.type)
+            switch(e.target.dataset.type) {
+                default:
+                    snackBar('Hi, there 👋.')
+                    break;
+                case 'onclick':
+                    snackBar('Please click me!', {
+                        onClick: () => {
+                            alert('Thanks for your click!')
+                        }
+                    })
+                    break;
+            }
+        }
+    })
+</script>

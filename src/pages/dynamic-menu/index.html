@@ -1,84 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Dynamic Menu</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/assets/styles/global.css" rel="stylesheet"/>
-    <style>
-        .section {
-            margin: 32px;
+{% extends 'base.html' %}
+
+<title>Dynamic Menu</title>
+
+<style>
+    .section {
+        margin: 32px;
+    }
+
+    .menu {
+        width: 30px;
+        height: 30px;
+        display: block;
+        position: relative;
+
+        &::after,
+        &::before,
+        & .third-line {
+            content: '';
+            display: block;
+            position: absolute;
+            right: 0;
+            width: 30px;
+            height: 2px;
+            background: #eee;
+            transition: all 0.5s ease;
         }
 
-        .menu {
-            width: 30px;
-            height: 30px;
-            display: block;
-            position: relative;
+        &::before {
+            top: 10px;
+        }
 
-            &::after,
-            &::before,
-            & .third-line {
-                content: '';
-                display: block;
-                position: absolute;
-                right: 0;
-                width: 30px;
-                height: 2px;
-                background: #eee;
-                transition: all 0.5s ease;
-            }
+        &::after {
+            top: 20px;
+        }
 
+        &.isOpen {
             &::before {
-                top: 10px;
+                transform: translateY(5px) rotate(45deg);
             }
 
             &::after {
-                top: 20px;
+                transform: translateY(-5px) rotate(-45deg);
+            }
+        }
+
+        &.three-line {
+            &::before {
+                top: 8px;
+            }
+
+            & .third-line {
+                top: 15px;
+            }
+
+            &::after {
+                top: 22px;
             }
 
             &.isOpen {
                 &::before {
-                    transform: translateY(5px) rotate(45deg);
-                }
-
-                &::after {
-                    transform: translateY(-5px) rotate(-45deg);
-                }
-            }
-
-            &.three-line {
-                &::before {
-                    top: 8px;
+                    transform: translateY(7px) rotate(45deg);
                 }
 
                 & .third-line {
-                    top: 15px;
+                    transform: translateY(0px) rotate(-45deg);
+                    opacity: 0.5;
                 }
 
                 &::after {
-                    top: 22px;
-                }
-
-                &.isOpen {
-                    &::before {
-                        transform: translateY(7px) rotate(45deg);
-                    }
-
-                    & .third-line {
-                        transform: translateY(0px) rotate(-45deg);
-                        opacity: 0.5;
-                    }
-
-                    &::after {
-                        transform: translateY(-7px) rotate(-45deg);
-                    }
+                    transform: translateY(-7px) rotate(-45deg);
                 }
             }
         }
-    </style>
-</head>
-<body>
+    }
+</style>
+
+<html>
     <div id="root" class="g-flex-center">
         <div>
             <div class="section">
@@ -91,16 +88,16 @@
             </div>
         </div>
     </div>
-    <script>
-        document.querySelectorAll('.menu').forEach(menu => {
-            menu.addEventListener('click', () => {
-                if (menu.classList.contains('isOpen')) {
-                    menu.classList.remove('isOpen')
-                } else {
-                    menu.classList.add('isOpen')
-                }
-            })
-        })
-    </script>
-</body>
 </html>
+
+<script>
+    document.querySelectorAll('.menu').forEach(menu => {
+        menu.addEventListener('click', () => {
+            if (menu.classList.contains('isOpen')) {
+                menu.classList.remove('isOpen')
+            } else {
+                menu.classList.add('isOpen')
+            }
+        })
+    })
+</script>

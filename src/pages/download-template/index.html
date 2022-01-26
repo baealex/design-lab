@@ -1,78 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <title>Download Template</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/assets/styles/global.css" rel="stylesheet" />
-    <style>
-        @keyframes link {
-            0% {
-                box-shadow: inset 0 -4px 0 #0dbe98;
-            }
+<title>Download Template</title>
 
-            100% {
+<style>
+    @keyframes link {
+        0% {
+            box-shadow: inset 0 -4px 0 #0dbe98;
+        }
+
+        100% {
+            box-shadow: inset 0 -38px 0 #0dbe98;
+        }
+    }
+    
+    .box {
+        .image {
+            background-image: url(/assets/images/iu.gif);
+            background-attachment: fixed;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: scale(1.0);
+            transition: transform 0.5s ease;
+        }
+
+        .mask {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .title {
+            letter-spacing: -4px;
+            font-size: 4rem;
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 2rem;
+            box-shadow: inset 0 -4px 0 #0dbe98;
+
+            &:hover {
+                animation: link .5s 1;
                 box-shadow: inset 0 -38px 0 #0dbe98;
             }
         }
-        
-        .box {
-            .image {
-                background-image: url(/assets/images/iu.gif);
-                background-attachment: fixed;
-                background-position: center center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                width: 100%;
-                height: 100vh;
-                position: fixed;
-                left: 0;
-                top: 0;
-                transform: scale(1.0);
-                transition: transform 0.5s ease;
-            }
 
-            .mask {
-                background-color: rgba(0, 0, 0, 0.5);
-                color: #fff;
-                width: 100%;
-                height: 100vh;
-                position: fixed;
-                left: 0;
-                top: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-            }
-
-            .title {
-                letter-spacing: -4px;
-                font-size: 4rem;
-                font-weight: bold;
-            }
-
-            a {
-                text-decoration: none;
-                color: #fff;
-                font-size: 2rem;
-                box-shadow: inset 0 -4px 0 #0dbe98;
-
-                &:hover {
-                    animation: link .5s 1;
-                    box-shadow: inset 0 -38px 0 #0dbe98;
-                }
-            }
-
-            p {
-                margin: 4px;
-            }
+        p {
+            margin: 4px;
         }
-    </style>
-</head>
+    }
+</style>
 
-<body>
+<html>
     <div class="box">
         <div class="image"></div>
         <div class="mask">
@@ -85,18 +80,17 @@
             <p>다운로드 받은 횟수 : 486</p>
         </div>
     </div>
-    <script>
-        const backImage = document.querySelector('.box .image')
-        const downloadLink = document.querySelector('.box a')
-
-        downloadLink.addEventListener('mouseenter', () => {
-            backImage.style.transform = 'scale(1.25)'
-        })
-
-        downloadLink.addEventListener('mouseleave', () => {
-            backImage.style.transform = 'scale(1.0)'
-        })
-    </script>
-</body>
-
 </html>
+
+<script>
+    const backImage = document.querySelector('.box .image')
+    const downloadLink = document.querySelector('.box a')
+
+    downloadLink.addEventListener('mouseenter', () => {
+        backImage.style.transform = 'scale(1.25)'
+    })
+
+    downloadLink.addEventListener('mouseleave', () => {
+        backImage.style.transform = 'scale(1.0)'
+    })
+</script>

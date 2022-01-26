@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Reveal Effect</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/assets/styles/global.css" rel="stylesheet"/>
-    <style>
+{% extends 'base.html' %}
+
+<title>Reveal Effect</title>
+
+<style>
         @keyframes anim-effect-1 {
             0% {
                 transform: translate3d(-100%, 0, 0);
@@ -84,9 +81,10 @@
                 margin: 8px;
             }
         }
-    </style>
-</head>
-<body>
+
+</style>
+
+<html>
     <div id="root">
         <div id="page">
             <div id="page1">
@@ -108,161 +106,160 @@
             <button data-type="natural" class="g-button">END NATURAL</button>
         </div>
     </div>
-    <div id="snackbar-container"></div>
-    <script>
-        function makeRandomColor() {
-            const picks = [];
-            const hexChars = '0123456789ABCDEF';
-            for (let i=0; i<6; i++) {
-                picks.push(hexChars.charAt(Math.floor(Math.random() * hexChars.length)));
-            }
-            return `#${picks.join('')}`;
-        }
+</html>
 
-        function useInterval(func, time) {
-            if (func() === 1) {
-                const interval = setInterval(() => {
-                    const result = func();
-                    if (result === 0) {
-                        clearInterval(interval)
-                    }
-                }, time);
-            }
+<script>
+    function makeRandomColor() {
+        const picks = [];
+        const hexChars = '0123456789ABCDEF';
+        for (let i=0; i<6; i++) {
+            picks.push(hexChars.charAt(Math.floor(Math.random() * hexChars.length)));
         }
-        useInterval.CONTINUE = 1;
-        useInterval.BREAK = 0;
+        return `#${picks.join('')}`;
+    }
 
-        const INIT_OPTIONS = {
-            onReady: () => unll,
-            colors: ['#222', '#444', '#666'],
-            useRandomColor: false,
-            endNatural: false,
+    function useInterval(func, time) {
+        if (func() === 1) {
+            const interval = setInterval(() => {
+                const result = func();
+                if (result === 0) {
+                    clearInterval(interval)
+                }
+            }, time);
+        }
+    }
+    useInterval.CONTINUE = 1;
+    useInterval.BREAK = 0;
+
+    const INIT_OPTIONS = {
+        onReady: () => unll,
+        colors: ['#222', '#444', '#666'],
+        useRandomColor: false,
+        endNatural: false,
+    };
+
+    function reveal(options=INIT_OPTIONS) {
+        options = {
+            ...INIT_OPTIONS,
+            ...options,
         };
 
-        function reveal(options=INIT_OPTIONS) {
-            options = {
-                ...INIT_OPTIONS,
-                ...options,
-            };
+        const colors = [];
 
-            const colors = [];
-
-            if (!options.useRandomColor) {
-                colors.push(...options.colors);
+        if (!options.useRandomColor) {
+            colors.push(...options.colors);
+        }
+        
+        if (colors.length < 3 || options.useRandomColor) {
+            const numberOfRemain = 3 - colors.length;
+            for (let i=0; i<numberOfRemain; i++) {
+                colors.push(makeRandomColor())
             }
-            
-            if (colors.length < 3 || options.useRandomColor) {
-                const numberOfRemain = 3 - colors.length;
-                for (let i=0; i<numberOfRemain; i++) {
-                    colors.push(makeRandomColor())
-                }
-            }
-
-            const items = [[], []];
-
-            for (let i=0; i<5; i++) {
-                const item = document.createElement('div');
-                item.classList.add('reveal');
-                if (i == 0 || i == 4) {
-                    item.style.background = colors[0];
-                }
-                if (i == 1 || i == 3) {
-                    item.style.background = colors[1];
-                }
-                if (i == 2) {
-                    item.style.background = colors[2];
-                }
-                item.classList.add('start');
-                items[0].push(item);
-            }
-
-            useInterval(() => {
-                if (items[0].length > 0) {
-                    const item = items[0].pop();
-                    document.body.appendChild(item);
-
-                    items[1].push(item);
-                    return useInterval.CONTINUE;
-                }
-
-                setTimeout(() => {
-                    if (options.onReady) {
-                        options.onReady();
-                    }
-
-                    if (!options.endNatural) {
-                        const item = items[1].pop();
-                        items[1].forEach(item => {
-                            document.body.removeChild(item)
-                        });
-                        item.classList.add('end');
-                        setTimeout(() => {
-                            document.body.removeChild(item);
-                        }, 1000);
-                    } else {
-                        useInterval(() => {
-                            if (items[1].length > 0) {
-                                const item = items[1].pop();
-                                item.classList.add('end');
-                                setTimeout(() => {
-                                    document.body.removeChild(item);
-                                }, 1000);
-                                return useInterval.CONTINUE;
-                            }
-                            return useInterval.BREAK;
-                        }, 100);
-                    }
-                }, 500)
-                return useInterval.BREAK;
-            }, 100);
         }
 
-        const router = (() => {
-            let active = -1;
-            const pages = [
-                document.querySelector('#page1'),
-                document.querySelector('#page2'),
-                document.querySelector('#page3'),
-                document.querySelector('#page4')
-            ];
+        const items = [[], []];
 
-            function next() {
-                active += 1;
-                if (active >= pages.length) active = 0;
-                for (const page of pages) {
-                    page.style.display = 'none';
-                }
-                pages[active].style.display = 'block';
+        for (let i=0; i<5; i++) {
+            const item = document.createElement('div');
+            item.classList.add('reveal');
+            if (i == 0 || i == 4) {
+                item.style.background = colors[0];
             }
-            next();
-            
-            return { next };
-        })();
+            if (i == 1 || i == 3) {
+                item.style.background = colors[1];
+            }
+            if (i == 2) {
+                item.style.background = colors[2];
+            }
+            item.classList.add('start');
+            items[0].push(item);
+        }
 
-        document.querySelector('.options').addEventListener('click', (e) => {
-            if (e.target.nodeName === 'BUTTON') {
-                console.log(e.target.dataset.type)
-                switch(e.target.dataset.type) {
-                    default:
-                        reveal({
-                            onReady: router.next,
-                        });
-                        break;
-                    case 'random':
-                        reveal({
-                            onReady: router.next,
-                            useRandomColor: true,
-                        });
-                        break;
-                    case 'natural':
-                        reveal({
-                            onReady: router.next,
-                            endNatural: true,
-                        });
-                        break;
-                }
+        useInterval(() => {
+            if (items[0].length > 0) {
+                const item = items[0].pop();
+                document.body.appendChild(item);
+
+                items[1].push(item);
+                return useInterval.CONTINUE;
             }
-        })
-    </script>
-</body>
-</html>
+
+            setTimeout(() => {
+                if (options.onReady) {
+                    options.onReady();
+                }
+
+                if (!options.endNatural) {
+                    const item = items[1].pop();
+                    items[1].forEach(item => {
+                        document.body.removeChild(item)
+                    });
+                    item.classList.add('end');
+                    setTimeout(() => {
+                        document.body.removeChild(item);
+                    }, 1000);
+                } else {
+                    useInterval(() => {
+                        if (items[1].length > 0) {
+                            const item = items[1].pop();
+                            item.classList.add('end');
+                            setTimeout(() => {
+                                document.body.removeChild(item);
+                            }, 1000);
+                            return useInterval.CONTINUE;
+                        }
+                        return useInterval.BREAK;
+                    }, 100);
+                }
+            }, 500)
+            return useInterval.BREAK;
+        }, 100);
+    }
+
+    const router = (() => {
+        let active = -1;
+        const pages = [
+            document.querySelector('#page1'),
+            document.querySelector('#page2'),
+            document.querySelector('#page3'),
+            document.querySelector('#page4')
+        ];
+
+        function next() {
+            active += 1;
+            if (active >= pages.length) active = 0;
+            for (const page of pages) {
+                page.style.display = 'none';
+            }
+            pages[active].style.display = 'block';
+        }
+        next();
+        
+        return { next };
+    })();
+
+    document.querySelector('.options').addEventListener('click', (e) => {
+        if (e.target.nodeName === 'BUTTON') {
+            console.log(e.target.dataset.type)
+            switch(e.target.dataset.type) {
+                default:
+                    reveal({
+                        onReady: router.next,
+                    });
+                    break;
+                case 'random':
+                    reveal({
+                        onReady: router.next,
+                        useRandomColor: true,
+                    });
+                    break;
+                case 'natural':
+                    reveal({
+                        onReady: router.next,
+                        endNatural: true,
+                    });
+                    break;
+            }
+        }
+    })
+</script>
