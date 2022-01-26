@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+<title>Confetti</title>
+
+<style>
+    @keyframes flip {
+        0% {
+            transform: rotate3d(1, 0.5, 0, 0deg);
+        }
+
+        50% {
+            transform: rotate3d(1, 0.5, 0, 180deg);
+        }
+
+        100% {
+            transform: rotate3d(1, 0.5, 0, 360deg);
+        }
+    }
+
+    @keyframes move {
+        0% {
+            transform: translate(0px, 0px);
+        }
+
+        50% {
+            transform: translate(300px, 0px);
+        }
+
+        100% {
+            transform: translate(0px, 0px);
+        }
+    }
+
+    @keyframes down {
+        0% {
+            transform: translate(0px, 0vh);
+        }
+
+        100% {
+            transform: translate(0px, 100vh);
+        }
+    }
+
+    .paper-box {
+        animation-name: down;
+        animation-duration: 12s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+
+        position: fixed;
+        top: -8px;
+        left: 0;
+    }
+
+    .paper-wrapper {
+        animation-name: move;
+        animation-duration: 8s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    .paper {
+        background: #fff;
+        width: 16px;
+        height: 8px;
+        animation: flip 1s linear 0s infinite;
+    }
+</style>
+
+<html>
+    <div id="root" class="g-flex-center">
+        <div id="confetti"></div>
+    </div>
+</html>
+
+<script>
+    function randomNumber(min, max) { 
+        return Math.round(Math.random() * (max - min) + min)
+    } 
+
+    const confetti = document.getElementById('confetti')
+
+    for (let i=0; i<40; i++) {
+        setTimeout(() => {
+            const paper = document.createElement('div')
+            paper.className = 'paper'
+            const colors = ['#fff', '#f55', '#5f5', '#55f', '#f5f', '#ff5']
+            const color = randomNumber(0, colors.length - 1)
+            paper.style.background = colors[color]
+
+            const paperWrapper = document.createElement('div')
+            paperWrapper.className = 'paper-wrapper'
+            paperWrapper.style.animationDuration = '' + randomNumber(6, 16) + 's'
+            paperWrapper.appendChild(paper)
+
+            const paperBox = document.createElement('div')
+            paperBox.className = 'paper-box'
+            paperBox.style.left = '' + (i % Math.round(window.innerWidth / 300)) * 300 + 'px' 
+            paperBox.style.animationDuration = '' + randomNumber(6, 10) + 's'
+            paperBox.appendChild(paperWrapper)
+
+            confetti.appendChild(paperBox)
+        }, i * 300)
+    }
+</script>
