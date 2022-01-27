@@ -37,7 +37,7 @@
         }
 
         100% {
-            transform: translate(0px, 100vh);
+            transform: translate(0px, 105vh);
         }
     }
 
@@ -55,7 +55,7 @@
     .paper-wrapper {
         animation-name: move;
         animation-duration: 8s;
-        animation-timing-function: linear;
+        animation-timing-function: ease;
         animation-iteration-count: infinite;
     }
 
@@ -79,8 +79,9 @@
     } 
 
     const confetti = document.getElementById('confetti')
+    const frequency = ((innerHeight * innerWidth) / 25000)
 
-    for (let i=0; i<40; i++) {
+    for (let i=0; i<frequency; i++) {
         setTimeout(() => {
             const paper = document.createElement('div')
             paper.className = 'paper'
@@ -90,12 +91,12 @@
 
             const paperWrapper = document.createElement('div')
             paperWrapper.className = 'paper-wrapper'
-            paperWrapper.style.animationDuration = '' + randomNumber(6, 16) + 's'
+            paperWrapper.style.animationDuration = '' + randomNumber(10, 16) + 's'
             paperWrapper.appendChild(paper)
 
             const paperBox = document.createElement('div')
             paperBox.className = 'paper-box'
-            paperBox.style.left = '' + (i % Math.round(window.innerWidth / 300)) * 300 + 'px' 
+            paperBox.style.left = '' + randomNumber(0, innerWidth - 300) + 'px' 
             paperBox.style.animationDuration = '' + randomNumber(6, 10) + 's'
             paperBox.appendChild(paperWrapper)
 
