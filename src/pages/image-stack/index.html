@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+<title>Image Stack</title>
+
+<style>
+    .stack {
+        position: relative;
+    }
+
+    .stack img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 350px;
+        opacity: 1;
+        transition: all 0.5s ease;
+    }
+
+    .content {
+        align-self: flex-start;
+        width: 650px;
+        max-width: 100%;
+        position: absolute;
+        display: none;
+        opacity: 0;
+        transition: all 0.5s ease;
+    }
+
+    .content .section {
+        position: relative;
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .content .section img {
+        width: 100%;
+    }
+
+    .content .section p {
+        position: absolute;
+        text-shadow: 1px 1px 3px #000;
+        top: 50%;
+        left: 50%;
+        font-size: 24px;
+        font-weight: bold;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<html>
+    <div id="root" class="g-flex-center">
+        <div class="stack"></div>
+        <div class="content">
+            <div class="section">
+                <img src="/assets/images/sims4-1.png"/>
+                <p>Tiny Living</p>
+            </div>
+            <div class="section">
+                <img src="/assets/images/sims4-2.png"/>
+                <p>Dine Out</p>
+            </div>
+            <div class="section">
+                <img src="/assets/images/sims4-3.png"/>
+                <p>Snowy Escape</p>
+            </div>
+            <div class="section">
+                <img src="/assets/images/sims4-4.png"/>
+                <p>Island Living</p>
+            </div>
+            <div class="section">
+                <img src="/assets/images/sims4-5.png"/>
+                <p>Cottage Living</p>
+            </div>
+            <div class="section">
+                <img src="/assets/images/sims4-6.png"/>
+                <p>City Living</p>
+            </div>
+        </div>
+    </div>
+</html>
+
+<script>
+    function randomNumber(min, max) { 
+        return Math.round(Math.random() * (max - min) + min)
+    }
+    
+    function imageLoadAndRun(imagePaths, func) {
+        let counter = 0
+
+        for (const imagePath of imagePaths) {
+            const image = new Image()
+            image.onload = image.onerror = () => {
+                if (++counter >= imagePaths.length) {
+                    func()
+                }
+            }
+            image.src = imagePath
+        }
+    }
+
+    const stack = document.querySelector('.stack')
+    const content = document.querySelector('.content')
+
+    const imagePaths = [
+        '/assets/images/sims4-1.png',
+        '/assets/images/sims4-2.png',
+        '/assets/images/sims4-3.png',
+        '/assets/images/sims4-4.png',
+        '/assets/images/sims4-5.png',
+        '/assets/images/sims4-6.png',
+    ]
+
+    imageLoadAndRun(imagePaths, () => {
+        for (const idx in imagePaths) {
+            const image = document.createElement('img')
+            const imagePath = imagePaths[idx]
+            image.src = imagePath
+
+            const rotate = randomNumber(-90, 90)
+
+            // in
+            setTimeout(() => {
+                image.style.transform = `translate(-50%, -50%) rotate(${rotate}deg)`
+                stack.appendChild(image)
+            }, idx * 300)
+
+            // out
+            setTimeout(() => {
+                image.style.opacity = 0;
+                image.style.transform = `translate(${randomNumber(-300, 300)}%, ${randomNumber(-300, 300)}%) rotate(${rotate}deg)`
+                
+                setTimeout(() => {
+                    stack.removeChild(image)
+                }, 500)
+            }, imagePaths.length * 300)
+        }
+
+        setTimeout(() => {
+            content.style.display = 'block'
+            
+            setTimeout(() => {
+                content.style.opacity = 1
+                content.style.position = 'default'
+            }, 500)
+        }, imagePaths.length * 300)
+    })
+</script>
