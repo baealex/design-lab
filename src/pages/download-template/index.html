@@ -14,12 +14,7 @@
     }
     
     .box {
-        .image {
-            background-image: url(/assets/images/iu.gif);
-            background-attachment: fixed;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
+        .video {
             width: 100%;
             height: 100vh;
             position: fixed;
@@ -27,6 +22,12 @@
             top: 0;
             transform: scale(1.0);
             transition: transform 0.5s ease;
+
+            video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
 
         .mask {
@@ -69,7 +70,9 @@
 
 <html>
     <div class="box">
-        <div class="image"></div>
+        <div class="video">
+            <video autoplay muted loop playsinlinetype="video/mp4" src="/assets/videos/iu.mp4"/>
+        </div>
         <div class="mask">
             <p class="title">IUCalendar</p>
             <p>
@@ -83,14 +86,14 @@
 </html>
 
 <script>
-    const backImage = document.querySelector('.box .image')
+    const backVidoe = document.querySelector('.box .video')
     const downloadLink = document.querySelector('.box a')
 
     downloadLink.addEventListener('mouseenter', () => {
-        backImage.style.transform = 'scale(1.25)'
+        backVidoe.style.transform = 'scale(1.25)'
     })
 
     downloadLink.addEventListener('mouseleave', () => {
-        backImage.style.transform = 'scale(1.0)'
+        backVidoe.style.transform = 'scale(1.0)'
     })
 </script>
