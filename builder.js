@@ -41,14 +41,27 @@ async function makeIndex({ isDev } = INIT_OPTIONS) {
         ignoreError: isDev,
         params: { pages }
     });
+    if (isDev) {
+        await fs.writeFile(`${DIST_PATH}/index.html`, newIndex.replace('</body>', `
+            <script src="/socket.io/socket.io.js"></script>
+            <script>
+                var socket = io();
+                socket.on('onchange', function() {
+                    location.reload();
+                });
+            </script>
+            </body>
+        `));
+        return;
+    }
     await fs.writeFile(`${DIST_PATH}/index.html`, newIndex);
 }
 
 async function watchIndex() {
-    fs.watch(INDEX_PATH, (eventType) => {
+    fs.watch(INDEX_PATH, async (eventType) => {
         if (eventType === 'change') {
             const time = new Date();
-            makeIndex({ ignoreError: true });
+            await makeIndex({ isDev: true });
             console.log(`Rebuild... index.html : ${new Date() - time}`);
         }
     });
