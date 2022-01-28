@@ -22,6 +22,13 @@
         transition: all 0.5s ease;
     }
 
+    .content button {
+        z-index: 9999;
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+    }
+
     .content .section {
         position: relative;
         width: 100%;
@@ -71,11 +78,18 @@
                 <img src="/assets/images/sims4-6.png"/>
                 <p>City Living</p>
             </div>
+            <button class="g-button">
+                Replay
+            </button>
         </div>
     </div>
 </html>
 
 <script>
+    document.querySelector('.content button').addEventListener('click', () => {
+        location.reload()
+    })
+
     function randomNumber(min, max) { 
         return Math.round(Math.random() * (max - min) + min)
     }
