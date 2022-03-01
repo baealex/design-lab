@@ -1,13 +1,17 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs-extra';
-import * as ts from 'typescript';
-import * as sass from 'node-sass';
-import * as uglify from 'uglify-js';
 
 import {
-    between,
+    useTemplate,
+    getTemplateSource,
+} from './template';
+import {
     tagSplit,
 } from './text-parser';
+import {
+    scssTranspile,
+    typescriptTranspile,
+} from './transpile';
 
 const INIT_OPTIONS = {
     isDev: false,
@@ -33,51 +37,35 @@ function transpile(pageName: string, source: string, {
     ignoreError,
     params,
 }=INIT_OPTIONS) {
-    const template = between(source, `{% extends '`, `' %}`);
-    if (template) {
+    if (useTemplate(source)) {
         return transpileWithTemplate(pageName, source, {
             isDev,
             ignoreError,
             params,
         });
     }
+    return transpileWithoutTemplate(source, {
+        isDev,
+        ignoreError,
+        params,
+    })
+}
 
+function transpileWithoutTemplate(source: string, {
+    ignoreError,
+}=INIT_OPTIONS) {
     let newSource = source;
 
     const styles = tagSplit(source, '<style>', '</style>');
     for (const style of styles) {
-        try {
-            const { css } = sass.renderSync({
-                data: style,
-                outputStyle: 'compressed'
-            });
-            newSource = newSource.replace(style, css.toString());
-        } catch(e) {
-            if (!ignoreError) {
-                throw e;
-            }
-            console.log(e);
-        }
+        const css = scssTranspile(style, { ignoreError });
+        newSource.replace(style, css);
     }
 
     const scripts = tagSplit(source, '<script>', '</script>');
     for (const script of scripts) {
-        try {
-            const newScript = injectParams(script, params);
-            const transpile = ts.transpileModule(newScript, {
-                compilerOptions: {
-                    target: ts.ScriptTarget.ES5,
-                    module: ts.ModuleKind.CommonJS
-                }
-            });
-            const { code } = uglify.minify(transpile.outputText);
-            newSource = newSource.replace(script, `(function(){${code}})();`);
-        } catch(e) {
-            if (!ignoreError) {
-                throw e;
-            }
-            console.log(e);
-        }
+        const code = typescriptTranspile(script, { ignoreError });
+        newSource = newSource.replace(script, `(function(){${code}})();`);
     }
 
     return newSource;
@@ -88,8 +76,9 @@ function transpileWithTemplate(pageName: string, source: string, {
     ignoreError,
     params,
 }=INIT_OPTIONS) {
-    const template = between(source, `{% extends '`, `' %}`);
-    const templateSource = fs.readFileSync(`./src/templates/${template}`).toString();
+    const template = useTemplate(source);
+    const templateSource = getTemplateSource(template);
+
     let newSource = templateSource;
     
     const keywords = tagSplit(templateSource, '{{ ', ' }}');
@@ -105,52 +94,29 @@ function transpileWithTemplate(pageName: string, source: string, {
             }
 
             else if (keyword === 'script') {
-                try {
-                    const newScript = injectParams(item, params);
-                    const transpile = ts.transpileModule(newScript, {
-                        compilerOptions: {
-                            target: ts.ScriptTarget.ES5,
-                            module: ts.ModuleKind.CommonJS
-                        }
-                    });
-                    const { code } = uglify.minify(transpile.outputText);
-                    if (!isDev) {
-                        const hash = md5Maker.update(code).digest('hex');
-                        const fileName = `${pageName}.${hash}.js`;
-                        const filePath = `./dist/assets/scripts/${fileName}`;
-                        fs.writeFile(filePath, `(function(){${code}})();`);
-                        mergeItems.push(`<script src="/assets/scripts/${fileName}"></script>`);
-                    } else {
-                        mergeItems.push(`<script>(function(){${code}})();</script>`);
-                    }
-                } catch(e) {
-                    if (!ignoreError) {
-                        throw e;
-                    }
-                    console.log(e);
-                }   
+                const newScript = injectParams(item, params);
+                const code = typescriptTranspile(newScript, { ignoreError });
+                if (!isDev) {
+                    const hash = md5Maker.update(code).digest('hex');
+                    const fileName = `${pageName}.${hash}.js`;
+                    const filePath = `./dist/assets/scripts/${fileName}`;
+                    fs.writeFile(filePath, `(function(){${code}})();`);
+                    mergeItems.push(`<script src="/assets/scripts/${fileName}"></script>`);
+                } else {
+                    mergeItems.push(`<script>(function(){${code}})();</script>`);
+                }
             }
 
             else if (keyword === 'style') {
-                try {
-                    const { css } = sass.renderSync({
-                        data: item,
-                        outputStyle: 'compressed'
-                    });
-                    if (!isDev) {
-                        const hash = md5Maker.update(css).digest('hex');
-                        const fileName = `${pageName}.${hash}.css`;
-                        const filePath = `./dist/assets/styles/${fileName}`;
-                        fs.writeFile(filePath, css);
-                        mergeItems.push(`<link href="/assets/styles/${fileName}" rel="stylesheet"/>`)
-                    } else {
-                        mergeItems.push(`<style>${css}</style>`)
-                    }
-                } catch(e) {
-                    if (!ignoreError) {
-                        throw e;
-                    }
-                    console.log(e);
+                const css = scssTranspile(item, { ignoreError });
+                if (!isDev) {
+                    const hash = md5Maker.update(css).digest('hex');
+                    const fileName = `${pageName}.${hash}.css`;
+                    const filePath = `./dist/assets/styles/${fileName}`;
+                    fs.writeFile(filePath, css);
+                    mergeItems.push(`<link href="/assets/styles/${fileName}" rel="stylesheet"/>`)
+                } else {
+                    mergeItems.push(`<style>${css}</style>`)
                 }
             }
 

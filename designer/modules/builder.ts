@@ -31,9 +31,6 @@ export async function distDirInit() {
     });
 }
 
-/**
- * @param {{ isDev?: boolean }} options 
- */
 export async function makeIndex({ isDev } = INIT_OPTIONS) {
     const indexFile = (await fs.readFile(INDEX_PATH)).toString();
     const newIndex = transpile('index', indexFile, {
@@ -67,10 +64,6 @@ export async function watchIndex() {
     });
 }
 
-/**
- * @param {string} path 
- * @param {{ isDev?: boolean }} options 
- */
 export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
     const indexPath = `${PAGES_PATH}/${path}/index.html`;
     const indexFile = (await fs.readFile(indexPath)).toString();
@@ -88,8 +81,10 @@ export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
             <script src="/socket.io/socket.io.js"></script>
             <script>
                 var socket = io();
-                socket.on('onchange', function() {
-                    location.reload();
+                socket.on('onchange', function(path) {
+                    if (location.href.indexOf(path) > -1) {
+                        location.reload();
+                    }
                 });
             </script>
             </body>
