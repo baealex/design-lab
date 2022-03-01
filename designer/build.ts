@@ -1,4 +1,4 @@
-const builder = require('./builder');
+import * as builder from './modules/builder';
 
 (async () => {
     await builder.distDirInit();

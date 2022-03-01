@@ -1,11 +1,13 @@
-const crypto = require('crypto');
+import * as crypto from 'crypto';
+import * as fs from 'fs-extra';
+import * as ts from 'typescript';
+import * as sass from 'node-sass';
+import * as uglify from 'uglify-js';
 
-const fs = require('fs-extra');
-const ts = require('typescript');
-const sass = require('node-sass');
-const uglify = require('uglify-js');
-
-const { between, tagSplit } = require('./text-parser');
+import {
+    between,
+    tagSplit,
+} from './text-parser';
 
 const INIT_OPTIONS = {
     isDev: false,
@@ -13,11 +15,7 @@ const INIT_OPTIONS = {
     params: undefined,
 }
 
-/**
- * @param {string} soruce 
- * @param {object} params 
- */
-function injectParams(source, params) {
+function injectParams(source: string, params: any) {
     let newSource = source;
     if (params && typeof params === 'object') {
         Object.keys(params).forEach(key => {
@@ -30,12 +28,7 @@ function injectParams(source, params) {
     return newSource;
 }
 
-/**
- * @param {string} pageName 
- * @param {string} soruce 
- * @param {{ isDev: boolean, ignoreError: boolean, params: object }} options
- */
-function transpile(pageName, source, {
+function transpile(pageName: string, source: string, {
     isDev,
     ignoreError,
     params,
@@ -58,7 +51,7 @@ function transpile(pageName, source, {
                 data: style,
                 outputStyle: 'compressed'
             });
-            newSource = newSource.replace(style, css);
+            newSource = newSource.replace(style, css.toString());
         } catch(e) {
             if (!ignoreError) {
                 throw e;
@@ -73,7 +66,7 @@ function transpile(pageName, source, {
             const newScript = injectParams(script, params);
             const transpile = ts.transpileModule(newScript, {
                 compilerOptions: {
-                    target: 'ES5',
+                    target: ts.ScriptTarget.ES5,
                     module: ts.ModuleKind.CommonJS
                 }
             });
@@ -90,12 +83,7 @@ function transpile(pageName, source, {
     return newSource;
 }
 
-/**
- * @param {string} pageName 
- * @param {string} soruce 
- * @param {{ isDev: boolean, ignoreError: boolean, params: object }} options
- */
- function transpileWithTemplate(pageName, source, {
+function transpileWithTemplate(pageName: string, source: string, {
     isDev,
     ignoreError,
     params,
@@ -110,7 +98,7 @@ function transpile(pageName, source, {
         const mergeItems = [];
 
         for (const item of items) {
-            const md5Hasher = crypto.createHmac('md5', pageName + keyword);
+            const md5Maker = crypto.createHmac('md5', pageName + keyword);
 
             if (keyword === 'title') {
                 mergeItems.push(`<title>${item}</title>`);
@@ -121,13 +109,13 @@ function transpile(pageName, source, {
                     const newScript = injectParams(item, params);
                     const transpile = ts.transpileModule(newScript, {
                         compilerOptions: {
-                            target: 'ES5',
+                            target: ts.ScriptTarget.ES5,
                             module: ts.ModuleKind.CommonJS
                         }
                     });
                     const { code } = uglify.minify(transpile.outputText);
                     if (!isDev) {
-                        const hash = md5Hasher.update(code).digest('hex');
+                        const hash = md5Maker.update(code).digest('hex');
                         const fileName = `${pageName}.${hash}.js`;
                         const filePath = `./dist/assets/scripts/${fileName}`;
                         fs.writeFile(filePath, `(function(){${code}})();`);
@@ -150,7 +138,7 @@ function transpile(pageName, source, {
                         outputStyle: 'compressed'
                     });
                     if (!isDev) {
-                        const hash = md5Hasher.update(css).digest('hex');
+                        const hash = md5Maker.update(css).digest('hex');
                         const fileName = `${pageName}.${hash}.css`;
                         const filePath = `./dist/assets/styles/${fileName}`;
                         fs.writeFile(filePath, css);

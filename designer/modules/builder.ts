@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+import * as fs from 'fs-extra';
 
 const {
     transpile,
@@ -13,9 +13,9 @@ const INIT_OPTIONS = {
     isDev: false,
 }
 
-const pages = fs.readdirSync(PAGES_PATH);
+export const pages = fs.readdirSync(PAGES_PATH);
 
-async function distDirInit() {
+export async function distDirInit() {
     if (fs.existsSync(DIST_PATH)) {
         await fs.rm(DIST_PATH, {
             recursive: true,
@@ -34,7 +34,7 @@ async function distDirInit() {
 /**
  * @param {{ isDev?: boolean }} options 
  */
-async function makeIndex({ isDev } = INIT_OPTIONS) {
+export async function makeIndex({ isDev } = INIT_OPTIONS) {
     const indexFile = (await fs.readFile(INDEX_PATH)).toString();
     const newIndex = transpile('index', indexFile, {
         isDev,
@@ -57,12 +57,12 @@ async function makeIndex({ isDev } = INIT_OPTIONS) {
     await fs.writeFile(`${DIST_PATH}/index.html`, newIndex);
 }
 
-async function watchIndex() {
+export async function watchIndex() {
     fs.watch(INDEX_PATH, async (eventType) => {
         if (eventType === 'change') {
             const time = new Date();
             await makeIndex({ isDev: true });
-            console.log(`Rebuild... index.html : ${new Date() - time}`);
+            console.log(`Rebuild... index.html : ${(new Date().getTime() - time.getTime()) / 1000}s`);
         }
     });
 }
@@ -71,7 +71,7 @@ async function watchIndex() {
  * @param {string} path 
  * @param {{ isDev?: boolean }} options 
  */
-async function makePage(path, { isDev } = INIT_OPTIONS) {
+export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
     const indexPath = `${PAGES_PATH}/${path}/index.html`;
     const indexFile = (await fs.readFile(indexPath)).toString();
 
@@ -102,25 +102,16 @@ async function makePage(path, { isDev } = INIT_OPTIONS) {
 /**
  * @param {string} path
  */
-async function watchPage(path, onChange) {
+export async function watchPage(path: string, onChange: (path: string) => void) {
     const indexPath = `${PAGES_PATH}/${path}/index.html`;
     fs.watch(indexPath, async (eventType) => {
         if (eventType === 'change') {
             const time = new Date();
             await makePage(path, { isDev: true });
-            console.log(`Rebuild... ${path} : ${new Date() - time}`);
+            console.log(`Rebuild... ${path} : ${(new Date().getTime() - time.getTime()) / 1000}s`);
             if (onChange) {
                 onChange(path);
             }
         }
     });
-}
-
-module.exports = {
-    distDirInit,
-    makeIndex,
-    watchIndex,
-    pages,
-    makePage,
-    watchPage,
 }

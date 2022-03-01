@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./designer",
+    "outDir": "./designer/dist",
+    "moduleResolution": "node",
+    "allowJs": false,
+    "strict": true,
+  },
+  "include": [
+    "designer"
+  ],
+  "exclude": [
+    "src",
+    "dist",
+    "designer/dist",
+  ]
+}
