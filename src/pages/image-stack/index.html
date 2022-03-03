@@ -14,40 +14,51 @@
 
     .content {
         align-self: flex-start;
-        width: 650px;
+        width: 640px;
         max-width: 100%;
         position: absolute;
         display: none;
         opacity: 0;
         transition: all 0.5s ease;
+
+        button {
+            z-index: 9999;
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+        }
+
+        .section {
+            position: relative;
+            width: 100%;
+            margin-top: 8px;
+
+            & > img.photo {
+                width: 100%;
+            }
+
+            .description {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+                text-align: center;
+
+                img {
+                    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.75));
+                }
+
+                p {
+                    color: #fff;
+                    font-size: 16px;
+                    font-weight: bold;
+                    letter-spacing: -1px;
+                    text-transform: uppercase;
+                    text-shadow: 1px 1px 6px #000;
+                }
+            }
+        }
     }
 
-    .content button {
-        z-index: 9999;
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-    }
-
-    .content .section {
-        position: relative;
-        width: 100%;
-        margin-top: 8px;
-    }
-
-    .content .section img {
-        width: 100%;
-    }
-
-    .content .section p {
-        position: absolute;
-        text-shadow: 1px 1px 3px #000;
-        top: 50%;
-        left: 50%;
-        font-size: 24px;
-        font-weight: bold;
-        transform: translate(-50%, -50%);
-    }
 </style>
 
 <html>
@@ -55,28 +66,46 @@
         <div class="stack"></div>
         <div class="content">
             <div class="section">
-                <img src="/assets/images/sims4-1.png"/>
-                <p>Tiny Living</p>
+                <img class="photo" src="/assets/images/sims4-1.png"/>
+                <div class="description">
+                    <img src="/assets/images/sims4.png">
+                    <p>Tiny Living</p>
+                </div>
             </div>
             <div class="section">
-                <img src="/assets/images/sims4-2.png"/>
-                <p>Dine Out</p>
+                <img class="photo" src="/assets/images/sims4-2.png"/>
+                <div class="description">
+                    <img src="/assets/images/sims4.png">
+                    <p>Get Famous</p>
+                </div>
             </div>
             <div class="section">
-                <img src="/assets/images/sims4-3.png"/>
-                <p>Snowy Escape</p>
+                <img class="photo" src="/assets/images/sims4-3.png"/>
+                <div class="description">
+                    <img src="/assets/images/sims4.png">
+                    <p>Snowy Escape</p>
+                </div>
             </div>
             <div class="section">
-                <img src="/assets/images/sims4-4.png"/>
-                <p>Island Living</p>
+                <img class="photo" src="/assets/images/sims4-4.png"/>
+                <div class="description">
+                    <img src="/assets/images/sims4.png">
+                    <p>Island Living</p>
+                </div>
             </div>
             <div class="section">
-                <img src="/assets/images/sims4-5.png"/>
-                <p>Cottage Living</p>
+                <img class="photo" src="/assets/images/sims4-5.png"/>
+                <div class="description">
+                    <img src="/assets/images/sims4.png">
+                    <p>Cottage Living</p>
+                </div>
             </div>
             <div class="section">
-                <img src="/assets/images/sims4-6.png"/>
-                <p>City Living</p>
+                <img class="photo" src="/assets/images/sims4-6.png"/>
+                <div class="description">
+                    <img src="/assets/images/sims4.png">
+                    <p>City Living</p>
+                </div>
             </div>
             <button class="g-button">
                 Replay
