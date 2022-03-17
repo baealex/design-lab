@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+<title>Swipe Card</title>
+
+<style>
+    html, body, #root {
+        height: auto;
+    }
+    
+    #root {
+        align-self: flex-start;
+        width: 320px;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    .swipe-card {
+        user-select: none;
+        cursor: grab;
+        margin-top: 16px;
+        position: relative;
+        overflow: hidden;
+        height: 64px;
+
+        .content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.1s linear;
+
+            span {
+                padding-left: 16px;
+            }
+
+            .title {
+                font-weight: 600;
+                color: #fff;
+            }
+
+            .artist {
+                color: #999;
+            }
+        }
+
+        .menu {
+            position: absolute;
+            cursor: pointer;
+            right: 0;
+            top: 0;
+            min-width: 100px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgb(129, 0, 0);
+            transition: width 0.1s linear;
+        }
+    }
+
+    footer {
+        margin-top: 16px;
+        text-align: right;
+        font-size: 14px;
+    }
+</style>
+
+<html>
+    <div id="root"></div>
+</html>
+
+<script>
+    function template(content) {
+        return `
+            <div class="g-card swipe-card">
+                <div class="menu">
+                    Delete
+                </div>
+                <div class="content">
+                    <span class="title">
+                        ${content.split(' - ')[0]}
+                    </span>
+                    <span class="artist">
+                        ${content.split(' - ')[1]}
+                    </span>
+                </div>
+            </div>
+        `
+    }
+
+    const createStore = (initialState) => {
+        let state = initialState
+        let observers = []
+
+        return {
+            set(next) {
+                state = next(state)
+                observers.forEach(observer => observer(state))
+            },
+            subscribe(func) {
+                func(state)
+                observers.push(func)
+            }
+        }
+    }
+
+    const items = createStore([
+        'Shake it off - Taylor Swift',
+        'After The After - Teers',
+        'Y U Gotta B Like That - Audrey Mika',
+        'Plastic Love - Mariya Takeuchi',
+        'Paris In The Rain - Lauv',
+        'Underwater - Heize',
+    ])
+
+    const $root = document.getElementById('root')
+
+    function render(state) {
+        $root.innerHTML = `
+            ${state.map(template).join('')}
+            <footer>
+                ← Swipe to delete
+            </footer>
+        `
+
+        document.querySelectorAll('.swipe-card').forEach(($card, idx) => {
+            const $content = $card.querySelector('.content')
+            const $menu = $card.querySelector('.menu')
+
+            let isFocus = false
+
+            let accX = 0
+            let prevX = 0
+
+            function handleClickDelete() {
+                items.set(prevState => prevState.filter((_, i) => i !== idx))
+            }
+
+            function handleFocusIn(e) {
+                const isTouch = e.changedTouches
+                const clientX = isTouch
+                    ? e.changedTouches[0].clientX
+                    : e.clientX
+
+                isFocus = true
+
+                prevX = clientX
+            }
+
+            function handleFocusOut(e) {
+                isFocus = false
+
+                const { clientWidth } = e.target;
+
+                if (accX <= -(clientWidth * (2 / 3))) {
+                    $content.style.transform = `translate(-${clientWidth}px)`
+                    $menu.style.width = clientWidth + 'px'
+                    setTimeout(handleClickDelete, 200);
+                } else if (accX <= -100) {
+                    $content.style.transform = `translate(-100px)`
+                    $menu.style.width = '100px'
+                } else {
+                    $content.style.transform = `translate(0px)`
+                    $menu.style.width = '0px'
+                }
+
+                prevX = 0
+                accX = 0
+            }
+
+            function handleMove(e) {
+                if (isFocus) {
+                    const isTouch = e.changedTouches
+                    const clientX = isTouch
+                        ? e.changedTouches[0].clientX
+                        : e.clientX
+
+                    accX += clientX - prevX
+                    prevX = clientX
+
+                    if (accX < 0) {
+                        e.preventDefault();
+                        $content.style.transform = `translate(${accX}px)`
+                        $menu.style.width = Math.abs(accX) + 'px'
+                    }
+                }
+            }
+
+            $menu.addEventListener('click', handleClickDelete)
+
+            $card.addEventListener('mousedown', handleFocusIn)
+            $card.addEventListener('touchstart', handleFocusIn)
+
+            $card.addEventListener('mouseup', handleFocusOut)
+            $card.addEventListener('touchend', handleFocusOut)
+
+            $card.addEventListener('mousemove', handleMove)
+            $card.addEventListener('touchmove', handleMove)
+        })
+    }
+
+    items.subscribe(render)
+</script>
