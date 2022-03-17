@@ -3,54 +3,47 @@
 <title>Analog Clock</title>
 
 <style>
-    .hour-pin,
-    .minute-pin,
-    .second-pin {
-        transform-origin: bottom center;
+    .pin {
         position: absolute;
         left: 50%;
         box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
-    }
+        transform-origin: bottom center;
 
-    .hour-pin {
-        top: calc(50% - 50px);
-        width: 3px;
-        height: 50px;
-        background: #fff;
-    }
+        &.hour {
+            top: calc(50% - 50px);
+            width: 3px;
+            height: 50px;
+            background: #fff;
+        }
 
-    .minute-pin {
-        top: calc(50% - 100px);
-        width: 3px;
-        height: 100px;
-        background: #fff;
-    }
+        &.minute {
+            top: calc(50% - 100px);
+            width: 3px;
+            height: 100px;
+            background: #fff;
+        }
 
-    .second-pin {
-        top: calc(50% - 100px);
-        width: 1px;
-        height: 100px;
-        background: #f00;
-    }
-
-    body {
-        width: 100%;
-        height: 100%;
+        &.second {
+            top: calc(50% - 100px);
+            width: 1px;
+            height: 100px;
+            background: #f00;
+        }
     }
 </style>
 
 <html>
     <div class="clock">
-        <div class="hour-pin"></div>
-        <div class="minute-pin"></div>
-        <div class="second-pin"></div>
+        <div class="hour pin"></div>
+        <div class="minute pin"></div>
+        <div class="second pin"></div>
     </div>
 </html>
 
 <script>
-    const hourPin = document.querySelector('.hour-pin')
-    const minutePin = document.querySelector('.minute-pin')
-    const secondPin = document.querySelector('.second-pin')
+    const hourPin = document.querySelector('.hour.pin')
+    const minutePin = document.querySelector('.minute.pin')
+    const secondPin = document.querySelector('.second.pin')
 
     function clock() {
         const date = new Date()
@@ -63,6 +56,9 @@
         secondPin.style.transform = `rotate(${(second) / 60 * 360}deg)`
     }
 
-    clock()
-    setInterval(clock, 1000)
+    (function main() {
+        clock()
+        setInterval(clock, 1000)   
+    }
+    )()
 </script>
