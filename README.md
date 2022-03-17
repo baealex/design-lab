@@ -12,3 +12,4 @@
 - [Reveal Effect](https://design.baejino.com/reveal-effect/)
 - [Slide Clock](https://design.baejino.com/slide-clock/)
 - [Snack Bar](https://design.baejino.com/snack-bar/)
+- [Swipe Card](https://design.baejino.com/swipe-card/)
