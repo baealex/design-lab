@@ -19,6 +19,7 @@
         transition: all 1s ease;
         opacity: 1;
         transform: scale(0);
+        pointer-events: none;
     }
 </style>
 
@@ -33,27 +34,29 @@
 </html>
 
 <script>
-    function setRippleEffect(element) {
-        element.addEventListener('click', (e) => {
-            const ripple = document.createElement('span')
-            ripple.classList.add('ripple')
-            element.appendChild(ripple)
+    function rippleEffect(e: MouseEvent) {
+        const ripple = document.createElement('span')
+        ripple.classList.add('ripple')
+        e.target.appendChild(ripple)
 
-            const mousePosX = e.pageX - element.offsetLeft - 25 + 'px'
-            const mousePosY = e.pageY - element.offsetTop - 25 + 'px'
+        const mousePosX = e.pageX - e.target.offsetLeft - 25 + 'px'
+        const mousePosY = e.pageY - e.target.offsetTop - 25 + 'px'
+
+        setTimeout(() => {
+            ripple.style.top = mousePosY
+            ripple.style.left = mousePosX
+            ripple.style.opacity = 0
+            ripple.style.transform = 'scale(5)'
 
             setTimeout(() => {
-                ripple.style.top = mousePosY
-                ripple.style.left = mousePosX
-                ripple.style.opacity = 0
-                ripple.style.transform = 'scale(5)'
-
-                setTimeout(() => {
-                    element.removeChild(ripple)
-                }, 1000)
-            }, 0)
-        })
+                e.target.removeChild(ripple)
+            }, 1000)
+        }, 0)
     }
 
-    document.querySelectorAll('button').forEach(setRippleEffect)
+    function useRippleEffect($button) {
+        $button.addEventListener('click', rippleEffect)
+    }
+
+    document.querySelectorAll('button').forEach(useRippleEffect)
 </script>
