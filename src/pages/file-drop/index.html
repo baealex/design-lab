@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+<title>File Drop</title>
+
+<style>
+    .cover {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+
+        div {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    }
+</style>
+
+<html>
+    <div id="root" class="g-flex-center">
+        <div>
+            <div>
+                ⬆️ Any file drag here! (Don't worry. It's not have any side effect.)
+            </div>
+            <div id="result"></div>
+        </div>
+        <div class="cover">
+            <div>
+                <img src="/assets/images/loading.gif">
+            </div>
+        </div>
+    </div>
+</html>
+
+<script>
+    const $cover: HTMLDivElement = document.querySelector('.cover')
+
+    document.body.addEventListener('dragover', (e) => {
+        e.preventDefault()
+    })
+
+    document.body.addEventListener('dragenter', (e) => {
+        $cover.style.display = 'block'
+    })
+
+    document.body.addEventListener('drop', (e) => {
+        e.preventDefault()
+
+        $cover.style.display = 'none'
+        
+        document.querySelector('#result').innerHTML = `
+            ${Array.from(e.dataTransfer.files).map((file: File) => (
+                `
+                    <div class="g-card" style="margin-top: 16px; padding: 8px;">
+                        <div>Name : ${file.name}</div>
+                        <div>Type : ${file.type}</div>
+                        <div>Size : ${(file.size / 1024).toFixed(2)} kb</div>
+                        <div>Last modified : ${new Date(file.lastModified)}</div>
+                    </div>
+                `
+            )).join('')}
+        `
+    })
+</script>
