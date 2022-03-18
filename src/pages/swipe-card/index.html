@@ -84,116 +84,102 @@
         `
     }
 
-    const createStore = (initialState) => {
-        let state = initialState
-        let observers = []
+    const $root = document.getElementById('root')
 
-        return {
-            set(next) {
-                state = next(state)
-                observers.forEach(observer => observer(state))
-            },
-            subscribe(func) {
-                func(state)
-                observers.push(func)
-            }
-        }
-    }
-
-    const items = createStore([
+    const items = [
         'Shake it off - Taylor Swift',
         'After The After - Teers',
         'Y U Gotta B Like That - Audrey Mika',
         'Plastic Love - Mariya Takeuchi',
         'Paris In The Rain - Lauv',
         'Underwater - Heize',
-    ])
+    ]
 
-    const $root = document.getElementById('root')
+    $root.innerHTML = `
+        ${items.map(template).join('')}
+        <footer>
+            ← Swipe to delete
+        </footer>
+    `
 
-    function render(state) {
-        $root.innerHTML = `
-            ${state.map(template).join('')}
-            <footer>
-                ← Swipe to delete
-            </footer>
-        `
+    const $cards = document.querySelectorAll('.swipe-card')
 
-        document.querySelectorAll('.swipe-card').forEach(($card, idx) => {
-            const $content = $card.querySelector('.content')
-            const $menu = $card.querySelector('.menu')
+    for (const $card of $cards) {
+        const $content = $card.querySelector('.content')
+        const $menu = $card.querySelector('.menu')
 
-            let isFocus = false
+        let isTarget = false
+        
+        let accMoveValue = 0
+        let lastClientX = 0
 
-            let accX = 0
-            let prevX = 0
+        function getClientX(e: MouseEvent) {
+            const isTouch = e.changedTouches
+            const clientX = isTouch
+                ? e.changedTouches[0].clientX
+                : e.clientX
+            return clientX
+        }
 
-            function handleClickDelete() {
-                items.set(prevState => prevState.filter((_, i) => i !== idx))
+        function handleDelete() {
+            $root.removeChild($card)
+        }
+
+        function handleFocusIn(e) {
+            isTarget = true
+
+            lastClientX = getClientX(e)
+        }
+
+        function handleFocusOut(e) {
+            isTarget = false
+
+            const { clientWidth } = e.target;
+
+            if (accMoveValue <= -(clientWidth * (2 / 3))) {
+                // Immediately delete when swipe over 2/3
+                $content.style.transform = `translate(-${clientWidth}px)`
+                $menu.style.width = clientWidth + 'px'
+                setTimeout(handleDelete, 200);
+            } else if (accMoveValue <= -100) {
+                // Else show me the delete button
+                $content.style.transform = `translate(-100px)`
+                $menu.style.width = '100px'
+            } else {
+                // Else back to the before
+                $content.style.transform = `translate(0px)`
+                $menu.style.width = '0px'
             }
 
-            function handleFocusIn(e) {
-                const isTouch = e.changedTouches
-                const clientX = isTouch
-                    ? e.changedTouches[0].clientX
-                    : e.clientX
+            accMoveValue = 0
+            lastClientX = 0
+        }
 
-                isFocus = true
+        function handleMove(e) {
+            if (isTarget) {
+                const clientX = getClientX(e)
 
-                prevX = clientX
-            }
+                accMoveValue += clientX - lastClientX
+                lastClientX = clientX
 
-            function handleFocusOut(e) {
-                isFocus = false
-
-                const { clientWidth } = e.target;
-
-                if (accX <= -(clientWidth * (2 / 3))) {
-                    $content.style.transform = `translate(-${clientWidth}px)`
-                    $menu.style.width = clientWidth + 'px'
-                    setTimeout(handleClickDelete, 200);
-                } else if (accX <= -100) {
-                    $content.style.transform = `translate(-100px)`
-                    $menu.style.width = '100px'
-                } else {
-                    $content.style.transform = `translate(0px)`
-                    $menu.style.width = '0px'
+                if (accMoveValue < 0) {
+                    // If swipe to left
+                    e.preventDefault(); // Prevent page scroll
+                    $content.style.transform = `translate(${accMoveValue}px)`
+                    $menu.style.width = Math.abs(accMoveValue) + 'px'
                 }
-
-                prevX = 0
-                accX = 0
             }
+        }
 
-            function handleMove(e) {
-                if (isFocus) {
-                    const isTouch = e.changedTouches
-                    const clientX = isTouch
-                        ? e.changedTouches[0].clientX
-                        : e.clientX
+        $menu.addEventListener('click', handleDelete)
 
-                    accX += clientX - prevX
-                    prevX = clientX
+        $card.addEventListener('mousedown', handleFocusIn)
+        $card.addEventListener('touchstart', handleFocusIn)
 
-                    if (accX < 0) {
-                        e.preventDefault();
-                        $content.style.transform = `translate(${accX}px)`
-                        $menu.style.width = Math.abs(accX) + 'px'
-                    }
-                }
-            }
+        $card.addEventListener('mouseup', handleFocusOut)
+        $card.addEventListener('touchend', handleFocusOut)
 
-            $menu.addEventListener('click', handleClickDelete)
-
-            $card.addEventListener('mousedown', handleFocusIn)
-            $card.addEventListener('touchstart', handleFocusIn)
-
-            $card.addEventListener('mouseup', handleFocusOut)
-            $card.addEventListener('touchend', handleFocusOut)
-
-            $card.addEventListener('mousemove', handleMove)
-            $card.addEventListener('touchmove', handleMove)
-        })
+        $card.addEventListener('mousemove', handleMove)
+        $card.addEventListener('touchmove', handleMove)
     }
-
-    items.subscribe(render)
 </script>
