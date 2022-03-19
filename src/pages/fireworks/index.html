@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+<title>Fireworks</title>
+
+<style>
+    body {
+        overflow: hidden;
+    }
+</style>
+
+<html>
+    <canvas id="canvas"></canvas>
+</html>
+
+<script>
+    function randomNumber(min, max) { 
+        return Math.round(Math.random() * (max - min) + min)
+    }
+
+    function randomColor() {
+        const r = randomNumber(0, 255)
+        const g = randomNumber(0, 255)
+        const b = randomNumber(0, 255)
+        return `rgb(${r},${g},${b})`
+    }
+
+    const canvas = document.getElementById('canvas') as HTMLCanvasElement
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    const maxDy = Math.round(canvas.height / 100)
+    const frequency = canvas.width > 1000
+        ? 500
+        : 1000
+
+    let fireworks = []
+    let particles = []
+
+    class Particle {
+        constructor(x, y, r, dx, dy, color) {
+            this.x = x
+            this.y = y
+            this.r = r
+            this.dx = dx
+            this.dy = dy
+            this.color = color
+            this.counter = 120
+        }
+
+        update() {
+            this.counter -= 1
+            this.dy -= 0.008
+
+            this.x -= this.dx
+            this.y -= this.dy
+
+            if (this.counter < 0) {
+                particles = particles.filter(entity => entity !== this)
+            }
+        }
+
+        render() {
+            ctx.fillStyle = this.color
+            ctx.beginPath()
+			ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, true)
+			ctx.fill()
+        }
+    }
+
+    class Firework {
+        constructor(x, y, r, dy, color) {
+            this.x = x
+            this.y = y
+            this.r = r
+            this.dy = dy
+            this.color = color
+        }
+
+        update() {
+            this.dy *= 0.987
+            this.y -= this.dy
+
+            if (this.dy < 0.5) {
+                fireworks = fireworks.filter(entity => entity !== this)
+            
+                const particleDirections = {
+                    x: [0, 1, 2, 2, 2, 1, 0, -1, -2, -2, -2, -1]
+                    y: [2, 2, 1, 0, -1, -2, -2, -2, -1, 0, 1, 2]
+                }
+                for (let i=0; i<=12; i++) {
+                    particles.push(new Particle(
+                        this.x,
+                        this.y,
+                        this.r * 0.65,
+                        particleDirections.x[i] * (randomNumber(5, 10) / 10),
+                        particleDirections.y[i] * (randomNumber(5, 10) / 10),
+                        this.color,
+                    ))
+                }
+            }
+        }
+
+        render() {
+            ctx.fillStyle = this.color
+            ctx.beginPath()
+			ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, true)
+			ctx.fill()
+        }
+    }
+
+    setInterval(() => {
+        fireworks.push(new Firework(
+            randomNumber(0, canvas.width),
+            canvas.height,
+            randomNumber(2, 3),
+            randomNumber(3, maxDy),
+            randomColor()
+        ))
+    }, frequency)
+
+    function loop() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        fireworks.concat(particles).forEach((entity) => {
+            entity.update()
+            entity.render()
+        })
+
+        window.requestAnimationFrame(loop)
+    }
+
+    loop()
+</script>
