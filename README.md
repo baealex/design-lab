@@ -5,6 +5,7 @@
 - [Confetti](https://design.baejino.com/confetti/)
 - [Dynamic Menu](https://design.baejino.com/dynamic-menu/)
 - [File Drop](https://design.baejino.com/file-drop/)
+- [Fireworks](https://design.baejino.com/fireworks/)
 - [Flip Emoji](https://design.baejino.com/flip-emoji/)
 - [Google Style Input](https://design.baejino.com/google-style-input/)
 - [Image Stack](https://design.baejino.com/image-stack/)
