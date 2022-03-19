@@ -109,13 +109,15 @@
     }
 
     setInterval(() => {
-        fireworks.push(new Firework(
-            randomNumber(0, canvas.width),
-            canvas.height,
-            randomNumber(2, 3),
-            randomNumber(3, maxDy),
-            randomColor()
-        ))
+        if (!document.hidden) {
+            fireworks.push(new Firework(
+                randomNumber(0, canvas.width),
+                canvas.height,
+                randomNumber(2, 3),
+                randomNumber(3, maxDy),
+                randomColor()
+            ))
+        }
     }, frequency)
 
     function loop() {
