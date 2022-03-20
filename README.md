@@ -2,6 +2,7 @@
 
 - [Analog Clock](https://design.baejino.com/analog-clock/)
 - [Button Ripple](https://design.baejino.com/button-ripple/)
+- [Carousel](https://design.baejino.com/carousel/)
 - [Confetti](https://design.baejino.com/confetti/)
 - [Dynamic Menu](https://design.baejino.com/dynamic-menu/)
 - [File Drop](https://design.baejino.com/file-drop/)
