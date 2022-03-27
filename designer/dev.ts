@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as builder from './modules/builder';
 import {
     debounceEvent,
-} from './modules/optimizer/event'
+} from './modules/optimizer/event';
 
 interface ChangeHandlerItem {
     id: string;
@@ -25,7 +25,7 @@ const changeHandler = (() => {
         remove(id: string) {
             items = items.filter(item => item.id !== id);
         }
-    }
+    };
 })();
 
 const PORT = 3000;
@@ -55,13 +55,13 @@ io.on('connection', (socket) => {
     await builder.watchIndex();
 
     for (const page of builder.pages) {
-        const event = debounceEvent((e: any) => {
-            changeHandler.run(e);
+        const event = debounceEvent((value) => {
+            changeHandler.run(value as string);
         }, 1000);
 
         await builder.makePage(page, { isDev: true });
         await builder.watchPage(page, (path) => {
-            event(path as any);
+            event(path);
         });
     }
-})()
+})();

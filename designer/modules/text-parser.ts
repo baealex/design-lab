@@ -1,5 +1,5 @@
 export function between(str: string, left: string, right: string, idx=0 ) {
-    const regex = new RegExp("(?:"+left.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')+")((.|[\r\n])*?)(?:"+right.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')+")", 'g');
+    const regex = new RegExp('(?:'+left.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')+')((.|[\r\n])*?)(?:'+right.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')+')', 'g');
     const res = String(str).match(regex);
 
     if (Number.isInteger(idx) == false) {

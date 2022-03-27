@@ -17,9 +17,19 @@ const INIT_OPTIONS = {
     isDev: false,
     ignoreError: false,
     params: undefined,
+};
+
+interface Params {
+    [name: string]: unknown,
 }
 
-function injectParams(source: string, params: any) {
+interface Options {
+    isDev: boolean,
+    ignoreError: boolean,
+    params?: Params,
+}
+
+function injectParams(source: string, params?: Params) {
     let newSource = source;
     if (params && typeof params === 'object') {
         Object.keys(params).forEach(key => {
@@ -27,16 +37,16 @@ function injectParams(source: string, params: any) {
                 `{{ ${key} }}`,
                 JSON.stringify(params[key]),
             );
-        })
+        });
     }
     return newSource;
 }
 
-function transpile(pageName: string, source: string, {
+export function transpile(pageName: string, source: string, {
     isDev,
     ignoreError,
-    params,
-}=INIT_OPTIONS) {
+    params=undefined,
+}: Options = INIT_OPTIONS) {
     if (useTemplate(source)) {
         return transpileWithTemplate(pageName, source, {
             isDev,
@@ -48,12 +58,12 @@ function transpile(pageName: string, source: string, {
         isDev,
         ignoreError,
         params,
-    })
+    });
 }
 
 function transpileWithoutTemplate(source: string, {
     ignoreError,
-}=INIT_OPTIONS) {
+}: Options = INIT_OPTIONS) {
     let newSource = source;
 
     const styles = tagSplit(source, '<style>', '</style>');
@@ -75,7 +85,7 @@ function transpileWithTemplate(pageName: string, source: string, {
     isDev,
     ignoreError,
     params,
-}=INIT_OPTIONS) {
+}: Options = INIT_OPTIONS) {
     const template = useTemplate(source);
     const templateSource = getTemplateSource(template);
 
@@ -114,9 +124,9 @@ function transpileWithTemplate(pageName: string, source: string, {
                     const fileName = `${pageName}.${hash}.css`;
                     const filePath = `./dist/assets/styles/${fileName}`;
                     fs.writeFile(filePath, css);
-                    mergeItems.push(`<link href="/assets/styles/${fileName}" rel="stylesheet"/>`)
+                    mergeItems.push(`<link href="/assets/styles/${fileName}" rel="stylesheet"/>`);
                 } else {
-                    mergeItems.push(`<style>${css}</style>`)
+                    mergeItems.push(`<style>${css}</style>`);
                 }
             }
 
@@ -124,12 +134,8 @@ function transpileWithTemplate(pageName: string, source: string, {
                 mergeItems.push(item);
             }
         }
-        newSource = newSource.replace(`{{ ${keyword} }}`, mergeItems.join(''))
+        newSource = newSource.replace(`{{ ${keyword} }}`, mergeItems.join(''));
     }
 
     return newSource;
 }
-
-module.exports = {
-    transpile,
-};

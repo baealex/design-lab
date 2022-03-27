@@ -7,4 +7,4 @@ import * as builder from './modules/builder';
     for (const page of builder.pages) {
         await builder.makePage(page);
     }
-})()
+})();

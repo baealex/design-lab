@@ -1,17 +1,15 @@
 import * as fs from 'fs-extra';
 
-const {
-    transpile,
-} = require('./transpiler');
+import { transpile }  from './transpiler';
 
-const SOURCE_PATH = './src'
+const SOURCE_PATH = './src';
 const INDEX_PATH = `${SOURCE_PATH}/public/index.html`;
 const PAGES_PATH = `${SOURCE_PATH}/pages`;
 const DIST_PATH = './dist';
 
 const INIT_OPTIONS = {
     isDev: false,
-}
+};
 
 export const pages = fs.readdirSync(PAGES_PATH);
 
@@ -26,7 +24,7 @@ export async function distDirInit() {
     await fs.mkdir(DIST_PATH + '/assets');
     await fs.mkdir(DIST_PATH + '/assets' + '/styles');
     await fs.mkdir(DIST_PATH + '/assets' + '/scripts');
-    await fs.copy(`./src/public/`, `${DIST_PATH}/`, {
+    await fs.copy('./src/public/', `${DIST_PATH}/`, {
         recursive: true,
     });
 }
@@ -71,6 +69,7 @@ export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
     const newIndex = transpile(path, indexFile, {
         isDev,
         ignoreError: isDev,
+        params: {},
     });
     
     if (!fs.existsSync(`${DIST_PATH}/${path}`)) {
