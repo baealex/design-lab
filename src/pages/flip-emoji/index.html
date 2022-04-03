@@ -17,59 +17,43 @@
         }
     }
 
-    @keyframes flip-blink {
-        0% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 1;
-        }
-
-        51% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 0;
-        }
+    #root {
+        perspective: 350px;
     }
 
-    .fliper {
+    .flipper {
         width: 50px;
         height: 50px;
         position: relative;
+        transform-style: preserve-3d;
         animation: flip 2s linear infinite;
-    }
 
-    .fliper > .emoji1,
-    .fliper > .emoji2 {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+        .front, .back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
 
-    .emoji1 {
-        opacity: 1;
-        animation: flip-blink 2s -0.5s linear infinite;
-    }
+        .front {
+            transform: translate(-50%, -50%);
+        }
 
-    .emoji2 {
-        opacity: 0;
-        animation: flip-blink 2s 0.5s linear infinite;
+        .back {
+            transform: translate(-50%, -50%) rotate3d(0, 1, 0, 180deg);
+        }
     }
 </style>
 
 <html>
     <div id="root" class="g-flex-center">
-        <span class="g-card fliper">
-            <span class="emoji1">
+        <span class="g-card flipper">
+            <div class="front">
                 😃
-            </span>
-            <span class="emoji2">
+            </div>
+            <div class="back">
                 😢
-            </span>
+            </div>
         </span>
     </div>
 </html>
@@ -79,8 +63,8 @@
         '😃', '😅', '😉', '😍', '😎', '😟', '😣', '😨' ,'😥', '🤗', '🤔'
     ]
 
-    const emoji1 = document.querySelector('.emoji1')
-    const emoji2 = document.querySelector('.emoji2')
+    const emoji1 = document.querySelector('.front')
+    const emoji2 = document.querySelector('.back')
 
     let prevPick = 0
 
