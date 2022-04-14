@@ -4,8 +4,8 @@ import * as path from 'path';
 
 import * as builder from './modules/builder';
 import {
-    debounceEvent,
-} from './modules/optimizer/event';
+    useDebounceEvent,
+} from './modules/hooks/use-event';
 
 interface ChangeHandlerItem {
     id: string;
@@ -51,17 +51,15 @@ io.on('connection', (socket) => {
 
 (async () => {
     await builder.distDirInit();
-    await builder.makeIndex({ isDev: true });
-    await builder.watchIndex();
 
     for (const page of builder.pages) {
-        const event = debounceEvent((value) => {
-            changeHandler.run(value as string);
+        const debounceEvent = useDebounceEvent<string>((value) => {
+            changeHandler.run(value || '');
         }, 1000);
 
         await builder.makePage(page, { isDev: true });
         await builder.watchPage(page, (path) => {
-            event(path);
+            debounceEvent(path);
         });
     }
 })();

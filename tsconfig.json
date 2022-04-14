@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "baseUrl": "./designer",
-    "outDir": "./designer/dist",
+    "baseUrl": "./cli",
+    "outDir": "./cli/dist",
     "moduleResolution": "node",
     "allowJs": false,
     "strict": true,
   },
   "include": [
-    "designer"
+    "cli",
+    "cli/modules"
   ],
   "exclude": [
     "src",
     "dist",
-    "designer/dist",
+    "cli/dist",
   ]
 }

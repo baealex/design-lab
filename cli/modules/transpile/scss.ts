@@ -1,7 +1,7 @@
 import { renderSync } from 'node-sass';
 
 export interface ScssTranspileOption {
-    ignoreError?: boolean;
+    isDev?: boolean;
 }
 
 export function scssTranspile(source: string, options?: ScssTranspileOption) {
@@ -12,7 +12,7 @@ export function scssTranspile(source: string, options?: ScssTranspileOption) {
         });
         return css.toString();
     } catch(e) {
-        if (options?.ignoreError !== true) {
+        if (options?.isDev !== true) {
             throw e;
         }
         console.log(e);

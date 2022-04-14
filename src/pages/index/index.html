@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+<title>BaeJino Design</title>
+
+<style>
+    div#root {
+        align-items: flex-start;
+    }
+    
+    .github-ribbon {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        z-index: 99999;
+    }
+    
+    .github-ribbon a {
+        display: inline-block;
+        width: 200px;
+        overflow: hidden;
+        padding: 6px 0px;
+        text-align: center;
+        transform: rotate(45deg);
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        position: inherit;
+        top: 45px;
+        right: -40px;
+        border-width: 1px 0px;
+        border-style: dotted;
+        border-color: rgba(255, 255, 255, 0.7);
+        font: 700 13px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 3px 0px;
+        background-color: #474787;
+        background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+    }
+
+    ul {
+        width: 550px;
+
+        li {
+            max-width: 100%;
+            margin: 16px;
+            padding: 16px 8px;
+            list-style: none;
+
+            div {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                span {
+                    svg {
+                        cursor: pointer;
+                    }
+                }
+
+                a {
+                    color: #ccc;
+                    text-decoration: none;
+                }
+            }
+
+            iframe {
+                display: block;
+                border: none;
+                overflow: hidden;
+                margin-top: 16px;
+                width: 100%;
+                height: 350px;
+                background: #000;
+                transition: all 5s ease;
+            }
+
+            iframe.lazy {
+                backdrop-filter: blur(30px);
+            }
+        }
+    }
+</style>
+
+<html>
+    <div class="github-ribbon">
+        <a href="https://github.com/baealex/design">
+            Fork me on GitHub
+        </a>
+    </div>
+    <div id="root" class="g-flex-center"></div>
+</html>
+
+<script>
+    function lazyLoad(elementName) {
+        if (!document.querySelectorAll || !'IntersectionObserver' in window) {
+            Array.from(document.getElementsByClassName('lazy')).forEach((element) => {
+                element.src = element.dataset.src;
+            });
+            return;
+        }
+
+        const lazyElements = Array.from(document.querySelectorAll(`${elementName}.lazy`));
+
+        const lazyElementObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const lazyElement = entry.target;
+                    lazyElement.src = lazyElement.dataset.src;
+                    lazyElement.classList.remove('lazy');
+                    lazyElementObserver.unobserve(lazyElement);
+                }
+            });
+        });
+
+        lazyElements.forEach((lazyElement) => {
+            lazyElementObserver.observe(lazyElement);
+        });
+    }
+
+    function capitalize(s) {
+        if (typeof s !== 'string') return ''
+        return s.charAt(0).toUpperCase() + s.slice(1)
+    }
+
+    function Item(title, path) {
+        return `
+            <li class="g-card">
+                <div>
+                    <span>${title}</span>
+                    <a href="${path}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ai ai-Enlarge"><path d="M14.5 9.5L21 3m0 0h-6m6 0v6M3 21l6.5-6.5M3 21v-6m0 6h6"></path></svg>
+                    </a>
+                </div>
+                <iframe class="lazy" data-src="${path}"></iframe>
+            </li>
+        `
+    }
+
+    const pages = {{ pages }};
+
+    const items = pages
+        .map((page, idx) => {
+            return Item(`${('00' + (idx + 1)).slice(-3)}. ${page.split('-').map(capitalize).join(' ')}`, `/${page}`)
+        })
+        .join('');
+
+    document.getElementById('root').innerHTML = `<ul>${items}</ul>`;
+    lazyLoad('iframe');
+</script>

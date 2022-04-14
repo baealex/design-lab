@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc && node designer/dist/dev.js",
-    "build": "tsc && node designer/dist/build.js",
+    "dev": "ts-node cli/dev.ts",
+    "build": "ts-node cli/build.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .ts,.js ./src"
   },
@@ -31,6 +31,7 @@
     "fs-extra": "^10.0.0",
     "node-sass": "^7.0.1",
     "socket.io": "^4.4.1",
+    "ts-node": "^10.7.0",
     "typescript": "^4.5.4",
     "uglify-js": "^3.14.5"
   }

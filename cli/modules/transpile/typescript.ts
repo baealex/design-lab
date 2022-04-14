@@ -6,7 +6,7 @@ import {
 import { minify } from 'uglify-js';
 
 export interface TypescriptTranspileOption {
-    ignoreError?: boolean;
+    isDev?: boolean;
 }
 
 export function typescriptTranspile(source: string, options?: TypescriptTranspileOption) {
@@ -20,7 +20,7 @@ export function typescriptTranspile(source: string, options?: TypescriptTranspil
         const { code } = minify(transpile.outputText);
         return code;
     } catch(e) {
-        if (options?.ignoreError !== true) {
+        if (options?.isDev !== true) {
             throw e;
         } 
         console.log(e);

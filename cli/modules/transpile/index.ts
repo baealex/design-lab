@@ -1,21 +1,13 @@
-import * as crypto from 'crypto';
 import * as fs from 'fs-extra';
 
-import {
-    useTemplate,
-    getTemplateSource,
-} from './template';
-import {
-    tagSplit,
-} from './text-parser';
-import {
-    scssTranspile,
-    typescriptTranspile,
-} from './transpile';
+import { scssTranspile } from './scss';
+import { typescriptTranspile } from './typescript';
+
+import { createMD5 } from '../hash';
+import { between, tagSplit } from '../text-parser';
 
 const INIT_OPTIONS = {
     isDev: false,
-    ignoreError: false,
     params: undefined,
 };
 
@@ -25,8 +17,15 @@ interface Params {
 
 interface Options {
     isDev: boolean,
-    ignoreError: boolean,
     params?: Params,
+}
+
+export function useTemplate(source: string) {
+    return between(source, '{% extends \'', '\' %}');
+}
+
+export function getTemplateSource(name: string) {
+    return fs.readFileSync(`./src/templates/${name}`).toString();
 }
 
 function injectParams(source: string, params?: Params) {
@@ -44,37 +43,34 @@ function injectParams(source: string, params?: Params) {
 
 export function transpile(pageName: string, source: string, {
     isDev,
-    ignoreError,
     params=undefined,
 }: Options = INIT_OPTIONS) {
     if (useTemplate(source)) {
         return transpileWithTemplate(pageName, source, {
             isDev,
-            ignoreError,
             params,
         });
     }
     return transpileWithoutTemplate(source, {
         isDev,
-        ignoreError,
         params,
     });
 }
 
 function transpileWithoutTemplate(source: string, {
-    ignoreError,
+    isDev,
 }: Options = INIT_OPTIONS) {
     let newSource = source;
 
     const styles = tagSplit(source, '<style>', '</style>');
     for (const style of styles) {
-        const css = scssTranspile(style, { ignoreError });
+        const css = scssTranspile(style, { isDev });
         newSource.replace(style, css);
     }
 
     const scripts = tagSplit(source, '<script>', '</script>');
     for (const script of scripts) {
-        const code = typescriptTranspile(script, { ignoreError });
+        const code = typescriptTranspile(script, { isDev });
         newSource = newSource.replace(script, `(function(){${code}})();`);
     }
 
@@ -83,7 +79,6 @@ function transpileWithoutTemplate(source: string, {
 
 function transpileWithTemplate(pageName: string, source: string, {
     isDev,
-    ignoreError,
     params,
 }: Options = INIT_OPTIONS) {
     const template = useTemplate(source);
@@ -93,21 +88,20 @@ function transpileWithTemplate(pageName: string, source: string, {
     
     const keywords = tagSplit(templateSource, '{{ ', ' }}');
     for (const keyword of keywords) {
+        const key = pageName + keyword;
         const items = tagSplit(source, `<${keyword}>`, `</${keyword}>`);
         const mergeItems = [];
 
         for (const item of items) {
-            const md5Maker = crypto.createHmac('md5', pageName + keyword);
-
             if (keyword === 'title') {
                 mergeItems.push(`<title>${item}</title>`);
             }
 
             else if (keyword === 'script') {
                 const newScript = injectParams(item, params);
-                const code = typescriptTranspile(newScript, { ignoreError });
+                const code = typescriptTranspile(newScript, { isDev });
                 if (!isDev) {
-                    const hash = md5Maker.update(code).digest('hex');
+                    const hash = createMD5({ key, text: code });
                     const fileName = `${pageName}.${hash}.js`;
                     const filePath = `./dist/assets/scripts/${fileName}`;
                     fs.writeFile(filePath, `(function(){${code}})();`);
@@ -118,9 +112,9 @@ function transpileWithTemplate(pageName: string, source: string, {
             }
 
             else if (keyword === 'style') {
-                const css = scssTranspile(item, { ignoreError });
+                const css = scssTranspile(item, { isDev });
                 if (!isDev) {
-                    const hash = md5Maker.update(css).digest('hex');
+                    const hash = createMD5({ key, text: css });
                     const fileName = `${pageName}.${hash}.css`;
                     const filePath = `./dist/assets/styles/${fileName}`;
                     fs.writeFile(filePath, css);

@@ -1,12 +1,12 @@
-export interface DebounceEventRunner {
-    (e?: Event | string): boolean;
+export interface DebounceEventRunner<T> {
+    (e?: T): boolean;
     clear(): void;
 }
 
-export function debounceEvent(func: (e?: Event | string) => void, timing: number): DebounceEventRunner {
+export function useDebounceEvent<T>(func: (e?: T) => void, timing: number): DebounceEventRunner<T> {
     let timer: NodeJS.Timeout;
 
-    const runner = function(e?: Event | string) {
+    const runner = function(e?: T) {
         if (timer) clearTimeout(timer);
         timer = setTimeout(() => func(e), timing);
         return true;
@@ -19,7 +19,7 @@ export function debounceEvent(func: (e?: Event | string) => void, timing: number
     return runner;
 }
 
-export function throttleEvent(func: (e?: Event) => void, timing: number) {
+export function useThrottleEvent(func: (e?: Event) => void, timing: number) {
     let isReady = true;
 
     return (e?: Event) => {
