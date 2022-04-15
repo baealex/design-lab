@@ -1,5 +1,5 @@
-export function useSocket(target: string, source: string) {
-    return target.replace(
+export function useClientSocket(html: string, source: string) {
+    return html.replace(
         '</body>',
         `
         <script src="/socket.io/socket.io.js"></script>

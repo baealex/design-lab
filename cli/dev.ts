@@ -1,11 +1,7 @@
-import * as express from 'express';
 import { Server } from 'socket.io';
-import * as path from 'path';
 
 import * as builder from './modules/builder';
-import {
-    useDebounceEvent,
-} from './modules/hooks/use-event';
+import { useDebounceEvent, useServer } from './modules/hooks';
 
 interface ChangeHandlerItem {
     id: string;
@@ -28,15 +24,7 @@ const changeHandler = (() => {
     };
 })();
 
-const PORT = 3000;
-
-const app = express()
-    .use(express.static(path.resolve('dist'), {
-        extensions: ['html']
-    }))
-    .listen(PORT, () => console.log(`listen on :${PORT}`));
-
-const io = new Server(app);
+const io = new Server(useServer(3000));
 
 io.on('connection', (socket) => {
     changeHandler.push({

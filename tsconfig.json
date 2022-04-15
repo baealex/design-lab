@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "baseUrl": "./cli",
     "outDir": "./cli/dist",
-    "moduleResolution": "node",
-    "allowJs": false,
     "strict": true,
   },
   "include": [
