@@ -23,7 +23,7 @@
             width: 30px;
             height: 2px;
             background: #eee;
-            transition: all 0.5s ease;
+            transition: all 0.3s ease;
         }
 
         &::before {
@@ -91,13 +91,15 @@
 </html>
 
 <script>
-    document.querySelectorAll('.menu').forEach(menu => {
-        menu.addEventListener('click', () => {
-            if (menu.classList.contains('isOpen')) {
-                menu.classList.remove('isOpen')
+    function useOpenToggle($menu: HTMLElement) {
+        $menu.addEventListener('click', (e: MouseEvent) => {
+            if (e.currentTarget.classList.contains('isOpen')) {
+                e.currentTarget.classList.remove('isOpen')
             } else {
-                menu.classList.add('isOpen')
+                e.currentTarget.classList.add('isOpen')
             }
         })
-    })
+    }
+
+    document.querySelectorAll('.menu').forEach(useOpenToggle)
 </script>

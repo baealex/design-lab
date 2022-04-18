@@ -109,27 +109,27 @@
 </html>
 
 <script>
-    function makeRandomColor() {
-        const picks = [];
-        const hexChars = '0123456789ABCDEF';
-        for (let i=0; i<6; i++) {
-            picks.push(hexChars.charAt(Math.floor(Math.random() * hexChars.length)));
-        }
-        return `#${picks.join('')}`;
+    function randomNumber(min, max) { 
+        return Math.round(Math.random() * (max - min) + min);
+    }
+
+    function randomColor() {
+        const r = randomNumber(0, 255);
+        const g = randomNumber(0, 255);
+        const b = randomNumber(0, 255);
+        return `rgb(${r},${g},${b})`;
     }
 
     function useInterval(func, time) {
-        if (func() === 1) {
-            const interval = setInterval(() => {
-                const result = func();
-                if (result === 0) {
-                    clearInterval(interval)
-                }
-            }, time);
+        const innerFunc = () => {
+            if (func() === useInterval.CONTINUE) {
+                setTimeout(innerFunc, time);
+            }
         }
+        innerFunc();
     }
-    useInterval.CONTINUE = 1;
     useInterval.BREAK = 0;
+    useInterval.CONTINUE = 1;
 
     const INIT_OPTIONS = {
         onReady: () => unll,
@@ -153,7 +153,7 @@
         if (colors.length < 3 || options.useRandomColor) {
             const numberOfRemain = 3 - colors.length;
             for (let i=0; i<numberOfRemain; i++) {
-                colors.push(makeRandomColor())
+                colors.push(randomColor())
             }
         }
 
@@ -240,7 +240,6 @@
 
     document.querySelector('.options').addEventListener('click', (e) => {
         if (e.target.nodeName === 'BUTTON') {
-            console.log(e.target.dataset.type)
             switch(e.target.dataset.type) {
                 default:
                     reveal({
