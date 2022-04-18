@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as path from 'path';
 
-export function useServer(port: number) {
+export function useHttpServer(port: number) {
     return express()
         .use(express.static(path.resolve('dist'), {
             extensions: ['html']
