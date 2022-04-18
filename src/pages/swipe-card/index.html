@@ -134,7 +134,7 @@
         function handleFocusOut(e) {
             isTarget = false
 
-            const { clientWidth } = e.target;
+            const { clientWidth } = e.target
 
             if (accMoveValue <= -(clientWidth * (2 / 3))) {
                 // Immediately delete when swipe over 2/3
@@ -176,10 +176,10 @@
         $card.addEventListener('mousedown', handleFocusIn)
         $card.addEventListener('touchstart', handleFocusIn)
 
-        $card.addEventListener('mouseup', handleFocusOut)
+        window.addEventListener('mouseup', handleFocusOut)
         $card.addEventListener('touchend', handleFocusOut)
 
-        $card.addEventListener('mousemove', handleMove)
+        window.addEventListener('mousemove', handleMove)
         $card.addEventListener('touchmove', handleMove)
     }
 </script>
