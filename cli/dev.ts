@@ -21,7 +21,7 @@ new SocketServer(useHttpServer(3000)).on('connection', (socket) => {
     for (const page of builder.pages) {
         const debounceEvent = useDebounceEvent<string>((value='') => {
             clientManager.run(value);
-        }, 1500);
+        }, 1000);
 
         await builder.makePage(page, { isDev: true });
         await builder.watchPage(page, (path) => {
