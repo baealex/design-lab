@@ -13,13 +13,13 @@
         right: 15px;
 
         button {
-            background: #333;
-            color: #fff;
-            border: none;
+            background: #fff;
+            color: #000;
+            border: 2px solid #dedede;
             padding: 2px 8px;
 
             &.active {
-                border: 1px solid #7b5eff;
+                border: 2px solid #7b5eff;
             }
         }
     }
@@ -73,7 +73,7 @@
 
         update() {
             this.counter -= 1
-            this.dy -= 0.008
+            this.dy -= 0.004
 
             this.x -= this.dx
             this.y -= this.dy
@@ -131,7 +131,7 @@
     }
 
     function loop() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'
         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
         fireworks.concat(particles).forEach((entity) => {
@@ -162,7 +162,7 @@
     })
     
     function endlessCreateFireworks() {
-        if (!document.hidden) {
+        if (!document.hidden && fireworks.length < 20) {
             fireworks.push(new Firework(
                 randomNumber(0, canvas.width),
                 canvas.height,

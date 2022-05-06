@@ -27,6 +27,10 @@
         position: relative;
         transform-style: preserve-3d;
         animation: flip 2s linear infinite;
+        box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
+        border-radius: 8px;
+        background: #fff;
+        color: #333;
 
         .front, .back {
             backface-visibility: hidden;
@@ -47,7 +51,7 @@
 
 <html>
     <div id="root" class="g-flex-center">
-        <span class="g-card flipper">
+        <span class="flipper">
             <div class="front">
                 😃
             </div>

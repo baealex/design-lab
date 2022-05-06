@@ -7,6 +7,10 @@
         height: auto;
     }
 
+    body {
+        background: #e5e4e5;
+    }
+
     .swipe-card {
         user-select: none;
         cursor: grab;
@@ -14,12 +18,16 @@
         position: relative;
         overflow: hidden;
         height: 64px;
+        box-shadow: 0 2px 16px 0 hsla(0, 0%, 0%, 0.1);
+        border-radius: 8px;
+        background: #fff;
+        color: #333;
 
         .content {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: #333;
+            background: #fff;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -31,7 +39,7 @@
 
             .title {
                 font-weight: 600;
-                color: #fff;
+                color: #333;
             }
 
             .artist {
@@ -49,7 +57,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgb(129, 0, 0);
+            background: rgb(205, 38, 38);
+            color: #fff;
             transition: width 0.1s linear;
         }
     }
@@ -68,7 +77,7 @@
 <script>
     function template(content) {
         return `
-            <div class="g-card swipe-card">
+            <div class="swipe-card">
                 <div class="menu">
                     Delete
                 </div>
