@@ -89,9 +89,17 @@
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     const lazyElement = entry.target;
-                    lazyElement.src = lazyElement.dataset.src;
-                    lazyElement.classList.add('fade-in');
-                    lazyElement.classList.remove('lazy');
+                    if (elementName === 'iframe') {
+                        const newElement = document.createElement('iframe');
+                        newElement.src = lazyElement.dataset.src;
+                        newElement.className = 'fade-in';
+                        lazyElement.replaceWith(newElement);
+                    } else {
+                        const lazyElement = entry.target;
+                        lazyElement.src = lazyElement.dataset.src;
+                        lazyElement.classList.add('fade-in');
+                        lazyElement.classList.remove('lazy');
+                    }
                     lazyElementObserver.unobserve(lazyElement);
                 }
             });
