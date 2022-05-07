@@ -3,12 +3,26 @@
 <title>BaeJino Design</title>
 
 <style>
+    @keyframes fade-in {
+        0% {
+            filter: blur(10px);
+        }
+
+        100% {
+            filter: blur(0px);
+        }
+    }
+
     body {
         background: #E5E4E5;
     }
 
     div#root {
         align-items: flex-start;
+    }
+
+    .fade-in {
+        animation: fade-in 0.5s linear 1;
     }
     
     ul {
@@ -76,6 +90,7 @@
                 if (entry.isIntersecting) {
                     const lazyElement = entry.target;
                     lazyElement.src = lazyElement.dataset.src;
+                    lazyElement.classList.add('fade-in');
                     lazyElement.classList.remove('lazy');
                     lazyElementObserver.unobserve(lazyElement);
                 }
