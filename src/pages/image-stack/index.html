@@ -8,6 +8,8 @@
         top: 50%;
         left: 50%;
         width: 350px;
+        border: 2px solid #020202;
+        border-radius: 20px;
         opacity: 1;
         transition: all 0.5s ease;
     }
@@ -19,6 +21,8 @@
         position: absolute;
         display: none;
         opacity: 0;
+        padding: 0 15px;
+        box-sizing: border-box;
         transition: all 0.5s ease;
 
         button {
@@ -34,6 +38,9 @@
             margin-top: 8px;
 
             & > img.photo {
+                box-sizing: border-box;
+                border: 2px solid #020202;
+                border-radius: 20px;
                 width: 100%;
             }
 
