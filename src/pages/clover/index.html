@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+<title>Clover</title>
+
+<style>
+    .clover {
+        .top, .bottom {
+            display: flex;
+        }
+
+        .leaf {
+            width: 100px;
+            height: 100px;
+            background: #000;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .top .leaf {
+            &:nth-child(1) {
+                border-radius: 50% 50% 0 50%;
+            }
+
+            &:nth-child(2) {
+                border-radius: 50% 50% 50% 0;
+            }
+        }
+
+        .bottom .leaf {
+            &:nth-child(1) {
+                border-radius: 50% 0 50% 50%;
+            }
+
+            &:nth-child(2) {
+                border-radius: 0 50% 50% 50%;
+            }
+        }
+    }
+</style>
+
+<html>
+    <div id="root" class="g-flex-center">
+        <div class="clover">
+            <div class="top">
+                <div class="leaf" style="background-image: url(/assets/images/sims4/1.jpg)"></div>
+                <div class="leaf" style="background-image: url(/assets/images/sims4/4.jpg)"></div>
+            </div>
+            <div class="bottom">
+                <div class="leaf" style="background-image: url(/assets/images/sims4/5.jpg)"></div>
+                <div class="leaf" style="background-image: url(/assets/images/sims4/6.jpg)"></div>
+            </div>
+        </div>
+    </div>
+</html>
