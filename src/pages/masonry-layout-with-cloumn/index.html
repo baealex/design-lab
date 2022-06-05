@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+<title>Masonry Layout with column</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Passion+One:wght@700&display=swap');
+
+    .columns{
+        column-width: 350px;
+        column-gap: 15px;
+        padding: 0 15px;
+    }
+
+    .columns .item {
+        position: relative;
+        display: inline-block;
+        border: 2px solid #020202;
+        box-sizing: border-box;
+        padding: 16px;
+        border-radius: 20px;
+        margin: 16px 0;
+        width: 100%;
+    }
+
+    .columns .item blockquote {
+        text-align: center;
+    }
+
+    .columns .item blockquote p,
+    .columns .item blockquote .from {
+        font-family: 'Noto Serif KR', serif;
+    }
+
+    .columns .item blockquote p {
+        word-break: keep-all;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 1.75;
+    }
+    
+    .columns .item blockquote .from {
+        font-size: 16px;
+    }
+
+    .columns .item blockquote .from::before {
+        margin: 16px auto;
+        display: block;
+        background: #000;
+        width: 1px;
+        height: 32px;
+        content: ''
+    }
+
+    .columns .item blockquote::after,
+    .columns .item blockquote::before {
+        margin: 32px 0;
+        font-family: 'Passion One', cursive;
+        font-weight: 700;
+        font-size: 40px;
+        content: '\"';
+        display: block;
+    }
+
+    .columns .item blockquote::before {
+        transform: rotate(180deg);
+    }
+</style>
+
+<html>
+    <div class="columns"></div>
+</html>
+
+<script>
+    function Item(props) {
+        return `
+            <div class="item">
+                <blockquote>
+                    <p>
+                        ${props.content}
+                    </p>
+                    <div class="from">
+                        ${props.from}
+                    </div>
+                </blockquote>
+            </div>
+        `
+    }
+
+    const items = [
+        {
+            content: '신은 인간에게 선물을 줄 때 시련이라는 포장지에 싸서 준다<br/>선물이 클수록 더 큰 포장지에 싸여있다'
+            from: '브라이언 트레이시',
+        },
+        {
+            content: '지옥길을 걷고 있다면 계속 나아가라<br/>왜 지옥에서 멈추려 하는가',
+            from: '윈스턴 처칠',
+        },
+        {
+            content: '모든 성취의 출발점은 열망이다<br/>이를 명심하라<br/>약한 불이 미약한 열기를 주듯<br/>약한 열망은 미약한 결과를 안겨준다',
+            from: '나폴레옹 힐',
+        },
+        {
+            content: '성공한 사람이 될 수 있는데<br/>왜 평범한 이에 머무르려 하는가?',
+            from: '베르톨트 브레히트',
+        },
+        {
+            content: '나는 종교적인 사람입니다<br/>인정할 수밖에 없어요<br/>한 가지 확실한 건<br/>저는 신이 있는 것처럼 행동합니다',
+            from: '조던 피터슨',
+        },
+        {
+            content: '비관주의자는 모든 기회에서 어려움을 보고<br/>낙천주의자는 모든 어려움에서 기회를 본다',
+            from: '윈스턴 처칠',
+        },
+        {
+            content: '당신은 삶의 선물이 무엇인지 찾기 위해 삶이라는 선물을 받았다<br/>당신의 임무가 무엇인지 알아내면 임무는 완수 될 것이다<br/>이것은 역설이 아니다'
+            from: '케빈 켈리',
+        },
+        {
+            content: '매일 행복하지 않지만<br/>행복한 일은 매일 있어',
+            from: '곰돌이 푸',
+        },
+        {
+            content: '스스로 알을 깨면 병아리가 되지만<br/>남이 깨주면 계란 프라이가 된다',
+            from: 'J.허슬러',
+        },
+        {
+            content: '나는 평생 하루라도 일을 하지 않았다<br/>그것은 모두 재미있는 놀이였다',
+            from: '토마스 에디슨',
+        },
+        {
+            content: '흥분해서 남 욕을 하는 이유는 아마 당신의 부끄러운 모습이 그 사람에게서 보이기 때문일 것이다<br/>남의 잘못을 지적할 때 자신도 별로 나을 게 없다는 걸 늘 생각하길 바란다',
+            from: '박진영',
+        },
+        {
+            content: '처음 걸으려고 할 때는 넘어졌다<br/>처음 수영하려고 할 때는 물에 빠져 죽을 뻔했다<br/>실패를 두려워하지 말라<br/>시도조차하지 않을 때 놓치게 될 기회나 걱정하라',
+            from: '오슨 스웨트 마든',
+        },
+        {
+            content: '당신의 인생 낭비하지마세요<br/>당신이 보내고 있는 시간에는 가치가 있습니다<br/>시간 죽이는 것<br/>인생을 낭비하는 것은<br/>서서히 자기를 무력하게 합니다',
+            from: '조던 피터슨',
+        },
+        {
+            content: '나는 내가 더 노력 할수록<br/>운이 더 좋아진다는 것을 발견했다',
+            from: '토머스 제퍼슨',
+        },
+        {
+            content: '인생이란 자신을 찾는 것이 아니라 자신을 만드는 것이다',
+            from: '롤리 다스칼',
+        },
+    ]
+
+    document.querySelector('.columns').innerHTML = items.map(Item).join('')
+</script>
