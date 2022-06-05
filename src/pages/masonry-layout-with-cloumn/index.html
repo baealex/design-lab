@@ -145,5 +145,5 @@
         },
     ]
 
-    document.querySelector('.columns').innerHTML = items.map(Item).join('')
+    document.querySelector('.columns').innerHTML = items.sort(() => Math.random() - 0.3).map(Item).join('')
 </script>
