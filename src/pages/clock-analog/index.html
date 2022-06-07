@@ -3,31 +3,42 @@
 <title>Clock (Analog)</title>
 
 <style>
-    .pin {
+    .clock {
+        border: 2px solid #000;
+        width: 220px;
+        height: 220px;
+        border-radius: 100%;
         position: absolute;
         left: 50%;
-        box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
-        transform-origin: bottom center;
+        top: 50%;
+        transform: translate(-50%, -50%);
 
-        &.hour {
-            top: calc(50% - 50px);
-            width: 3px;
-            height: 50px;
-            background: #000;
-        }
+        .pin {
+            position: absolute;
+            left: 50%;
+            box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+            transform-origin: bottom center;
 
-        &.minute {
-            top: calc(50% - 100px);
-            width: 3px;
-            height: 100px;
-            background: #000;
-        }
+            &.hour {
+                top: calc(50% - 50px);
+                width: 3px;
+                height: 50px;
+                background: #000;
+            }
 
-        &.second {
-            top: calc(50% - 100px);
-            width: 1px;
-            height: 100px;
-            background: #f00;
+            &.minute {
+                top: calc(50% - 100px);
+                width: 3px;
+                height: 100px;
+                background: #000;
+            }
+
+            &.second {
+                top: calc(50% - 100px);
+                width: 1px;
+                height: 100px;
+                background: #f00;
+            }
         }
     }
 </style>
