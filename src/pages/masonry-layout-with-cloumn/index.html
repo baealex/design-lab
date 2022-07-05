@@ -143,7 +143,15 @@
             content: '조언은 법률이 아닌 모자와 같다<br/>맞지 않다면 다른 것을 써라'
             from: '케빈 켈리',
         },
+        {
+            content:  '당신이<br/>할 수 있다고 믿든<br/>할 수 없다고 믿든<br/>믿는 대로 될 것이다',
+            from: '헨리 포드'
+        },
+        {
+            content:  '항상 맑으면 사막이 된다<br/>비가 내리고 바람이 불어야만<br/>비옥한 땅이 된다',
+            from: '스페인 속담'
+        }
     ]
 
-    document.querySelector('.columns').innerHTML = items.sort(() => Math.random() - 0.3).map(Item).join('')
+    document.querySelector('.columns').innerHTML = items.map(Item).join('')
 </script>
