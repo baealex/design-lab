@@ -130,6 +130,20 @@
         }
     }
 
+    function loop() {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        fireworks.concat(particles).forEach((entity) => {
+            entity.update()
+            entity.render()
+        })
+
+        window.requestAnimationFrame(loop)
+    }
+
+    loop()
+
     // Create Firework
     let frequency = 1000
 
@@ -146,14 +160,9 @@
             })
         })
     })
-
-    let accTime = 0
-    let prevTimestamp = 0
-
-    function loop(timestamp = 0) {
-        accTime += (timestamp - prevTimestamp)
-        if (accTime > frequency) {
-            accTime = 0
+    
+    function endlessCreateFireworks() {
+        if (!document.hidden && fireworks.length < 20) {
             fireworks.push(new Firework(
                 randomNumber(0, canvas.width),
                 canvas.height,
@@ -162,17 +171,7 @@
                 randomColor()
             ))
         }
-        prevTimestamp = timestamp
-
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)'
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-        fireworks.concat(particles).forEach((entity) => {
-            entity.update()
-            entity.render()
-        })
-        window.requestAnimationFrame(loop)
+        setTimeout(endlessCreateFireworks, frequency)
     }
-
-    loop()
+    endlessCreateFireworks()
 </script>
