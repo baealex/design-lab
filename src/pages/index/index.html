@@ -168,41 +168,6 @@
 </html>
 
 <script>
-    function lazyLoad(elementName) {
-        if (!document.querySelectorAll || !'IntersectionObserver' in window) {
-            Array.from(document.getElementsByClassName('lazy')).forEach((element) => {
-                element.src = element.dataset.src;
-            });
-            return;
-        }
-
-        const lazyElements = Array.from(document.querySelectorAll(`${elementName}.lazy`));
-
-        const lazyElementObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const lazyElement = entry.target;
-                    if (elementName === 'iframe') {
-                        const newElement = document.createElement('iframe');
-                        newElement.src = lazyElement.dataset.src;
-                        newElement.className = 'fade-in';
-                        lazyElement.replaceWith(newElement);
-                    } else {
-                        const lazyElement = entry.target;
-                        lazyElement.src = lazyElement.dataset.src;
-                        lazyElement.classList.add('fade-in');
-                        lazyElement.classList.remove('lazy');
-                    }
-                    lazyElementObserver.unobserve(lazyElement);
-                }
-            });
-        });
-
-        lazyElements.forEach((lazyElement) => {
-            lazyElementObserver.observe(lazyElement);
-        });
-    }
-
     function capitalize(s) {
         if (typeof s !== 'string') return ''
         return s.charAt(0).toUpperCase() + s.slice(1)
@@ -210,7 +175,7 @@
 
     function Item(title, path, idx) {
         return `
-            <div class="section ${idx === 0 ? 'active' : idx === 1 ? 'right': idx === pages.length - 1 ? 'left' : '' }">
+            <div class="section">
                 <div>
                     <span>${title}</span>
                     <a href="${path}">
@@ -231,7 +196,6 @@
         .join('');
 
     document.querySelector('.carousel').innerHTML = `${items}`;
-    lazyLoad('iframe');
 
     let nowIndex = 0
     let isRotating = false
@@ -259,16 +223,29 @@
         }
 
         $sections.forEach(($el, idx) => {
+            const $iframe = $el.querySelector('iframe')
+            let isActive = false
+
             $el.classList.remove('active')
             $el.classList.remove('left')
             $el.classList.remove('right')
 
             if (idx === nowIndex) {
                 $el.classList.add('active')
+                isActive = true
             } else if (idx === nowIndex + 1 || nowIndex === $sections.length - 1 && idx === 0) {
                 $el.classList.add('right')
+                isActive = true
             } else if (idx === nowIndex - 1 || nowIndex === 0 && idx === $sections.length - 1) {
                 $el.classList.add('left')
+                isActive = true
+            }
+
+            if (!$iframe.src && $iframe.classList.contains('lazy') && isActive) {
+                const newElement = document.createElement('iframe');
+                newElement.src = $iframe.dataset.src;
+                newElement.className = 'fade-in';
+                $iframe.replaceWith(newElement);
             }
         })
     }
@@ -320,4 +297,6 @@
             carousel('prev')
         }
     })
+
+    carousel()
 </script>
