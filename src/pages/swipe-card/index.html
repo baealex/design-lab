@@ -63,6 +63,12 @@
         }
     }
 
+    .g-button {
+        margin: 16px 0;
+        display: block;
+        width: 100%;
+    }
+
     footer {
         margin-top: 16px;
         text-align: right;
@@ -98,6 +104,7 @@
     const items = [
         'Shake it off - Taylor Swift',
         'After The After - Teers',
+        'Baby Powder - Jenevieve',
         'Y U Gotta B Like That - Audrey Mika',
         'Plastic Love - Mariya Takeuchi',
         'Paris In The Rain - Lauv',
@@ -109,9 +116,16 @@
         <footer>
             ← Swipe to delete
         </footer>
+        <button class="g-button">
+            Refill
+        </button>
     `
 
     const $cards = document.querySelectorAll('.swipe-card')
+
+    document.querySelector('button.g-button').addEventListener('click', () => {
+        location.reload();
+    })
 
     for (const $card of $cards) {
         const $content = $card.querySelector('.content')
