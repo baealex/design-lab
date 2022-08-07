@@ -3,7 +3,7 @@
 <title>Snack Bar</title>
     
 <style>
-    @keyframes slide {
+    @keyframes snack-bar-slide {
         0% {
             opacity: 0;
             transform: translate(-50%, 100%);
@@ -26,6 +26,7 @@
     }
 
     .snack-bar {
+        pointer-events: none;
         position: fixed;
         width: 100%;
         bottom: 0;
@@ -37,10 +38,18 @@
         background: rgba(0, 0, 0, 0.75);
         opacity: 0;
         transform: translate(-50%, 100%);
-        animation: slide 4s ease 1;
+        animation: snack-bar-slide 4s ease 1;
 
         &.have-event {
+            pointer-events: all;
             cursor: pointer;
+        }
+
+        &.small {
+            width: 500px;
+            max-width: 100%;
+            box-sizing: border-box;
+            border-radius: 16px 16px 0 0;
         }
     }
 
@@ -55,6 +64,9 @@
         <div class="options">
             <button class="g-button">
                 Show SnackBar
+            </button>
+            <button data-type="small" class="g-button">
+                Small Size
             </button>
             <button data-type="onclick" class="g-button">
                 have OnClick event
@@ -85,6 +97,10 @@
         snackBar.textContent = text;
         snackBar.classList.add('snack-bar');
 
+        if (options?.size) {
+            snackBar.classList.add(options.size);
+        }
+
         if (options?.onClick) {
             snackBar.classList.add('have-event');
             snackBar.addEventListener('click', options.onClick);
@@ -107,13 +123,16 @@
 
     document.querySelector('.options').addEventListener('click', (e) => {
         if (e.target.nodeName === 'BUTTON') {
-            console.log(e.target.dataset.type)
             switch(e.target.dataset.type) {
                 default:
                     snackBar('Hi, there 👋.')
                     break;
+                case 'small':
+                    snackBar('Lovely !!! 😍', { size: 'small' })
+                    break;
                 case 'onclick':
                     snackBar('Please click me!', {
+                        size: 'small',
                         onClick: () => {
                             alert('Thanks for your click!')
                         }
