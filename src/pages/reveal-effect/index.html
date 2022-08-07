@@ -125,7 +125,7 @@
             if (func() === useInterval.CONTINUE) {
                 setTimeout(innerFunc, time);
             }
-        }
+        };
         innerFunc();
     }
     useInterval.BREAK = 0;
@@ -153,7 +153,7 @@
         if (colors.length < 3 || options.useRandomColor) {
             const numberOfRemain = 3 - colors.length;
             for (let i=0; i<numberOfRemain; i++) {
-                colors.push(randomColor())
+                colors.push(randomColor());
             }
         }
 
@@ -192,7 +192,7 @@
                 if (!options.endNatural) {
                     const item = items[1].pop();
                     items[1].forEach(item => {
-                        document.body.removeChild(item)
+                        document.body.removeChild(item);
                     });
                     item.classList.add('end');
                     setTimeout(() => {
@@ -211,7 +211,7 @@
                         return useInterval.BREAK;
                     }, 100);
                 }
-            }, 500)
+            }, 500);
             return useInterval.BREAK;
         }, 100);
     }
@@ -241,24 +241,24 @@
     document.querySelector('.options').addEventListener('click', (e) => {
         if (e.target.nodeName === 'BUTTON') {
             switch(e.target.dataset.type) {
-                default:
-                    reveal({
-                        onReady: router.next,
-                    });
-                    break;
-                case 'random':
-                    reveal({
-                        onReady: router.next,
-                        useRandomColor: true,
-                    });
-                    break;
-                case 'natural':
-                    reveal({
-                        onReady: router.next,
-                        endNatural: true,
-                    });
-                    break;
+            default:
+                reveal({
+                    onReady: router.next,
+                });
+                break;
+            case 'random':
+                reveal({
+                    onReady: router.next,
+                    useRandomColor: true,
+                });
+                break;
+            case 'natural':
+                reveal({
+                    onReady: router.next,
+                    endNatural: true,
+                });
+                break;
             }
         }
-    })
+    });
 </script>

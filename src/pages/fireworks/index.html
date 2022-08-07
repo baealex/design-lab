@@ -40,75 +40,75 @@
 
 <script>
     function randomNumber(min, max) { 
-        return Math.round(Math.random() * (max - min) + min)
+        return Math.round(Math.random() * (max - min) + min);
     }
 
     function randomColor() {
-        const r = randomNumber(0, 255)
-        const g = randomNumber(0, 255)
-        const b = randomNumber(0, 255)
-        return `rgb(${r},${g},${b})`
+        const r = randomNumber(0, 255);
+        const g = randomNumber(0, 255);
+        const b = randomNumber(0, 255);
+        return `rgb(${r},${g},${b})`;
     }
 
-    const $canvas = document.getElementById('canvas') as HTMLCanvasElement
-    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+    const $canvas = document.getElementById('canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    const maxDy = Math.round(canvas.height / 100)
+    const maxDy = Math.round(canvas.height / 100);
 
-    let fireworks = []
-    let particles = []
+    let fireworks = [];
+    let particles = [];
 
     class Particle {
         constructor(x, y, r, dx, dy, color) {
-            this.x = x
-            this.y = y
-            this.r = r
-            this.dx = dx
-            this.dy = dy
-            this.color = color
-            this.counter = 120
+            this.x = x;
+            this.y = y;
+            this.r = r;
+            this.dx = dx;
+            this.dy = dy;
+            this.color = color;
+            this.counter = 120;
         }
 
         update() {
-            this.counter -= 1
-            this.dy -= 0.004
+            this.counter -= 1;
+            this.dy -= 0.004;
 
-            this.x -= this.dx
-            this.y -= this.dy
+            this.x -= this.dx;
+            this.y -= this.dy;
 
             if (this.counter <= 0) {
-                particles = particles.filter(entity => entity !== this)
+                particles = particles.filter(entity => entity !== this);
             }
         }
 
         render() {
-            ctx.fillStyle = this.color
-            ctx.beginPath()
-			ctx.arc(this.x, this.y, this.r * this.counter / 120, 0, Math.PI * 2, true)
-			ctx.fill()
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r * this.counter / 120, 0, Math.PI * 2, true);
+            ctx.fill();
         }
     }
 
     class Firework {
         constructor(x, y, r, dy, color) {
-            this.x = x
-            this.y = y
-            this.r = r
-            this.dy = dy
-            this.color = color
+            this.x = x;
+            this.y = y;
+            this.r = r;
+            this.dy = dy;
+            this.color = color;
         }
 
         update() {
-            this.dy *= 0.987
-            this.y -= this.dy
+            this.dy *= 0.987;
+            this.y -= this.dy;
 
             if (this.dy < 0.5) {
-                fireworks = fireworks.filter(entity => entity !== this)
+                fireworks = fireworks.filter(entity => entity !== this);
             
-                const size = randomNumber(15, 30)
+                const size = randomNumber(15, 30);
 
                 for (let i=0; i<=size*3; i++) {
                     particles.push(new Particle(
@@ -118,49 +118,49 @@
                         Math.cos(Math.PI * 2 / size * i) * randomNumber(this.r * 4, this.r * 5) / 10,
                         Math.sin(Math.PI * 2 / size * i) * randomNumber(this.r * 4, this.r * 5) / 10,
                         this.color,
-                    ))
+                    ));
                 }
             }
         }
 
         render() {
-            ctx.fillStyle = this.color
-            ctx.beginPath()
-			ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, true)
-			ctx.fill()
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
+            ctx.fill();
         }
     }
 
     function loop() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         fireworks.concat(particles).forEach((entity) => {
-            entity.update()
-            entity.render()
-        })
+            entity.update();
+            entity.render();
+        });
 
-        window.requestAnimationFrame(loop)
+        window.requestAnimationFrame(loop);
     }
 
-    loop()
+    loop();
 
     // Create Firework
-    let frequency = 1000
+    let frequency = 1000;
 
-    const $buttons = document.querySelectorAll('.frequency button')
+    const $buttons = document.querySelectorAll('.frequency button');
     $buttons.forEach($button => {
         $button.addEventListener('click', e => {
-            frequency = e.target.dataset.value
+            frequency = e.target.dataset.value;
             $buttons.forEach($el => {
                 if ($el === e.target) {
-                    $el.className = 'active'
+                    $el.className = 'active';
                 } else {
-                    $el.className = ''
+                    $el.className = '';
                 }
-            })
-        })
-    })
+            });
+        });
+    });
     
     function endlessCreateFireworks() {
         if (!document.hidden && fireworks.length < 20) {
@@ -170,9 +170,9 @@
                 randomNumber(2, 3),
                 randomNumber(3, maxDy),
                 randomColor()
-            ))
+            ));
         }
-        setTimeout(endlessCreateFireworks, frequency)
+        setTimeout(endlessCreateFireworks, frequency);
     }
-    endlessCreateFireworks()
+    endlessCreateFireworks();
 </script>

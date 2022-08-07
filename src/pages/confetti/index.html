@@ -75,40 +75,40 @@
 
 <script>
     function randomNumber(min, max) { 
-        return Math.round(Math.random() * (max - min) + min)
+        return Math.round(Math.random() * (max - min) + min);
     }
 
     function colorPicker() {
-        const colors = ['#8e44ad', '#5800ff', '#f7cb46', '#729cef', '#e25b31', '#f08b7d']
-        const select = randomNumber(0, colors.length - 1)
-        return colors[select]
+        const colors = ['#8e44ad', '#5800ff', '#f7cb46', '#729cef', '#e25b31', '#f08b7d'];
+        const select = randomNumber(0, colors.length - 1);
+        return colors[select];
     }
 
     function sprayConfetti($element, frequency) {
         for (let i=0; i<frequency; i++) {
             setTimeout(() => {
-                const $paper = document.createElement('div')
-                $paper.className = 'paper'
-                $paper.style.background = colorPicker()
+                const $paper = document.createElement('div');
+                $paper.className = 'paper';
+                $paper.style.background = colorPicker();
 
-                const $wind = document.createElement('div')
-                $wind.className = 'wind'
-                $wind.style.animationDuration = `${randomNumber(10, 16)}s`
-                $wind.appendChild($paper)
+                const $wind = document.createElement('div');
+                $wind.className = 'wind';
+                $wind.style.animationDuration = `${randomNumber(10, 16)}s`;
+                $wind.appendChild($paper);
 
-                const $gravity = document.createElement('div')
-                $gravity.className = 'gravity'
-                $gravity.style.left = `${randomNumber(0, innerWidth - 300)}px`
-                $gravity.style.animationDuration = `${randomNumber(6, 10)}s`
-                $gravity.appendChild($wind)
+                const $gravity = document.createElement('div');
+                $gravity.className = 'gravity';
+                $gravity.style.left = `${randomNumber(0, innerWidth - 300)}px`;
+                $gravity.style.animationDuration = `${randomNumber(6, 10)}s`;
+                $gravity.appendChild($wind);
 
-                $element.appendChild($gravity)
-            }, i * 300)
+                $element.appendChild($gravity);
+            }, i * 300);
         }
     }
 
     sprayConfetti(
         document.getElementById('confetti'),
         (innerHeight * innerWidth) / 25000
-    )
+    );
 </script>

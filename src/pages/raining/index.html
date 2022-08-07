@@ -20,8 +20,8 @@
 </html>
 
 <script>
-    var canvas = document.querySelector("canvas");
-    var ctx = canvas.getContext("2d");
+    var canvas = document.querySelector('canvas');
+    var ctx = canvas.getContext('2d');
 
     function resize(canvas2) {
         const displayWidth = canvas2.clientWidth;
@@ -55,7 +55,7 @@
         circleR = canvas.height * 4;
         CY = -circleR * 3 / 4;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = 'white';
         ctx.lineWidth = 0.5;
         ctx.save();
         ctx.translate(canvas.width / 2, CY);
@@ -91,7 +91,7 @@
         ctx.closePath();
         ctx.stroke();
         particles.forEach((particle, index) => {
-            ctx.fillStyle = "white";
+            ctx.fillStyle = 'white';
             const rev = -1 * Math.pow(particle.t - 0.5, 2) * circleR * 0.05 - circleR * 0.04;
             ctx.fillRect(Math.cos(particle.deg) * rev + particle.x, Math.sin(particle.deg) * rev + particle.y, 3, 3);
             particle.t += diff / 300;

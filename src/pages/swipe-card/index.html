@@ -96,10 +96,10 @@
                     </span>
                 </div>
             </div>
-        `
+        `;
     }
 
-    const $root = document.getElementById('root')
+    const $root = document.getElementById('root');
 
     const items = [
         'Shake it off - Taylor Swift',
@@ -109,7 +109,7 @@
         'Plastic Love - Mariya Takeuchi',
         'Paris In The Rain - Lauv',
         'Underwater - Heize',
-    ]
+    ];
 
     $root.innerHTML = `
         ${items.map(template).join('')}
@@ -119,92 +119,92 @@
         <button class="g-button">
             Refill
         </button>
-    `
+    `;
 
-    const $cards = document.querySelectorAll('.swipe-card')
+    const $cards = document.querySelectorAll('.swipe-card');
 
     document.querySelector('button.g-button').addEventListener('click', () => {
         location.reload();
-    })
+    });
 
     for (const $card of $cards) {
-        const $content = $card.querySelector('.content')
-        const $menu = $card.querySelector('.menu')
+        const $content = $card.querySelector('.content');
+        const $menu = $card.querySelector('.menu');
 
-        let isTarget = false
+        let isTarget = false;
         
-        let accMoveValue = 0
-        let lastClientX = 0
-        let clientWidth = 0
+        let accMoveValue = 0;
+        let lastClientX = 0;
+        let clientWidth = 0;
 
-        function getClientX(e: MouseEvent) {
-            const isTouch = e.changedTouches
+        const getClientX = (e: MouseEvent) => {
+            const isTouch = e.changedTouches;
             const clientX = isTouch
                 ? e.changedTouches[0].clientX
-                : e.clientX
-            return clientX
-        }
+                : e.clientX;
+            return clientX;
+        };
 
-        function handleDelete() {
-            $root.removeChild($card)
-        }
+        const handleDelete = () => {
+            $root.removeChild($card);
+        };
 
-        function handleFocusIn(e) {
-            isTarget = true
+        const  handleFocusIn = (e) => {
+            isTarget = true;
 
-            clientWidth = e.target.clientWidth
+            clientWidth = e.target.clientWidth;
             
-            lastClientX = getClientX(e)
-        }
+            lastClientX = getClientX(e);
+        };
 
-        function handleFocusOut(e) {
+        const handleFocusOut = () => {
             if (isTarget) {
                 if (accMoveValue <= -(clientWidth * (2 / 3))) {
                     // Immediately delete when swipe over 2/3
-                    $content.style.transform = `translate(-${clientWidth}px)`
-                    $menu.style.width = clientWidth + 'px'
+                    $content.style.transform = `translate(-${clientWidth}px)`;
+                    $menu.style.width = clientWidth + 'px';
                     setTimeout(handleDelete, 200);
                 } else if (accMoveValue <= -100) {
                     // Else show me the delete button
-                    $content.style.transform = `translate(-100px)`
-                    $menu.style.width = '100px'
+                    $content.style.transform = 'translate(-100px)';
+                    $menu.style.width = '100px';
                 } else {
                     // Else back to the before
-                    $content.style.transform = `translate(0px)`
-                    $menu.style.width = '0px'
+                    $content.style.transform = 'translate(0px)';
+                    $menu.style.width = '0px';
                 }
             }
 
-            isTarget = false
-            accMoveValue = 0
-            lastClientX = 0
-        }
+            isTarget = false;
+            accMoveValue = 0;
+            lastClientX = 0;
+        };
 
-        function handleMove(e) {
+        const handleMove = (e) => {
             if (isTarget) {
-                const clientX = getClientX(e)
+                const clientX = getClientX(e);
 
-                accMoveValue += clientX - lastClientX
-                lastClientX = clientX
+                accMoveValue += clientX - lastClientX;
+                lastClientX = clientX;
 
                 if (accMoveValue < 0) {
                     // If swipe to left
                     e.preventDefault(); // Prevent page scroll
-                    $content.style.transform = `translate(${accMoveValue}px)`
-                    $menu.style.width = Math.abs(accMoveValue) + 'px'
+                    $content.style.transform = `translate(${accMoveValue}px)`;
+                    $menu.style.width = Math.abs(accMoveValue) + 'px';
                 }
             }
-        }
+        };
 
-        $menu.addEventListener('click', handleDelete)
+        $menu.addEventListener('click', handleDelete);
 
-        $card.addEventListener('mousedown', handleFocusIn)
-        $card.addEventListener('touchstart', handleFocusIn)
+        $card.addEventListener('mousedown', handleFocusIn);
+        $card.addEventListener('touchstart', handleFocusIn);
 
-        window.addEventListener('mouseup', handleFocusOut)
-        $card.addEventListener('touchend', handleFocusOut)
+        window.addEventListener('mouseup', handleFocusOut);
+        $card.addEventListener('touchend', handleFocusOut);
 
-        window.addEventListener('mousemove', handleMove)
-        $card.addEventListener('touchmove', handleMove)
+        window.addEventListener('mousemove', handleMove);
+        $card.addEventListener('touchmove', handleMove);
     }
 </script>

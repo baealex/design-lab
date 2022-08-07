@@ -121,29 +121,29 @@
 
 <script>
     document.querySelector('.content button').addEventListener('click', () => {
-        location.reload()
-    })
+        location.reload();
+    });
 
     function randomNumber(min, max) { 
-        return Math.round(Math.random() * (max - min) + min)
+        return Math.round(Math.random() * (max - min) + min);
     }
     
     function imageLoadAndRun(imagePaths, func) {
-        let counter = 0
+        let counter = 0;
 
         for (const imagePath of imagePaths) {
-            const image = new Image()
+            const image = new Image();
             image.onload = image.onerror = () => {
                 if (++counter >= imagePaths.length) {
-                    func()
+                    func();
                 }
-            }
-            image.src = imagePath
+            };
+            image.src = imagePath;
         }
     }
 
-    const stack = document.querySelector('.stack')
-    const content = document.querySelector('.content')
+    const stack = document.querySelector('.stack');
+    const content = document.querySelector('.content');
 
     const imagePaths = [
         '/assets/images/sims4/1.jpg',
@@ -152,40 +152,40 @@
         '/assets/images/sims4/4.jpg',
         '/assets/images/sims4/5.jpg',
         '/assets/images/sims4/6.jpg',
-    ]
+    ];
 
     imageLoadAndRun(imagePaths, () => {
         for (const idx in imagePaths) {
-            const image = document.createElement('img')
-            const imagePath = imagePaths[idx]
-            image.src = imagePath
+            const image = document.createElement('img');
+            const imagePath = imagePaths[idx];
+            image.src = imagePath;
 
-            const rotate = randomNumber(-90, 90)
+            const rotate = randomNumber(-90, 90);
 
             // in
             setTimeout(() => {
-                image.style.transform = `translate(-50%, -50%) rotate(${rotate}deg)`
-                stack.appendChild(image)
-            }, idx * 300)
+                image.style.transform = `translate(-50%, -50%) rotate(${rotate}deg)`;
+                stack.appendChild(image);
+            }, idx * 300);
 
             // out
             setTimeout(() => {
                 image.style.opacity = 0;
-                image.style.transform = `translate(${randomNumber(-300, 300)}%, ${randomNumber(-300, 300)}%) rotate(${rotate}deg)`
+                image.style.transform = `translate(${randomNumber(-300, 300)}%, ${randomNumber(-300, 300)}%) rotate(${rotate}deg)`;
                 
                 setTimeout(() => {
-                    stack.removeChild(image)
-                }, 500)
-            }, imagePaths.length * 300)
+                    stack.removeChild(image);
+                }, 500);
+            }, imagePaths.length * 300);
         }
 
         setTimeout(() => {
-            content.style.display = 'block'
+            content.style.display = 'block';
             
             setTimeout(() => {
-                content.style.opacity = 1
-                content.style.position = 'default'
-            }, 500)
-        }, imagePaths.length * 300)
-    })
+                content.style.opacity = 1;
+                content.style.position = 'default';
+            }, 500);
+        }, imagePaths.length * 300);
+    });
 </script>

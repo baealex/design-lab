@@ -53,25 +53,25 @@
 
 <script>
     function runClock() {
-        const hourPin = document.querySelector('.hour.pin')
-        const minutePin = document.querySelector('.minute.pin')
-        const secondPin = document.querySelector('.second.pin')
+        const hourPin = document.querySelector('.hour.pin');
+        const minutePin = document.querySelector('.minute.pin');
+        const secondPin = document.querySelector('.second.pin');
         
         const tick = () => {
-            const date = new Date()
-            const hour = date.getHours()
-            const minute = date.getMinutes()
-            const second = date.getSeconds()
+            const date = new Date();
+            const hour = date.getHours();
+            const minute = date.getMinutes();
+            const second = date.getSeconds();
 
-            hourPin.style.transform = `rotate(${(((hour % 12) * 60 + minute) / 720) * 360}deg)`
-            minutePin.style.transform = `rotate(${((minute * 60 + second) / 3600) * 360}deg)`
-            secondPin.style.transform = `rotate(${(second) / 60 * 360}deg)`
+            hourPin.style.transform = `rotate(${(((hour % 12) * 60 + minute) / 720) * 360}deg)`;
+            minutePin.style.transform = `rotate(${((minute * 60 + second) / 3600) * 360}deg)`;
+            secondPin.style.transform = `rotate(${(second) / 60 * 360}deg)`;
 
-            setTimeout(tick, 1000)
-        }
+            setTimeout(tick, 1000);
+        };
 
-        tick()
+        tick();
     }
 
-    runClock()
+    runClock();
 </script>

@@ -124,21 +124,21 @@
     document.querySelector('.options').addEventListener('click', (e) => {
         if (e.target.nodeName === 'BUTTON') {
             switch(e.target.dataset.type) {
-                default:
-                    snackBar('Hi, there 👋.')
-                    break;
-                case 'small':
-                    snackBar('Lovely !!! 😍', { size: 'small' })
-                    break;
-                case 'onclick':
-                    snackBar('Please click me!', {
-                        size: 'small',
-                        onClick: () => {
-                            alert('Thanks for your click!')
-                        }
-                    })
-                    break;
+            default:
+                snackBar('Hi, there 👋.');
+                break;
+            case 'small':
+                snackBar('Lovely !!! 😍', { size: 'small' });
+                break;
+            case 'onclick':
+                snackBar('Please click me!', {
+                    size: 'small',
+                    onClick: () => {
+                        alert('Thanks for your click!');
+                    }
+                });
+                break;
             }
         }
-    })
+    });
 </script>
