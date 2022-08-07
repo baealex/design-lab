@@ -50,13 +50,14 @@
         return `rgb(${r},${g},${b})`;
     }
 
-    const $canvas = document.getElementById('canvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    /** @type {HTMLCanvasElement} */
+    const $canvas = document.getElementById('canvas');
+    const ctx = $canvas.getContext('2d');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    $canvas.width = window.innerWidth;
+    $canvas.height = window.innerHeight;
 
-    const maxDy = Math.round(canvas.height / 100);
+    const maxDy = Math.round($canvas.height / 100);
 
     let fireworks = [];
     let particles = [];
@@ -133,7 +134,7 @@
 
     function loop() {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, $canvas.width, $canvas.height);
 
         fireworks.concat(particles).forEach((entity) => {
             entity.update();
@@ -165,8 +166,8 @@
     function endlessCreateFireworks() {
         if (!document.hidden && fireworks.length < 20) {
             fireworks.push(new Firework(
-                randomNumber(0, canvas.width),
-                canvas.height,
+                randomNumber(0, $canvas.width),
+                $canvas.height,
                 randomNumber(2, 3),
                 randomNumber(3, maxDy),
                 randomColor()

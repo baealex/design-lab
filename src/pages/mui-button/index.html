@@ -34,27 +34,28 @@
 </html>
 
 <script>
+    /** @param {HTMLButtonElement} $button */
     function useRippleEffect($button) {
-        $button.addEventListener('click', (e: MouseEvent) => {
-            const ripple = document.createElement('span')
-            ripple.classList.add('ripple')
-            e.target.appendChild(ripple)
+        $button.addEventListener('click', (e) => {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            e.target.appendChild(ripple);
 
-            const mousePosX = e.pageX - e.target.offsetLeft - 25 + 'px'
-            const mousePosY = e.pageY - e.target.offsetTop - 25 + 'px'
+            const mousePosX = e.pageX - e.target.offsetLeft - 25 + 'px';
+            const mousePosY = e.pageY - e.target.offsetTop - 25 + 'px';
 
             setTimeout(() => {
-                ripple.style.top = mousePosY
-                ripple.style.left = mousePosX
-                ripple.style.opacity = 0
-                ripple.style.transform = 'scale(5)'
+                ripple.style.top = mousePosY;
+                ripple.style.left = mousePosX;
+                ripple.style.opacity = 0;
+                ripple.style.transform = 'scale(5)';
 
                 setTimeout(() => {
-                    e.target.removeChild(ripple)
-                }, 1000)
-            }, 0))
-        }
+                    e.target.removeChild(ripple);
+                }, 1000);
+            }, 0);
+        });
     }
 
-    document.querySelectorAll('button').forEach(useRippleEffect)
+    document.querySelectorAll('button').forEach(useRippleEffect);
 </script>

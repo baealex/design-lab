@@ -3,85 +3,84 @@
 <title>Reveal Effect</title>
 
 <style>
-        @keyframes anim-effect-1 {
-            0% {
-                transform: translate3d(-100%, 0, 0);
-            }
-            65% {
-                transform: translate3d(0, 0, 0);
-            }
-            100% {
-                transform: translate3d(0, 0, 0);
-            }
+    @keyframes anim-effect-1 {
+        0% {
+            transform: translate3d(-100%, 0, 0);
+        }
+        65% {
+            transform: translate3d(0, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes anim-effect-2 {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+        35%,
+        65% {
+            transform: translate3d(100%, 0, 0);
+        }
+        100% {
+            transform: translate3d(200%, 0, 0);
+        }
+    }
+
+    .reveal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #474787;
+        z-index: 1000;
+        width: 100%;
+        height: 100%;
+        transform: translate3d(-100%, 0, 0);
+
+        &.start {
+            animation-name: anim-effect-1;
+            animation-duration: 1s;
+            animation-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+            animation-fill-mode: forwards;
         }
 
-        @keyframes anim-effect-2 {
-            0% {
-                transform: translate3d(0, 0, 0);
-            }
-            35%,
-            65% {
-                transform: translate3d(100%, 0, 0);
-            }
-            100% {
-                transform: translate3d(200%, 0, 0);
-            }
+        &.end {
+            animation-name: anim-effect-2;
+            animation-duration: 1.5s;
+            animation-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+            animation-fill-mode: forwards;
         }
+    }
 
-        .reveal {
-            position: fixed;
+    #page {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        img {
+            position: absolute;
             top: 0;
             left: 0;
-            background: #474787;
-            z-index: 1000;
             width: 100%;
             height: 100%;
-            transform: translate3d(-100%, 0, 0);
-
-            &.start {
-                animation-name: anim-effect-1;
-                animation-duration: 1s;
-                animation-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-                animation-fill-mode: forwards;
-            }
-
-            &.end {
-                animation-name: anim-effect-2;
-                animation-duration: 1.5s;
-                animation-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-                animation-fill-mode: forwards;
-            }
+            object-fit: cover;
+            box-sizing: border-box;
         }
+    }
 
-        #page {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+    .options {
+        width: 200px;
+        max-width: 100%;
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
 
-            img {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                box-sizing: border-box;
-            }
+        button {
+            display: block;
+            margin-top: 8px;
         }
-
-        .options {
-            width: 200px;
-            max-width: 100%;
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-
-            button {
-                display: block;
-                margin-top: 8px;
-            }
-        }
-
+    }
 </style>
 
 <html>
@@ -132,7 +131,7 @@
     useInterval.CONTINUE = 1;
 
     const INIT_OPTIONS = {
-        onReady: () => unll,
+        onReady: () => null,
         colors: ['#222', '#444', '#666'],
         useRandomColor: false,
         endNatural: false,
@@ -241,23 +240,23 @@
     document.querySelector('.options').addEventListener('click', (e) => {
         if (e.target.nodeName === 'BUTTON') {
             switch(e.target.dataset.type) {
-            default:
-                reveal({
-                    onReady: router.next,
-                });
-                break;
-            case 'random':
-                reveal({
-                    onReady: router.next,
-                    useRandomColor: true,
-                });
-                break;
-            case 'natural':
-                reveal({
-                    onReady: router.next,
-                    endNatural: true,
-                });
-                break;
+                default:
+                    reveal({
+                        onReady: router.next,
+                    });
+                    break;
+                case 'random':
+                    reveal({
+                        onReady: router.next,
+                        useRandomColor: true,
+                    });
+                    break;
+                case 'natural':
+                    reveal({
+                        onReady: router.next,
+                        endNatural: true,
+                    });
+                    break;
             }
         }
     });

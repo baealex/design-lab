@@ -91,14 +91,15 @@
 </html>
 
 <script>
-    function useOpenToggle($menu: HTMLElement) {
-        $menu.addEventListener('click', (e: MouseEvent) => {
+    /** @param {HTMLElement} $menu */
+    function useOpenToggle($menu) {
+        $menu.addEventListener('click', (e => {
             if (e.currentTarget.classList.contains('isOpen')) {
                 e.currentTarget.classList.remove('isOpen');
             } else {
                 e.currentTarget.classList.add('isOpen');
             }
-        });
+        }));
     }
 
     document.querySelectorAll('.menu').forEach(useOpenToggle);

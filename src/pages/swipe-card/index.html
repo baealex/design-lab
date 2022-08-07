@@ -82,6 +82,8 @@
 
 <script>
     function template(content) {
+        const [ title, artist ] = content.split(' - ');
+
         return `
             <div class="swipe-card">
                 <div class="menu">
@@ -89,10 +91,10 @@
                 </div>
                 <div class="content">
                     <span class="title">
-                        ${content.split(' - ')[0]}
+                        ${title}
                     </span>
                     <span class="artist">
-                        ${content.split(' - ')[1]}
+                        ${artist}
                     </span>
                 </div>
             </div>
@@ -101,33 +103,8 @@
 
     const $root = document.getElementById('root');
 
-    const items = [
-        'Shake it off - Taylor Swift',
-        'After The After - Teers',
-        'Baby Powder - Jenevieve',
-        'Y U Gotta B Like That - Audrey Mika',
-        'Plastic Love - Mariya Takeuchi',
-        'Paris In The Rain - Lauv',
-        'Underwater - Heize',
-    ];
-
-    $root.innerHTML = `
-        ${items.map(template).join('')}
-        <footer>
-            ← Swipe to delete
-        </footer>
-        <button class="g-button">
-            Refill
-        </button>
-    `;
-
-    const $cards = document.querySelectorAll('.swipe-card');
-
-    document.querySelector('button.g-button').addEventListener('click', () => {
-        location.reload();
-    });
-
-    for (const $card of $cards) {
+    /** @param {HTMLDivElement} $card */
+    function useSwipe($card) {
         const $content = $card.querySelector('.content');
         const $menu = $card.querySelector('.menu');
 
@@ -137,7 +114,7 @@
         let lastClientX = 0;
         let clientWidth = 0;
 
-        const getClientX = (e: MouseEvent) => {
+        const getClientX = (e) => {
             const isTouch = e.changedTouches;
             const clientX = isTouch
                 ? e.changedTouches[0].clientX
@@ -207,4 +184,30 @@
         window.addEventListener('mousemove', handleMove);
         $card.addEventListener('touchmove', handleMove);
     }
+
+    const items = [
+        'Shake it off - Taylor Swift',
+        'After The After - Teers',
+        'Baby Powder - Jenevieve',
+        'Y U Gotta B Like That - Audrey Mika',
+        'Plastic Love - Mariya Takeuchi',
+        'Paris In The Rain - Lauv',
+        'Underwater - Heize',
+    ];
+
+    $root.innerHTML = `
+        ${items.map(template).join('')}
+        <footer>
+            ← Swipe to delete
+        </footer>
+        <button class="g-button">
+            Refill
+        </button>
+    `;
+
+    document.querySelectorAll('.swipe-card').forEach(useSwipe);
+
+    document.querySelector('button.g-button').addEventListener('click', () => {
+        location.reload();
+    });
 </script>
