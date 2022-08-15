@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+<title>Magnetic Button</title>
+
+<style>
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        border-radius: 100%;
+        border: none;
+        outline: none;
+        background: #f7cb46;
+        box-shadow: inset -30px -30px 50px 0 hsla(0, 0%, 0%, 0.25);
+        transition: transform 0.1s ease-out;
+    }
+
+    .text {
+        font-size: 32px;
+        transition: transform 0.1s ease-out;
+    }
+</style>
+
+<html>
+    <div id="root" class="g-flex-center">
+        <button>
+            <span class="text">
+                ╹ ◡ ╹
+            </span>
+        </button>
+    </div>
+</html>
+
+<script>
+    /** @param {HTMLButtonElement} $button */
+    function useMagneticEffect($button) {
+        const [ $text ] = $button.children;
+
+        $button.addEventListener('mousemove', (e) => {
+            const { offsetHeight, offsetTop, offsetLeft, offsetWidth } = $button;
+
+            const left = e.pageX - offsetLeft;
+            const top = e.pageY - offsetTop;
+            
+            const centerX = left - offsetWidth / 2;
+            const centerY = top - offsetHeight / 2;
+
+            const distance = Math.sqrt(centerX**2 + centerY**2);
+
+            $button.style.transform = `translate3d(${centerX / 1.5}px, ${centerY / 1.5}px, 0)`;
+            $text.style.transform = `
+                translate3d(${centerX / 4}px, ${centerY / 4}px, 0)
+                rotate3d(${-centerY / 100}, ${centerX / 100}, 0, ${distance / 5}deg)
+            `;
+        });
+
+        $button.addEventListener('mouseleave', (e) => {
+            $button.style.transform = '';
+            $text.style.transform = '';
+        });
+    }
+
+    document.querySelectorAll('button').forEach(useMagneticEffect);
+</script>
