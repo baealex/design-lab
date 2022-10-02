@@ -40,10 +40,12 @@ function injectParams(source: string, params?: Params) {
     let newSource = source;
     if (params && typeof params === 'object') {
         Object.keys(params).forEach(key => {
-            newSource = newSource.replace(
-                `{{ ${key} }}`,
-                JSON.stringify(params[key]),
-            );
+            while(newSource.includes(`{{ ${key} }}`)) {
+                newSource = newSource.replace(
+                    `{{ ${key} }}`,
+                    JSON.stringify(params[key]),
+                );
+            }
         });
     }
     return newSource;
@@ -94,7 +96,7 @@ function transpileWithTemplate(pageName: string, source: string, {
 
     let newSource = templateSource;
     
-    const keywords = tagSplit(templateSource, '{{ ', ' }}');
+    const keywords = tagSplit(templateSource, '{% block ', ' %}');
     for (const keyword of keywords) {
         const key = pageName + keyword;
         const items = tagSplit(source, `<${keyword}>`, `</${keyword}>`);
@@ -136,7 +138,7 @@ function transpileWithTemplate(pageName: string, source: string, {
                 mergeItems.push(item);
             }
         }
-        newSource = newSource.replace(`{{ ${keyword} }}`, mergeItems.join(''));
+        newSource = newSource.replace(`{% block ${keyword} %}`, mergeItems.join(''));
     }
 
     return newSource;
