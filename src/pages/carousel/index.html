@@ -44,6 +44,7 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+            pointer-events: none;
             transition: all 0.5s;
 
             @media screen and (max-width: 1600px) {
@@ -121,91 +122,110 @@
 </html>
 
 <script>
-    let nowIndex = 0
-    let isRotating = false
+    let nowIndex = 0;
+    let isRotating = false;
 
-    const $prev = document.querySelector('.prev')
-    const $next = document.querySelector('.next')
-    const $sections = document.querySelectorAll('.section')
+    const $prev = document.querySelector('.prev');
+    const $next = document.querySelector('.next');
+    const $sections = document.querySelectorAll('.section');
 
     function carousel(direction) {
-        if (isRotating) return
-        isRotating = true
-        setTimeout(() => { isRotating = false }, 500)
+        if (isRotating) return;
+        isRotating = true;
+        setTimeout(() => { isRotating = false; }, 500);
 
         if (direction === 'prev') {
-            nowIndex -= 1
+            nowIndex -= 1;
             if (nowIndex < 0) {
-                nowIndex = $sections.length - 1
+                nowIndex = $sections.length - 1;
             }
         }
         if (direction === 'next') {
-            nowIndex += 1
+            nowIndex += 1;
             if (nowIndex >= $sections.length) {
-                nowIndex = 0
+                nowIndex = 0;
             }
         }
 
         $sections.forEach(($el, idx) => {
-            $el.classList.remove('active')
-            $el.classList.remove('left')
-            $el.classList.remove('right')
+            $el.classList.remove('active');
+            $el.classList.remove('left');
+            $el.classList.remove('right');
 
             if (idx === nowIndex) {
-                $el.classList.add('active')
+                $el.classList.add('active');
             } else if (idx === nowIndex + 1 || nowIndex === $sections.length - 1 && idx === 0) {
-                $el.classList.add('right')
+                $el.classList.add('right');
             } else if (idx === nowIndex - 1 || nowIndex === 0 && idx === $sections.length - 1) {
-                $el.classList.add('left')
+                $el.classList.add('left');
             }
-        })
+        });
     }
 
     $prev.addEventListener('click', () => {
-        carousel('prev')
-    })
+        carousel('prev');
+    });
 
     $next.addEventListener('click', () => {
-        carousel('next')
-    })
+        carousel('next');
+    });
 
     $sections.forEach(($el, idx) => {
         $el.addEventListener('click', () => {
             if (idx === nowIndex) {
-                return
+                return;
             }
-            nowIndex = idx - 1
-            carousel('next')
-        })
-    })
+            nowIndex = idx - 1;
+            carousel('next');
+        });
+    });
 
-    window.addEventListener('keydown', (e: KeyboardEvent) => {
+    window.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') {
-            carousel('prev')
-            return
+            carousel('prev');
+            return;
         }
         if (e.key === 'ArrowRight') {
-            carousel('next')
-            return
+            carousel('next');
+            return;
         }
-    })
+    });
 
-    let prevClientX = 0
+    let prevClientX = 0;
 
     window.addEventListener('touchstart', (e) => {
-        const clientX = e.changedTouches[0].clientX
-        prevClientX = clientX
-    })
+        const clientX = e.changedTouches[0].clientX;
+        prevClientX = clientX;
+    });
+
+    window.addEventListener('mousedown', (e) => {
+        const clientX = e.clientX;
+        prevClientX = clientX;
+    });
 
     window.addEventListener('touchend', (e) => {
-        const clientX = e.changedTouches[0].clientX
+        const clientX = e.changedTouches[0].clientX;
 
         if (clientX - prevClientX < -100) {
-            carousel('next')
+            carousel('next');
         }
 
         if (clientX - prevClientX > 100) {
-            carousel('prev')
+            carousel('prev');
         }
-    })
+    });
+
+    window.addEventListener('mouseup', (e) => {
+        const clientX = e.clientX;
+
+        if (clientX - prevClientX < -100) {
+            carousel('next');
+        }
+
+        if (clientX - prevClientX > 100) {
+            carousel('prev');
+        }
+    });
+
+    carousel();
 </script>

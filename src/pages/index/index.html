@@ -3,16 +3,6 @@
 <title>BaeJino Design</title>
 
 <style>
-    @keyframes fade-in {
-        0% {
-            filter: blur(10px);
-        }
-
-        100% {
-            filter: blur(0px);
-        }
-    }
-
     body {
         background: #E5E4E5;
     }
@@ -20,55 +10,49 @@
     div#root {
         align-items: flex-start;
     }
-
-    .fade-in {
-        animation: fade-in 0.5s linear 1;
-    }
-
-    .navigation {
+    
+    .github-ribbon {
         position: fixed;
-        left: 50%;
-        bottom: 16px;
-        transform: translate(-50%, 0);
-
-        button {
-            display: inline-block;
-            background: #f7cb46;
-            border: 2px solid #020202;
-            color: #000;
-            font-weight: bold;
-            padding: 8px 16px;
-            cursor: pointer;
-        }
+        right: 0px;
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        z-index: 99999;
+        bottom: 0px;
+    }
+    
+    .github-ribbon a {
+        display: inline-block;
+        width: 200px;
+        overflow: hidden;
+        padding: 6px 0px;
+        text-align: center;
+        transform: rotate(-45deg);
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        position: inherit;
+        right: -40px;
+        font: 700 13px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 3px 0px;
+        background-color: #474787;
+        bottom: 45px;
+        background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
     }
 
-    .carousel {
-        overflow: hidden;
-        position: relative;
-        width: 100%;
-        height: 100%;
-        white-space: nowrap;
-        perspective: 800px;
+    ul {
+        width: 550px;
 
-        .section {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 800px;
-            height: 500px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            box-sizing: border-box;
-            transform: translate(-50%, -50%) scale(0);
-            transform-style: preserve-3d;
-            transition: all 0.5s;
+        li {
+            max-width: 100%;
+            margin: 16px;
+            padding: 16px 8px;
+            list-style: none;
+            font-weight: bold;
 
             div {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                font-weight: bold;
 
                 span {
                     svg {
@@ -83,14 +67,12 @@
             }
 
             iframe {
-                border: 2px solid #000;
-                border-radius: 16px;
-                box-sizing: border-box;
                 display: block;
+                border: none;
                 overflow: hidden;
-                margin-top: 8px;
+                margin-top: 16px;
                 width: 100%;
-                flex: 1;
+                height: 350px;
                 background: rgb(255, 255, 255);
                 transition: all 5s ease;
             }
@@ -98,92 +80,54 @@
             iframe.lazy {
                 backdrop-filter: blur(30px);
             }
-
-            @media screen and (max-width: 1600px) {
-                width: 700px;
-                height: 400px;
-            }
-
-            @media screen and (max-width: 1440px) {
-                width: 600px;
-                height: 350px;
-            }
-
-            @media screen and (max-width: 1240px) {
-                width: 500px;
-                height: 300px;
-            }
-
-            @media screen and (max-width: 1040px) {
-                width: 400px;
-                height: 250px;
-            }
-
-            @media screen and (max-width: 860px) {
-                width: 100%;
-                height: 100%;
-
-                div {
-                    margin: 16px 8px 8px;
-                }
-
-                iframe {
-                    border-radius: 0px;
-                }
-            }
-
-            &.active {
-                z-index: 5;
-                transform: translate(-50%, -50%) scale(1);
-                left: 50%;
-            }
-
-            &.right {
-                z-index: 4;
-                transform: translate(-50%, -50%) rotateY(25deg) scale(.8);
-                left: 90%;
-
-                @media screen and (max-width: 860px) {
-                    transform: translate(-50%, -50%) rotateY(90deg) scale(.2);
-                    left: 150%;
-                }
-            }
-
-            &.left {
-                z-index: 4;
-                transform: translate(-50%, -50%) rotateY(-25deg) scale(.8);
-                left: 10%;
-
-                @media screen and (max-width: 860px) {
-                    transform: translate(-50%, -50%) rotateY(-90deg) scale(.2);
-                    left: -50%;
-                }
-            }
         }
     }
 </style>
 
 <html>
-    <div class="carousel"></div>
-    <div class="navigation">
-        <button class="prev">
-            <span>PREV</span>
-        </button>
-        <button class="next">
-            <span>NEXT</span>
-        </button>
+    <div class="github-ribbon">
+        <a href="https://github.com/baealex/design">
+            Fork me on GitHub
+        </a>
     </div>
+    <div id="root" class="g-flex-center"></div>
 </html>
 
 <script>
+    function lazyLoad(elementName) {
+        if (!document.querySelectorAll || !'IntersectionObserver' in window) {
+            Array.from(document.getElementsByClassName('lazy')).forEach((element) => {
+                element.src = element.dataset.src;
+            });
+            return;
+        }
+
+        const lazyElements = Array.from(document.querySelectorAll(`${elementName}.lazy`));
+
+        const lazyElementObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const lazyElement = entry.target;
+                    lazyElement.src = lazyElement.dataset.src;
+                    lazyElement.classList.remove('lazy');
+                    lazyElementObserver.unobserve(lazyElement);
+                }
+            });
+        });
+
+        lazyElements.forEach((lazyElement) => {
+            lazyElementObserver.observe(lazyElement);
+        });
+    }
+
     function capitalize(s) {
         if (typeof s !== 'string') return ''
         return s.charAt(0).toUpperCase() + s.slice(1)
     }
 
-    function Item(title, path, idx) {
+    function Item(title, path) {
         return `
-            <div class="section">
+            <li class="g-card">
                 <div>
                     <span>${title}</span>
                     <a href="${path}">
@@ -191,7 +135,7 @@
                     </a>
                 </div>
                 <iframe class="lazy" data-src="${path}"></iframe>
-            </div>
+            </li>
         `
     }
 
@@ -199,129 +143,10 @@
 
     const items = pages
         .map((page, idx) => {
-            return Item(`${('00' + (idx + 1)).slice(-3)}. ${page.split('-').map(capitalize).join(' ')}`, `/${page}`, idx)
+            return Item(`${('00' + (idx + 1)).slice(-3)}. ${page.split('-').map(capitalize).join(' ')}`, `/${page}`)
         })
         .join('');
 
-    document.querySelector('.carousel').innerHTML = `${items}`;
-
-    let nowIndex = 0
-    let isRotating = false
-
-    const $prev = document.querySelector('.prev')
-    const $next = document.querySelector('.next')
-    const $sections = document.querySelectorAll('.section')
-
-    function carousel(direction) {
-        if (isRotating) return
-        isRotating = true
-        setTimeout(() => { isRotating = false }, 500)
-
-        if (direction === 'prev') {
-            nowIndex -= 1
-            if (nowIndex < 0) {
-                nowIndex = $sections.length - 1
-            }
-        }
-        if (direction === 'next') {
-            nowIndex += 1
-            if (nowIndex >= $sections.length) {
-                nowIndex = 0
-            }
-        }
-
-        $sections.forEach(($el, idx) => {
-            const $iframe = $el.querySelector('iframe')
-            let isActive = false
-
-            $el.classList.remove('active')
-            $el.classList.remove('left')
-            $el.classList.remove('right')
-
-            if (idx === nowIndex) {
-                $el.classList.add('active')
-                isActive = true
-            } else if (idx === nowIndex + 1 || nowIndex === $sections.length - 1 && idx === 0) {
-                $el.classList.add('right')
-                isActive = true
-            } else if (idx === nowIndex - 1 || nowIndex === 0 && idx === $sections.length - 1) {
-                $el.classList.add('left')
-                isActive = true
-            }
-
-            if (!$iframe.src && $iframe.classList.contains('lazy') && isActive) {
-                const newElement = document.createElement('iframe');
-                newElement.src = $iframe.dataset.src;
-                newElement.className = 'fade-in';
-                $iframe.replaceWith(newElement);
-            }
-        })
-    }
-
-    $prev.addEventListener('click', () => {
-        carousel('prev')
-    })
-
-    $next.addEventListener('click', () => {
-        carousel('next')
-    })
-
-    $sections.forEach(($el, idx) => {
-        $el.addEventListener('click', () => {
-            if (idx === nowIndex) {
-                return
-            }
-            nowIndex = idx - 1
-            carousel('next')
-        })
-    })
-
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-            carousel('prev')
-            return
-        }
-        if (e.key === 'ArrowRight') {
-            carousel('next')
-            return
-        }
-    })
-
-    let prevClientX = 0
-
-    window.addEventListener('touchstart', (e) => {
-        const clientX = e.changedTouches[0].clientX
-        prevClientX = clientX
-    })
-
-    window.addEventListener('mousedown', (e) => {
-        const clientX = e.clientX
-        prevClientX = clientX
-    })
-
-    window.addEventListener('touchend', (e) => {
-        const clientX = e.changedTouches[0].clientX
-
-        if (clientX - prevClientX < -100) {
-            carousel('next')
-        }
-
-        if (clientX - prevClientX > 100) {
-            carousel('prev')
-        }
-    })
-
-    window.addEventListener('mouseup', (e) => {
-        const clientX = e.clientX
-
-        if (clientX - prevClientX < -100) {
-            carousel('next')
-        }
-
-        if (clientX - prevClientX > 100) {
-            carousel('prev')
-        }
-    })
-
-    carousel()
+    document.getElementById('root').innerHTML = `<ul>${items}</ul>`;
+    lazyLoad('iframe');
 </script>
