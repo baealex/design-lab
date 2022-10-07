@@ -3,6 +3,16 @@
 <title>BaeJino Design</title>
 
 <style>
+    @keyframes fade-in {
+        0% {
+            filter: blur(10px);
+        }
+
+        100% {
+            filter: blur(0px);
+        }
+    }
+
     body {
         background: #E5E4E5;
     }
@@ -10,41 +20,21 @@
     div#root {
         align-items: flex-start;
     }
-    
-    .github-ribbon {
-        position: fixed;
-        right: 0px;
-        width: 150px;
-        height: 150px;
-        overflow: hidden;
-        z-index: 99999;
-        bottom: 0px;
-    }
-    
-    .github-ribbon a {
-        display: inline-block;
-        width: 200px;
-        overflow: hidden;
-        padding: 6px 0px;
-        text-align: center;
-        transform: rotate(-45deg);
-        text-decoration: none;
-        color: rgb(255, 255, 255);
-        position: inherit;
-        right: -40px;
-        font: 700 13px "Helvetica Neue", Helvetica, Arial, sans-serif;
-        box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 3px 0px;
-        background-color: #474787;
-        bottom: 45px;
-        background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
-    }
 
+    .fade-in {
+        animation: fade-in 0.5s linear 1;
+    }
+    
     ul {
-        width: 550px;
+        max-width: 540px;
+        width: 100%;
+        display: grid;
+        padding: 24px 0;
+        grid-template-columns: repeat(1, 1fr);
 
         li {
             max-width: 100%;
-            margin: 16px;
+            margin: 8px;
             padding: 16px 8px;
             list-style: none;
             font-weight: bold;
@@ -72,7 +62,7 @@
                 overflow: hidden;
                 margin-top: 16px;
                 width: 100%;
-                height: 350px;
+                height: 320px;
                 background: rgb(255, 255, 255);
                 transition: all 5s ease;
             }
@@ -85,11 +75,6 @@
 </style>
 
 <html>
-    <div class="github-ribbon">
-        <a href="https://github.com/baealex/design">
-            Fork me on GitHub
-        </a>
-    </div>
     <div id="root" class="g-flex-center"></div>
 </html>
 
@@ -108,8 +93,17 @@
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     const lazyElement = entry.target;
-                    lazyElement.src = lazyElement.dataset.src;
-                    lazyElement.classList.remove('lazy');
+                    if (elementName === 'iframe') {
+                        const newElement = document.createElement('iframe');
+                        newElement.src = lazyElement.dataset.src;
+                        newElement.className = 'fade-in';
+                        lazyElement.replaceWith(newElement);
+                    } else {
+                        const lazyElement = entry.target;
+                        lazyElement.src = lazyElement.dataset.src;
+                        lazyElement.classList.add('fade-in');
+                        lazyElement.classList.remove('lazy');
+                    }
                     lazyElementObserver.unobserve(lazyElement);
                 }
             });
