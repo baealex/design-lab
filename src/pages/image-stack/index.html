@@ -8,15 +8,14 @@
         top: 50%;
         left: 50%;
         width: 350px;
-        border-radius: 20px;
         opacity: 1;
         transition: all 0.5s ease;
     }
 
     .content {
         align-self: flex-start;
-        width: 640px;
-        max-width: 100%;
+        width: 100%;
+        height: 100%;
         position: absolute;
         display: none;
         opacity: 0;
@@ -33,32 +32,60 @@
 
         .section {
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
+            height: 100%;
             margin-top: 8px;
 
-            & > img.photo {
+            .cover {
                 box-sizing: border-box;
-                border-radius: 20px;
-                width: 100%;
-            }
+                overflow: hidden;
+                width: 640px;
+                perspective: 800px;
+                transform-style: preserve-3d;
+                transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-            .description {
-                position: absolute;
-                bottom: 20px;
-                right: 20px;
-                text-align: center;
+                &:hover {
+                    transform: scale(0.95);
 
-                img {
-                    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.75));
+                    & > .photo {
+                        transform: scale(1.2) rotateY(5deg);
+                    }
+
+                    & > .description p {
+                        transform: scale(1.05);
+                        letter-spacing: 12px;
+                    }
                 }
 
-                p {
-                    color: #fff;
-                    font-size: 16px;
-                    font-weight: bold;
-                    letter-spacing: -1px;
-                    text-transform: uppercase;
-                    text-shadow: 1px 1px 6px #000;
+                .photo {
+                    width: 100%;
+                    transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+                }
+
+                .description {
+                    position: absolute;
+                    width: 100%;
+                    bottom: 50%;
+                    right: 50%;
+                    transform: translate(50%, 50%);
+                    text-align: center;
+
+                    img {
+                        filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.75));
+                    }
+
+                    p {
+                        transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+                        color: #fff;
+                        font-size: 16px;
+                        font-weight: bold;
+                        letter-spacing: -1px;
+                        text-transform: uppercase;
+                        text-shadow: 1px 1px 6px #000;
+                    }
                 }
             }
         }
@@ -71,45 +98,51 @@
         <div class="stack"></div>
         <div class="content">
             <div class="section">
-                <img class="photo" src="/assets/images/sims4/1.jpg"/>
-                <div class="description">
-                    <img src="/assets/images/sims4/logo.png">
-                    <p>Tiny Living</p>
+                <div class="cover">
+                    <img class="photo" src="/assets/images/sims4/1.jpg"/>
+                    <div class="description">
+                        <p>Tiny Living</p>
+                    </div>
                 </div>
             </div>
             <div class="section">
-                <img class="photo" src="/assets/images/sims4/2.jpg"/>
-                <div class="description">
-                    <img src="/assets/images/sims4/logo.png">
-                    <p>Get Famous</p>
+                <div class="cover">
+                    <img class="photo" src="/assets/images/sims4/2.jpg"/>
+                    <div class="description">
+                        <p>Get Famous</p>
+                    </div>
                 </div>
             </div>
             <div class="section">
-                <img class="photo" src="/assets/images/sims4/3.jpg"/>
-                <div class="description">
-                    <img src="/assets/images/sims4/logo.png">
-                    <p>Snowy Escape</p>
+                <div class="cover">
+                    <img class="photo" src="/assets/images/sims4/3.jpg"/>
+                    <div class="description">
+                        <p>Snowy Escape</p>
+                    </div>
                 </div>
             </div>
             <div class="section">
-                <img class="photo" src="/assets/images/sims4/4.jpg"/>
-                <div class="description">
-                    <img src="/assets/images/sims4/logo.png">
-                    <p>Island Living</p>
+                <div class="cover">
+                    <img class="photo" src="/assets/images/sims4/4.jpg"/>
+                    <div class="description">
+                        <p>Island Living</p>
+                    </div>
                 </div>
             </div>
             <div class="section">
-                <img class="photo" src="/assets/images/sims4/5.jpg"/>
-                <div class="description">
-                    <img src="/assets/images/sims4/logo.png">
-                    <p>Cottage Living</p>
+                <div class="cover">
+                    <img class="photo" src="/assets/images/sims4/5.jpg"/>
+                    <div class="description">
+                        <p>Cottage Living</p>
+                    </div>
                 </div>
             </div>
             <div class="section">
-                <img class="photo" src="/assets/images/sims4/6.jpg"/>
-                <div class="description">
-                    <img src="/assets/images/sims4/logo.png">
-                    <p>City Living</p>
+                <div class="cover">
+                    <img class="photo" src="/assets/images/sims4/6.jpg"/>
+                    <div class="description">
+                        <p>City Living</p>
+                    </div>
                 </div>
             </div>
             <button class="g-button">
@@ -166,7 +199,7 @@
             setTimeout(() => {
                 image.style.transform = `translate(-50%, -50%) rotate(${rotate}deg)`;
                 stack.appendChild(image);
-            }, idx * 300);
+            }, idx * 200);
 
             // out
             setTimeout(() => {
@@ -176,7 +209,7 @@
                 setTimeout(() => {
                     stack.removeChild(image);
                 }, 500);
-            }, imagePaths.length * 300);
+            }, imagePaths.length * 200);
         }
 
         setTimeout(() => {
@@ -186,6 +219,6 @@
                 content.style.opacity = 1;
                 content.style.position = 'default';
             }, 500);
-        }, imagePaths.length * 300);
+        }, imagePaths.length * 200);
     });
 </script>
