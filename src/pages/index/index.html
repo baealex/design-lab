@@ -166,10 +166,7 @@
                 height: 400px;
                 background: rgb(255, 255, 255);
                 transition: all 5s ease;
-            }
-
-            iframe.lazy {
-                backdrop-filter: blur(30px);
+                pointer-events: none;
             }
         }
     }
@@ -202,7 +199,9 @@
                     if (elementName === 'iframe') {
                         const newElement = document.createElement('iframe');
                         newElement.src = lazyElement.dataset.src;
-                        newElement.className = 'fade-in';
+                        newElement.onload = () => {
+                            newElement.className = 'fade-in';
+                        };
                         lazyElement.replaceWith(newElement);
                     } else {
                         const lazyElement = entry.target;
@@ -237,7 +236,9 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ai ai-Enlarge"><path d="M14.5 9.5L21 3m0 0h-6m6 0v6M3 21l6.5-6.5M3 21v-6m0 6h6"></path></svg>
                     </a>
                 </div>
-                <iframe class="lazy" data-src="${path}"></iframe>
+                <a class="click-to-full-screen" href="${path}">
+                    <iframe class="lazy" data-src="${path}"></iframe>
+                </a>
             </li>
         `
     }
