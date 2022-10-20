@@ -43,10 +43,14 @@
         font-family: 'Montserrat', cursive;
 
         .container {
-            padding-top: 8px;
+            padding-top: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            @media (max-width: 768px) {
+                padding-top: 24px;
+            }
         }
 
         h1 {
@@ -54,7 +58,8 @@
             font-weight: 900;
 
             @media (max-width: 768px) {
-                font-size: 1.5rem;
+                font-size: 2rem;
+                font-weight: 900;
             }
         }
 
@@ -66,13 +71,22 @@
             & > span {
                 font-size: 2.5rem;
                 font-weight: 400;
-                letter-spacing: 0.2rem;
+
+                @media (max-width: 768px) {
+                    font-size: 2rem;
+                }
             }
             
             & > div {
                 display: flex;
                 flex-direction: column;
                 font-weight: 400;
+
+                & > span {
+                    @media (max-width: 768px) {
+                        font-size: 0.65rem;
+                    }
+                }
             }
         }
     }
@@ -95,7 +109,12 @@
             height: 50px;
             border-radius: 8px;
             transition: transform .5s ease,box-shadow .5s ease;
-            box-shadow: 0 16px 16px rgba(115,90,242,.3);
+            box-shadow: 0 16px 16px rgba(115, 90, 242, .3);
+
+            &:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 20px rgba(115, 90, 242, .2);
+            }
         }
     }
 
@@ -274,17 +293,15 @@
 
     const now = new Date();
     document.querySelector('.title').innerHTML = `
-        <div class="title">
-            <div class="container">
-                <h1>
-                    BaeJino
-                </h1>
-                <div class="date">
-                    <span>${dayjs(now).format('DD')}</span>
-                    <div>
-                        <span>${dayjs(now).format('MMMM')}</span>
-                        <span>${dayjs(now).format('dddd')}</span>
-                    </div>
+        <div class="container">
+            <h1>
+                BaeJino
+            </h1>
+            <div class="date">
+                <span>${dayjs(now).format('DD')}</span>
+                <div>
+                    <span>${dayjs(now).format('MMMM')}</span>
+                    <span>${dayjs(now).format('dddd')}</span>
                 </div>
             </div>
         </div>
@@ -411,6 +428,15 @@
             carousel('prev')
         }
     })
+
+    document.body.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            carousel('prev')
+        } else {
+            carousel('next')
+        }
+    });
 
     carousel()
 </script>
