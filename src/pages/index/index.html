@@ -308,7 +308,9 @@
     `;
     document.querySelector('.carousel').innerHTML = `${items}`;
 
-    let nowIndex = 0
+    let nowIndex = window.location.hash
+        ? parseInt(window.location.hash.replace('#', '')) - 1
+        : 0;
     let isRotating = false
 
     const $prev = document.querySelector('.prev')
@@ -332,6 +334,8 @@
                 nowIndex = 0
             }
         }
+
+        window.location.replace(`#${nowIndex + 1}`)
 
         $sections.forEach(($el, idx) => {
             const $iframe = $el.querySelector('iframe')
