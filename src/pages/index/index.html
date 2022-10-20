@@ -112,6 +112,31 @@
         }
     }
 
+    @keyframes slide-in {
+        0% {
+            transform: translate3d(-100%, 0, 0);
+        }
+
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .slide-in {
+        animation: slide-in 10s linear 1;
+    }
+
+    .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: #735af2;
+        transform: translate3d(-100%, 0, 0);
+        z-index: 9999;
+    }
+
     .carousel {
         overflow: hidden;
         position: relative;
@@ -133,6 +158,7 @@
             transform: translate(-50%, -50%) scale(0);
             transform-style: preserve-3d;
             transition: all 0.5s;
+            will-change: transform;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);
             padding: 8px;
@@ -140,25 +166,20 @@
             box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1);
 
             .merge {
-                position: relative;
-            }
-
-            .number {
-                position: absolute;
-                color: rgba(0, 0, 0, 0.1);
-                font-size: 3rem;
-                font-weight: 900;
-                letter-spacing: -0.2rem;
-                transform: translate(0, -50%);
-                left: 8px;
-                top: 50%;
-            }
-
-            .name {
+                display: flex;
+                align-items: center;
                 font-size: 1.1rem;
                 font-weight: bold;
-                letter-spacing: -0.05rem;
-                margin-left: 20px;
+                gap: 8px;
+
+                .number {
+                    color: rgba(0, 0, 0, 0.3);
+                    letter-spacing: -0.1rem;
+                }
+
+                .name {
+                    letter-spacing: -0.05rem;
+                }
             }
 
             .top {
@@ -246,6 +267,7 @@
             <span>NEXT</span>
         </button>
     </div>
+    <div class="progress"></div>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 </html>
 
@@ -273,14 +295,14 @@
     }
 
     const pages = {{ pages }};
-    const concepts = pages.filter(page => page.includes('concept'));
+    const designs = pages.filter(page => page.includes('design'));
     const effects = pages.filter(page => page.includes('effect'));
     const layouts = pages.filter(page => page.includes('layout'));
     const components = pages.filter(page => page.includes('component'));
 
-    const items = [...concepts, ...effects, ...layouts, ...components]
+    const items = [...designs, ...effects, ...layouts, ...components]
         .map((page, idx) => {
-            return Item(`${('0' + (idx + 1)).slice(-2)}`, `${page.split('-').map(capitalize).join(' ')}`, `/${page}`, idx)
+            return Item(`#${('0' + (idx + 1)).slice(-2)}`, `${page.split('-').map(capitalize).reverse().join(' ')}`, `/${page}`, idx)
         })
         .join('');
 
@@ -305,10 +327,12 @@
         ? parseInt(window.location.hash.replace('#', '')) - 1
         : 0;
     let isRotating = false
+    let latestMovement = 'next'
 
     const $prev = document.querySelector('.prev')
     const $next = document.querySelector('.next')
     const $sections = document.querySelectorAll('.section')
+    const $progress = document.querySelector('.progress')
 
     function carousel(direction) {
         if (isRotating) return
@@ -328,6 +352,11 @@
             }
         }
 
+        latestMovement = direction || 'next'
+        $progress.classList.remove('slide-in')
+        setTimeout(() => {
+            $progress.classList.add('slide-in')
+        }, 100)
         window.location.replace(`#${nowIndex + 1}`)
 
         $sections.forEach(($el, idx) => {
@@ -433,6 +462,17 @@
             carousel('next')
         }
     });
+
+    $progress.classList.add('slide-in')
+    $progress.addEventListener('animationend', () => {
+        setTimeout(() => {
+            $progress.classList.remove('slide-in')
+            setTimeout(() => {
+                $progress.classList.add('slide-in')
+            }, 100)
+        }, 100)
+        carousel(latestMovement)
+    })
 
     carousel()
 </script>
