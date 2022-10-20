@@ -108,13 +108,7 @@
             width: 120px;
             height: 50px;
             border-radius: 8px;
-            transition: transform .5s ease,box-shadow .5s ease;
             box-shadow: 0 16px 16px rgba(115, 90, 242, .3);
-
-            &:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 20px 20px rgba(115, 90, 242, .2);
-            }
         }
     }
 
@@ -188,7 +182,6 @@
                 width: 100%;
                 flex: 1;
                 background: rgb(255, 255, 255);
-                transition: all 5s ease;
                 filter: blur(10px);
             }
 
@@ -359,7 +352,6 @@
             if (!$iframe.src && $iframe.classList.contains('lazy') && isActive) {
                 const newElement = document.createElement('iframe');
                 newElement.src = $iframe.dataset.src;
-                newElement.className = 'fade-in';
                 newElement.onload = () => {
                     newElement.className = 'fade-in';
                 };
