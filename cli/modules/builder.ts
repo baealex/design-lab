@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 
-import { useClientSocket } from './hooks';
+import { useSocketClient } from './hooks';
 import { transpile } from './transpile';
 
 const SOURCE_PATH = './src';
@@ -41,7 +41,7 @@ export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
     });
     
     if (isDev) {
-        await fs.writeFile(`${DIST_PATH}/${path}.html`, useClientSocket(newIndex, `
+        await fs.writeFile(`${DIST_PATH}/${path}.html`, useSocketClient(newIndex, `
             socket.on('onchange', function(path) {
                 if (path === 'index') {
                     path = '/';

@@ -1,4 +1,4 @@
-export function useClientSocket(html: string, source: string) {
+export function useSocketClient(html: string, source: string) {
     return html.replace(
         '</body>',
         `
