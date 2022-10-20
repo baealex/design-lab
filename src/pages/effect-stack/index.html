@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-<title>Image Stack</title>
+<title>Stack Effect</title>
 
 <style>
     .stack img {
@@ -46,19 +46,6 @@
                 perspective: 800px;
                 transform-style: preserve-3d;
                 transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
-
-                &:hover {
-                    transform: scale(0.95);
-
-                    & > .photo {
-                        transform: scale(1.2) rotateY(5deg);
-                    }
-
-                    & > .description p {
-                        transform: scale(1.05);
-                        letter-spacing: 12px;
-                    }
-                }
 
                 .photo {
                     width: 100%;
@@ -221,4 +208,33 @@
             }, 500);
         }, imagePaths.length * 200);
     });
+
+    function optimizedEvent(func) {
+        let ticking = false;
+
+        return (e) => {
+            if (ticking) return;
+
+            window.requestAnimationFrame(() => {
+                func(e);
+                ticking = false;
+            });
+            ticking = true;
+        };
+    }
+
+    function trackEvent() {
+        const covers = document.querySelectorAll('.cover');
+
+        covers.forEach(cover => {
+            const { top, bottom } = cover.getBoundingClientRect();
+
+            if (top > 0 && bottom < window.innerHeight) {
+                cover.querySelector('.photo').style.transform = `scale(${1 + (window.innerHeight - bottom) / 1000})`;
+                cover.querySelector('.description p').style.letterSpacing = `${(window.innerHeight - bottom) / 50}px`;
+            }
+        });
+    }
+
+    window.addEventListener('scroll', optimizedEvent(trackEvent));
 </script>
