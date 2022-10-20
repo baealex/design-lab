@@ -81,9 +81,7 @@
 </html>
 
 <script>
-    function template(content) {
-        const [ title, artist ] = content.split(' - ');
-
+    function Template({ title, artist }) {
         return `
             <div class="swipe-card">
                 <div class="menu">
@@ -185,29 +183,23 @@
         $card.addEventListener('touchmove', handleMove);
     }
 
-    const items = [
-        'Shake it off - Taylor Swift',
-        'After The After - Teers',
-        'Baby Powder - Jenevieve',
-        'Y U Gotta B Like That - Audrey Mika',
-        'Plastic Love - Mariya Takeuchi',
-        'Paris In The Rain - Lauv',
-        'Underwater - Heize',
-    ];
+    fetch('/assets/data/playlist.json')
+        .then(res => res.json())
+        .then(data => {
+            $root.innerHTML = `
+                ${data.map(Template).join('')}
+                <footer>
+                    ← Swipe to delete
+                </footer>
+                <button class="g-button">
+                    Refill
+                </button>
+            `;
 
-    $root.innerHTML = `
-        ${items.map(template).join('')}
-        <footer>
-            ← Swipe to delete
-        </footer>
-        <button class="g-button">
-            Refill
-        </button>
-    `;
+            document.querySelectorAll('.swipe-card').forEach(useSwipe);
 
-    document.querySelectorAll('.swipe-card').forEach(useSwipe);
-
-    document.querySelector('button.g-button').addEventListener('click', () => {
-        location.reload();
-    });
+            document.querySelector('button.g-button').addEventListener('click', () => {
+                location.reload();
+            });
+        });
 </script>

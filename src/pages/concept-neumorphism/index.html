@@ -173,21 +173,11 @@
 </html>
 
 <script>
-    const items = [
-        'Shake it off - Taylor Swift',
-        'After The After - Teers',
-        'Baby Powder - Jenevieve',
-        'Y U Gotta B Like That - Audrey Mika',
-        'Plastic Love - Mariya Takeuchi',
-        'Paris In The Rain - Lauv',
-        'Underwater - Heize',
-    ];
-
-    const component = ([title, name]) => `
+    const Template = ({ title, artist }) => `
         <div class="list-item">
             <div>
                 <div class="title">${title}</div>
-                <div class="album">${name}</div>
+                <div class="album">${artist}</div>
             </div>
             <button class="button">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#555" style="width: 8px; height: 8px;">
@@ -197,6 +187,9 @@
         </div>
     `;
 
-    const list = document.getElementById('list');
-    list.innerHTML = items.map(item => component(item.split(' - '))).join('');
+    fetch('/assets/data/playlist.json')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('list').innerHTML = data.map(Template).join(''); 
+        });
 </script>
