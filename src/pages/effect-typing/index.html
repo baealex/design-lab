@@ -11,7 +11,7 @@
     }
 
     body {
-        background: rgb(15, 0, 35);
+        background: rgb(23, 2, 50);
     }
 
     body:after {
@@ -48,17 +48,22 @@
         margin-bottom: 200px;
     }
 
-    .letters > div::before {
+    .letters > div:before {
         pointer-events: none;
-        content: "";
+        content: '';
         position: absolute;
         background: rgb(130, 72, 229);
         top: 120%;
         left: 0;
         width: 100%;
         height: 100%;
-        transform: perspective(1em) rotateX(40deg) scale(1, 0.5);
         filter: blur(1em);
+        transform: scale(1, 0.5);
+        opacity: 0.5;
+    }
+
+    .letters > div:last-child:before {
+        transform: perspective(1em) rotateX(40deg) scale(1, 0.5);
         opacity: 0.7;
     }
 </style>
@@ -211,21 +216,11 @@ PL - PILLOW
             const delay = 100;
 
             if (line === '') {
-                setTimeout(resolve, delay * 3);
+                resolve();
                 return;
             }
 
-            window.scrollTo(0, document.body.scrollHeight, { behavior: 'smooth' });
-
-            new Promise(() => {
-                const $items = $letters.childNodes;
-                $items.forEach($item => {
-                    const { top } = $item.getBoundingClientRect();
-                    if (top < 0) {
-                        $letters.removeChild($item);
-                    }
-                });
-            });
+            window.scrollTo({ top: document.body.scrollHeight });
 
             const letters = line.split('').map(글자_분리기);
             const event = setInterval(() => {
@@ -242,19 +237,15 @@ PL - PILLOW
 
                 if (acc === letters.length) {
                     clearInterval(event);
-                    setTimeout(resolve, delay * 3);
+                    setTimeout(resolve, delay * 5);
                 }
             }, delay);
         });
     });
 
     async function main() {
-        // eslint-disable-next-line no-constant-condition
-        while(true) {
-            for (const event of events) {
-                await event();
-            }
-            await new Promise((resolve) => setTimeout(resolve, 3000));
+        for (const event of events) {
+            await event();
         }
     }
 
