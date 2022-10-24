@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+<title>Typing Effect</title>
+
+<style>
+    @font-face {
+        font-family: 'KyoboHandwriting2020A';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/KyoboHandwriting2020A.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    body {
+        background: rgb(15, 0, 35);
+    }
+
+    body:after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 80%);
+        z-index: 1;
+    }
+
+    .letters {
+        width: 100%;
+        min-height: 150%;
+        font-family: 'KyoboHandwriting2020A';
+        font-size: 34px;
+        color: rgb(185, 144, 255);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .letters > div:first-child {
+        margin-top: 80vh;
+    }
+
+    .letters > div {
+        text-shadow: 1px 1px 6px rgb(130, 72, 229);
+        position: relative;
+        display: inline-block;
+        margin-bottom: 200px;
+    }
+
+    .letters > div::before {
+        pointer-events: none;
+        content: "";
+        position: absolute;
+        background: rgb(130, 72, 229);
+        top: 120%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: perspective(1em) rotateX(40deg) scale(1, 0.5);
+        filter: blur(1em);
+        opacity: 0.7;
+    }
+</style>
+
+<html>
+    <div class="letters"></div>
+</html>
+
+<script>
+    const 초성_연결자 = [
+        'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ',
+        'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ',
+        'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
+    ].reduce((acc, cur, idx) => ({
+        ...acc,
+        [cur]: idx
+    }), {});
+
+    const 종성_연결자 = [
+        '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ',
+        'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
+        'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ',
+        'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
+    ].reduce((acc, cur, idx) => ({
+        ...acc,
+        [cur]: idx
+    }), {});
+        
+    function 글자_분리기(글자) {
+        const 초성 = [
+            'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ',
+            'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ',
+            'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
+        ];
+
+        const 중성 = [
+            'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ',
+            'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ',
+            'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'
+        ];
+
+        const 종성 = [
+            '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ',
+            'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ',
+            'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ',
+            'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
+        ];
+
+        const 유니코드_한글_시작점 = 44032;
+        const 유니코드_한글_종료점 = 55203;
+
+        const 글자의_유니코드 = 글자.charCodeAt(0);
+
+        if (글자의_유니코드 < 유니코드_한글_시작점 || 글자의_유니코드 > 유니코드_한글_종료점) {
+            return [ 글자 ];
+        }
+
+        const 상대_크기 = 글자의_유니코드 - 유니코드_한글_시작점;
+
+        const 초성_인덱스 = parseInt(상대_크기 / 588);
+        const 중성_인덱스 = parseInt((상대_크기 - (초성_인덱스 * 588)) / 28);
+        const 종성_인덱스 = parseInt(상대_크기 % 28);
+
+        if (종성[종성_인덱스]) {
+            return [
+                초성[초성_인덱스],
+                중성[중성_인덱스],
+                종성[종성_인덱스]
+            ];
+        }
+        return [
+            초성[초성_인덱스],
+            중성[중성_인덱스]
+        ];
+    }
+
+    function 글자_병합기(원자들) {
+        const [초성='', 중성='', 종성=''] = 원자들;
+
+        if (!중성) {
+            return 초성;
+        }
+
+        const 중성_유니코드 = 중성.charCodeAt(0);
+
+        const 자음_유니코드_시작점 = 12623;
+        const 유니코드_한글_시작점 = 44032;
+        
+        const 초성_인덱스 = 초성_연결자[초성];
+        const 중성_인덱스 = 중성_유니코드 - 자음_유니코드_시작점;
+        const 종성_인덱스 = 종성_연결자[종성];
+
+        return String.fromCharCode(
+            유니코드_한글_시작점
+            + 초성_인덱스 * 588
+            + 중성_인덱스 * 28
+            + 종성_인덱스
+        );
+    }
+
+    const text = `
+온종일
+기다려도 괜찮아
+
+이 기다림도
+내겐 선물 같아
+
+더 듣고 싶은
+너의 안부
+
+넌 듣지 못할
+나의 질문
+
+또 대답 없이
+잠에 들겠지만
+
+기쁠 때면
+날 안아도 돼
+
+힘이 들면
+나에게 기대
+
+때론 나를
+적셔도 돼
+
+똑같은 베개 위의
+둘을 꿈꾸면
+
+내 지루했던
+하룬 잊게 돼
+
+내 곁에 잠든
+너와 꿈꾸며
+
+PL's PILLOW
+`.trim();
+
+    const $letters = document.querySelector('.letters');
+
+    const events = text.split('\n').map((line) => {
+        return () => new Promise((resolve) => {
+            let acc = 0;
+            let cur = 0;
+            let content = '';
+
+            const $div = document.createElement('div');
+            $div.innerHTML = '&nbsp;';
+            $letters.appendChild($div);
+
+            const delay = 100;
+
+            if (line === '') {
+                setTimeout(resolve, delay * 3);
+                return;
+            }
+
+            window.scrollTo(0, document.body.scrollHeight, { behavior: 'smooth' });
+
+            const letters = line.split('').map(글자_분리기);
+            const event = setInterval(() => {
+                cur++;
+
+                if (letters[acc].length === cur) {
+                    content += 글자_병합기(letters[acc]);
+                    acc++;
+                    cur = 0;
+                    $div.textContent = content;
+                } else {
+                    $div.textContent = content + 글자_병합기(letters[acc].slice(0, cur));
+                }
+
+                if (acc === letters.length) {
+                    clearInterval(event);
+                    setTimeout(resolve, delay * 3);
+                }
+            }, delay);
+        });
+    });
+
+    async function main() {
+        for (const event of events) {
+            await event();
+        }
+    }
+
+    main();
+</script>
