@@ -193,7 +193,7 @@
 내 곁에 잠든
 너와 꿈꾸며
 
-PL's PILLOW
+PL - PILLOW
 `.trim();
 
     const $letters = document.querySelector('.letters');
@@ -217,6 +217,16 @@ PL's PILLOW
 
             window.scrollTo(0, document.body.scrollHeight, { behavior: 'smooth' });
 
+            new Promise(() => {
+                const $items = $letters.childNodes;
+                $items.forEach($item => {
+                    const { top } = $item.getBoundingClientRect();
+                    if (top < 0) {
+                        $letters.removeChild($item);
+                    }
+                });
+            });
+
             const letters = line.split('').map(글자_분리기);
             const event = setInterval(() => {
                 cur++;
@@ -239,8 +249,11 @@ PL's PILLOW
     });
 
     async function main() {
-        for (const event of events) {
-            await event();
+        // eslint-disable-next-line no-constant-condition
+        while(true) {
+            for (const event of events) {
+                await event();
+            }
         }
     }
 
