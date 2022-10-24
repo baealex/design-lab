@@ -254,6 +254,7 @@ PL - PILLOW
             for (const event of events) {
                 await event();
             }
+            await new Promise((resolve) => setTimeout(resolve, 3000));
         }
     }
 
