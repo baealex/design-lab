@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+<title>404 Page Not Found</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap');
+
+    @keyframes rotate {
+        0% {
+            transform: rotate3d(0, 0, 1, 0deg) translate(-50%, -50%);
+        }
+        100% {
+            transform: rotate3d(0, 0, 1, 360deg) translate(-50%, -50%);
+        }
+    }
+
+    body {
+        overflow: hidden;
+        background-color: #3f3d56;
+    }
+
+    .stars, .fishing, h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .stars {
+        width: 3000px;
+        height: 3000px;
+        filter: blur(10px) brightness(0.75);
+    }
+
+    .fishing {
+        width: 300px;
+        height: 300px;
+        z-index: 1;
+    }
+
+    h1 {
+        position: absolute;
+        color: #fff;
+        font-size: 26px;
+        z-index: 2;
+        font-family: 'Twinkle Star', cursive;
+        padding: 10px 20px;
+        border-radius: 10px;
+        white-space: nowrap;
+        background-color: #fff;
+        transform: translate(-170px, -150px);
+        color: #3f3d56;
+    }
+
+    h1::before {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-top-color: #fff;
+    }
+</style>
+
+<html>
+    <img src="/assets/images/svgs/stars.svg" alt="stars" class="stars">
+    <img src="/assets/images/svgs/fishing.svg" alt="fishing" class="fishing">
+    <h1>Oops, there's nothing here.</h1>
+</html>
+
+<script>
+    const $stars = document.querySelector('.stars');
+    const $fishing = document.querySelector('.fishing');
+    const $h1 = document.querySelector('h1');
+
+    document.addEventListener('mousemove', function(e) {
+        const { clientX, clientY } = e;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        $stars.style.transform = `translate(${(clientX - centerX) / 50 - 1500}px, ${(clientY - centerY) / 50 - 1500}px)`;
+        $fishing.style.transform = `translate(${(clientX - centerX) / 10 - 150}px, ${(clientY - centerY) / 10 - 150}px)`;
+        $h1.style.transform = `translate(${(clientX - centerX) / 10 - 170}px, ${(clientY - centerY) / 10 - 150}px)`;
+    });
+</script>
