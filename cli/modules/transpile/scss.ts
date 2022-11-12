@@ -1,4 +1,4 @@
-import { renderSync } from 'node-sass';
+import { compileString } from 'sass';
 
 export interface ScssTranspileOption {
     isDev?: boolean;
@@ -6,11 +6,8 @@ export interface ScssTranspileOption {
 
 export function scssTranspile(source: string, options?: ScssTranspileOption) {
     try {
-        const { css } = renderSync({
-            data: source,
-            outputStyle: 'compressed',
-        });
-        return css.toString();
+        const { css } = compileString(source);
+        return css;
     } catch(e) {
         if (options?.isDev !== true) {
             throw e;
