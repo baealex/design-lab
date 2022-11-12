@@ -10,6 +10,18 @@
         font-style: normal;
     }
 
+    @keyframes blink {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
     body {
         background: rgb(23, 2, 50);
     }
@@ -65,6 +77,12 @@
     .letters > div:last-child:before {
         transform: perspective(1em) rotateX(40deg) scale(1, 0.5);
         opacity: 0.7;
+    }
+
+    .letters > div:last-child:after {
+        content: '_';
+        margin-left: 4px;
+        animation: blink 1s infinite step-end;
     }
 </style>
 
@@ -165,40 +183,27 @@
     }
 
     const text = `
-온종일
-기다려도 괜찮아
+멀리 배웅하던 길
+여전히 나는
+그곳에 서서
 
-이 기다림도
-내겐 선물 같아
+그대가 사랑한
+이 계절의
+오고 감을 봅니다
 
-더 듣고 싶은
-너의 안부
+아무 노력 말아요
+버거울 때면 언제든
+나의 이름을 잊어요
 
-넌 듣지 못할
-나의 질문
+꽃잎이 번지면
+당신께도
+새로운 봄이 오겠죠
 
-또 대답 없이
-잠에 들겠지만
+시간이 걸려도
+그대 반드시
+행복해지세요
 
-기쁠 때면
-날 안아도 돼
-
-힘이 들면
-나에게 기대
-
-때론 나를
-적셔도 돼
-
-똑같은 베개 위의
-둘을 꿈꾸면
-
-내 지루했던
-하룬 잊게 돼
-
-내 곁에 잠든
-너와 꿈꾸며
-
-PL - PILLOW
+정승환 - 눈사람
 `.trim();
 
     const $letters = document.querySelector('.letters');
