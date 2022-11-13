@@ -86,3 +86,18 @@ body {
 .g-container.small {
     width: 320px !important;
 }
+
+.code-tag {
+    position: fixed;
+    bottom: 30%;
+    left: 15px;
+    transform: translateY(50%) rotate(90deg);
+    width: 150px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: #000;
+    z-index: 1000;
+    color: #fff;
+    transform-origin: left;
+    cursor: pointer;
+}

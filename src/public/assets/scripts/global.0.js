@@ -1,0 +1,1 @@
+(function(){self===top&&'/'!==location.pathname&&(document.getElementById('view-code').style.display='flex',document.getElementById('view-code').addEventListener('click',function(){location.assign(''.concat('https://github.com/baealex/design/blob/master/src/pages').concat(location.pathname,'/index.html'));}));})();
