@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+<title>Masonry Layout with JS</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Passion+One:wght@700&display=swap');
+
+    .masonry {
+        position: relative;
+        width: 100%;
+        padding: 16px;
+    }
+
+    .item {
+        position: absolute;
+        width: calc(100% / 4 - 32px);
+        border: 2px solid #020202;
+        box-sizing: border-box;
+        padding: 16px;
+        border-radius: 20px;
+
+        @media (max-width: 1600px) {
+            width: calc(100% / 3 - 32px);
+        }
+
+        @media (max-width: 1200px) {
+            width: calc(100% / 2 - 32px);
+        }
+
+        @media (max-width: 768px) {
+            width: calc(100% - 32px);
+        }
+    }
+
+    .item blockquote {
+        text-align: center;
+    }
+
+    .item blockquote p,
+    .item blockquote .from {
+        font-family: 'Noto Serif KR', serif;
+    }
+
+    .item blockquote p {
+        word-break: keep-all;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 1.75;
+    }
+    
+    .item blockquote .from {
+        font-size: 16px;
+    }
+
+    .item blockquote .from::before {
+        margin: 16px auto;
+        display: block;
+        background: #000;
+        width: 1px;
+        height: 32px;
+        content: ''
+    }
+
+    .item blockquote::after,
+    .item blockquote::before {
+        margin: 32px 0;
+        font-family: 'Passion One', cursive;
+        font-weight: 700;
+        font-size: 40px;
+        content: '\"';
+        display: block;
+    }
+
+    .item blockquote::before {
+        transform: rotate(180deg);
+    }
+</style>
+
+<html>
+    <div class="masonry"></div>
+</html>
+
+<script>
+    function buildMasonryLayout() {
+        const $masonry = document.querySelectorAll('.masonry');
+
+        if (!$masonry) return;
+
+        const gridSize = window.innerWidth > 1600
+            ? 4
+            : window.innerWidth > 1200
+                ? 3
+                : window.innerWidth > 768
+                    ? 2
+                    : 1;
+
+        $masonry.forEach(function ($el) {
+            const grid = new Array(gridSize).fill(0);
+            const $items = $el.getElementsByClassName('item');
+            const leftWidth = ($el.offsetWidth - 32) / grid.length;
+            for (var i=0; i<$items.length; i++) {
+                const min = grid.indexOf(Math.min.apply(0, grid));
+                const x = leftWidth * min;
+                const itemHeight = $items[i].offsetHeight;
+                const y = grid[min];
+                grid[min] += itemHeight + 20;
+                $items[i].style.transform = `translate(${x}px, ${y}px)`;
+            }
+            const imgMax = Math.max.apply(0, grid);
+            $el.style.height = imgMax + 'px';
+        });
+    }
+
+    function Template(props) {
+        return `
+            <div class="item">
+                <blockquote>
+                    <p>
+                        ${props.content}
+                    </p>
+                    <div class="from">
+                        ${props.from}
+                    </div>
+                </blockquote>
+            </div>
+        `;
+    }
+
+    fetch('/assets/data/proverbs.json')
+        .then(res => res.json())
+        .then(data => {
+            document.querySelector('.masonry').innerHTML = data.map(Template).join('');
+            buildMasonryLayout();
+        });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        buildMasonryLayout();
+    });
+
+    window.addEventListener('resize', function () {
+        buildMasonryLayout();
+    });
+</script>
