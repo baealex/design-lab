@@ -3,8 +3,6 @@
 <title>Neumorphism Design</title>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fasthand&display=swap');
-
     body {
         background: #efebf9;
     }
@@ -28,6 +26,16 @@
         box-shadow:
             9px 9px 18px #cbc8d4,
             -9px -9px 18px #ffffff;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
     .flat {
@@ -93,28 +101,47 @@
     }
 
     .image {
+        position: relative;
         border-radius: 100%;
         padding: 4px;
         background: linear-gradient(145deg, #fffbff, #d7d4e0);
         box-shadow:
             23px 23px 46px #99969f,
             -23px -23px 46px #ffffff;
-        
+
         img {
             height: 100%;
             width: 100%;
             border-radius: 100%;
             object-fit: cover;
+            animation: rotate 3s linear infinite;
         }
-    }
 
-    .header-title {
-        font-family: 'Fasthand', cursive;
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 600;
-        color: #333;
-        margin-top: 1rem;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 35px;
+            height: 35px;
+            transform: translate(-50%, -50%);
+            border-radius: 100%;
+            background: #efebf9;
+            z-index: 2;
+        }
+
+        &::before {
+            z-index: 1;
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 45px;
+            height: 45px;
+            transform: translate(-50%, -50%);
+            border-radius: 100%;
+            background: rgba(255, 255, 255, 0.5);
+        }
     }
 
     .list-item {
@@ -144,32 +171,39 @@
 </style>
 
 <html>
-    <div class="container">
-        <h1 class="header-title">neumorphism design</h1>
-        <div class="card flat mt-5 mb-5" style="width: 480px; max-width: 100%; display: flex; flex-direction: column; align-items: center;">
-            <div class="image" style="width: 300px; height: 300px;">
-                <img src="/assets/images/iu/cover.png"/>
-            </div>
-            <div class="mt-5" style="display: flex; gap: 16px;">
-                <button class="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#555" style="width: 16px; height: 16px;">
-                        <path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/>
-                    </svg>
-                </button>
-                <button class="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#555" style="width: 16px; height: 16px;">
-                        <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/>
-                    </svg>
-                </button>
-                <button class="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#555" style="width: 16px; height: 16px;">
-                        <path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/>
-                    </svg>
-                </button>
-            </div>
-            <div id="list" class="mt-5" style="width: 100%; display: flex; gap: 16px; flex-direction: column;"></div>
+<div class="container">
+    <div class="card flat mt-5 mb-5"
+        style="width: 480px; max-width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <div class="image" style="width: 300px; height: 300px;">
+            <img src="/assets/images/album-cover.jpg" />
         </div>
+        <div class="mt-5" style="display: flex; gap: 16px;">
+            <button class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#555"
+                    style="width: 16px; height: 16px;">
+                    <path
+                        d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z" />
+                </svg>
+            </button>
+            <button class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#555"
+                    style="width: 16px; height: 16px;">
+                    <path
+                        d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+                </svg>
+            </button>
+            <button class="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#555"
+                    style="width: 16px; height: 16px;">
+                    <path
+                        d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z" />
+                </svg>
+            </button>
+        </div>
+        <div id="list" class="mt-5" style="width: 100%; display: flex; gap: 16px; flex-direction: column;"></div>
     </div>
+</div>
+
 </html>
 
 <script>
@@ -190,6 +224,6 @@
     fetch('/assets/data/playlist.json')
         .then(res => res.json())
         .then(data => {
-            document.getElementById('list').innerHTML = data.map(Template).join(''); 
+            document.getElementById('list').innerHTML = data.map(Template).join('');
         });
 </script>
