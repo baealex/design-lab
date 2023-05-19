@@ -76,23 +76,6 @@
         pointer-events: none;
     }
 
-    .float-button {
-        width: 50px;
-        height: 50px;
-        background: #a076f1;
-        border-radius: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: 600;
-        font-size: 24px;
-        color: #fff;
-        position: fixed;
-        bottom: 15px;
-        right: 15px;
-        @include SubShadow;
-    }
-
     .input {
         position: relative;
     }
@@ -123,12 +106,12 @@
         transition: transform 0.3s ease;
     }
 
-    .input input:focus + label {
+    .input input:focus+label {
         color: #a076f1;
     }
 
     .input label.has-text,
-    .input input:focus + label {
+    .input input:focus+label {
         background: #fff;
         transform: translateY(-77%) scale(0.8);
     }
@@ -213,41 +196,37 @@
 </style>
 
 <html>
-    <header class="top-navigation">
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; gap: 16px; align-items: center;">
-                    <div class="menu three-line">
-                        <div class="third-line"></div>
-                    </div>
-                </div>
-                <div>
-                    <h1>Material Design</h1>
-                </div>
-            </div>
-        </div>
-    </header>
+<header class="top-navigation">
     <div class="container">
-        <div class="card main-shadow mt-5" style="width: 480px; max-width: 100%;">
-            <div>
-                <div class="input mt-3">
-                    <input id="username"/>
-                    <label for="username">username</label>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Material</h1>
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <div class="menu three-line">
+                    <div class="third-line"></div>
                 </div>
-                <div class="input mt-3">
-                    <input id="password" type="password"/>
-                    <label for="password">password</label>
-                </div>
-            </div>
-            <div class="mt-3" style="text-align: right;">
-                <button class="button d-inline">Sign In</button>
-                <button class="button d-inline b">What is my password...?</button>
             </div>
         </div>
     </div>
-    <div class="float-button">
-        +
+</header>
+<div class="container">
+    <div class="card main-shadow mt-5" style="width: 480px; max-width: 100%;">
+        <div>
+            <div class="input mt-3">
+                <input id="username" />
+                <label for="username">username</label>
+            </div>
+            <div class="input mt-3">
+                <input id="password" type="password" />
+                <label for="password">password</label>
+            </div>
+        </div>
+        <div class="mt-3" style="text-align: right;">
+            <button class="button d-inline">Sign In</button>
+            <button class="button d-inline b">Forget Password</button>
+        </div>
     </div>
+</div>
+
 </html>
 
 <script>
