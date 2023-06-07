@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+
+<title>Window Component</title>
+
+<style>
+    body {
+        background-image: url('/assets/images/crayon-shinchan/5.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        user-select: none;
+        overflow: hidden;
+    }
+
+    .application {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px;
+        border-radius: 8px;
+
+        &:hover {
+            background-color: rgba(85, 46, 163, 0.5);
+        }
+    }
+
+    .application-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .application-title {
+        position: relative;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-top: 8px;
+        padding: 2px 8px;
+        color: #fff;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 4px;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background-color: rgba(29, 29, 29, 0.633);
+            z-index: -1;
+        }
+    }
+
+    .window {
+        width: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        position: absolute;
+        top: 100px;
+        left: 100px;
+    }
+
+    .window.minimize {
+        transition: all 0.3s ease-in-out;
+        bottom: 0;
+        left: 0;
+
+        .window-body {
+            padding: 0;
+        }
+    }
+
+    .window.maximize {
+        transition: all 0.3s ease-in-out;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+
+        .window-body {
+            padding: 0;
+            overflow: hidden;
+        }
+    }
+
+    .window-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f3f3f3;
+        gap: 1rem;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .window-top-icons {
+        display: flex;
+    }
+
+    .window-top-icon svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .window-top-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 12px;
+    }
+
+    .window-top-icon:hover {
+        background-color: #a076f1;
+    }
+
+    .window-top-title {
+        padding: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .window-body {
+        padding: 0 4px 4px;
+        width: 600px;
+        height: 400px;
+        cursor: se-resize;
+    }
+
+    iframe {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<html>
+<div class="application">
+    <div class="application-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="currentColor"
+            stroke-width="2" class="ai ai-MusicAlbumFill">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M1 5c0-2.21 1.792-4 4.002-4h13.996C21.208 1 23 2.79 23 5v14a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V5zm19 7a8 8 0 1 1-16 0 8 8 0 0 1 16 0zm-8 2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+        </svg>
+    </div>
+    <div class="application-title">
+        JMusic
+    </div>
+</div>
+
+<div class="window">
+    <div class="window-top">
+        <div class="window-top-title">
+            JMusic
+        </div>
+        <div class="window-top-icons">
+            <div class="window-top-icon" data-icon-action="minimize">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="ai ai-Minus">
+                    <path d="M20 12H4" />
+                </svg>
+            </div>
+            <div class="window-top-icon" data-icon-action="maximize">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="ai ai-FullScreen">
+                    <path d="M2 7V2h5" />
+                    <path d="M22 7V2h-5" />
+                    <path d="M7 22H2v-5" />
+                    <path d="M17 22h5v-5" />
+                </svg>
+            </div>
+            <div class="window-top-icon" data-icon-action="close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="ai ai-Cross">
+                    <path d="M20 20L4 4m16 0L4 20" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="window-body">
+        <iframe src="https://www.youtube.com/embed/4nxjFO6_jvg" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+
+</html>
+
+<script>
+    function useWindow($window) {
+        const $windowTop = $window.querySelector('.window-top');
+        const $windowTopIcons = $window.querySelector('.window-top-icons');
+        const $windowBody = $window.querySelector('.window-body');
+
+        let isDragging = false;
+        let isResizing = false;
+        let prevX = 0;
+        let prevY = 0;
+        let remainX = 0;
+        let remainY = 0;
+        let remainWidth = 0;
+        let remainHeight = 0;
+
+        const maximize = () => {
+            if ($window.classList.contains('maximize')) {
+                $window.style.top = remainY;
+                $window.style.left = remainX;
+                $windowBody.style.width = remainWidth;
+                $windowBody.style.height = remainHeight;
+            } else {
+                $window.classList.remove('minimize');
+                remainX = $window.style.left;
+                remainY = $window.style.top;
+                $window.style.top = '0px';
+                $window.style.left = '0px';
+
+                remainWidth = $windowBody.style.width;
+                remainHeight = $windowBody.style.height;
+                $windowBody.style.width = '100%';
+                $windowBody.style.height = '100%';
+            }
+            $window.classList.toggle('maximize');
+        };
+
+        const minimize = () => {
+            if ($window.classList.contains('minimize')) {
+                $window.style.top = remainY;
+                $window.style.left = remainX;
+                $windowBody.style.width = remainWidth;
+                $windowBody.style.height = remainHeight;
+            } else {
+                $window.classList.remove('maximize');
+                remainX = $window.style.left;
+                remainY = $window.style.top;
+                $window.style.top = 'auto';
+                $window.style.left = 'auto';
+
+                remainWidth = $windowBody.style.width;
+                remainHeight = $windowBody.style.height;
+                $windowBody.style.width = '300px';
+                $windowBody.style.height = '0';
+            }
+            $window.classList.toggle('minimize');
+        };
+
+        $windowTop.addEventListener('dblclick', maximize);
+
+        $windowTop.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.icon')) return;
+
+            if ($window.classList.contains('maximize') ||
+                $window.classList.contains('minimize')) return;
+
+            isDragging = true;
+            prevX = e.clientX;
+            prevY = e.clientY;
+        });
+
+        $windowTop.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            console.log(e.clientX, e.clientY);
+
+            const diffX = e.clientX - prevX;
+            const diffY = e.clientY - prevY;
+
+            $window.style.top = `${$window.offsetTop + diffY}px`;
+            $window.style.left = `${$window.offsetLeft + diffX}px`;
+
+            prevX = e.clientX;
+            prevY = e.clientY;
+        });
+
+        $windowTopIcons.addEventListener('click', (e) => {
+            const $target = e.target.closest('.window-top-icon');
+
+            if (!$target) return;
+
+            const action = $target.dataset.iconAction;
+
+            if (action === 'close') {
+                $window.remove();
+            } else if (action === 'minimize') {
+                minimize();
+            } else if (action === 'maximize') {
+                maximize();
+            }
+        });
+
+        $windowBody.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.icon')) return;
+
+            if ($window.classList.contains('maximize') ||
+                $window.classList.contains('minimize')) return;
+
+            isResizing = true;
+            prevX = e.clientX;
+            prevY = e.clientY;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isResizing = false;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+
+            const diffX = e.clientX - prevX;
+            const diffY = e.clientY - prevY;
+
+            $windowBody.style.width = `${$windowBody.offsetWidth + diffX}px`;
+            $windowBody.style.height = `${$windowBody.offsetHeight + diffY}px`;
+
+            prevX = e.clientX;
+            prevY = e.clientY;
+        });
+    }
+
+    const $window = document.querySelector('.window');
+    useWindow($window);
+
+    const $application = document.querySelector('.application');
+    $application.addEventListener('dblclick', () => {
+        if (document.querySelector('.window')) return;
+
+        const $newWindow = $window.cloneNode(true);
+        document.body.appendChild($newWindow);
+        useWindow($newWindow);
+    });
+</script>
