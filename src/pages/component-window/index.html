@@ -4,7 +4,7 @@
 
 <style>
     body {
-        background-image: url('/assets/images/crayon-shinchan/5.jpg');
+        background-image: url('/assets/images/background.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -13,31 +13,42 @@
         overflow: hidden;
     }
 
-    .application {
+    .applications {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 8px;
+        padding: 16px;
         position: absolute;
+        top: 0;
+        overflow: auto;
+    }
+
+    .application {
         top: 15px;
         left: 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 8px;
+        padding: 16px 8px;
         border-radius: 8px;
 
         &:hover {
-            background-color: rgba(85, 46, 163, 0.5);
+            background-color: rgba(255, 255, 255, 0.12);
         }
     }
 
-    .application-icon {
-        width: 36px;
-        height: 36px;
+    .application-icon svg {
+        width: 40px;
+        height: 40px;
+        fill: #fff;
     }
 
     .application-title {
         position: relative;
         font-size: 0.8rem;
         font-weight: bold;
-        margin-top: 8px;
+        margin-top: 4px;
         padding: 2px 8px;
         color: #fff;
 
@@ -57,7 +68,6 @@
 
     .window {
         width: auto;
-        background: #fff;
         border-radius: 8px;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
         position: absolute;
@@ -65,8 +75,11 @@
         left: 100px;
     }
 
+    .window:not(.dragging) {
+        transition: all 0.2s ease-in-out;
+    }
+
     .window.minimize {
-        transition: all 0.3s ease-in-out;
         bottom: 0;
         left: 0;
 
@@ -76,7 +89,6 @@
     }
 
     .window.maximize {
-        transition: all 0.3s ease-in-out;
         width: 100%;
         height: 100%;
         border-radius: 0;
@@ -85,15 +97,24 @@
             padding: 0;
             overflow: hidden;
         }
+
+        .window-top {
+            border-radius: 0;
+        }
+
+        .window-top-icon:last-child {
+            border-radius: 0;
+        }
     }
 
     .window-top {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #f3f3f3;
         gap: 1rem;
         border-radius: 8px 8px 0 0;
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
     }
 
     .window-top-icons {
@@ -114,7 +135,11 @@
     }
 
     .window-top-icon:hover {
-        background-color: #a076f1;
+        background-color: #f7cb46;
+    }
+
+    .window-top-icon:last-child {
+        border-radius: 0 8px 0 0;
     }
 
     .window-top-title {
@@ -128,6 +153,8 @@
         width: 600px;
         height: 400px;
         cursor: se-resize;
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
     }
 
     iframe {
@@ -139,61 +166,88 @@
 </style>
 
 <html>
-<div class="application">
-    <div class="application-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="currentColor"
-            stroke-width="2" class="ai ai-MusicAlbumFill">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M1 5c0-2.21 1.792-4 4.002-4h13.996C21.208 1 23 2.79 23 5v14a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V5zm19 7a8 8 0 1 1-16 0 8 8 0 0 1 16 0zm-8 2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-        </svg>
-    </div>
-    <div class="application-title">
-        JMusic
-    </div>
-</div>
-
-<div class="window">
-    <div class="window-top">
-        <div class="window-top-title">
-            JMusic
+<div class="applications">
+    <div class="application" data-app="music" data-title="Misic">
+        <div class="application-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="ai ai-MusicAlbum">
+                <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6z" />
+                <path d="M9 16.5V8.78a1 1 0 0 1 .757-.97l6-1.5A1 1 0 0 1 17 7.28V15" />
+                <path d="M9 11l8-2" />
+                <circle cx="7.5" cy="16.5" r="1.5" />
+                <circle cx="15.5" cy="15.5" r="1.5" />
+            </svg>
         </div>
-        <div class="window-top-icons">
-            <div class="window-top-icon" data-icon-action="minimize">
-                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="ai ai-Minus">
-                    <path d="M20 12H4" />
-                </svg>
-            </div>
-            <div class="window-top-icon" data-icon-action="maximize">
-                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="ai ai-FullScreen">
-                    <path d="M2 7V2h5" />
-                    <path d="M22 7V2h-5" />
-                    <path d="M7 22H2v-5" />
-                    <path d="M17 22h5v-5" />
-                </svg>
-            </div>
-            <div class="window-top-icon" data-icon-action="close">
-                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="ai ai-Cross">
-                    <path d="M20 20L4 4m16 0L4 20" />
-                </svg>
-            </div>
+        <div class="application-title">
+            Music
         </div>
     </div>
-    <div class="window-body">
-        <iframe src="https://www.youtube.com/embed/4nxjFO6_jvg" frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="application" data-app="code" data-title="Code">
+        <div class="application-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="ai ai-PanelSplit">
+                <rect x="2" y="3" width="20" height="18" rx="2" />
+                <path d="M9 3v18" />
+                <path d="M22 12H9" />
+            </svg>
+        </div>
+        <div class="application-title">
+            Code
+        </div>
     </div>
 </div>
 
 </html>
 
 <script>
-    function useWindow($window) {
+    function createWindow({
+        title,
+        content,
+    }) {
+        return `
+            <div class="window">
+            <div class="window-top">
+                <div class="window-top-title">
+                    ${title}
+                </div>
+                <div class="window-top-icons">
+                    <div class="window-top-icon" data-icon-action="minimize">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="ai ai-Minus">
+                            <path d="M20 12H4" />
+                        </svg>
+                    </div>
+                    <div class="window-top-icon" data-icon-action="maximize">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="ai ai-FullScreen">
+                            <path d="M2 7V2h5" />
+                            <path d="M22 7V2h-5" />
+                            <path d="M7 22H2v-5" />
+                            <path d="M17 22h5v-5" />
+                        </svg>
+                    </div>
+                    <div class="window-top-icon" data-icon-action="close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="ai ai-Cross">
+                            <path d="M20 20L4 4m16 0L4 20" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="window-body">
+                ${content}
+            </div>
+        </div>
+    `;
+    }
+    function useWindow($window, {
+        onClose,
+    }) {
         const $windowTop = $window.querySelector('.window-top');
         const $windowTopIcons = $window.querySelector('.window-top-icons');
         const $windowBody = $window.querySelector('.window-body');
@@ -211,8 +265,8 @@
             if ($window.classList.contains('maximize')) {
                 $window.style.top = remainY;
                 $window.style.left = remainX;
-                $windowBody.style.width = remainWidth;
-                $windowBody.style.height = remainHeight;
+                $windowBody.style.width = remainWidth === '300px' ? '600px' : remainWidth;
+                $windowBody.style.height = remainHeight === '0px' ? '400px' : remainHeight;
             } else {
                 $window.classList.remove('minimize');
                 remainX = $window.style.left;
@@ -232,8 +286,8 @@
             if ($window.classList.contains('minimize')) {
                 $window.style.top = remainY;
                 $window.style.left = remainX;
-                $windowBody.style.width = remainWidth;
-                $windowBody.style.height = remainHeight;
+                $windowBody.style.width = remainWidth === '100%' ? '600px' : remainWidth;
+                $windowBody.style.height = remainHeight === '100%' ? '400px' : remainHeight;
             } else {
                 $window.classList.remove('maximize');
                 remainX = $window.style.left;
@@ -252,10 +306,17 @@
         $windowTop.addEventListener('dblclick', maximize);
 
         $windowTop.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.icon')) return;
+            document.querySelectorAll('.window').forEach(($window) => {
+                $window.style.zIndex = 1;
+            });
+            $window.style.zIndex = 2;
+
+            if (e.target.closest('.window-top-icon')) return;
 
             if ($window.classList.contains('maximize') ||
                 $window.classList.contains('minimize')) return;
+
+            $window.classList.add('dragging');
 
             isDragging = true;
             prevX = e.clientX;
@@ -263,13 +324,13 @@
         });
 
         $windowTop.addEventListener('mouseup', () => {
+            $window.classList.remove('dragging');
+
             isDragging = false;
         });
 
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-
-            console.log(e.clientX, e.clientY);
 
             const diffX = e.clientX - prevX;
             const diffY = e.clientY - prevY;
@@ -289,7 +350,7 @@
             const action = $target.dataset.iconAction;
 
             if (action === 'close') {
-                $window.remove();
+                onClose();
             } else if (action === 'minimize') {
                 minimize();
             } else if (action === 'maximize') {
@@ -298,7 +359,10 @@
         });
 
         $windowBody.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.icon')) return;
+            document.querySelectorAll('.window').forEach(($window) => {
+                $window.style.zIndex = 1;
+            });
+            $window.style.zIndex = 2;
 
             if ($window.classList.contains('maximize') ||
                 $window.classList.contains('minimize')) return;
@@ -326,15 +390,37 @@
         });
     }
 
-    const $window = document.querySelector('.window');
-    useWindow($window);
+    const windows = {
+        'music': `
+            <iframe src="https://www.youtube.com/embed/4nxjFO6_jvg" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        `,
+        'code': `
+            <iframe src="https://mymy.dev" frameborder="0"></iframe>
+        `
+    };
 
-    const $application = document.querySelector('.application');
-    $application.addEventListener('dblclick', () => {
-        if (document.querySelector('.window')) return;
+    function openApp($application) {
+        const app = $application.dataset.app;
+        const title = $application.dataset.title;
+        if (document.querySelector(`#${app}`)) return;
 
-        const $newWindow = $window.cloneNode(true);
+        const $newWindow = document.createElement('div');
+        $newWindow.id = app;
+        $newWindow.innerHTML = createWindow({
+            title,
+            content: windows[app]
+        });
+
         document.body.appendChild($newWindow);
-        useWindow($newWindow);
-    });
+        useWindow($newWindow.querySelector('.window'), {
+            onClose: () => {
+                $newWindow.remove();
+            }
+        });
+    }
+
+    const $applications = document.querySelectorAll('.application');
+    $applications.forEach($application =>
+        $application.addEventListener('dblclick', () => openApp($application)));
 </script>
