@@ -167,7 +167,23 @@
 
 <html>
 <div class="applications">
-    <div class="application" data-app="music" data-title="Music">
+    <div class="application" data-app-id="clock" data-app-title="Clock">
+        <div class="application-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="ai ai-Clock">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M15 16l-2.414-2.414A2 2 0 0 1 12 12.172V6" />
+            </svg>
+        </div>
+        <div class="application-title">
+            Clock
+        </div>
+        <template>
+            <iframe src="../component-clock-analog" frameborder="0"></iframe>
+        </template>
+    </div>
+    <div class="application" data-app-id="music" data-app-title="Music">
         <div class="application-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -182,8 +198,13 @@
         <div class="application-title">
             Music
         </div>
+        <template>
+            <iframe src="https://www.youtube.com/embed/4nxjFO6_jvg" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+        </template>
     </div>
-    <div class="application" data-app="code" data-title="Code">
+    <div class="application" data-app-id="code" data-app-title="Code">
         <div class="application-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -196,6 +217,9 @@
         <div class="application-title">
             Code
         </div>
+        <template>
+            <iframe src="https://mymy.dev" frameborder="0"></iframe>
+        </template>
     </div>
 </div>
 
@@ -248,6 +272,15 @@
     function useWindow($window, {
         onClose,
     }) {
+        const refeshZIndex = () => {
+            const $windows = document.querySelectorAll('.window');
+            $windows.forEach(($window) => {
+                $window.style.zIndex = 0;
+            });
+            $window.style.zIndex = 1;
+        };
+        refeshZIndex();
+
         const $windowTop = $window.querySelector('.window-top');
         const $windowTopIcons = $window.querySelector('.window-top-icons');
         const $windowBody = $window.querySelector('.window-body');
@@ -306,10 +339,7 @@
         $windowTop.addEventListener('dblclick', maximize);
 
         $windowTop.addEventListener('mousedown', (e) => {
-            document.querySelectorAll('.window').forEach(($window) => {
-                $window.style.zIndex = 1;
-            });
-            $window.style.zIndex = 2;
+            refeshZIndex();
 
             if (e.target.closest('.window-top-icon')) return;
 
@@ -323,7 +353,7 @@
             prevY = e.clientY;
         });
 
-        $windowTop.addEventListener('mouseup', () => {
+        window.addEventListener('mouseup', () => {
             $window.classList.remove('dragging');
 
             isDragging = false;
@@ -359,10 +389,7 @@
         });
 
         $windowBody.addEventListener('mousedown', (e) => {
-            document.querySelectorAll('.window').forEach(($window) => {
-                $window.style.zIndex = 1;
-            });
-            $window.style.zIndex = 2;
+            refeshZIndex();
 
             if ($window.classList.contains('maximize') ||
                 $window.classList.contains('minimize')) return;
@@ -390,26 +417,18 @@
         });
     }
 
-    const windows = {
-        'music': `
-            <iframe src="https://www.youtube.com/embed/4nxjFO6_jvg" frameborder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        `,
-        'code': `
-            <iframe src="https://mymy.dev" frameborder="0"></iframe>
-        `
-    };
-
     function openApp($application) {
-        const app = $application.dataset.app;
-        const title = $application.dataset.title;
-        if (document.querySelector(`#${app}`)) return;
+        const {
+            appId,
+            appTitle,
+        } = $application.dataset;
+        if (document.querySelector(`#${appId}`)) return;
 
         const $newWindow = document.createElement('div');
-        $newWindow.id = app;
+        $newWindow.id = appId;
         $newWindow.innerHTML = createWindow({
-            title,
-            content: windows[app]
+            title: appTitle,
+            content: $application.querySelector('template').innerHTML,
         });
 
         document.body.appendChild($newWindow);
