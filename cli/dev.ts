@@ -22,9 +22,7 @@ new SocketServer(useHttpServer(8888)).on('connection', (socket) => {
         clientManager.run(value);
     }, 1000);
 
-    await builder.watchSrc(builder.SOURCE_PATH, (path) => {
-        debounceEvent(path);
-    });
+    await builder.watchSrc(builder.SOURCE_PATH, debounceEvent);
 
     for (const page of builder.pages) {
         await builder.makePage(page, { isDev: true });

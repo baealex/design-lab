@@ -57,20 +57,6 @@ export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
     await fs.writeFile(`${DIST_PATH}/${path}.html`, newIndex);
 }
 
-export async function watchPage(path: string, onChange: (path: string) => void) {
-    const indexPath = `${PAGES_PATH}/${path}/index.html`;
-    fs.watch(indexPath, async (eventType) => {
-        if (eventType === 'change') {
-            const time = new Date();
-            await makePage(path, { isDev: true });
-            console.log(`Rebuild... ${path} : ${(new Date().getTime() - time.getTime()) / 1000}s`);
-            if (onChange) {
-                onChange(path);
-            }
-        }
-    });
-}
-
 interface WalkHandler {
     filePath: string;
     isDirectory: boolean;
@@ -92,6 +78,20 @@ function walk(dir: string, handler: ({
                 });
             });
         });
+    });
+}
+
+export async function watchPage(path: string, onChange: (path: string) => void) {
+    const indexPath = `${PAGES_PATH}/${path}/index.html`;
+    fs.watch(indexPath, async (eventType) => {
+        if (eventType === 'change') {
+            const time = new Date();
+            await makePage(path, { isDev: true });
+            console.log(`Rebuild... ${path} : ${(new Date().getTime() - time.getTime()) / 1000}s`);
+            if (onChange) {
+                onChange(path);
+            }
+        }
     });
 }
 
