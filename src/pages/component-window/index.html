@@ -163,6 +163,30 @@
         width: 100%;
         height: 100%;
     }
+
+    @media (max-width: 768px) {
+        .window {
+            border-radius: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .window-top {
+            border-radius: 0;
+        }
+
+        .window-body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+        }
+
+        .window-top-icon:not(:last-child) {
+            display: none;
+        }
+    }
 </style>
 
 <html>
@@ -336,7 +360,11 @@
             $window.classList.toggle('minimize');
         };
 
-        $windowTop.addEventListener('dblclick', maximize);
+        $windowTop.addEventListener('dblclick', () => {
+            if (window.innerWidth > 768) {
+                maximize();
+            }
+        });
 
         $windowTop.addEventListener('mousedown', (e) => {
             refeshZIndex();
