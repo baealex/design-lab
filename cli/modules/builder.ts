@@ -96,14 +96,17 @@ function walk(dir: string, handler: ({
 }
 
 export async function watchSrc(path: string, onChange: (path: string) => void) {
-    const watchingDirs: string[] = [];
+    const watchingFiles: string[] = [];
 
     const handler = ({
         filePath,
         isDirectory,
     }: WalkHandler) => {
-        if (isDirectory && !watchingDirs.includes(filePath)) {
-            watchingDirs.push(filePath);
+        if (watchingFiles.includes(filePath)) {
+            return;
+        }
+        watchingFiles.push(filePath);
+        if (isDirectory) {
             fs.watch(filePath, async () => {
                 walk(filePath, handler);
                 handler({
@@ -111,6 +114,7 @@ export async function watchSrc(path: string, onChange: (path: string) => void) {
                     isDirectory,
                 });
             });
+            return;
         }
         if (filePath.includes('pages') && filePath.indexOf('.html') > -1) {
             filePath = filePath.split('/').slice(2, -1).join('/');
