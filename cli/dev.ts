@@ -18,14 +18,15 @@ new SocketServer(useHttpServer(8888)).on('connection', (socket) => {
 (async () => {
     await builder.distDirInit();
 
-    for (const page of builder.pages) {
-        const debounceEvent = useDebounce<string>((value='') => {
-            clientManager.run(value);
-        }, 1000);
+    const debounceEvent = useDebounce<string>((value = '') => {
+        clientManager.run(value);
+    }, 1000);
 
+    await builder.watchSrc(builder.SOURCE_PATH, (path) => {
+        debounceEvent(path);
+    });
+
+    for (const page of builder.pages) {
         await builder.makePage(page, { isDev: true });
-        await builder.watchPage(page, (path) => {
-            debounceEvent(path);
-        });
     }
 })();

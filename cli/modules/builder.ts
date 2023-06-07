@@ -1,9 +1,10 @@
 import * as fs from 'fs-extra';
+import * as path from 'path';
 
 import { useSocketClient } from './hooks';
 import { transpile } from './transpile';
 
-const SOURCE_PATH = './src';
+export const SOURCE_PATH = './src';
 const PAGES_PATH = `${SOURCE_PATH}/pages`;
 const DIST_PATH = './dist';
 
@@ -39,7 +40,7 @@ export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
             pages: pages.filter(page => page !== 'index')
         },
     });
-    
+
     if (isDev) {
         await fs.writeFile(`${DIST_PATH}/${path}.html`, useSocketClient(newIndex, `
             socket.on('onchange', function(path) {
@@ -56,9 +57,6 @@ export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
     await fs.writeFile(`${DIST_PATH}/${path}.html`, newIndex);
 }
 
-/**
- * @param {string} path
- */
 export async function watchPage(path: string, onChange: (path: string) => void) {
     const indexPath = `${PAGES_PATH}/${path}/index.html`;
     fs.watch(indexPath, async (eventType) => {
@@ -71,4 +69,57 @@ export async function watchPage(path: string, onChange: (path: string) => void) 
             }
         }
     });
+}
+
+interface WalkHandler {
+    filePath: string;
+    isDirectory: boolean;
+}
+
+function walk(dir: string, handler: ({
+    filePath,
+    isDirectory,
+}: WalkHandler) => void) {
+    fs.readdir(dir, (err, filenames) => {
+        filenames.forEach((filename) => {
+            fs.stat(path.join(dir, filename), (err, stat) => {
+                if (stat.isDirectory()) {
+                    walk(path.join(dir, filename), handler);
+                }
+                handler({
+                    filePath: path.join(dir, filename),
+                    isDirectory: stat.isDirectory()
+                });
+            });
+        });
+    });
+}
+
+export async function watchSrc(path: string, onChange: (path: string) => void) {
+    const watchingDirs: string[] = [];
+
+    const handler = ({
+        filePath,
+        isDirectory,
+    }: WalkHandler) => {
+        if (isDirectory && !watchingDirs.includes(filePath)) {
+            watchingDirs.push(filePath);
+            fs.watch(filePath, async () => {
+                walk(filePath, handler);
+                handler({
+                    filePath,
+                    isDirectory,
+                });
+            });
+        }
+        if (filePath.includes('pages') && filePath.indexOf('.html') > -1) {
+            filePath = filePath.split('/').slice(2, -1).join('/');
+            watchPage(filePath, onChange);
+        }
+        if (filePath.includes('public') && !isDirectory) {
+            fs.copy(filePath, `${DIST_PATH}/${filePath.split('/').slice(2).join('/')}`);
+        }
+    };
+
+    walk(path, handler);
 }
