@@ -73,6 +73,8 @@
         position: absolute;
         top: 100px;
         left: 100px;
+        display: flex;
+        flex-direction: column;
     }
 
     .window:not(.dragging) {
@@ -207,7 +209,7 @@
             <iframe src="../component-clock-analog" frameborder="0"></iframe>
         </template>
     </div>
-    <div class="application" data-app-id="music" data-app-title="YouTube">
+    <div class="application" data-app-id="music" data-app-title="Baeto">
         <div class="application-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -220,12 +222,10 @@
             </svg>
         </div>
         <div class="application-title">
-            YouTube
+            Beato
         </div>
         <template>
-            <iframe src="https://www.youtube.com/embed/4nxjFO6_jvg" frameborder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-            </iframe>
+            <iframe src="https://beato-demo.baejino.com" frameborder="0"></iframe>
         </template>
     </div>
     <div class="application" data-app-id="code" data-app-title="Mymy, Dev.">
