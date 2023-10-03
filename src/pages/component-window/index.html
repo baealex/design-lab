@@ -250,12 +250,8 @@
 </html>
 
 <script>
-    function createWindow({
-        title,
-        content,
-    }) {
-        return `
-            <div class="window">
+    const WindowTemplate = ({ title, content }) => `
+        <div class="window">
             <div class="window-top">
                 <div class="window-top-title">
                     ${title}
@@ -292,18 +288,15 @@
             </div>
         </div>
     `;
+
+    function generateZIndex() {
+        return Date.now() % 1000000;
     }
+
     function useWindow($window, {
         onClose,
     }) {
-        const refeshZIndex = () => {
-            const $windows = document.querySelectorAll('.window');
-            $windows.forEach(($window) => {
-                $window.style.zIndex = 0;
-            });
-            $window.style.zIndex = 1;
-        };
-        refeshZIndex();
+        $window.style.zIndex = generateZIndex();
 
         const $windowTop = $window.querySelector('.window-top');
         const $windowTopIcons = $window.querySelector('.window-top-icons');
@@ -313,26 +306,26 @@
         let isResizing = false;
         let prevX = 0;
         let prevY = 0;
-        let remainX = 0;
-        let remainY = 0;
-        let remainWidth = 0;
-        let remainHeight = 0;
+        let memoX = 0;
+        let memoY = 0;
+        let memoWidth = 0;
+        let memoHeight = 0;
 
         const maximize = () => {
             if ($window.classList.contains('maximize')) {
-                $window.style.top = remainY;
-                $window.style.left = remainX;
-                $windowBody.style.width = remainWidth === '300px' ? '600px' : remainWidth;
-                $windowBody.style.height = remainHeight === '0px' ? '400px' : remainHeight;
+                $window.style.top = memoY;
+                $window.style.left = memoX;
+                $windowBody.style.width = memoWidth === '300px' ? '600px' : memoWidth;
+                $windowBody.style.height = memoHeight === '0px' ? '400px' : memoHeight;
             } else {
                 $window.classList.remove('minimize');
-                remainX = $window.style.left;
-                remainY = $window.style.top;
+                memoX = $window.style.left;
+                memoY = $window.style.top;
                 $window.style.top = '0px';
                 $window.style.left = '0px';
 
-                remainWidth = $windowBody.style.width;
-                remainHeight = $windowBody.style.height;
+                memoWidth = $windowBody.style.width;
+                memoHeight = $windowBody.style.height;
                 $windowBody.style.width = '100%';
                 $windowBody.style.height = '100%';
             }
@@ -341,19 +334,19 @@
 
         const minimize = () => {
             if ($window.classList.contains('minimize')) {
-                $window.style.top = remainY;
-                $window.style.left = remainX;
-                $windowBody.style.width = remainWidth === '100%' ? '600px' : remainWidth;
-                $windowBody.style.height = remainHeight === '100%' ? '400px' : remainHeight;
+                $window.style.top = memoY;
+                $window.style.left = memoX;
+                $windowBody.style.width = memoWidth === '100%' ? '600px' : memoWidth;
+                $windowBody.style.height = memoHeight === '100%' ? '400px' : memoHeight;
             } else {
                 $window.classList.remove('maximize');
-                remainX = $window.style.left;
-                remainY = $window.style.top;
+                memoX = $window.style.left;
+                memoY = $window.style.top;
                 $window.style.top = 'auto';
                 $window.style.left = 'auto';
 
-                remainWidth = $windowBody.style.width;
-                remainHeight = $windowBody.style.height;
+                memoWidth = $windowBody.style.width;
+                memoHeight = $windowBody.style.height;
                 $windowBody.style.width = '300px';
                 $windowBody.style.height = '0';
             }
@@ -367,13 +360,12 @@
         });
 
         $windowTop.addEventListener('mousedown', (e) => {
-            refeshZIndex();
-
             if (e.target.closest('.window-top-icon')) return;
 
             if ($window.classList.contains('maximize') ||
                 $window.classList.contains('minimize')) return;
 
+            $window.style.zIndex = generateZIndex();
             $window.classList.add('dragging');
 
             isDragging = true;
@@ -405,19 +397,21 @@
 
             if (!$target) return;
 
-            const action = $target.dataset.iconAction;
-
-            if (action === 'close') {
-                onClose();
-            } else if (action === 'minimize') {
-                minimize();
-            } else if (action === 'maximize') {
-                maximize();
+            switch ($target.dataset.iconAction) {
+                case 'close':
+                    onClose();
+                    break;
+                case 'minimize':
+                    minimize();
+                    break;
+                case 'maximize':
+                    maximize();
+                    break;
             }
         });
 
         $windowBody.addEventListener('mousedown', (e) => {
-            refeshZIndex();
+            $window.style.zIndex = generateZIndex();
 
             if ($window.classList.contains('maximize') ||
                 $window.classList.contains('minimize')) return;
@@ -445,29 +439,28 @@
         });
     }
 
-    function openApp($application) {
-        const {
-            appId,
-            appTitle,
-        } = $application.dataset;
-        if (document.querySelector(`#${appId}`)) return;
+    function createWindow($application) {
+        const { appId, appTitle } = $application.dataset;
 
-        const $newWindow = document.createElement('div');
-        $newWindow.id = appId;
-        $newWindow.innerHTML = createWindow({
+        if (document.querySelector(`#${appId}`)) {
+            const $window = document.querySelector(`#${appId}`).querySelector('.window');
+            $window.style.zIndex = generateZIndex();
+            return;
+        }
+
+        const $windowContainer = document.createElement('window');
+        $windowContainer.id = appId;
+        $windowContainer.innerHTML = WindowTemplate({
             title: appTitle,
             content: $application.querySelector('template').innerHTML,
         });
+        document.body.appendChild($windowContainer);
 
-        document.body.appendChild($newWindow);
-        useWindow($newWindow.querySelector('.window'), {
-            onClose: () => {
-                $newWindow.remove();
-            }
+        useWindow($windowContainer.querySelector('.window'), {
+            onClose: $windowContainer.remove.bind($windowContainer),
         });
     }
 
-    const $applications = document.querySelectorAll('.application');
-    $applications.forEach($application =>
-        $application.addEventListener('dblclick', () => openApp($application)));
+    document.querySelectorAll('.application').forEach($application =>
+        $application.addEventListener('dblclick', () => createWindow($application)));
 </script>
