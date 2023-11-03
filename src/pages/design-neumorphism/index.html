@@ -207,7 +207,7 @@
 </html>
 
 <script>
-    const Template = ({ title, artist }) => `
+    const ListItemTemplate = ({ title, artist }) => `
         <div class="list-item">
             <div>
                 <div class="title">${title}</div>
@@ -224,6 +224,6 @@
     fetch('/assets/data/playlist.json')
         .then(res => res.json())
         .then(data => {
-            document.getElementById('list').innerHTML = data.map(Template).join('');
+            document.getElementById('list').innerHTML = data.map(ListItemTemplate).join('');
         });
 </script>

@@ -3,7 +3,9 @@
 <title>Swipe Card Component</title>
 
 <style>
-    html, body, #root {
+    html,
+    body,
+    #root {
         height: auto;
     }
 
@@ -77,29 +79,26 @@
 </style>
 
 <html>
-    <div id="root" class="g-container small"></div>
+<div id="root" class="g-container small"></div>
+
 </html>
 
 <script>
-    function Template({ title, artist }) {
-        return `
-            <div class="swipe-card">
-                <div class="menu">
-                    Delete
-                </div>
-                <div class="content">
-                    <span class="title">
-                        ${title}
-                    </span>
-                    <span class="artist">
-                        ${artist}
-                    </span>
-                </div>
+    const SwipeCardTemplate = ({ title, artist }) => `
+        <div class="swipe-card">
+            <div class="menu">
+                Delete
             </div>
-        `;
-    }
-
-    const $root = document.getElementById('root');
+            <div class="content">
+                <span class="title">
+                    ${title}
+                </span>
+                <span class="artist">
+                    ${artist}
+                </span>
+            </div>
+        </div>
+    `;
 
     /** @param {HTMLDivElement} $card */
     function useSwipe($card) {
@@ -107,7 +106,7 @@
         const $menu = $card.querySelector('.menu');
 
         let isTarget = false;
-        
+
         let accMoveValue = 0;
         let lastClientX = 0;
         let clientWidth = 0;
@@ -121,14 +120,14 @@
         };
 
         const handleDelete = () => {
-            $root.removeChild($card);
+            $card.remove();
         };
 
-        const  handleFocusIn = (e) => {
+        const handleFocusIn = (e) => {
             isTarget = true;
 
             clientWidth = e.target.clientWidth;
-            
+
             lastClientX = getClientX(e);
         };
 
@@ -172,22 +171,21 @@
         };
 
         $menu.addEventListener('click', handleDelete);
-
         $card.addEventListener('mousedown', handleFocusIn);
         $card.addEventListener('touchstart', handleFocusIn);
-
         window.addEventListener('mouseup', handleFocusOut);
         $card.addEventListener('touchend', handleFocusOut);
-
         window.addEventListener('mousemove', handleMove);
         $card.addEventListener('touchmove', handleMove);
     }
+
+    const $root = document.getElementById('root');
 
     fetch('/assets/data/playlist.json')
         .then(res => res.json())
         .then(data => {
             $root.innerHTML = `
-                ${data.map(Template).join('')}
+                ${data.map(SwipeCardTemplate).join('')}
                 <footer>
                     ← Swipe to delete
                 </footer>
