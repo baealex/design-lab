@@ -68,7 +68,7 @@
             align-items: center;
             gap: 8px;
 
-            & > span {
+            &>span {
                 font-size: 2.5rem;
                 font-weight: 400;
 
@@ -76,13 +76,13 @@
                     font-size: 2rem;
                 }
             }
-            
-            & > div {
+
+            &>div {
                 display: flex;
                 flex-direction: column;
                 font-weight: 400;
 
-                & > span {
+                &>span {
                     @media (max-width: 768px) {
                         font-size: 0.65rem;
                     }
@@ -262,18 +262,19 @@
 </style>
 
 <html>
-    <div class="title"></div>
-    <div class="carousel"></div>
-    <div class="navigation">
-        <button class="prev">
-            <span>PREV</span>
-        </button>
-        <button class="next">
-            <span>NEXT</span>
-        </button>
-    </div>
-    <div class="progress"></div>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<div class="title"></div>
+<div class="carousel"></div>
+<div class="navigation">
+    <button class="prev">
+        <span>PREV</span>
+    </button>
+    <button class="next">
+        <span>NEXT</span>
+    </button>
+</div>
+<div class="progress"></div>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
 </html>
 
 <script>
@@ -342,7 +343,7 @@
     function carousel(direction) {
         if (isRotating) return
         isRotating = true
-        setTimeout(() => { isRotating = false }, 500)
+        setTimeout(() => { isRotating = false }, 600)
 
         if (direction === 'prev') {
             nowIndex -= 1
