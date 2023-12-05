@@ -32,7 +32,8 @@
         background: #fff;
         color: #333;
 
-        .front, .back {
+        .front,
+        .back {
             backface-visibility: hidden;
             position: absolute;
             top: 50%;
@@ -49,7 +50,7 @@
     }
 </style>
 
-<html>
+<template>
     <div id="root" class="g-flex-center">
         <span class="flipper">
             <div class="front">
@@ -60,11 +61,11 @@
             </div>
         </span>
     </div>
-</html>
+</template>
 
 <script>
     const emoji = [
-        '😃', '😅', '😉', '😍', '😎', '😟', '😣', '😨' ,'😥', '🤗', '🤔'
+        '😃', '😅', '😉', '😍', '😎', '😟', '😣', '😨', '😥', '🤗', '🤔'
     ];
 
     const emoji1 = document.querySelector('.front');
@@ -76,7 +77,7 @@
         let pick = 0;
         do {
             pick = Math.floor(Math.random() * emoji.length);
-        } while(prevPick == pick);
+        } while (prevPick == pick);
         prevPick = pick;
         element.textContent = emoji[pick];
     };
@@ -91,7 +92,7 @@
 
     setTimeout(() => {
         changeEmoji(emoji2);
-        
+
         setInterval(() => {
             changeEmoji(emoji2);
         }, 2000);

@@ -9,6 +9,7 @@
         0% {
             transform: rotate3d(0, 0, 1, 0deg) translate(-50%, -50%);
         }
+
         100% {
             transform: rotate3d(0, 0, 1, 360deg) translate(-50%, -50%);
         }
@@ -19,7 +20,9 @@
         background-color: #3f3d56;
     }
 
-    .stars, .fishing, h1 {
+    .stars,
+    .fishing,
+    h1 {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -65,18 +68,18 @@
     }
 </style>
 
-<html>
+<template>
     <img src="/assets/images/svgs/stars.svg" alt="stars" class="stars">
     <img src="/assets/images/svgs/fishing.svg" alt="fishing" class="fishing">
     <h1>Oops, there's nothing here.</h1>
-</html>
+</template>
 
 <script>
     const $stars = document.querySelector('.stars');
     const $fishing = document.querySelector('.fishing');
     const $h1 = document.querySelector('h1');
 
-    document.addEventListener('mousemove', function(e) {
+    document.addEventListener('mousemove', function (e) {
         const { clientX, clientY } = e;
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;

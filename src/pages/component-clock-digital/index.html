@@ -39,7 +39,7 @@
     }
 </style>
 
-<html>
+<template>
     <div id="root" class="g-flex-center">
         <div>
             <div class="line">
@@ -56,12 +56,12 @@
             </div>
         </div>
     </div>
-</html>
+</template>
 
 <script>
     function createElementNineToZero($el, type) {
         const $fragment = document.createDocumentFragment();
-        for (let i=9; i>=0; i--) {
+        for (let i = 9; i >= 0; i--) {
             const $span = document.createElement('span');
             $span.textContent = i;
             $fragment.appendChild($span);

@@ -23,7 +23,7 @@
     }
 </style>
 
-<html>
+<template>
     <div id="root" class="g-flex-center">
         <button>
             <span class="text">
@@ -31,23 +31,23 @@
             </span>
         </button>
     </div>
-</html>
+</template>
 
 <script>
     /** @param {HTMLButtonElement} $button */
     function useMagneticEffect($button) {
-        const [ $text ] = $button.children;
+        const [$text] = $button.children;
 
         $button.addEventListener('mousemove', (e) => {
             const { offsetHeight, offsetTop, offsetLeft, offsetWidth } = $button;
 
             const left = e.pageX - offsetLeft;
             const top = e.pageY - offsetTop;
-            
+
             const centerX = left - offsetWidth / 2;
             const centerY = top - offsetHeight / 2;
 
-            const distance = Math.sqrt(centerX**2 + centerY**2);
+            const distance = Math.sqrt(centerX ** 2 + centerY ** 2);
 
             $button.style.transform = `translate3d(${centerX / 1.5}px, ${centerY / 1.5}px, 0)`;
             $text.style.transform = `

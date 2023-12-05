@@ -67,15 +67,16 @@
     }
 </style>
 
-<html>
+<template>
     <div id="root" class="g-flex-center">
         <div id="confetti"></div>
-        <img style="border-bottom: 2px solid #000;" width="180px" src="/assets/images/crayon-shinchan/hehe.gif" alt="hehe" />
+        <img style="border-bottom: 2px solid #000;" width="180px" src="/assets/images/crayon-shinchan/hehe.gif"
+            alt="hehe" />
     </div>
-</html>
+</template>
 
 <script>
-    function randomNumber(min, max) { 
+    function randomNumber(min, max) {
         return Math.round(Math.random() * (max - min) + min);
     }
 
@@ -86,7 +87,7 @@
     }
 
     function sprayConfetti($element, frequency) {
-        for (let i=0; i<frequency; i++) {
+        for (let i = 0; i < frequency; i++) {
             setTimeout(() => {
                 const $paper = document.createElement('div');
                 $paper.className = 'paper';

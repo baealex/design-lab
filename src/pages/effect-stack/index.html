@@ -77,16 +77,15 @@
             }
         }
     }
-
 </style>
 
-<html>
+<template>
     <div id="root" class="g-flex-center">
         <div class="stack"></div>
         <div class="content">
             <div class="section">
                 <div class="cover">
-                    <img class="photo" src="/assets/images/sims4/1.jpg"/>
+                    <img class="photo" src="/assets/images/sims4/1.jpg" />
                     <div class="description">
                         <p>Tiny Living</p>
                     </div>
@@ -94,7 +93,7 @@
             </div>
             <div class="section">
                 <div class="cover">
-                    <img class="photo" src="/assets/images/sims4/2.jpg"/>
+                    <img class="photo" src="/assets/images/sims4/2.jpg" />
                     <div class="description">
                         <p>Get Famous</p>
                     </div>
@@ -102,7 +101,7 @@
             </div>
             <div class="section">
                 <div class="cover">
-                    <img class="photo" src="/assets/images/sims4/3.jpg"/>
+                    <img class="photo" src="/assets/images/sims4/3.jpg" />
                     <div class="description">
                         <p>Snowy Escape</p>
                     </div>
@@ -110,7 +109,7 @@
             </div>
             <div class="section">
                 <div class="cover">
-                    <img class="photo" src="/assets/images/sims4/4.jpg"/>
+                    <img class="photo" src="/assets/images/sims4/4.jpg" />
                     <div class="description">
                         <p>Island Living</p>
                     </div>
@@ -118,7 +117,7 @@
             </div>
             <div class="section">
                 <div class="cover">
-                    <img class="photo" src="/assets/images/sims4/5.jpg"/>
+                    <img class="photo" src="/assets/images/sims4/5.jpg" />
                     <div class="description">
                         <p>Cottage Living</p>
                     </div>
@@ -126,7 +125,7 @@
             </div>
             <div class="section">
                 <div class="cover">
-                    <img class="photo" src="/assets/images/sims4/6.jpg"/>
+                    <img class="photo" src="/assets/images/sims4/6.jpg" />
                     <div class="description">
                         <p>City Living</p>
                     </div>
@@ -137,17 +136,17 @@
             </button>
         </div>
     </div>
-</html>
+</template>
 
 <script>
     document.querySelector('.content button').addEventListener('click', () => {
         location.reload();
     });
 
-    function randomNumber(min, max) { 
+    function randomNumber(min, max) {
         return Math.round(Math.random() * (max - min) + min);
     }
-    
+
     function imageLoadAndRun(imagePaths, func) {
         let counter = 0;
 
@@ -192,7 +191,7 @@
             setTimeout(() => {
                 image.style.opacity = 0;
                 image.style.transform = `translate(${randomNumber(-300, 300)}%, ${randomNumber(-300, 300)}%) rotate(${rotate}deg)`;
-                
+
                 setTimeout(() => {
                     stack.removeChild(image);
                 }, 500);
@@ -201,7 +200,7 @@
 
         setTimeout(() => {
             content.style.display = 'block';
-            
+
             setTimeout(() => {
                 content.style.opacity = 1;
                 content.style.position = 'default';

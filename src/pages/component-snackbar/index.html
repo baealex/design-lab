@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 <title>SnackBar Component</title>
-    
+
 <style>
     @keyframes snack-bar-slide {
         0% {
@@ -59,7 +59,7 @@
     }
 </style>
 
-<html>
+<template>
     <div id="root" class="g-flex-center">
         <div class="options">
             <button class="g-button">
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div id="snackbar-container"></div>
-</html>
+</template>
 
 <script>
     const handleRemove = [];
@@ -92,7 +92,7 @@
 
     function snackBar(text, options) {
         clearSnackBar();
-        
+
         const snackBar = document.createElement('div');
         snackBar.textContent = text;
         snackBar.classList.add('snack-bar');
@@ -121,7 +121,7 @@
 
     document.querySelector('.options').addEventListener('click', (e) => {
         if (e.target.nodeName === 'BUTTON') {
-            switch(e.target.dataset.type) {
+            switch (e.target.dataset.type) {
                 default:
                     snackBar('Hi, there 👋.');
                     break;

@@ -43,20 +43,20 @@
     }
 </style>
 
-<html>
+<template>
     <div class="clock">
         <div class="hour pin"></div>
         <div class="minute pin"></div>
         <div class="second pin"></div>
     </div>
-</html>
+</template>
 
 <script>
     function runClock() {
         const hourPin = document.querySelector('.hour.pin');
         const minutePin = document.querySelector('.minute.pin');
         const secondPin = document.querySelector('.second.pin');
-        
+
         const tick = () => {
             const date = new Date();
             const hour = date.getHours();

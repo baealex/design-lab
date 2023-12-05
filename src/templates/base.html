@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %}
-    <link href="/favicon.ico" rel="icon"/>
-    <link href="/assets/styles/global.5.css" rel="stylesheet"/>
+    <link href="/favicon.ico" rel="icon" />
+    <link href="/assets/styles/global.5.css" rel="stylesheet" />
     {% block style %}
 </head>
-<body>
-    {% block html %}
+
+<body lang="ko">
+    {% block template %}
     <div id="view-code" style="display: none;" class="code-tag g-flex-center">
-        <img width="115px" src="/assets/images/view-code.png"/>
+        <img width="115px" src="/assets/images/view-code.png" />
     </div>
     <script src="/assets/scripts/global.0.js"></script>
     {% block script %}
 </body>
+
 </html>

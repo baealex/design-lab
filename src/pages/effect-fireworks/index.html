@@ -26,7 +26,7 @@
     }
 </style>
 
-<html>
+<template>
     <canvas id="canvas"></canvas>
     <div class="frequency">
         frequency :
@@ -36,10 +36,10 @@
         <button data-value="2000">2000</button>
         ms
     </div>
-</html>
+</template>
 
 <script>
-    function randomNumber(min, max) { 
+    function randomNumber(min, max) {
         return Math.round(Math.random() * (max - min) + min);
     }
 
@@ -108,10 +108,10 @@
 
             if (this.dy < 0.5) {
                 fireworks = fireworks.filter(entity => entity !== this);
-            
+
                 const size = randomNumber(15, 30);
 
-                for (let i=0; i<=size*3; i++) {
+                for (let i = 0; i <= size * 3; i++) {
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -162,7 +162,7 @@
             });
         });
     });
-    
+
     function endlessCreateFireworks() {
         if (!document.hidden && fireworks.length < 20) {
             fireworks.push(new Firework(

@@ -191,63 +191,62 @@
     }
 </style>
 
-<html>
-<div class="applications">
-    <div class="application" data-app-id="clock" data-app-title="Clock">
-        <div class="application-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="ai ai-Clock">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M15 16l-2.414-2.414A2 2 0 0 1 12 12.172V6" />
-            </svg>
+<template>
+    <div class="applications">
+        <div class="application" data-app-id="clock" data-app-title="Clock">
+            <div class="application-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="ai ai-Clock">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M15 16l-2.414-2.414A2 2 0 0 1 12 12.172V6" />
+                </svg>
+            </div>
+            <div class="application-title">
+                Clock
+            </div>
+            <window-template style="display: none;">
+                <iframe src="../component-clock-analog" frameborder="0"></iframe>
+            </window-template>
         </div>
-        <div class="application-title">
-            Clock
+        <div class="application" data-app-id="music" data-app-title="Baeto">
+            <div class="application-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="ai ai-MusicAlbum">
+                    <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6z" />
+                    <path d="M9 16.5V8.78a1 1 0 0 1 .757-.97l6-1.5A1 1 0 0 1 17 7.28V15" />
+                    <path d="M9 11l8-2" />
+                    <circle cx="7.5" cy="16.5" r="1.5" />
+                    <circle cx="15.5" cy="15.5" r="1.5" />
+                </svg>
+            </div>
+            <div class="application-title">
+                Beato
+            </div>
+            <window-template style="display: none;">
+                <iframe src="https://demo-beato.baejino.com" frameborder="0"></iframe>
+            </window-template>
         </div>
-        <template>
-            <iframe src="../component-clock-analog" frameborder="0"></iframe>
-        </template>
+        <div class="application" data-app-id="code" data-app-title="Mymy, Dev.">
+            <div class="application-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="ai ai-PanelSplit">
+                    <rect x="2" y="3" width="20" height="18" rx="2" />
+                    <path d="M9 3v18" />
+                    <path d="M22 12H9" />
+                </svg>
+            </div>
+            <div class="application-title">
+                MymyDev
+            </div>
+            <window-template style="display: none;">
+                <iframe src="https://mymy.dev" frameborder="0"></iframe>
+            </window-template>
+        </div>
     </div>
-    <div class="application" data-app-id="music" data-app-title="Baeto">
-        <div class="application-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="ai ai-MusicAlbum">
-                <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6z" />
-                <path d="M9 16.5V8.78a1 1 0 0 1 .757-.97l6-1.5A1 1 0 0 1 17 7.28V15" />
-                <path d="M9 11l8-2" />
-                <circle cx="7.5" cy="16.5" r="1.5" />
-                <circle cx="15.5" cy="15.5" r="1.5" />
-            </svg>
-        </div>
-        <div class="application-title">
-            Beato
-        </div>
-        <template>
-            <iframe src="https://demo-beato.baejino.com" frameborder="0"></iframe>
-        </template>
-    </div>
-    <div class="application" data-app-id="code" data-app-title="Mymy, Dev.">
-        <div class="application-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="ai ai-PanelSplit">
-                <rect x="2" y="3" width="20" height="18" rx="2" />
-                <path d="M9 3v18" />
-                <path d="M22 12H9" />
-            </svg>
-        </div>
-        <div class="application-title">
-            MymyDev
-        </div>
-        <template>
-            <iframe src="https://mymy.dev" frameborder="0"></iframe>
-        </template>
-    </div>
-</div>
-
-</html>
+</template>
 
 <script>
     const WindowTemplate = ({ title, content }) => `
@@ -452,7 +451,7 @@
         $windowContainer.id = appId;
         $windowContainer.innerHTML = WindowTemplate({
             title: appTitle,
-            content: $application.querySelector('template').innerHTML,
+            content: $application.querySelector('window-template').innerHTML,
         });
         document.body.appendChild($windowContainer);
 

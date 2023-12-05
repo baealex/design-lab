@@ -195,39 +195,38 @@
     }
 </style>
 
-<html>
-<header class="top-navigation">
-    <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>Material</h1>
-            <div style="display: flex; gap: 16px; align-items: center;">
-                <div class="menu three-line">
-                    <div class="third-line"></div>
+<template>
+    <header class="top-navigation">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Material</h1>
+                <div style="display: flex; gap: 16px; align-items: center;">
+                    <div class="menu three-line">
+                        <div class="third-line"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
-<div class="container">
-    <div class="card main-shadow mt-5" style="width: 480px; max-width: 100%;">
-        <div>
-            <div class="input mt-3">
-                <input id="username" />
-                <label for="username">username</label>
+    </header>
+    <div class="container">
+        <div class="card main-shadow mt-5" style="width: 480px; max-width: 100%;">
+            <div>
+                <div class="input mt-3">
+                    <input id="username" />
+                    <label for="username">username</label>
+                </div>
+                <div class="input mt-3">
+                    <input id="password" type="password" />
+                    <label for="password">password</label>
+                </div>
             </div>
-            <div class="input mt-3">
-                <input id="password" type="password" />
-                <label for="password">password</label>
+            <div class="mt-3" style="text-align: right;">
+                <button class="button d-inline">Sign In</button>
+                <button class="button d-inline b">Forget Password</button>
             </div>
         </div>
-        <div class="mt-3" style="text-align: right;">
-            <button class="button d-inline">Sign In</button>
-            <button class="button d-inline b">Forget Password</button>
-        </div>
     </div>
-</div>
-
-</html>
+</template>
 
 <script>
     /** @param {HTMLButtonElement} $button */

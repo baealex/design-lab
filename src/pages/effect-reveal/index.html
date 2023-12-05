@@ -7,9 +7,11 @@
         0% {
             transform: translate3d(-100%, 0, 0);
         }
+
         65% {
             transform: translate3d(0, 0, 0);
         }
+
         100% {
             transform: translate3d(0, 0, 0);
         }
@@ -19,10 +21,12 @@
         0% {
             transform: translate3d(0, 0, 0);
         }
+
         35%,
         65% {
             transform: translate3d(100%, 0, 0);
         }
+
         100% {
             transform: translate3d(200%, 0, 0);
         }
@@ -83,20 +87,20 @@
     }
 </style>
 
-<html>
+<template>
     <div id="root">
         <div id="page">
             <div id="page1">
-                <img src="/assets/images/iu/1.jpg"/>
+                <img src="/assets/images/iu/1.jpg" />
             </div>
             <div id="page2">
-                <img src="/assets/images/iu/2.jpg"/>
+                <img src="/assets/images/iu/2.jpg" />
             </div>
             <div id="page3">
-                <img src="/assets/images/iu/3.jpg"/>
+                <img src="/assets/images/iu/3.jpg" />
             </div>
             <div id="page4">
-                <img src="/assets/images/iu/4.jpg"/>
+                <img src="/assets/images/iu/4.jpg" />
             </div>
         </div>
         <div class="options">
@@ -105,10 +109,10 @@
             <button data-type="natural" class="g-button">END NATURAL</button>
         </div>
     </div>
-</html>
+</template>
 
 <script>
-    function randomNumber(min, max) { 
+    function randomNumber(min, max) {
         return Math.round(Math.random() * (max - min) + min);
     }
 
@@ -137,7 +141,7 @@
         endNatural: false,
     };
 
-    function reveal(options=INIT_OPTIONS) {
+    function reveal(options = INIT_OPTIONS) {
         options = {
             ...INIT_OPTIONS,
             ...options,
@@ -148,17 +152,17 @@
         if (!options.useRandomColor) {
             colors.push(...options.colors);
         }
-        
+
         if (colors.length < 3 || options.useRandomColor) {
             const numberOfRemain = 3 - colors.length;
-            for (let i=0; i<numberOfRemain; i++) {
+            for (let i = 0; i < numberOfRemain; i++) {
                 colors.push(randomColor());
             }
         }
 
         const items = [[], []];
 
-        for (let i=0; i<5; i++) {
+        for (let i = 0; i < 5; i++) {
             const item = document.createElement('div');
             item.classList.add('reveal');
             if (i == 0 || i == 4) {
@@ -233,13 +237,13 @@
             pages[active].style.display = 'block';
         }
         next();
-        
+
         return { next };
     })();
 
     document.querySelector('.options').addEventListener('click', (e) => {
         if (e.target.nodeName === 'BUTTON') {
-            switch(e.target.dataset.type) {
+            switch (e.target.dataset.type) {
                 default:
                     reveal({
                         onReady: router.next,

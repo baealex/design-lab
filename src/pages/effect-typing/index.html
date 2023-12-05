@@ -14,9 +14,11 @@
         0% {
             opacity: 0;
         }
+
         50% {
             opacity: 1;
         }
+
         100% {
             opacity: 0;
         }
@@ -49,18 +51,18 @@
         flex-direction: column;
     }
 
-    .letters > div:first-child {
+    .letters>div:first-child {
         margin-top: 80vh;
     }
 
-    .letters > div {
+    .letters>div {
         text-shadow: 1px 1px 6px rgb(130, 72, 229);
         position: relative;
         display: inline-block;
         margin-bottom: 200px;
     }
 
-    .letters > div:before {
+    .letters>div:before {
         pointer-events: none;
         content: '';
         position: absolute;
@@ -74,21 +76,21 @@
         opacity: 0.5;
     }
 
-    .letters > div:last-child:before {
+    .letters>div:last-child:before {
         transform: perspective(1em) rotateX(40deg) scale(1, 0.5);
         opacity: 0.7;
     }
 
-    .letters > div:last-child:after {
+    .letters>div:last-child:after {
         content: '_';
         margin-left: 4px;
         animation: blink 1s infinite step-end;
     }
 </style>
 
-<html>
+<template>
     <div class="letters"></div>
-</html>
+</template>
 
 <script>
     const 초성_연결자 = [
@@ -109,7 +111,7 @@
         ...acc,
         [cur]: idx
     }), {});
-        
+
     function 글자_분리기(글자) {
         const 초성 = [
             'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ',
@@ -136,7 +138,7 @@
         const 글자의_유니코드 = 글자.charCodeAt(0);
 
         if (글자의_유니코드 < 유니코드_한글_시작점 || 글자의_유니코드 > 유니코드_한글_종료점) {
-            return [ 글자 ];
+            return [글자];
         }
 
         const 상대_크기 = 글자의_유니코드 - 유니코드_한글_시작점;
@@ -159,7 +161,7 @@
     }
 
     function 글자_병합기(원자들) {
-        const [초성='', 중성='', 종성=''] = 원자들;
+        const [초성 = '', 중성 = '', 종성 = ''] = 원자들;
 
         if (!중성) {
             return 초성;
@@ -169,7 +171,7 @@
 
         const 자음_유니코드_시작점 = 12623;
         const 유니코드_한글_시작점 = 44032;
-        
+
         const 초성_인덱스 = 초성_연결자[초성];
         const 중성_인덱스 = 중성_유니코드 - 자음_유니코드_시작점;
         const 종성_인덱스 = 종성_연결자[종성];

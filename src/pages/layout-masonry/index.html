@@ -1,48 +1,50 @@
 {% extends 'base.html' %}
 
-<title>Masonry Layout</title>
+<title>Masonry Layout with JS</title>
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Passion+One:wght@700&display=swap');
 
-    .columns{
-        column-width: 360px;
-        column-gap: 16px;
+    body {
         padding: 16px;
     }
 
-    .columns .item {
-        position: relative;
-        display: inline-block;
+    .masonry {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    .item {
+        width: 400px;
+        max-width: 100%;
         border: 2px solid #020202;
         box-sizing: border-box;
         padding: 16px;
         border-radius: 20px;
         margin-bottom: 16px;
-        width: 100%;
     }
 
-    .columns .item blockquote {
+    .item blockquote {
         text-align: center;
     }
 
-    .columns .item blockquote p,
-    .columns .item blockquote .from {
+    .item blockquote p,
+    .item blockquote .from {
         font-family: 'Noto Serif KR', serif;
     }
 
-    .columns .item blockquote p {
+    .item blockquote p {
         word-break: keep-all;
         font-weight: 600;
         font-size: 24px;
         line-height: 1.75;
     }
-    
-    .columns .item blockquote .from {
+
+    .item blockquote .from {
         font-size: 16px;
     }
 
-    .columns .item blockquote .from::before {
+    .item blockquote .from::before {
         margin: 16px auto;
         display: block;
         background: #000;
@@ -51,8 +53,8 @@
         content: ''
     }
 
-    .columns .item blockquote::after,
-    .columns .item blockquote::before {
+    .item blockquote::after,
+    .item blockquote::before {
         margin: 32px 0;
         font-family: 'Passion One', cursive;
         font-weight: 700;
@@ -61,14 +63,15 @@
         display: block;
     }
 
-    .columns .item blockquote::before {
+    .item blockquote::before {
         transform: rotate(180deg);
     }
 </style>
 
-<html>
-    <div class="columns"></div>
-</html>
+<template>
+    <div class="masonry"></div>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+</template>
 
 <script>
     function Template(props) {
@@ -86,9 +89,17 @@
         `;
     }
 
-    fetch('/assets/data/proverbs.json')
-        .then(res => res.json())
-        .then(data => {
-            document.querySelector('.columns').innerHTML = data.map(Template).join('');
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/assets/data/proverbs.json')
+            .then(res => res.json())
+            .then(data => {
+                document.querySelector('.masonry').innerHTML = data.map(Template).join('');
+                new Masonry('.masonry', {
+                    itemSelector: '.item',
+                    columnWidth: 400,
+                    gutter: 16,
+                    fitWidth: true
+                });
+            });
+    });
 </script>

@@ -9,6 +9,7 @@
         0% {
             transform: translate(-50%, -50%) rotate(0deg);
         }
+
         100% {
             transform: translate(-50%, -50%) rotate(360deg);
         }
@@ -46,7 +47,7 @@
     .around {
         animation: around 60s linear infinite;
 
-        & > div {
+        &>div {
             position: absolute;
         }
     }
@@ -75,10 +76,10 @@
     }
 </style>
 
-<html>
+<template>
     <div class="center around">
         <div class="round orange" style="top: -100px; left: -200px"></div>
-        <div class="round pink"   style="top: -250px; left: -50px"></div>
+        <div class="round pink" style="top: -250px; left: -50px"></div>
     </div>
     <div class="center purple round"></div>
     <div class="blurry-cover">
@@ -86,7 +87,7 @@
             <h1>Blurry Effect</h1>
         </div>
     </div>
-</html>
+</template>
 
 <script>
     const $ = (selector) => document.querySelector(selector);

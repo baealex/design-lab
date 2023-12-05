@@ -52,14 +52,13 @@
     }
 </style>
 
-<html>
-<div id="root" class="g-flex-center">
-    <div class="container">
+<template>
+    <div id="root" class="g-flex-center">
+        <div class="container">
+        </div>
+        <h1>Fri, 9:00 PM</h1>
     </div>
-    <h1>Fri, 9:00 PM</h1>
-</div>
-
-</html>
+</template>
 
 <script>
     const $container = document.querySelector('.container');
@@ -76,18 +75,18 @@
     마우스 주변 픽셀에 불들어 오는 것
     $container.addEventListener('mouseenter', (e) => {
         const { clientX, clientY } = e;
-
+ 
         $pixels.filter(($pixel, i) => {
             const { offsetLeft, offsetTop } = $pixel;
-
+ 
             const centerX = clientX - offsetLeft;
             const centerY = clientY - offsetTop;
-
+ 
             const distance = Math.sqrt(centerX ** 2 + centerY ** 2);
-
+ 
             if (distance < 5) {
                 $pixel.style.background = `hsl(${i / 100}turn, 100%, 50%)`;
-
+ 
                 // setTimeout(() => {
                 //     $pixel.style.background = '#333';
                 // }, 1000);
@@ -99,7 +98,7 @@
     /*
     마우스 클릭시 픽셀이 찍히는 것, URL에 저장 후 공유 가능
     let data = atob(location.hash.slice(1)).split(',').map(i => parseInt(i));
-
+ 
     if (data.length) {
         data.forEach((i, j) => {
             setTimeout(() => {
@@ -108,7 +107,7 @@
             }, 100 * j);
         });
     }
-
+ 
     $pixels.forEach(($pixel, i) => {
         $pixel.addEventListener('click', (e) => {
             $pixel.style.background = `hsl(${i / 100}turn, 100%, 50%)`;
@@ -118,7 +117,7 @@
             } else {
                 data.push(i);
             }
-
+ 
             history.pushState(null, null, `#${btoa(data.join(','))}`);
         });
     });
