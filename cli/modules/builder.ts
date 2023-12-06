@@ -25,9 +25,7 @@ export async function distDirInit() {
     await fs.mkdir(DIST_PATH + '/assets');
     await fs.mkdir(DIST_PATH + '/assets' + '/styles');
     await fs.mkdir(DIST_PATH + '/assets' + '/scripts');
-    await fs.copy('./src/public/', `${DIST_PATH}/`, {
-        recursive: true,
-    });
+    await fs.copy('./src/public/', `${DIST_PATH}/`);
 }
 
 export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
