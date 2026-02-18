@@ -3,223 +3,437 @@
 <!-- description: Soft UI music player with inner and outer shadows -->
 
 <style>
+    :root {
+        --bg: #e0e0e0;
+        --dark: #bebebe;
+        --light: #ffffff;
+        --text: #393939;
+        --text-sub: #8a8a8a;
+    }
+
     body {
-        background: #efebf9;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 60px 20px;
     }
 
-    @keyframes rotate {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .flat {
-        background: #efebf9;
-        box-shadow:
-            9px 9px 18px #cbc8d4,
-            -9px -9px 18px #ffffff;
-    }
-
-    .concave {
-        background: linear-gradient(145deg, #d7d4e0, #fffbff);
-        box-shadow:
-            9px 9px 18px #cbc8d4,
-            -9px -9px 18px #ffffff;
-    }
-
-    .convex {
-        background: linear-gradient(145deg, #fffbff, #d7d4e0);
-        box-shadow:
-            9px 9px 18px #cbc8d4,
-            -9px -9px 18px #ffffff;
-    }
-
-    .container {
-        width: 780px;
+    .player {
+        width: 480px;
         max-width: 100%;
+        height: fit-content;
+        padding: 44px;
+        border-radius: 36px;
+        background: var(--bg);
+        box-shadow:
+            12px 12px 24px var(--dark),
+            -12px -12px 24px var(--light);
+    }
+
+    /* ── Album Art ── */
+    .album {
+        width: 240px;
+        height: 240px;
         margin: 0 auto;
-        padding: 0 15px;
+        border-radius: 50%;
+        padding: 5px;
+        background: var(--bg);
+        box-shadow:
+            8px 8px 16px var(--dark),
+            -8px -8px 16px var(--light);
+        position: relative;
     }
 
-    .card {
-        border-radius: 8px;
-        margin: 0 auto;
-        padding: 1.25rem;
+    .album img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        animation: spin 8s linear infinite;
+        animation-play-state: paused;
     }
 
-    .mt-3 {
-        margin-top: 1rem;
+    .album.playing img {
+        animation-play-state: running;
     }
 
-    .mt-4 {
-        margin-top: 1.5rem;
+    .album::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            2px 2px 4px var(--dark),
+            -2px -2px 4px var(--light);
+        z-index: 1;
     }
 
-    .mt-5 {
-        margin-top: 2rem;
+    .album::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            inset 2px 2px 3px var(--dark),
+            inset -2px -2px 3px var(--light);
+        z-index: 2;
     }
 
-    .mb-5 {
-        margin-bottom: 2rem;
+    @keyframes spin {
+        to { transform: rotate(360deg); }
     }
 
-    .button {
-        color: #333;
-        padding: 16px 16px;
-        border-radius: 50px;
-        overflow: hidden;
-        cursor: pointer;
+    /* ── Track Info ── */
+    .info {
+        text-align: center;
+        margin-top: 32px;
+    }
+
+    .info-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+    }
+
+    .info-artist {
+        font-size: 0.88rem;
+        color: var(--text-sub);
+        margin-top: 5px;
+    }
+
+    /* ── Progress ── */
+    .progress {
+        margin-top: 28px;
+    }
+
+    .progress-bar {
+        height: 6px;
+        border-radius: 3px;
+        background: var(--bg);
+        box-shadow:
+            inset 2px 2px 3px var(--dark),
+            inset -2px -2px 3px var(--light);
+        position: relative;
+    }
+
+    .progress-fill {
+        width: 35%;
+        height: 100%;
+        border-radius: 3px;
+        background: var(--text-sub);
+        position: relative;
+        transition: width 0.3s;
+    }
+
+    .progress-handle {
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            2px 2px 4px var(--dark),
+            -2px -2px 4px var(--light);
+    }
+
+    .progress-time {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        color: var(--text-sub);
+        margin-top: 8px;
+    }
+
+    /* ── Controls ── */
+    .controls {
         display: flex;
         align-items: center;
         justify-content: center;
-
-        background: linear-gradient(145deg, #fffbff, #d7d4e0);
-        box-shadow:
-            9px 9px 18px #cbc8d4,
-            -9px -9px 18px #ffffff;
-
-        &:hover {
-            background: #efebf9;
-            box-shadow:
-                9px 9px 18px #cbc8d4,
-                -9px -9px 18px #ffffff;
-        }
-
-        &:focus {
-            background: linear-gradient(145deg, #d7d4e0, #fffbff);
-            box-shadow:
-                9px 9px 18px #cbc8d4,
-                -9px -9px 18px #ffffff;
-        }
+        gap: 28px;
+        margin-top: 24px;
     }
 
-    .image {
-        position: relative;
-        border-radius: 100%;
-        padding: 4px;
-        background: linear-gradient(145deg, #fffbff, #d7d4e0);
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        background: var(--bg);
+        transition: box-shadow 0.15s;
+    }
+
+    .btn svg {
+        fill: var(--text-sub);
+    }
+
+    .btn-sm {
+        width: 48px;
+        height: 48px;
         box-shadow:
-            23px 23px 46px #99969f,
-            -23px -23px 46px #ffffff;
+            4px 4px 8px var(--dark),
+            -4px -4px 8px var(--light);
+    }
 
-        img {
-            height: 100%;
-            width: 100%;
-            border-radius: 100%;
-            object-fit: cover;
-            animation: rotate 3s linear infinite;
-        }
+    .btn-sm svg {
+        width: 16px;
+        height: 16px;
+    }
 
-        &::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 35px;
-            height: 35px;
-            transform: translate(-50%, -50%);
-            border-radius: 100%;
-            background: #efebf9;
-            z-index: 2;
-        }
+    .btn-sm:active {
+        box-shadow:
+            inset 3px 3px 5px var(--dark),
+            inset -3px -3px 5px var(--light);
+    }
 
-        &::before {
-            z-index: 1;
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 45px;
-            height: 45px;
-            transform: translate(-50%, -50%);
-            border-radius: 100%;
-            background: rgba(255, 255, 255, 0.5);
-        }
+    .btn-play {
+        width: 64px;
+        height: 64px;
+        box-shadow:
+            6px 6px 12px var(--dark),
+            -6px -6px 12px var(--light);
+    }
+
+    .btn-play svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--text);
+    }
+
+    .btn-play:active,
+    .btn-play.active {
+        box-shadow:
+            inset 4px 4px 8px var(--dark),
+            inset -4px -4px 8px var(--light);
+    }
+
+    /* ── Volume ── */
+    .volume {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 28px;
+    }
+
+    .volume svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--text-sub);
+        flex-shrink: 0;
+    }
+
+    .volume-track {
+        flex: 1;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--bg);
+        box-shadow:
+            inset 2px 2px 3px var(--dark),
+            inset -2px -2px 3px var(--light);
+        position: relative;
+    }
+
+    .volume-fill {
+        width: 65%;
+        height: 100%;
+        border-radius: 3px;
+        background: var(--text-sub);
+        position: relative;
+    }
+
+    .volume-handle {
+        position: absolute;
+        right: -7px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            2px 2px 4px var(--dark),
+            -2px -2px 4px var(--light);
+    }
+
+    /* ── Playlist ── */
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-top: 28px;
     }
 
     .list-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 16px 0;
-        border-bottom: 1px solid #ccc;
+        padding: 14px 16px;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: box-shadow 0.15s;
+    }
 
-        &:last-child {
-            border-bottom: none;
-        }
+    .list-item:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
 
-        .title {
-            font-weight: 800;
-            letter-spacing: -0.04em;
-        }
+    .list-item.active {
+        background: transparent;
+        box-shadow:
+            inset 3px 3px 5px var(--dark),
+            inset -3px -3px 5px var(--light);
+    }
 
-        .album {
-            font-size: 0.875rem;
-            margin-top: 4px;
-            font-weight: 400;
-            color: #666;
-            letter-spacing: -0.04em;
-        }
+    .list-item-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+
+    .list-item-sub {
+        font-size: 0.78rem;
+        color: var(--text-sub);
+        margin-top: 3px;
+    }
+
+    .list-item-icon svg {
+        width: 11px;
+        height: 11px;
+        fill: var(--text-sub);
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+
+    .list-item:hover .list-item-icon svg,
+    .list-item.active .list-item-icon svg {
+        opacity: 1;
     }
 </style>
 
 <body>
-    <div class="container">
-        <div class="card flat mt-5 mb-5"
-            style="width: 480px; max-width: 100%; display: flex; flex-direction: column; align-items: center;">
-            <div class="image" style="width: 300px; height: 300px;">
-                <img src="/assets/images/album-cover.jpg" />
-            </div>
-            <div class="mt-5" style="display: flex; gap: 16px;">
-                <button class="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#555"
-                        style="width: 16px; height: 16px;">
-                        <path
-                            d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z" />
-                    </svg>
-                </button>
-                <button class="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#555"
-                        style="width: 16px; height: 16px;">
-                        <path
-                            d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
-                    </svg>
-                </button>
-                <button class="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#555"
-                        style="width: 16px; height: 16px;">
-                        <path
-                            d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z" />
-                    </svg>
-                </button>
-            </div>
-            <div id="list" class="mt-5" style="width: 100%; display: flex; gap: 16px; flex-direction: column;"></div>
+    <div class="player">
+        <div class="album" id="album">
+            <img src="/assets/images/album-cover.jpg" />
         </div>
+
+        <div class="info">
+            <div class="info-title" id="title">Shake it off</div>
+            <div class="info-artist" id="artist">Taylor Swift</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar">
+                <div class="progress-fill">
+                    <div class="progress-handle"></div>
+                </div>
+            </div>
+            <div class="progress-time">
+                <span>1:23</span>
+                <span>3:45</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-sm" id="prev">
+                <svg viewBox="0 0 512 512"><path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/></svg>
+            </button>
+            <button class="btn btn-play" id="play">
+                <svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+            </button>
+            <button class="btn btn-sm" id="next">
+                <svg viewBox="0 0 512 512"><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/></svg>
+            </button>
+        </div>
+
+        <div class="volume">
+            <svg viewBox="0 0 576 512"><path d="M301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM412.6 181.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5z"/></svg>
+            <div class="volume-track">
+                <div class="volume-fill">
+                    <div class="volume-handle"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="list" id="list"></div>
     </div>
 </body>
 
 <script>
-    const ListItemTemplate = ({ title, artist }) => `
-        <div class="list-item">
-            <div>
-                <div class="title">${title}</div>
-                <div class="album">${artist}</div>
+    const PLAY = 'M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z';
+    const PAUSE = 'M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z';
+
+    let playing = false;
+    let current = 0;
+    let tracks = [];
+
+    const $album = document.getElementById('album');
+    const $play = document.getElementById('play');
+    const $path = $play.querySelector('path');
+    const $svg = $play.querySelector('svg');
+    const $title = document.getElementById('title');
+    const $artist = document.getElementById('artist');
+    const $list = document.getElementById('list');
+
+    function toggle() {
+        playing = !playing;
+        $play.classList.toggle('active', playing);
+        $album.classList.toggle('playing', playing);
+        $path.setAttribute('d', playing ? PAUSE : PLAY);
+        $svg.setAttribute('viewBox', playing ? '0 0 320 512' : '0 0 384 512');
+    }
+
+    function select(i) {
+        current = i;
+        $title.textContent = tracks[i].title;
+        $artist.textContent = tracks[i].artist;
+        $list.querySelectorAll('.list-item').forEach((el, j) => {
+            el.classList.toggle('active', j === i);
+        });
+        if (!playing) toggle();
+    }
+
+    function render() {
+        $list.innerHTML = tracks.map((t, i) => `
+            <div class="list-item${i === 0 ? ' active' : ''}" data-i="${i}">
+                <div>
+                    <div class="list-item-title">${t.title}</div>
+                    <div class="list-item-sub">${t.artist}</div>
+                </div>
+                <div class="list-item-icon">
+                    <svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+                </div>
             </div>
-            <button class="button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#555" style="width: 8px; height: 8px;">
-                    <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/>
-                </svg>
-            </button>
-        </div>
-    `;
+        `).join('');
+
+        $list.querySelectorAll('.list-item').forEach(el => {
+            el.addEventListener('click', () => select(+el.dataset.i));
+        });
+    }
+
+    $play.addEventListener('click', toggle);
+    document.getElementById('prev').addEventListener('click', () => select((current - 1 + tracks.length) % tracks.length));
+    document.getElementById('next').addEventListener('click', () => select((current + 1) % tracks.length));
 
     fetch('/assets/data/playlist.json')
-        .then(res => res.json())
+        .then(r => r.json())
         .then(data => {
-            document.getElementById('list').innerHTML = data.map(ListItemTemplate).join('');
+            tracks = data;
+            $title.textContent = data[0].title;
+            $artist.textContent = data[0].artist;
+            render();
         });
 </script>
