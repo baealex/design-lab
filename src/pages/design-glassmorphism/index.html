@@ -1,0 +1,908 @@
+<!-- layout: base.html -->
+<!-- title: Glassmorphism Design -->
+<!-- description: Apple Liquid Glass UI with gooey buttons and refraction effects -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.18);
+        --glass-border: rgba(255, 255, 255, 0.35);
+        --glass-highlight: rgba(255, 255, 255, 0.6);
+        --glass-shadow: rgba(0, 0, 0, 0.12);
+        --text: #fff;
+        --text-secondary: rgba(255, 255, 255, 0.7);
+        --accent: #007AFF;
+        --blur: blur(24px) saturate(180%);
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #0a0a1a;
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* ── Animated gradient background ── */
+    .bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background:
+            radial-gradient(ellipse at 20% 20%, #6366f1 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 20%, #ec4899 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 80%, #06b6d4 0%, transparent 50%),
+            radial-gradient(ellipse at 30% 60%, #8b5cf6 0%, transparent 40%),
+            radial-gradient(ellipse at 70% 50%, #f43f5e 0%, transparent 40%);
+        animation: bg-shift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes bg-shift {
+        0% { filter: hue-rotate(0deg) brightness(0.8); }
+        50% { filter: hue-rotate(30deg) brightness(0.9); }
+        100% { filter: hue-rotate(-20deg) brightness(0.85); }
+    }
+
+    /* Floating orbs for parallax depth */
+    .orb {
+        position: fixed;
+        border-radius: 50%;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .orb-1 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent 70%);
+        top: 10%;
+        left: 5%;
+        animation: float-1 8s ease-in-out infinite;
+    }
+
+    .orb-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent 70%);
+        top: 40%;
+        right: -5%;
+        animation: float-2 10s ease-in-out infinite;
+    }
+
+    .orb-3 {
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.35), transparent 70%);
+        bottom: 10%;
+        left: 30%;
+        animation: float-3 9s ease-in-out infinite;
+    }
+
+    @keyframes float-1 {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(40px, 30px); }
+    }
+
+    @keyframes float-2 {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(-30px, -40px); }
+    }
+
+    @keyframes float-3 {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(20px, -25px); }
+    }
+
+    /* ── SVG filters (hidden) ── */
+    .svg-filters {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    /* ── Layout ── */
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 48px 24px 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* ── Glass Panel (base) ── */
+    .glass {
+        background: var(--glass-bg);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        box-shadow:
+            0 8px 32px var(--glass-shadow),
+            inset 0 1px 0 var(--glass-highlight);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .glass::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    }
+
+    /* ── Header ── */
+    .header {
+        padding: 20px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .header-logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .header-logo svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .header-title {
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .header-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+
+        svg {
+            width: 16px;
+            height: 16px;
+            color: var(--text);
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    /* ── Weather Main Card ── */
+    .weather-main {
+        padding: 36px 32px;
+        text-align: center;
+    }
+
+    .weather-location {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .weather-temp {
+        font-size: 6rem;
+        font-weight: 200;
+        line-height: 1;
+        margin: 8px 0;
+        letter-spacing: -0.04em;
+        background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.5));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .weather-desc {
+        font-size: 1.1rem;
+        font-weight: 400;
+        color: var(--text-secondary);
+    }
+
+    .weather-range {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+
+        span {
+            color: var(--text);
+            font-weight: 500;
+        }
+    }
+
+    /* ── Hourly Forecast (scrollable) ── */
+    .hourly {
+        padding: 20px 0;
+    }
+
+    .hourly-title {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0 24px;
+        margin-bottom: 16px;
+    }
+
+    .hourly-scroll {
+        display: flex;
+        gap: 4px;
+        overflow-x: auto;
+        padding: 0 24px;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .hourly-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 14px;
+        border-radius: 20px;
+        flex-shrink: 0;
+        min-width: 60px;
+        transition: background 0.2s;
+
+        &.now {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    }
+
+    .hourly-time {
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+    }
+
+    .now .hourly-time {
+        color: var(--text);
+    }
+
+    .hourly-icon {
+        font-size: 1.3rem;
+        line-height: 1;
+    }
+
+    .hourly-temp {
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* ── Detail Grid ── */
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .detail-card {
+        padding: 18px 20px;
+    }
+
+    .detail-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 10px;
+
+        svg {
+            width: 13px;
+            height: 13px;
+            opacity: 0.7;
+        }
+    }
+
+    .detail-value {
+        font-size: 1.8rem;
+        font-weight: 300;
+        letter-spacing: -0.02em;
+        line-height: 1;
+
+        small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+    }
+
+    .detail-sub {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        margin-top: 6px;
+    }
+
+    /* ── UV Index bar ── */
+    .uv-bar {
+        height: 4px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #4ade80, #facc15, #f97316, #ef4444, #a855f7);
+        margin-top: 12px;
+        position: relative;
+    }
+
+    .uv-dot {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ── Gooey Nav (sticky buttons) ── */
+    .gooey-nav-wrapper {
+        filter: url(#goo);
+    }
+
+    .gooey-nav {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        padding: 6px;
+        position: relative;
+    }
+
+    .gooey-blob {
+        position: absolute;
+        height: 44px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.25);
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
+
+    .gooey-btn {
+        position: relative;
+        z-index: 1;
+        padding: 12px 22px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        font-family: inherit;
+        color: rgba(255, 255, 255, 0.6);
+        background: none;
+        border: none;
+        border-radius: 22px;
+        cursor: pointer;
+        transition: color 0.3s;
+        white-space: nowrap;
+
+        &.active {
+            color: #fff;
+        }
+
+        &:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.85);
+        }
+    }
+
+    /* ── Gooey Toggles (sticky pill group) ── */
+    .gooey-toggles-section {
+        padding: 24px 28px;
+    }
+
+    .gooey-toggles-label {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+    }
+
+    .gooey-toggles-wrapper {
+        filter: url(#goo);
+    }
+
+    .gooey-toggles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .gooey-toggle {
+        padding: 10px 20px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        font-family: inherit;
+        color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.08);
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s, transform 0.2s;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &.on {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+    }
+
+    /* ── Liquid Glass Buttons ── */
+    .glass-buttons {
+        display: flex;
+        gap: 12px;
+        padding: 24px 28px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .glass-btn {
+        position: relative;
+        padding: 14px 32px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: inherit;
+        color: var(--text);
+        background: transparent;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+            transform: scale(1.05);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    .glass-btn-filter {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        border-radius: inherit;
+        backdrop-filter: blur(16px) saturate(120%) brightness(1.15);
+        -webkit-backdrop-filter: blur(16px) saturate(120%) brightness(1.15);
+    }
+
+    .glass-btn-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        border-radius: inherit;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .glass-btn-specular {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);
+        transition: background 0.15s;
+    }
+
+    .glass-btn-text {
+        position: relative;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .glass-btn-text svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .glass-btn.accent .glass-btn-overlay {
+        background: rgba(0, 122, 255, 0.35);
+        border-color: rgba(0, 122, 255, 0.5);
+    }
+
+    /* ── Specular Card (mouse-tracking highlight) ── */
+    .specular-card {
+        padding: 28px;
+        cursor: default;
+    }
+
+    .specular-card .specular-glow {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .specular-card:hover .specular-glow {
+        opacity: 1;
+    }
+
+    .specular-card-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .specular-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .specular-text {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+        .layout {
+            padding: 24px 16px 60px;
+            gap: 16px;
+        }
+
+        .weather-temp {
+            font-size: 4.5rem;
+        }
+
+        .detail-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .detail-value {
+            font-size: 1.4rem;
+        }
+
+        .glass-buttons {
+            padding: 20px;
+        }
+
+        .glass-btn {
+            padding: 12px 24px;
+            font-size: 0.82rem;
+        }
+
+        .gooey-btn {
+            padding: 10px 16px;
+            font-size: 0.75rem;
+        }
+    }
+</style>
+
+<body>
+    <!-- SVG Filters -->
+    <svg class="svg-filters" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Gooey merge filter -->
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+                <feColorMatrix in="blur" mode="matrix"
+                    values="1 0 0 0 0
+                            0 1 0 0 0
+                            0 0 1 0 0
+                            0 0 0 19 -9"
+                    result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Animated Background -->
+    <div class="bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="layout">
+        <!-- Header -->
+        <header class="glass header">
+            <div class="header-left">
+                <div class="header-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    </svg>
+                </div>
+                <span class="header-title">Weather</span>
+            </div>
+            <div class="header-right">
+                <div class="header-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </div>
+                <div class="header-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Weather Main -->
+        <div class="glass weather-main">
+            <div class="weather-location">Seoul, South Korea</div>
+            <div class="weather-temp">-3°</div>
+            <div class="weather-desc">Mostly Clear</div>
+            <div class="weather-range">H:<span>2°</span> L:<span>-7°</span></div>
+        </div>
+
+        <!-- Hourly Forecast -->
+        <div class="glass hourly">
+            <div class="hourly-title">Hourly Forecast</div>
+            <div class="hourly-scroll" id="hourly-scroll"></div>
+        </div>
+
+        <!-- Gooey Navigation -->
+        <div class="glass" style="padding: 6px;">
+            <div class="gooey-nav-wrapper">
+                <div class="gooey-nav" id="gooey-nav">
+                    <div class="gooey-blob" id="gooey-blob"></div>
+                    <button class="gooey-btn active" data-idx="0">Today</button>
+                    <button class="gooey-btn" data-idx="1">Tomorrow</button>
+                    <button class="gooey-btn" data-idx="2">10 Days</button>
+                    <button class="gooey-btn" data-idx="3">Monthly</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Grid -->
+        <div class="detail-grid">
+            <div class="glass detail-card">
+                <div class="detail-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v10l4.2 2.5"/><circle cx="12" cy="12" r="10"/></svg>
+                    UV Index
+                </div>
+                <div class="detail-value">3</div>
+                <div class="detail-sub">Moderate</div>
+                <div class="uv-bar">
+                    <div class="uv-dot" style="left: 25%"></div>
+                </div>
+            </div>
+
+            <div class="glass detail-card">
+                <div class="detail-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
+                    Humidity
+                </div>
+                <div class="detail-value">45<small>%</small></div>
+                <div class="detail-sub">Dew point -12°</div>
+            </div>
+
+            <div class="glass detail-card">
+                <div class="detail-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>
+                    Wind
+                </div>
+                <div class="detail-value">12 <small>km/h</small></div>
+                <div class="detail-sub">NW gusts 20 km/h</div>
+            </div>
+
+            <div class="glass detail-card">
+                <div class="detail-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                    Feels Like
+                </div>
+                <div class="detail-value">-8°</div>
+                <div class="detail-sub">Wind chill factor</div>
+            </div>
+        </div>
+
+        <!-- Gooey Toggle Tags -->
+        <div class="glass gooey-toggles-section">
+            <div class="gooey-toggles-label">Alert Categories</div>
+            <div class="gooey-toggles-wrapper">
+                <div class="gooey-toggles" id="gooey-toggles">
+                    <button class="gooey-toggle on">Rain</button>
+                    <button class="gooey-toggle on">Snow</button>
+                    <button class="gooey-toggle">Severe</button>
+                    <button class="gooey-toggle on">Wind</button>
+                    <button class="gooey-toggle">UV</button>
+                    <button class="gooey-toggle">Fog</button>
+                    <button class="gooey-toggle">Thunder</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liquid Glass Buttons -->
+        <div class="glass-buttons">
+            <button class="glass-btn accent">
+                <div class="glass-btn-filter"></div>
+                <div class="glass-btn-overlay"></div>
+                <div class="glass-btn-specular"></div>
+                <span class="glass-btn-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    Get App
+                </span>
+            </button>
+            <button class="glass-btn">
+                <div class="glass-btn-filter"></div>
+                <div class="glass-btn-overlay"></div>
+                <div class="glass-btn-specular"></div>
+                <span class="glass-btn-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+                    Share
+                </span>
+            </button>
+            <button class="glass-btn">
+                <div class="glass-btn-filter"></div>
+                <div class="glass-btn-overlay"></div>
+                <div class="glass-btn-specular"></div>
+                <span class="glass-btn-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Settings
+                </span>
+            </button>
+        </div>
+
+        <!-- Specular Mouse-Tracking Card -->
+        <div class="glass specular-card" id="specular-card">
+            <div class="specular-glow" id="specular-glow"></div>
+            <div class="specular-card-content">
+                <div class="specular-title">About Liquid Glass</div>
+                <div class="specular-text">
+                    Move your cursor over this card to see the specular highlight follow your mouse.
+                    Apple's Liquid Glass creates depth through dynamic light reflections that respond to
+                    user interaction, making digital surfaces feel like real optical materials.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    /* ── Hourly Forecast Data ── */
+    const hours = [
+        { time: 'Now', icon: '☀️', temp: '-3°' },
+        { time: '1PM', icon: '☀️', temp: '-2°' },
+        { time: '2PM', icon: '⛅', temp: '-1°' },
+        { time: '3PM', icon: '⛅', temp: '0°' },
+        { time: '4PM', icon: '☁️', temp: '-1°' },
+        { time: '5PM', icon: '☁️', temp: '-2°' },
+        { time: '6PM', icon: '🌙', temp: '-3°' },
+        { time: '7PM', icon: '🌙', temp: '-4°' },
+        { time: '8PM', icon: '🌙', temp: '-5°' },
+        { time: '9PM', icon: '❄️', temp: '-5°' },
+        { time: '10PM', icon: '❄️', temp: '-6°' },
+        { time: '11PM', icon: '🌙', temp: '-6°' },
+    ];
+
+    const $hourly = document.getElementById('hourly-scroll');
+    $hourly.innerHTML = hours.map((h, i) =>
+        `<div class="hourly-item${i === 0 ? ' now' : ''}">
+            <span class="hourly-time">${h.time}</span>
+            <span class="hourly-icon">${h.icon}</span>
+            <span class="hourly-temp">${h.temp}</span>
+        </div>`
+    ).join('');
+
+    /* ── Gooey Navigation ── */
+    const $nav = document.getElementById('gooey-nav');
+    const $blob = document.getElementById('gooey-blob');
+    const $btns = $nav.querySelectorAll('.gooey-btn');
+
+    function moveBlob(btn) {
+        const navRect = $nav.getBoundingClientRect();
+        const btnRect = btn.getBoundingClientRect();
+        $blob.style.left = (btnRect.left - navRect.left) + 'px';
+        $blob.style.width = btnRect.width + 'px';
+        $blob.style.top = (btnRect.top - navRect.top) + 'px';
+    }
+
+    $btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            $btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            moveBlob(btn);
+        });
+    });
+
+    /* Initialize blob position */
+    requestAnimationFrame(() => {
+        const activeBtn = $nav.querySelector('.gooey-btn.active');
+        if (activeBtn) moveBlob(activeBtn);
+    });
+
+    window.addEventListener('resize', () => {
+        const activeBtn = $nav.querySelector('.gooey-btn.active');
+        if (activeBtn) moveBlob(activeBtn);
+    });
+
+    /* ── Gooey Toggles ── */
+    document.getElementById('gooey-toggles').addEventListener('click', (e) => {
+        const btn = e.target.closest('.gooey-toggle');
+        if (btn) btn.classList.toggle('on');
+    });
+
+    /* ── Specular Mouse Tracking ── */
+    const $specCard = document.getElementById('specular-card');
+    const $specGlow = document.getElementById('specular-glow');
+
+    $specCard.addEventListener('mousemove', (e) => {
+        const rect = $specCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        $specGlow.style.background =
+            `radial-gradient(circle 200px at ${x}px ${y}px, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)`;
+    });
+
+    $specCard.addEventListener('mouseenter', () => {
+        $specGlow.style.opacity = '1';
+    });
+
+    $specCard.addEventListener('mouseleave', () => {
+        $specGlow.style.opacity = '0';
+    });
+
+    /* ── Liquid Glass Button Specular ── */
+    document.querySelectorAll('.glass-btn').forEach(btn => {
+        const specular = btn.querySelector('.glass-btn-specular');
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            specular.style.background =
+                `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)`;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            specular.style.background = '';
+        });
+    });
+</script>
