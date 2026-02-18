@@ -3,27 +3,41 @@ import {
     ScriptTarget,
     transpileModule,
 } from 'typescript';
-import { minify } from 'uglify-js';
+import { minify } from 'terser';
+
+import { reportError, clearError } from '../error-reporter';
 
 export interface TypescriptTranspileOption {
     isDev?: boolean;
 }
 
-export function typescriptTranspile(source: string, options?: TypescriptTranspileOption) {
+export async function typescriptTranspile(source: string, options?: TypescriptTranspileOption) {
     try {
-        const transpile = transpileModule(source, {
+        const result = transpileModule(source, {
             compilerOptions: {
-                target: ScriptTarget.ES5,
-                module: ModuleKind.CommonJS
+                target: ScriptTarget.ESNext,
+                module: ModuleKind.ESNext,
+                ...(options?.isDev && {
+                    inlineSourceMap: true,
+                    inlineSources: true,
+                }),
             }
         });
-        const { code } = minify(transpile.outputText);
-        return code;
-    } catch(e) {
-        if (options?.isDev !== true) {
-            throw e;
-        } 
-        console.log(e);
+
+        if (options?.isDev) {
+            clearError();
+            return result.outputText;
+        }
+
+        const minified = await minify(result.outputText);
+        return minified.code ?? '';
+    } catch (e) {
+        const message = e instanceof Error ? e.message : String(e);
+        if (options?.isDev) {
+            reportError(`[TypeScript] ${message}`);
+            console.log(e);
+            return '';
+        }
+        throw e;
     }
-    return '';
 }
