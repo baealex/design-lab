@@ -7,27 +7,6 @@
         background: #efebf9;
     }
 
-    @mixin flat {
-        background: #efebf9;
-        box-shadow:
-            9px 9px 18px #cbc8d4,
-            -9px -9px 18px #ffffff;
-    }
-
-    @mixin concave {
-        background: linear-gradient(145deg, #d7d4e0, #fffbff);
-        box-shadow:
-            9px 9px 18px #cbc8d4,
-            -9px -9px 18px #ffffff;
-    }
-
-    @mixin convex {
-        background: linear-gradient(145deg, #fffbff, #d7d4e0);
-        box-shadow:
-            9px 9px 18px #cbc8d4,
-            -9px -9px 18px #ffffff;
-    }
-
     @keyframes rotate {
         0% {
             transform: rotate(0deg);
@@ -39,15 +18,24 @@
     }
 
     .flat {
-        @include flat;
+        background: #efebf9;
+        box-shadow:
+            9px 9px 18px #cbc8d4,
+            -9px -9px 18px #ffffff;
     }
 
     .concave {
-        @include concave;
+        background: linear-gradient(145deg, #d7d4e0, #fffbff);
+        box-shadow:
+            9px 9px 18px #cbc8d4,
+            -9px -9px 18px #ffffff;
     }
 
     .convex {
-        @include convex;
+        background: linear-gradient(145deg, #fffbff, #d7d4e0);
+        box-shadow:
+            9px 9px 18px #cbc8d4,
+            -9px -9px 18px #ffffff;
     }
 
     .container {
@@ -89,14 +77,23 @@
         align-items: center;
         justify-content: center;
 
-        @include convex;
+        background: linear-gradient(145deg, #fffbff, #d7d4e0);
+        box-shadow:
+            9px 9px 18px #cbc8d4,
+            -9px -9px 18px #ffffff;
 
         &:hover {
-            @include flat;
+            background: #efebf9;
+            box-shadow:
+                9px 9px 18px #cbc8d4,
+                -9px -9px 18px #ffffff;
         }
 
         &:focus {
-            @include concave;
+            background: linear-gradient(145deg, #d7d4e0, #fffbff);
+            box-shadow:
+                9px 9px 18px #cbc8d4,
+                -9px -9px 18px #ffffff;
         }
     }
 

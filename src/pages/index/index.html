@@ -292,13 +292,7 @@
 </body>
 
 <script>
-    interface PageItem {
-        name: string;
-        title: string;
-        description: string;
-    }
-
-    const pages: PageItem[] = $DATA.pages;
+    const pages = $DATA.pages;
 
     const categories = [
         { key: 'all', label: 'All' },
@@ -308,28 +302,28 @@
         { key: 'layout', label: 'Layouts' },
     ];
 
-    function getCategory(name: string): string {
+    function getCategory(name) {
         return name.split('-')[0] || '';
     }
 
-    function getCategoryLabel(cat: string): string {
+    function getCategoryLabel(cat) {
         const found = categories.find(c => c.key === cat);
         return found ? found.label : cat;
     }
 
-    const $iframe = document.getElementById('hero-iframe') as HTMLIFrameElement;
-    const $heroTitle = document.getElementById('hero-title')!;
-    const $heroDesc = document.getElementById('hero-desc')!;
-    const $heroDot = document.getElementById('hero-dot')!;
-    const $heroCat = document.getElementById('hero-cat')!;
-    const $heroLink = document.getElementById('hero-link') as HTMLAnchorElement;
-    const $filters = document.getElementById('filters')!;
-    const $carouselWrap = document.getElementById('carousel-wrap')!;
-    const $carousel = document.getElementById('carousel')!;
+    const $iframe = document.getElementById('hero-iframe');
+    const $heroTitle = document.getElementById('hero-title');
+    const $heroDesc = document.getElementById('hero-desc');
+    const $heroDot = document.getElementById('hero-dot');
+    const $heroCat = document.getElementById('hero-cat');
+    const $heroLink = document.getElementById('hero-link');
+    const $filters = document.getElementById('filters');
+    const $carouselWrap = document.getElementById('carousel-wrap');
+    const $carousel = document.getElementById('carousel');
     let currentIndex = 0;
     let activeFilter = 'all';
-    let filteredPages: PageItem[] = [...pages];
-    let activeCard: HTMLElement | null = null;
+    let filteredPages = [...pages];
+    let activeCard = null;
     let isFirstLoad = true;
 
     // ── Filter chips ──
@@ -388,7 +382,7 @@
     }
 
     // ── Selection ──
-    function selectByFilteredIndex(filteredIdx: number) {
+    function selectByFilteredIndex(filteredIdx) {
         if (filteredIdx < 0 || filteredIdx >= filteredPages.length) return;
 
         const page = filteredPages[filteredIdx];
@@ -419,7 +413,7 @@
         // Card highlight
         if (activeCard) activeCard.classList.remove('active');
         const cards = $carousel.querySelectorAll('.card');
-        const targetCard = cards[filteredIdx] as HTMLElement;
+        const targetCard = cards[filteredIdx];
         if (targetCard) {
             targetCard.classList.add('active');
             activeCard = targetCard;
@@ -435,7 +429,7 @@
     let scrollStart = 0;
     let hasMoved = false;
 
-    function onDragStart(clientX: number) {
+    function onDragStart(clientX) {
         isDragging = true;
         hasMoved = false;
         dragStartX = clientX;
@@ -443,7 +437,7 @@
         $carouselWrap.classList.add('dragging');
     }
 
-    function onDragMove(clientX: number) {
+    function onDragMove(clientX) {
         if (!isDragging) return;
         const dx = clientX - dragStartX;
         if (Math.abs(dx) > 4) hasMoved = true;
@@ -486,7 +480,7 @@
     }, true);
 
     // ── Touch swipe on hero (prev/next) ──
-    const $hero = document.querySelector('.hero')!;
+    const $hero = document.querySelector('.hero');
     let heroTouchStartX = 0;
 
     $hero.addEventListener('touchstart', (e) => {

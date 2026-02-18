@@ -9,14 +9,6 @@
         font-family: 'Oswald', sans-serif;
     }
 
-    @mixin MainShadow {
-        box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
-    }
-
-    @mixin SubShadow {
-        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
-    }
-
     .container {
         width: 780px;
         max-width: 100%;
@@ -31,11 +23,11 @@
     }
 
     .main-shadow {
-        @include MainShadow;
+        box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
     }
 
     .sub-shadow {
-        @include SubShadow;
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
     }
 
     .d-inline {

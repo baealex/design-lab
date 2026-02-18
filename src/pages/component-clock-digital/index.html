@@ -5,7 +5,9 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-    $clock_size: 64px;
+    :root {
+        --clock-size: 64px;
+    }
 
     body {
         background: #fff;
@@ -23,15 +25,15 @@
     .number {
         color: #000;
         overflow-y: hidden;
-        height: $clock_size;
+        height: var(--clock-size);
         line-height: 1;
-        font-size: $clock_size;
+        font-size: var(--clock-size);
         display: inline-block;
     }
 
     .number span {
         font-family: 'Anton', sans-serif;
-        height: $clock_size;
+        height: var(--clock-size);
         display: block;
         overflow: hidden;
         transition: transform 0.5s ease;
@@ -59,7 +61,7 @@
 </body>
 
 <script>
-    function createElementNineToZero($el, type) {
+    function createElementNineToZero($el) {
         const $fragment = document.createDocumentFragment();
         for (let i = 9; i >= 0; i--) {
             const $span = document.createElement('span');

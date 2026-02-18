@@ -1,5 +1,4 @@
-import { scssTranspile } from '../transpile/scss';
-import { typescriptTranspile } from '../transpile/typescript';
+import { minifyScript } from '../transpile/typescript';
 import type { PageDefinition } from './parse-page';
 
 export interface CompileOptions {
@@ -17,10 +16,6 @@ export interface CompiledBlocks {
 function injectData(source: string, data?: Record<string, unknown>): string {
     if (!data) return source;
 
-    const declarations = Object.entries(data)
-        .map(([key, value]) => `const $DATA = { ${key}: ${JSON.stringify(value)} };`)
-        .join('\n');
-
     return source.replace(/\$DATA\.(\w+)/g, (match, key) => {
         if (key in data) {
             return JSON.stringify(data[key]);
@@ -32,13 +27,11 @@ function injectData(source: string, data?: Record<string, unknown>): string {
 export async function compileBlocks(page: PageDefinition, options: CompileOptions): Promise<CompiledBlocks> {
     const { isDev, data } = options;
 
-    const style = page.style
-        ? scssTranspile(page.style, { isDev })
-        : '';
+    const style = page.style ?? '';
 
     const scriptSource = injectData(page.script, data);
     const script = scriptSource
-        ? await typescriptTranspile(scriptSource, { isDev })
+        ? await minifyScript(scriptSource, { isDev })
         : '';
 
     return {
