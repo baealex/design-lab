@@ -2,288 +2,531 @@
 <!-- title: BaeJino Design -->
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap');
-
-    @keyframes fade-in {
-        0% { opacity: 0; filter: blur(10px); }
-        100% { opacity: 1; filter: blur(0px); }
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap');
 
     body {
-        background: linear-gradient(100deg, #b7bcff, #f8d7f2);
-        color: #333;
+        background: #0f0f13;
+        color: #fff;
         overflow: hidden;
     }
 
-    .layout {
+    .gallery {
         display: flex;
+        flex-direction: column;
         width: 100%;
         height: 100%;
         font-family: 'Montserrat', sans-serif;
     }
 
-    .sidebar {
-        width: 280px;
-        min-width: 280px;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(20px);
-        border-right: 1px solid rgba(255, 255, 255, 0.5);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-
-        .header {
-            padding: 24px 20px 16px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-
-            h1 {
-                font-size: 1.5rem;
-                font-weight: 900;
-                margin: 0;
-            }
-
-            .subtitle {
-                font-size: 0.75rem;
-                color: rgba(0, 0, 0, 0.4);
-                margin-top: 4px;
-                font-weight: 400;
-            }
-        }
-
-        .nav {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px 0;
-
-            &::-webkit-scrollbar {
-                width: 4px;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: rgba(0, 0, 0, 0.15);
-                border-radius: 2px;
-            }
-        }
-
-        .category-group {
-            margin-bottom: 8px;
-        }
-
-        .category-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08rem;
-            padding: 8px 20px 4px;
-            color: rgba(0, 0, 0, 0.35);
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 20px;
-            cursor: pointer;
-            transition: background 0.15s;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.85rem;
-            font-weight: 500;
-
-            &:hover {
-                background: rgba(255, 255, 255, 0.5);
-            }
-
-            &.active {
-                background: rgba(115, 90, 242, 0.12);
-                color: #735af2;
-                font-weight: 700;
-            }
-
-            .dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                flex-shrink: 0;
-            }
-
-            .dot.design { background: #ff6b9d; }
-            .dot.effect { background: #735af2; }
-            .dot.layout { background: #27ae60; }
-            .dot.component { background: #3498db; }
-        }
-    }
-
-    .preview {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
+    /* Hero */
+    .hero {
+        flex: 12;
         position: relative;
+        overflow: hidden;
+        min-height: 0;
 
-        .preview-card {
+        iframe {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            border: none;
+            opacity: 1;
+            transition: opacity 0.4s ease;
 
-            .preview-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 12px 16px;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-
-                .preview-title {
-                    font-weight: 700;
-                    font-size: 0.9rem;
-                }
-
-                .preview-link {
-                    color: #735af2;
-                    text-decoration: none;
-                    font-size: 0.8rem;
-                    font-weight: 600;
-                    display: flex;
-                    align-items: center;
-                    gap: 4px;
-
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-            }
-
-            iframe {
-                flex: 1;
-                width: 100%;
-                border: none;
-                background: #fff;
-            }
-        }
-
-        .empty-state {
-            text-align: center;
-            color: rgba(0, 0, 0, 0.3);
-            font-size: 0.9rem;
-            font-weight: 500;
+            &.fade-out { opacity: 0; }
         }
     }
 
+    .hero-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 32px 40px 20px;
+        background: linear-gradient(to top, rgba(15,15,19,0.95) 0%, rgba(15,15,19,0.6) 50%, transparent 100%);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        pointer-events: none;
+    }
+
+    .hero-info {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255,255,255,0.6);
+    }
+
+    .hero-title {
+        font-size: 1.6rem;
+        font-weight: 900;
+        line-height: 1.2;
+    }
+
+    .hero-desc {
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.5);
+        font-weight: 400;
+    }
+
+    .hero-open {
+        pointer-events: auto;
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.15);
+        transition: background 0.2s;
+        flex-shrink: 0;
+        cursor: pointer;
+
+        &:hover { background: rgba(255,255,255,0.2); }
+    }
+
+    /* Bottom Panel */
+    .bottom-panel {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        background: #16161d;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        min-height: 0;
+    }
+
+    /* Filters */
+    .filters {
+        display: flex;
+        gap: 8px;
+        padding: 12px 24px;
+        flex-shrink: 0;
+    }
+
+    .chip {
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: transparent;
+        color: rgba(255,255,255,0.5);
+        transition: all 0.2s;
+        font-family: 'Montserrat', sans-serif;
+
+        &:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.8);
+        }
+
+        &.active {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+            color: #fff;
+        }
+    }
+
+    /* Carousel */
+    .carousel-wrap {
+        flex: 1;
+        position: relative;
+        min-height: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        cursor: grab;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,0.15) transparent;
+
+        &.dragging {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
+
+        &::-webkit-scrollbar { height: 4px; }
+        &::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px;
+        }
+    }
+
+    .carousel {
+        display: flex;
+        gap: 12px;
+        padding: 0 24px 16px;
+        height: 100%;
+        align-items: stretch;
+        user-select: none;
+    }
+
+    .card {
+        min-width: 180px;
+        max-width: 180px;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.03);
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex-shrink: 0;
+
+        &:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+        }
+
+        &.active {
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+        }
+    }
+
+    .card-cat {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: rgba(255,255,255,0.4);
+    }
+
+    .card-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .card-desc {
+        font-size: 0.68rem;
+        color: rgba(255,255,255,0.4);
+        line-height: 1.4;
+    }
+
+    /* Dots */
+    .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .card-cat .dot { width: 6px; height: 6px; }
+
+    .dot.design { background: #ff6b9d; }
+    .dot.effect { background: #735af2; }
+    .dot.layout { background: #27ae60; }
+    .dot.component { background: #3498db; }
+
+    /* Mobile */
     @media screen and (max-width: 768px) {
-        .layout {
+        .hero { flex: 5; }
+        .bottom-panel { flex: 5; }
+
+        .hero-overlay {
             flex-direction: column;
+            align-items: flex-start;
+            padding: 24px 20px 14px;
         }
 
-        .sidebar {
-            width: 100%;
-            min-width: 100%;
-            height: auto;
-            max-height: 40%;
-            border-right: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-        }
+        .hero-title { font-size: 1.2rem; }
+        .filters { padding: 10px 16px; }
 
-        .preview {
-            padding: 16px;
+        .carousel { padding: 0 16px 12px; }
+
+        .card {
+            min-width: 150px;
+            max-width: 150px;
+            padding: 12px;
         }
     }
 </style>
 
 <body>
-    <div class="layout">
-        <div class="sidebar">
-            <div class="header">
-                <h1>BaeJino</h1>
-                <div class="subtitle">Design Showcase</div>
+    <div class="gallery">
+        <div class="hero">
+            <iframe id="hero-iframe"></iframe>
+            <div class="hero-overlay">
+                <div class="hero-info">
+                    <div class="hero-badge">
+                        <span class="dot" id="hero-dot"></span>
+                        <span id="hero-cat"></span>
+                    </div>
+                    <h1 class="hero-title" id="hero-title"></h1>
+                    <p class="hero-desc" id="hero-desc"></p>
+                </div>
+                <a class="hero-open" id="hero-link" href="#">
+                    Open
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
             </div>
-            <div class="nav"></div>
         </div>
-        <div class="preview">
-            <div class="empty-state">Select a page from the sidebar</div>
+        <div class="bottom-panel">
+            <div class="filters" id="filters"></div>
+            <div class="carousel-wrap" id="carousel-wrap">
+                <div class="carousel" id="carousel"></div>
+            </div>
         </div>
     </div>
 </body>
 
 <script>
-    function capitalize(s: string) {
-        if (typeof s !== 'string') return '';
-        return s.charAt(0).toUpperCase() + s.slice(1);
+    interface PageItem {
+        name: string;
+        title: string;
+        description: string;
     }
 
-    const pages = $DATA.pages;
+    const pages: PageItem[] = $DATA.pages;
 
     const categories = [
-        { key: 'design', label: 'Design' },
+        { key: 'all', label: 'All' },
         { key: 'effect', label: 'Effects' },
         { key: 'component', label: 'Components' },
+        { key: 'design', label: 'Design' },
         { key: 'layout', label: 'Layouts' },
     ];
 
-    const $nav = document.querySelector('.nav');
-    const $preview = document.querySelector('.preview');
-
-    let activeItem: HTMLElement | null = null;
-
-    categories.forEach(cat => {
-        const catPages = pages.filter((p: string) => p.startsWith(cat.key + '-'));
-        if (catPages.length === 0) return;
-
-        const group = document.createElement('div');
-        group.className = 'category-group';
-        group.innerHTML = `<div class="category-label">${cat.label}</div>`;
-
-        catPages.forEach((page: string) => {
-            const name = page.split('-').slice(1).map(capitalize).join(' ');
-            const item = document.createElement('a');
-            item.className = 'nav-item';
-            item.href = '#' + page;
-            item.innerHTML = `<span class="dot ${cat.key}"></span>${name}`;
-
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (activeItem) activeItem.classList.remove('active');
-                item.classList.add('active');
-                activeItem = item;
-                showPreview(page, name);
-                window.location.hash = page;
-            });
-
-            group.appendChild(item);
-        });
-
-        $nav.appendChild(group);
-    });
-
-    function showPreview(page: string, name: string) {
-        $preview.innerHTML = `
-            <div class="preview-card">
-                <div class="preview-header">
-                    <span class="preview-title">${name}</span>
-                    <a class="preview-link" href="/${page}">
-                        Open
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                    </a>
-                </div>
-                <iframe src="/${page}"></iframe>
-            </div>
-        `;
+    function getCategory(name: string): string {
+        return name.split('-')[0] || '';
     }
 
-    // Restore from hash
+    function getCategoryLabel(cat: string): string {
+        const found = categories.find(c => c.key === cat);
+        return found ? found.label : cat;
+    }
+
+    const $iframe = document.getElementById('hero-iframe') as HTMLIFrameElement;
+    const $heroTitle = document.getElementById('hero-title')!;
+    const $heroDesc = document.getElementById('hero-desc')!;
+    const $heroDot = document.getElementById('hero-dot')!;
+    const $heroCat = document.getElementById('hero-cat')!;
+    const $heroLink = document.getElementById('hero-link') as HTMLAnchorElement;
+    const $filters = document.getElementById('filters')!;
+    const $carouselWrap = document.getElementById('carousel-wrap')!;
+    const $carousel = document.getElementById('carousel')!;
+    let currentIndex = 0;
+    let activeFilter = 'all';
+    let filteredPages: PageItem[] = [...pages];
+    let activeCard: HTMLElement | null = null;
+    let isFirstLoad = true;
+
+    // ── Filter chips ──
+    categories.forEach(cat => {
+        const chip = document.createElement('button');
+        chip.className = 'chip' + (cat.key === 'all' ? ' active' : '');
+        chip.textContent = cat.label;
+        chip.addEventListener('click', () => {
+            activeFilter = cat.key;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            updateFilteredPages();
+        });
+        $filters.appendChild(chip);
+    });
+
+    function updateFilteredPages() {
+        filteredPages = activeFilter === 'all'
+            ? [...pages]
+            : pages.filter(p => getCategory(p.name) === activeFilter);
+
+        renderCarousel();
+
+        const currentName = pages[currentIndex]?.name;
+        const idx = filteredPages.findIndex(p => p.name === currentName);
+        if (idx >= 0) {
+            selectByFilteredIndex(idx);
+        } else if (filteredPages.length > 0) {
+            selectByFilteredIndex(0);
+        }
+    }
+
+    // ── Carousel rendering ──
+    function renderCarousel() {
+        $carousel.innerHTML = '';
+        filteredPages.forEach((page, i) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const cat = getCategory(page.name);
+            card.innerHTML = `
+                <div class="card-cat">
+                    <span class="dot ${cat}"></span>
+                    ${getCategoryLabel(cat)}
+                </div>
+                <div class="card-title">${page.title}</div>
+                <div class="card-desc">${page.description}</div>
+            `;
+
+            card.addEventListener('click', () => {
+                selectByFilteredIndex(i);
+            });
+
+            $carousel.appendChild(card);
+        });
+    }
+
+    // ── Selection ──
+    function selectByFilteredIndex(filteredIdx: number) {
+        if (filteredIdx < 0 || filteredIdx >= filteredPages.length) return;
+
+        const page = filteredPages[filteredIdx];
+        currentIndex = pages.findIndex(p => p.name === page.name);
+
+        // Hero info
+        const cat = getCategory(page.name);
+        $heroDot.className = `dot ${cat}`;
+        $heroCat.textContent = getCategoryLabel(cat);
+        $heroTitle.textContent = page.title;
+        $heroDesc.textContent = page.description;
+        $heroLink.href = `/${page.name}`;
+
+        // Iframe transition
+        if (isFirstLoad) {
+            isFirstLoad = false;
+            $iframe.src = `/${page.name}`;
+        } else {
+            $iframe.classList.add('fade-out');
+            setTimeout(() => {
+                $iframe.src = `/${page.name}`;
+                $iframe.onload = () => {
+                    $iframe.classList.remove('fade-out');
+                };
+            }, 200);
+        }
+
+        // Card highlight
+        if (activeCard) activeCard.classList.remove('active');
+        const cards = $carousel.querySelectorAll('.card');
+        const targetCard = cards[filteredIdx] as HTMLElement;
+        if (targetCard) {
+            targetCard.classList.add('active');
+            activeCard = targetCard;
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        window.location.hash = page.name;
+    }
+
+    // ── Drag/swipe on carousel ──
+    let isDragging = false;
+    let dragStartX = 0;
+    let scrollStart = 0;
+    let hasMoved = false;
+
+    function onDragStart(clientX: number) {
+        isDragging = true;
+        hasMoved = false;
+        dragStartX = clientX;
+        scrollStart = $carouselWrap.scrollLeft;
+        $carouselWrap.classList.add('dragging');
+    }
+
+    function onDragMove(clientX: number) {
+        if (!isDragging) return;
+        const dx = clientX - dragStartX;
+        if (Math.abs(dx) > 4) hasMoved = true;
+        $carouselWrap.scrollLeft = scrollStart - dx;
+    }
+
+    function onDragEnd() {
+        isDragging = false;
+        $carouselWrap.classList.remove('dragging');
+    }
+
+    // Mouse
+    $carouselWrap.addEventListener('mousedown', (e) => {
+        onDragStart(e.clientX);
+    });
+    window.addEventListener('mousemove', (e) => {
+        onDragMove(e.clientX);
+    });
+    window.addEventListener('mouseup', () => {
+        onDragEnd();
+    });
+
+    // Touch
+    $carouselWrap.addEventListener('touchstart', (e) => {
+        onDragStart(e.touches[0].clientX);
+    }, { passive: true });
+    $carouselWrap.addEventListener('touchmove', (e) => {
+        onDragMove(e.touches[0].clientX);
+    }, { passive: true });
+    $carouselWrap.addEventListener('touchend', () => {
+        onDragEnd();
+    });
+
+    // Prevent click after drag
+    $carouselWrap.addEventListener('click', (e) => {
+        if (hasMoved) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    }, true);
+
+    // ── Touch swipe on hero (prev/next) ──
+    const $hero = document.querySelector('.hero')!;
+    let heroTouchStartX = 0;
+
+    $hero.addEventListener('touchstart', (e) => {
+        heroTouchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    $hero.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - heroTouchStartX;
+        if (Math.abs(dx) > 50) {
+            const currentName = pages[currentIndex]?.name;
+            const idx = filteredPages.findIndex(p => p.name === currentName);
+            if (dx < 0) {
+                selectByFilteredIndex((idx + 1) % filteredPages.length);
+            } else {
+                selectByFilteredIndex((idx - 1 + filteredPages.length) % filteredPages.length);
+            }
+        }
+    });
+
+    // ── Keyboard ──
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const currentName = pages[currentIndex]?.name;
+            const idx = filteredPages.findIndex(p => p.name === currentName);
+            const next = e.key === 'ArrowRight'
+                ? (idx + 1) % filteredPages.length
+                : (idx - 1 + filteredPages.length) % filteredPages.length;
+            selectByFilteredIndex(next);
+        }
+    });
+
+    // ── Init ──
+    renderCarousel();
+
     const hash = window.location.hash.slice(1);
     if (hash) {
-        const target = $nav.querySelector(`a[href="#${hash}"]`) as HTMLElement;
-        if (target) target.click();
+        const idx = filteredPages.findIndex(p => p.name === hash);
+        selectByFilteredIndex(idx >= 0 ? idx : 0);
     } else {
-        const first = $nav.querySelector('.nav-item') as HTMLElement;
-        if (first) first.click();
+        selectByFilteredIndex(0);
     }
 </script>

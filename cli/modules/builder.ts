@@ -4,6 +4,7 @@ import { watch } from 'chokidar';
 
 import { useSocketClient } from './hooks';
 import { buildPage } from './pipeline';
+import { parsePage } from './pipeline/parse-page';
 
 export const SOURCE_PATH = './src';
 const PAGES_PATH = `${SOURCE_PATH}/pages`;
@@ -34,10 +35,24 @@ export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
     const indexPath = `${PAGES_PATH}/${pagePath}/index.html`;
     const indexFile = (await fs.readFile(indexPath)).toString();
 
+    const pagesData = pagePath === 'index'
+        ? pages
+            .filter(page => page !== 'index' && page !== '404')
+            .map(page => {
+                const pageSource = fs.readFileSync(`${PAGES_PATH}/${page}/index.html`).toString();
+                const { metadata } = parsePage(pageSource);
+                return {
+                    name: page,
+                    title: metadata.title,
+                    description: metadata.description,
+                };
+            })
+        : [];
+
     const newIndex = await buildPage(pagePath, indexFile, {
         isDev,
         data: {
-            pages: pages.filter(page => page !== 'index')
+            pages: pagesData,
         },
     });
 
