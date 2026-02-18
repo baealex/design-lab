@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-<title>Digital Effect</title>
+<!-- layout: base.html -->
+<!-- title: Digital Effect -->
 
 <style>
     body {
@@ -26,7 +25,7 @@
     }
 </style>
 
-<template>
+<body>
     <canvas></canvas>
     <div class="button-group">
         <button data-effect="noise1" class="active">Noise 1</button>
@@ -34,7 +33,7 @@
         <button data-effect="line">Line</button>
         <button data-effect="prism">Prism</button>
     </div>
-</template>
+</body>
 
 <script>
     const $canvas = document.querySelector('canvas');

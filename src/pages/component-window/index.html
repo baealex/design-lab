@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-<title>Window Component</title>
+<!-- layout: base.html -->
+<!-- title: Window Component -->
 
 <style>
     body {
@@ -191,7 +190,7 @@
     }
 </style>
 
-<template>
+<body>
     <div class="applications">
         <div class="application" data-app-id="clock" data-app-title="Clock">
             <div class="application-icon">
@@ -246,7 +245,7 @@
             </window-template>
         </div>
     </div>
-</template>
+</body>
 
 <script>
     const WindowTemplate = ({ title, content }) => `

@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-<title>SnackBar Component</title>
+<!-- layout: base.html -->
+<!-- title: SnackBar Component -->
 
 <style>
     @keyframes snack-bar-slide {
@@ -59,7 +58,7 @@
     }
 </style>
 
-<template>
+<body>
     <div id="root" class="g-flex-center">
         <div class="options">
             <button class="g-button">
@@ -74,7 +73,7 @@
         </div>
     </div>
     <div id="snackbar-container"></div>
-</template>
+</body>
 
 <script>
     const handleRemove = [];

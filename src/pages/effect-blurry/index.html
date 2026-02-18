@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-<title>Blurry Effect</title>
+<!-- layout: base.html -->
+<!-- title: Blurry Effect -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
@@ -76,7 +75,7 @@
     }
 </style>
 
-<template>
+<body>
     <div class="center around">
         <div class="round orange" style="top: -100px; left: -200px"></div>
         <div class="round pink" style="top: -250px; left: -50px"></div>
@@ -87,7 +86,7 @@
             <h1>Blurry Effect</h1>
         </div>
     </div>
-</template>
+</body>
 
 <script>
     const $ = (selector) => document.querySelector(selector);

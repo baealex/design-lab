@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-<title>Neumorphism Design</title>
+<!-- layout: base.html -->
+<!-- title: Neumorphism Design -->
 
 <style>
     body {
@@ -170,7 +169,7 @@
     }
 </style>
 
-<template>
+<body>
     <div class="container">
         <div class="card flat mt-5 mb-5"
             style="width: 480px; max-width: 100%; display: flex; flex-direction: column; align-items: center;">
@@ -203,7 +202,7 @@
             <div id="list" class="mt-5" style="width: 100%; display: flex; gap: 16px; flex-direction: column;"></div>
         </div>
     </div>
-</template>
+</body>
 
 <script>
     const ListItemTemplate = ({ title, artist }) => `

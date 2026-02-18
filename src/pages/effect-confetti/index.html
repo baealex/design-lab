@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-<title>Confetti Effect</title>
+<!-- layout: base.html -->
+<!-- title: Confetti Effect -->
 
 <style>
     @keyframes flip {
@@ -67,13 +66,13 @@
     }
 </style>
 
-<template>
+<body>
     <div id="root" class="g-flex-center">
         <div id="confetti"></div>
         <img style="border-bottom: 2px solid #000;" width="180px" src="/assets/images/crayon-shinchan/hehe.gif"
             alt="hehe" />
     </div>
-</template>
+</body>
 
 <script>
     function randomNumber(min, max) {

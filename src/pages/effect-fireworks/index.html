@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
-
-<title>Fireworks Effect</title>
+<!-- layout: base.html -->
+<!-- title: Fireworks Effect -->
 
 <style>
     body {
@@ -26,7 +25,7 @@
     }
 </style>
 
-<template>
+<body>
     <canvas id="canvas"></canvas>
     <div class="frequency">
         frequency :
@@ -36,7 +35,7 @@
         <button data-value="2000">2000</button>
         ms
     </div>
-</template>
+</body>
 
 <script>
     function randomNumber(min, max) {

@@ -1,11 +1,13 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { watch } from 'chokidar';
 
 import { useSocketClient } from './hooks';
-import { transpile } from './transpile';
+import { buildPage } from './pipeline';
 
 export const SOURCE_PATH = './src';
 const PAGES_PATH = `${SOURCE_PATH}/pages`;
+const TEMPLATES_PATH = `${SOURCE_PATH}/templates`;
 const DIST_PATH = './dist';
 
 const INIT_OPTIONS = {
@@ -28,19 +30,19 @@ export async function distDirInit() {
     await fs.copy('./src/public/', `${DIST_PATH}/`);
 }
 
-export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
-    const indexPath = `${PAGES_PATH}/${path}/index.html`;
+export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
+    const indexPath = `${PAGES_PATH}/${pagePath}/index.html`;
     const indexFile = (await fs.readFile(indexPath)).toString();
 
-    const newIndex = transpile(path, indexFile, {
+    const newIndex = await buildPage(pagePath, indexFile, {
         isDev,
-        params: {
+        data: {
             pages: pages.filter(page => page !== 'index')
         },
     });
 
     if (isDev) {
-        await fs.writeFile(`${DIST_PATH}/${path}.html`, useSocketClient(newIndex, `
+        await fs.writeFile(`${DIST_PATH}/${pagePath}.html`, useSocketClient(newIndex, `
             socket.on('onchange', function(path) {
                 if (path === 'index') {
                     path = '/';
@@ -49,79 +51,61 @@ export async function makePage(path: string, { isDev } = INIT_OPTIONS) {
                     location.reload();
                 }
             });
+            socket.on('onerror', function(message) {
+                if (message) {
+                    window.__showErrorOverlay(message);
+                } else {
+                    window.__hideErrorOverlay();
+                }
+            });
         `));
         return;
     }
-    await fs.writeFile(`${DIST_PATH}/${path}.html`, newIndex);
+    await fs.writeFile(`${DIST_PATH}/${pagePath}.html`, newIndex);
 }
 
-interface WalkHandler {
-    filePath: string;
-    isDirectory: boolean;
-}
-
-function walk(dir: string, handler: ({
-    filePath,
-    isDirectory,
-}: WalkHandler) => void) {
-    fs.readdir(dir, (err, filenames) => {
-        filenames.forEach((filename) => {
-            fs.stat(path.join(dir, filename), (err, stat) => {
-                if (stat.isDirectory()) {
-                    walk(path.join(dir, filename), handler);
-                }
-                handler({
-                    filePath: path.join(dir, filename),
-                    isDirectory: stat.isDirectory()
-                });
-            });
-        });
+export function watchSrc(onChange: (pagePath: string) => void) {
+    const watcher = watch([PAGES_PATH, TEMPLATES_PATH, `${SOURCE_PATH}/public`], {
+        ignoreInitial: true,
+        awaitWriteFinish: {
+            stabilityThreshold: 100,
+            pollInterval: 50,
+        },
     });
-}
 
-export async function watchPage(path: string, onChange: (path: string) => void) {
-    const indexPath = `${PAGES_PATH}/${path}/index.html`;
-    fs.watch(indexPath, async (eventType) => {
-        if (eventType === 'change') {
-            const time = new Date();
-            await makePage(path, { isDev: true });
-            console.log(`Rebuild... ${path} : ${(new Date().getTime() - time.getTime()) / 1000}s`);
-            if (onChange) {
-                onChange(path);
+    watcher.on('all', async (event, filePath) => {
+        if (event !== 'change' && event !== 'add') return;
+
+        const time = new Date();
+        const relativePath = path.relative(SOURCE_PATH, filePath);
+
+        if (relativePath.startsWith('templates/')) {
+            console.log(`Template changed: ${relativePath}, rebuilding all pages...`);
+            await Promise.all(
+                pages.map(page => makePage(page, { isDev: true }))
+            );
+            console.log(`Rebuild all... : ${(new Date().getTime() - time.getTime()) / 1000}s`);
+            onChange('index');
+            return;
+        }
+
+        if (relativePath.startsWith('public/')) {
+            const destPath = `${DIST_PATH}/${path.relative(`${SOURCE_PATH}/public`, filePath)}`;
+            await fs.copy(filePath, destPath);
+            console.log(`Copied: ${relativePath}`);
+            return;
+        }
+
+        if (relativePath.startsWith('pages/')) {
+            const parts = relativePath.split(path.sep);
+            const pageName = parts[1];
+            if (pageName && pages.includes(pageName)) {
+                await makePage(pageName, { isDev: true });
+                console.log(`Rebuild... ${pageName} : ${(new Date().getTime() - time.getTime()) / 1000}s`);
+                onChange(pageName);
             }
         }
     });
-}
 
-export async function watchSrc(path: string, onChange: (path: string) => void) {
-    const watchingFiles: string[] = [];
-
-    const handler = ({
-        filePath,
-        isDirectory,
-    }: WalkHandler) => {
-        if (watchingFiles.includes(filePath)) {
-            return;
-        }
-        watchingFiles.push(filePath);
-        if (isDirectory) {
-            fs.watch(filePath, async () => {
-                walk(filePath, handler);
-                handler({
-                    filePath,
-                    isDirectory,
-                });
-            });
-            return;
-        }
-        if (filePath.includes('pages') && filePath.indexOf('.html') > -1) {
-            filePath = filePath.split('/').slice(2, -1).join('/');
-            watchPage(filePath, onChange);
-        }
-        if (filePath.includes('public') && !isDirectory) {
-            fs.copy(filePath, `${DIST_PATH}/${filePath.split('/').slice(2).join('/')}`);
-        }
-    };
-
-    walk(path, handler);
+    return watcher;
 }

@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
+    <!-- slot: title -->
     <link href="/favicon.ico" rel="icon" />
     <link href="/assets/styles/global.5.css" rel="stylesheet" />
-    {% block style %}
+    <!-- slot: style -->
 </head>
 
 <body lang="ko">
-    {% block template %}
+    <!-- slot: body -->
     <div id="view-code" style="display: none;" class="code-tag g-flex-center">
         <img width="115px" src="/assets/images/view-code.png" />
     </div>
     <script src="/assets/scripts/global.0.js"></script>
-    {% block script %}
+    <!-- slot: script -->
 </body>
 
 </html>
