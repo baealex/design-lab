@@ -1,0 +1,606 @@
+<!-- layout: base.html -->
+<!-- title: Aero Design -->
+<!-- description: Glass-panel dashboard inspired by Vista/7 Aero translucency and depth -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --glass: rgba(255, 255, 255, 0.18);
+        --glass-strong: rgba(255, 255, 255, 0.28);
+        --glass-border: rgba(255, 255, 255, 0.35);
+        --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+        --glass-blur: blur(16px) saturate(180%);
+        --text: #fff;
+        --text-muted: rgba(255, 255, 255, 0.7);
+        --glossy-btn: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.02) 51%, rgba(255,255,255,0.12) 100%);
+        --glossy-btn-hover: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.08) 51%, rgba(255,255,255,0.2) 100%);
+        --accent: #5ba2f0;
+        --accent-glow: rgba(91, 162, 240, 0.4);
+    }
+
+    body {
+        font-family: 'Noto Sans', sans-serif;
+        background: linear-gradient(135deg, #0f1e3d 0%, #1a3a6a 25%, #2a5a9a 50%, #1a4a8a 75%, #0d1a35 100%);
+        background-attachment: fixed;
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 16px;
+    }
+
+    .dashboard {
+        width: 720px;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* Glass panel base */
+    .glass {
+        background: var(--glass);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Top reflection shine */
+    .glass::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+        pointer-events: none;
+        border-radius: 12px 12px 0 0;
+    }
+
+    /* Header card */
+    .header-card {
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .header-greeting {
+        font-size: 0.85rem;
+        font-weight: 300;
+        color: var(--text-muted);
+        letter-spacing: 0.03em;
+    }
+
+    .header-title {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-top: 4px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #8b5cf6);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 2px 12px var(--accent-glow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    /* Row layout */
+    .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .row-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    /* Weather panel */
+    .weather {
+        padding: 24px 28px;
+    }
+
+    .weather-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .weather-temp {
+        font-size: 3rem;
+        font-weight: 300;
+        line-height: 1;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .weather-icon {
+        font-size: 2.5rem;
+        line-height: 1;
+    }
+
+    .weather-desc {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+    }
+
+    .weather-details {
+        display: flex;
+        gap: 20px;
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .weather-detail {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+
+        span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-top: 2px;
+        }
+    }
+
+    /* Clock panel */
+    .clock-panel {
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .clock-time {
+        font-size: 2.8rem;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock-date {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+    }
+
+    .clock-zone {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: auto;
+        padding-top: 12px;
+    }
+
+    /* Stats cards */
+    .stat-card {
+        padding: 20px 24px;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+    }
+
+    .stat-value {
+        font-size: 1.8rem;
+        font-weight: 300;
+        margin-top: 6px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        margin-top: 12px;
+        overflow: hidden;
+    }
+
+    .stat-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--accent), #a78bfa);
+        box-shadow: 0 0 8px var(--accent-glow);
+        transition: width 0.8s ease;
+    }
+
+    .stat-sub {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+    }
+
+    /* Quick actions */
+    .actions {
+        padding: 20px 24px;
+    }
+
+    .actions-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 14px;
+    }
+
+    .actions-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: var(--glossy-btn);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.15s;
+        color: var(--text);
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+        svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
+            flex-shrink: 0;
+        }
+
+        &:hover {
+            background: var(--glossy-btn-hover);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    /* Activity list */
+    .activity {
+        padding: 20px 24px;
+    }
+
+    .activity-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 14px;
+    }
+
+    .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        transition: background 0.15s;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+    }
+
+    .activity-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        box-shadow: 0 0 6px currentColor;
+    }
+
+    .activity-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .activity-text {
+        font-size: 0.82rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .activity-time {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 2px;
+    }
+
+    /* Navigation bar */
+    .nav-bar {
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        transition: all 0.15s;
+
+        svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        &:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        &.active {
+            color: var(--text);
+            background: var(--glossy-btn);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            margin: -1px;
+
+            svg { opacity: 1; }
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        body {
+            padding: 16px 12px;
+        }
+
+        .row {
+            grid-template-columns: 1fr;
+        }
+
+        .row-3 {
+            grid-template-columns: 1fr;
+        }
+
+        .header-card {
+            padding: 20px 24px;
+        }
+
+        .header-title {
+            font-size: 1.3rem;
+        }
+
+        .weather-temp {
+            font-size: 2.2rem;
+        }
+
+        .clock-time {
+            font-size: 2rem;
+        }
+
+        .actions-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="glass header-card">
+            <div>
+                <div class="header-greeting" id="greeting">Good morning</div>
+                <div class="header-title">Dashboard</div>
+            </div>
+            <div class="header-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+        </div>
+
+        <!-- Weather + Clock -->
+        <div class="row">
+            <div class="glass weather">
+                <div class="weather-top">
+                    <div>
+                        <div class="weather-temp">18°</div>
+                        <div class="weather-desc">Partly Cloudy</div>
+                    </div>
+                    <div class="weather-icon">
+                        <svg viewBox="0 0 64 64" width="48" height="48" fill="none">
+                            <circle cx="26" cy="26" r="10" fill="#fbbf24" opacity="0.9"/>
+                            <circle cx="26" cy="26" r="14" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+                            <ellipse cx="36" cy="38" rx="16" ry="10" fill="rgba(255,255,255,0.7)"/>
+                            <ellipse cx="28" cy="40" rx="12" ry="8" fill="rgba(255,255,255,0.5)"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="weather-details">
+                    <div class="weather-detail">Humidity<span>62%</span></div>
+                    <div class="weather-detail">Wind<span>12 km/h</span></div>
+                    <div class="weather-detail">UV Index<span>3</span></div>
+                </div>
+            </div>
+
+            <div class="glass clock-panel">
+                <div>
+                    <div class="clock-time" id="clock-time"></div>
+                    <div class="clock-date" id="clock-date"></div>
+                </div>
+                <div class="clock-zone" id="clock-zone"></div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="row row-3">
+            <div class="glass stat-card">
+                <div class="stat-label">Storage</div>
+                <div class="stat-value">68%</div>
+                <div class="stat-bar"><div class="stat-bar-fill" style="width: 68%"></div></div>
+                <div class="stat-sub">172 GB of 256 GB used</div>
+            </div>
+            <div class="glass stat-card">
+                <div class="stat-label">Memory</div>
+                <div class="stat-value" id="mem-value">4.2 GB</div>
+                <div class="stat-bar"><div class="stat-bar-fill" id="mem-bar" style="width: 52%"></div></div>
+                <div class="stat-sub" id="mem-sub">4.2 of 8 GB used</div>
+            </div>
+            <div class="glass stat-card">
+                <div class="stat-label">Battery</div>
+                <div class="stat-value">85%</div>
+                <div class="stat-bar"><div class="stat-bar-fill" style="width: 85%; background: linear-gradient(90deg, #34d399, #22c55e);"></div></div>
+                <div class="stat-sub">Charging</div>
+            </div>
+        </div>
+
+        <!-- Actions + Activity -->
+        <div class="row">
+            <div class="glass actions">
+                <div class="actions-title">Quick Actions</div>
+                <div class="actions-grid">
+                    <div class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                        Brightness
+                    </div>
+                    <div class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg>
+                        Wi-Fi
+                    </div>
+                    <div class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3h-2a2 2 0 0 0-2 2v2h6V5a2 2 0 0 0-2-2z"/></svg>
+                        Bluetooth
+                    </div>
+                    <div class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        Focus Mode
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass activity">
+                <div class="activity-title">Recent Activity</div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-dot" style="color: #34d399"></div>
+                        <div class="activity-info">
+                            <div class="activity-text">System update completed</div>
+                            <div class="activity-time">2 min ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-dot" style="color: var(--accent)"></div>
+                        <div class="activity-info">
+                            <div class="activity-text">New photos synced from cloud</div>
+                            <div class="activity-time">15 min ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-dot" style="color: #fbbf24"></div>
+                        <div class="activity-info">
+                            <div class="activity-text">Storage nearly full warning</div>
+                            <div class="activity-time">1 hour ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-dot" style="color: #a78bfa"></div>
+                        <div class="activity-info">
+                            <div class="activity-text">Backup completed successfully</div>
+                            <div class="activity-time">3 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="glass nav-bar">
+            <div class="nav-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/></svg>
+                Home
+            </div>
+            <div class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Analytics
+            </div>
+            <div class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                Files
+            </div>
+            <div class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Settings
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    /* Clock */
+    function updateClock() {
+        const now = new Date();
+        const h = now.getHours();
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+        document.getElementById('clock-time').textContent = `${String(h).padStart(2, '0')}:${m}:${s}`;
+        document.getElementById('clock-date').textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+        document.getElementById('clock-zone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        /* Greeting */
+        const greeting = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+        document.getElementById('greeting').textContent = greeting;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* Fake memory fluctuation */
+    setInterval(() => {
+        const val = (3.8 + Math.random() * 1.2).toFixed(1);
+        const pct = Math.round((val / 8) * 100);
+        document.getElementById('mem-value').textContent = val + ' GB';
+        document.getElementById('mem-bar').style.width = pct + '%';
+        document.getElementById('mem-sub').textContent = val + ' of 8 GB used';
+    }, 3000);
+</script>

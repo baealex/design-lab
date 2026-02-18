@@ -1,0 +1,575 @@
+<!-- layout: base.html -->
+<!-- title: Metro Design -->
+<!-- description: Interactive tile dashboard with flat colors, bold type and live data -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700;900&display=swap');
+
+    :root {
+        --bg: #1d1d1d;
+        --text: #fff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --blue: #2d89ef;
+        --red: #b91d47;
+        --green: #00a300;
+        --orange: #e3a21a;
+        --purple: #7e3878;
+        --teal: #00aba9;
+        --dark-blue: #2b5797;
+        --magenta: #9f00a7;
+    }
+
+    body {
+        font-family: 'Noto Sans', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 48px 16px;
+    }
+
+    .hub {
+        width: 640px;
+        max-width: 100%;
+    }
+
+    /* Header — extreme type */
+    .hub-header {
+        margin-bottom: 32px;
+    }
+
+    .hub-greeting {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--text-muted);
+    }
+
+    .hub-title {
+        font-size: 2.8rem;
+        font-weight: 300;
+        line-height: 1.1;
+        margin-top: 4px;
+        letter-spacing: -1px;
+    }
+
+    /* Tile grid — no gap, no radius, no shadow */
+    .tiles {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 120px;
+        gap: 3px;
+    }
+
+    .tile {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: opacity 0.1s;
+
+        &:active {
+            opacity: 0.85;
+        }
+    }
+
+    .tile-sm   { grid-column: span 1; grid-row: span 1; }
+    .tile-wide { grid-column: span 2; grid-row: span 1; }
+    .tile-lg   { grid-column: span 2; grid-row: span 2; }
+
+    /* Tile hover — just a flat overlay, no shadow */
+    .tile::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0);
+        transition: background 0.1s;
+    }
+
+    .tile:hover::after {
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Clock tile */
+    .clock-time {
+        font-size: 3rem;
+        font-weight: 300;
+        line-height: 1;
+        letter-spacing: 2px;
+    }
+
+    .clock-seconds {
+        font-size: 1.2rem;
+        font-weight: 300;
+        opacity: 0.5;
+        vertical-align: top;
+    }
+
+    .clock-date {
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: var(--text-muted);
+        margin-top: auto;
+    }
+
+    /* Weather tile */
+    .weather-temp {
+        font-size: 2.6rem;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .weather-desc {
+        font-size: 0.8rem;
+        font-weight: 300;
+        opacity: 0.7;
+        margin-top: 4px;
+    }
+
+    .weather-details {
+        display: flex;
+        gap: 16px;
+        margin-top: auto;
+        font-size: 0.7rem;
+        opacity: 0.6;
+    }
+
+    /* Todo tile */
+    .todo-title {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.6;
+        margin-bottom: 10px;
+    }
+
+    .todo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+    }
+
+    .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 0;
+        font-size: 0.82rem;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+    }
+
+    .todo-check {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+    }
+
+    .todo-item.done .todo-check {
+        background: rgba(255, 255, 255, 0.8);
+        border-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .todo-item.done .todo-check::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--green);
+    }
+
+    .todo-item.done .todo-text {
+        text-decoration: line-through;
+        opacity: 0.4;
+    }
+
+    .todo-count {
+        font-size: 0.65rem;
+        opacity: 0.5;
+        margin-top: auto;
+    }
+
+    /* Counter tile */
+    .counter-value {
+        font-size: 2.2rem;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .counter-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.6;
+        margin-top: auto;
+    }
+
+    .counter-delta {
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-top: 4px;
+    }
+
+    /* Calendar tile */
+    .cal-day {
+        font-size: 3.2rem;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .cal-month {
+        font-size: 0.9rem;
+        font-weight: 300;
+        opacity: 0.7;
+        margin-top: 4px;
+    }
+
+    .cal-weekday {
+        font-size: 0.7rem;
+        opacity: 0.5;
+        margin-top: auto;
+    }
+
+    /* Quote tile */
+    .quote-text {
+        font-size: 0.9rem;
+        font-weight: 300;
+        line-height: 1.5;
+        font-style: italic;
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+
+    .quote-author {
+        font-size: 0.65rem;
+        opacity: 0.5;
+        margin-top: auto;
+        text-align: right;
+    }
+
+    /* Steps tile */
+    .steps-value {
+        font-size: 2.2rem;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .steps-bar {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.15);
+        margin-top: 10px;
+    }
+
+    .steps-fill {
+        height: 100%;
+        background: #fff;
+        transition: width 0.6s;
+    }
+
+    .steps-label {
+        font-size: 0.65rem;
+        opacity: 0.5;
+        margin-top: auto;
+    }
+
+    /* Music tile */
+    .music-status {
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.5;
+    }
+
+    .music-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-top: 6px;
+    }
+
+    .music-artist {
+        font-size: 0.8rem;
+        font-weight: 300;
+        opacity: 0.6;
+        margin-top: 2px;
+    }
+
+    .music-controls {
+        display: flex;
+        gap: 16px;
+        margin-top: auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .music-btn {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.1s;
+
+        &:hover { opacity: 1; }
+
+        svg {
+            width: 14px;
+            height: 14px;
+            fill: #fff;
+        }
+    }
+
+    /* Footer info */
+    .hub-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 24px;
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    @media screen and (max-width: 520px) {
+        .tiles {
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 110px;
+        }
+
+        .tile-lg {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .hub-title {
+            font-size: 2rem;
+        }
+
+        .clock-time {
+            font-size: 2.2rem;
+        }
+    }
+</style>
+
+<body>
+    <div class="hub">
+        <div class="hub-header">
+            <div class="hub-greeting" id="greeting"></div>
+            <h1 class="hub-title" id="hub-title">My Hub</h1>
+        </div>
+
+        <div class="tiles">
+            <!-- Clock — large -->
+            <div class="tile tile-lg" style="background: var(--dark-blue)">
+                <div class="clock-time" id="clock-time">
+                    <span id="clock-hm"></span><span class="clock-seconds" id="clock-s"></span>
+                </div>
+                <div class="clock-date" id="clock-date"></div>
+            </div>
+
+            <!-- Weather — wide -->
+            <div class="tile tile-wide" style="background: var(--blue)">
+                <div class="weather-temp">18°</div>
+                <div class="weather-desc">Partly Cloudy</div>
+                <div class="weather-details">
+                    <span>H: 22°</span>
+                    <span>L: 14°</span>
+                    <span>62% Humidity</span>
+                </div>
+            </div>
+
+            <!-- Calendar — small -->
+            <div class="tile tile-sm" style="background: var(--purple)" id="cal-tile">
+                <div class="cal-day"></div>
+                <div class="cal-month"></div>
+                <div class="cal-weekday"></div>
+            </div>
+
+            <!-- Counter: Emails — small -->
+            <div class="tile tile-sm" style="background: var(--teal)">
+                <div class="counter-value">12</div>
+                <div class="counter-delta">+3 new</div>
+                <div class="counter-label">Emails</div>
+            </div>
+
+            <!-- Steps — small -->
+            <div class="tile tile-sm" style="background: var(--green)" id="steps-tile">
+                <div class="steps-value">6,240</div>
+                <div class="steps-bar"><div class="steps-fill" style="width: 62%"></div></div>
+                <div class="steps-label">of 10,000 steps</div>
+            </div>
+
+            <!-- Counter: Tasks — small -->
+            <div class="tile tile-sm" style="background: var(--orange)" id="task-counter">
+                <div class="counter-value" id="task-count-display">3</div>
+                <div class="counter-label">Tasks Left</div>
+            </div>
+
+            <!-- Todo — large -->
+            <div class="tile tile-lg" style="background: var(--red)" id="todo-tile">
+                <div class="todo-title">Today</div>
+                <div class="todo-list" id="todo-list"></div>
+                <div class="todo-count" id="todo-count"></div>
+            </div>
+
+            <!-- Music — wide -->
+            <div class="tile tile-wide" style="background: var(--magenta)">
+                <div class="music-status">Now Playing</div>
+                <div class="music-title" id="music-title">Shake It Off</div>
+                <div class="music-artist" id="music-artist">Taylor Swift</div>
+                <div class="music-controls">
+                    <div class="music-btn" id="m-prev">
+                        <svg viewBox="0 0 512 512"><path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/></svg>
+                    </div>
+                    <div class="music-btn" id="m-play">
+                        <svg viewBox="0 0 384 512" id="play-icon"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+                    </div>
+                    <div class="music-btn" id="m-next">
+                        <svg viewBox="0 0 512 512"><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quote — wide -->
+            <div class="tile tile-wide" style="background: #444" id="quote-tile">
+                <div class="quote-text" id="quote-text"></div>
+                <div class="quote-author" id="quote-author"></div>
+            </div>
+        </div>
+
+        <div class="hub-footer">
+            <span id="footer-date"></span>
+            <span>Metro Hub</span>
+        </div>
+    </div>
+</body>
+
+<script>
+    /* ── Clock ── */
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+
+        document.getElementById('clock-hm').textContent = `${h}:${m}`;
+        document.getElementById('clock-s').textContent = `:${s}`;
+        document.getElementById('clock-date').textContent =
+            `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+
+        /* Greeting */
+        const hr = now.getHours();
+        const greet = hr < 12 ? 'Good Morning' : hr < 18 ? 'Good Afternoon' : 'Good Evening';
+        document.getElementById('greeting').textContent = greet;
+
+        /* Footer */
+        document.getElementById('footer-date').textContent =
+            `${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ── Calendar ── */
+    const now = new Date();
+    document.querySelector('#cal-tile .cal-day').textContent = now.getDate();
+    document.querySelector('#cal-tile .cal-month').textContent = months[now.getMonth()];
+    document.querySelector('#cal-tile .cal-weekday').textContent = days[now.getDay()];
+
+    /* ── Todos ── */
+    const todos = [
+        { text: 'Review design specs', done: false },
+        { text: 'Update component library', done: false },
+        { text: 'Send project brief', done: true },
+        { text: 'Prepare presentation', done: false },
+        { text: 'Call with client', done: true },
+    ];
+
+    function renderTodos() {
+        const $list = document.getElementById('todo-list');
+        $list.innerHTML = todos.map((t, i) => `
+            <div class="todo-item ${t.done ? 'done' : ''}" data-i="${i}">
+                <div class="todo-check"></div>
+                <span class="todo-text">${t.text}</span>
+            </div>
+        `).join('');
+
+        $list.querySelectorAll('.todo-item').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const i = +el.dataset.i;
+                todos[i].done = !todos[i].done;
+                renderTodos();
+            });
+        });
+
+        const left = todos.filter(t => !t.done).length;
+        document.getElementById('todo-count').textContent = `${left} remaining`;
+        document.getElementById('task-count-display').textContent = left;
+    }
+    renderTodos();
+
+    /* ── Music ── */
+    const tracks = [
+        { title: 'Shake It Off', artist: 'Taylor Swift' },
+        { title: 'Blinding Lights', artist: 'The Weeknd' },
+        { title: 'Levitating', artist: 'Dua Lipa' },
+        { title: 'As It Was', artist: 'Harry Styles' },
+    ];
+    let trackIdx = 0;
+    let playing = false;
+
+    const PLAY_PATH = 'M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z';
+    const PAUSE_PATH = 'M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z';
+
+    function setTrack(i) {
+        trackIdx = ((i % tracks.length) + tracks.length) % tracks.length;
+        document.getElementById('music-title').textContent = tracks[trackIdx].title;
+        document.getElementById('music-artist').textContent = tracks[trackIdx].artist;
+    }
+
+    document.getElementById('m-play').addEventListener('click', (e) => {
+        e.stopPropagation();
+        playing = !playing;
+        const $icon = document.getElementById('play-icon');
+        $icon.querySelector('path').setAttribute('d', playing ? PAUSE_PATH : PLAY_PATH);
+        $icon.setAttribute('viewBox', playing ? '0 0 320 512' : '0 0 384 512');
+    });
+    document.getElementById('m-prev').addEventListener('click', (e) => { e.stopPropagation(); setTrack(trackIdx - 1); });
+    document.getElementById('m-next').addEventListener('click', (e) => { e.stopPropagation(); setTrack(trackIdx + 1); });
+
+    /* ── Quotes ── */
+    const quotes = [
+        { text: '"Content is king, but context is queen."', author: 'Gary Vaynerchuk' },
+        { text: '"Less is more."', author: 'Ludwig Mies van der Rohe' },
+        { text: '"Design is not just what it looks like. Design is how it works."', author: 'Steve Jobs' },
+    ];
+    let quoteIdx = 0;
+
+    function showQuote() {
+        document.getElementById('quote-text').textContent = quotes[quoteIdx].text;
+        document.getElementById('quote-author').textContent = '— ' + quotes[quoteIdx].author;
+    }
+    showQuote();
+
+    document.getElementById('quote-tile').addEventListener('click', () => {
+        quoteIdx = (quoteIdx + 1) % quotes.length;
+        showQuote();
+    });
+</script>
