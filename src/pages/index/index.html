@@ -1,483 +1,289 @@
-{% extends 'base.html' %}
-
-<title>BaeJino Design</title>
+<!-- layout: base.html -->
+<!-- title: BaeJino Design -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap');
 
     @keyframes fade-in {
-        0% {
-            filter: blur(10px);
-        }
-
-        100% {
-            filter: blur(0px);
-        }
+        0% { opacity: 0; filter: blur(10px); }
+        100% { opacity: 1; filter: blur(0px); }
     }
 
     body {
         background: linear-gradient(100deg, #b7bcff, #f8d7f2);
         color: #333;
-    }
-
-    div#root {
-        align-items: flex-start;
-    }
-
-    .fade-in {
-        animation: fade-in 0.5s linear 1;
-    }
-
-    .container {
-        width: 800px;
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 0 15px;
-    }
-
-    .title {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        font-family: 'Montserrat', cursive;
-
-        .container {
-            padding-top: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            @media (max-width: 768px) {
-                padding-top: 24px;
-            }
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-
-            @media (max-width: 768px) {
-                font-size: 2rem;
-                font-weight: 900;
-            }
-        }
-
-        .date {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-
-            &>span {
-                font-size: 2.5rem;
-                font-weight: 400;
-
-                @media (max-width: 768px) {
-                    font-size: 2rem;
-                }
-            }
-
-            &>div {
-                display: flex;
-                flex-direction: column;
-                font-weight: 400;
-
-                &>span {
-                    @media (max-width: 768px) {
-                        font-size: 0.65rem;
-                    }
-                }
-            }
-        }
-    }
-
-    .navigation {
-        position: fixed;
-        display: flex;
-        gap: 8px;
-        left: 50%;
-        bottom: 24px;
-        transform: translate(-50%, 0);
-        font-weight: bold;
-
-        button {
-            background: #735af2;
-            cursor: pointer;
-            border: none;
-            font-size: 16px;
-            color: #fff;
-            width: 120px;
-            height: 50px;
-            border-radius: 8px;
-            box-shadow: 0 16px 16px rgba(115, 90, 242, .3);
-
-            &:hover {
-                background: #5e49d9;
-            }
-        }
-    }
-
-    @keyframes slide-in {
-        0% {
-            transform: translate3d(-100%, 0, 0);
-        }
-
-        100% {
-            transform: translate3d(0, 0, 0);
-        }
-    }
-
-    .slide-in {
-        animation: slide-in 30s linear 1;
-    }
-
-    .progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: #735af2;
-        transform: translate3d(-100%, 0, 0);
-        z-index: 9999;
-    }
-
-    .carousel {
         overflow: hidden;
-        position: relative;
+    }
+
+    .layout {
+        display: flex;
         width: 100%;
         height: 100%;
-        white-space: nowrap;
-        perspective: 800px;
+        font-family: 'Montserrat', sans-serif;
+    }
 
-        .section {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 800px;
-            height: 550px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            box-sizing: border-box;
-            transform: translate(-50%, -50%) scale(0);
-            transform-style: preserve-3d;
-            transition: all 0.5s;
-            will-change: transform;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            padding: 8px;
-            border-radius: 8px 8px 24px 24px;
-            box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .1);
+    .sidebar {
+        width: 280px;
+        min-width: 280px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid rgba(255, 255, 255, 0.5);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
 
-            .merge {
-                display: flex;
-                align-items: center;
-                font-size: 1.1rem;
-                font-weight: bold;
-                gap: 8px;
+        .header {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
-                .number {
-                    color: rgba(0, 0, 0, 0.3);
-                    letter-spacing: -0.1rem;
-                }
-
-                .name {
-                    letter-spacing: -0.05rem;
-                }
+            h1 {
+                font-size: 1.5rem;
+                font-weight: 900;
+                margin: 0;
             }
 
-            .top {
+            .subtitle {
+                font-size: 0.75rem;
+                color: rgba(0, 0, 0, 0.4);
+                margin-top: 4px;
+                font-weight: 400;
+            }
+        }
+
+        .nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 0;
+
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.15);
+                border-radius: 2px;
+            }
+        }
+
+        .category-group {
+            margin-bottom: 8px;
+        }
+
+        .category-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08rem;
+            padding: 8px 20px 4px;
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: background 0.15s;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.85rem;
+            font-weight: 500;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.5);
+            }
+
+            &.active {
+                background: rgba(115, 90, 242, 0.12);
+                color: #735af2;
+                font-weight: 700;
+            }
+
+            .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+
+            .dot.design { background: #ff6b9d; }
+            .dot.effect { background: #735af2; }
+            .dot.layout { background: #27ae60; }
+            .dot.component { background: #3498db; }
+        }
+    }
+
+    .preview {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        position: relative;
+
+        .preview-card {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+
+            .preview-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                height: 40px;
+                padding: 12px 16px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
-                a {
-                    color: #333;
+                .preview-title {
+                    font-weight: 700;
+                    font-size: 0.9rem;
+                }
+
+                .preview-link {
+                    color: #735af2;
                     text-decoration: none;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
                 }
             }
 
             iframe {
-                border-radius: 16px;
-                box-sizing: border-box;
-                display: block;
-                overflow: hidden;
-                margin-top: 16px;
-                width: 100%;
                 flex: 1;
-                background: rgb(255, 255, 255);
-                filter: blur(10px);
+                width: 100%;
+                border: none;
+                background: #fff;
             }
+        }
 
-            iframe.fade-in {
-                filter: blur(0px);
-            }
+        .empty-state {
+            text-align: center;
+            color: rgba(0, 0, 0, 0.3);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    }
 
-            @media screen and (max-width: 1600px) {
-                width: 700px;
-                height: 480px;
-            }
+    @media screen and (max-width: 768px) {
+        .layout {
+            flex-direction: column;
+        }
 
-            @media screen and (max-width: 1440px) {
-                width: 600px;
-                height: 450px;
-            }
+        .sidebar {
+            width: 100%;
+            min-width: 100%;
+            height: auto;
+            max-height: 40%;
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
 
-            @media screen and (max-width: 1240px) {
-                width: 95%;
-                height: 80%;
-            }
-
-            &.active {
-                z-index: 10;
-                transform: translate(-50%, -50%) scale(1);
-                left: 50%;
-            }
-
-            &.right {
-                z-index: 5;
-                transform: translate(-50%, -50%) rotateY(25deg) scale(.8);
-                left: 90%;
-
-                @media screen and (max-width: 1240px) {
-                    transform: translate(-50%, -50%) rotateY(90deg) scale(.2);
-                    left: 150%;
-                }
-            }
-
-            &.left {
-                z-index: 5;
-                transform: translate(-50%, -50%) rotateY(-25deg) scale(.8);
-                left: 10%;
-
-                @media screen and (max-width: 1240px) {
-                    transform: translate(-50%, -50%) rotateY(-90deg) scale(.2);
-                    left: -50%;
-                }
-            }
+        .preview {
+            padding: 16px;
         }
     }
 </style>
 
-<template>
-    <div class="title"></div>
-    <div class="carousel"></div>
-    <div class="navigation">
-        <button class="prev">
-            <span>PREV</span>
-        </button>
-        <button class="next">
-            <span>NEXT</span>
-        </button>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="header">
+                <h1>BaeJino</h1>
+                <div class="subtitle">Design Showcase</div>
+            </div>
+            <div class="nav"></div>
+        </div>
+        <div class="preview">
+            <div class="empty-state">Select a page from the sidebar</div>
+        </div>
     </div>
-    <div class="progress"></div>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-</template>
+</body>
 
 <script>
-    function capitalize(s) {
-        if (typeof s !== 'string') return ''
-        return s.charAt(0).toUpperCase() + s.slice(1)
+    function capitalize(s: string) {
+        if (typeof s !== 'string') return '';
+        return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
-    function Item(number, title, path) {
-        return `
-            <div class="section">
-                <div class="top">
-                    <div class="merge">
-                        <div class="number">${number}</div>
-                        <div class="name">${title}</div>
-                    </div>
-                    <a href="${path}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ai ai-Enlarge"><path d="M14.5 9.5L21 3m0 0h-6m6 0v6M3 21l6.5-6.5M3 21v-6m0 6h6"></path></svg>
-                    </a>
-                </div>
-                <iframe class="lazy" data-src="${path}"></iframe>
-            </div>
-        `
-    }
+    const pages = $DATA.pages;
 
-    const pages = {{ pages }};
-    const designs = pages.filter(page => page.includes('design'));
-    const effects = pages.filter(page => page.includes('effect'));
-    const layouts = pages.filter(page => page.includes('layout'));
-    const components = pages.filter(page => page.includes('component'));
+    const categories = [
+        { key: 'design', label: 'Design' },
+        { key: 'effect', label: 'Effects' },
+        { key: 'component', label: 'Components' },
+        { key: 'layout', label: 'Layouts' },
+    ];
 
-    const items = [...designs, ...effects, ...layouts, ...components]
-        .map((page, idx) => {
-            return Item(`#${('0' + (idx + 1)).slice(-2)}`, `${page.split('-').map(capitalize).reverse().join(' ')}`, `/${page}`, idx)
-        })
-        .join('');
+    const $nav = document.querySelector('.nav');
+    const $preview = document.querySelector('.preview');
 
-    const now = new Date();
-    document.querySelector('.title').innerHTML = `
-        <div class="container">
-            <h1>
-                BaeJino
-            </h1>
-            <div class="date">
-                <span>${dayjs(now).format('DD')}</span>
-                <div>
-                    <span>${dayjs(now).format('MMMM')}</span>
-                    <span>${dayjs(now).format('dddd')}</span>
-                </div>
-            </div>
-        </div>
-    `;
-    document.querySelector('.carousel').innerHTML = `${items}`;
+    let activeItem: HTMLElement | null = null;
 
-    let nowIndex = window.location.hash
-        ? parseInt(window.location.hash.replace('#', '')) - 1
-        : 0;
-    let isRotating = false
-    let latestMovement = 'next'
+    categories.forEach(cat => {
+        const catPages = pages.filter((p: string) => p.startsWith(cat.key + '-'));
+        if (catPages.length === 0) return;
 
-    const $prev = document.querySelector('.prev')
-    const $next = document.querySelector('.next')
-    const $sections = document.querySelectorAll('.section')
-    const $progress = document.querySelector('.progress')
+        const group = document.createElement('div');
+        group.className = 'category-group';
+        group.innerHTML = `<div class="category-label">${cat.label}</div>`;
 
-    function carousel(direction) {
-        if (isRotating) return
-        isRotating = true
-        setTimeout(() => { isRotating = false }, 600)
+        catPages.forEach((page: string) => {
+            const name = page.split('-').slice(1).map(capitalize).join(' ');
+            const item = document.createElement('a');
+            item.className = 'nav-item';
+            item.href = '#' + page;
+            item.innerHTML = `<span class="dot ${cat.key}"></span>${name}`;
 
-        if (direction === 'prev') {
-            nowIndex -= 1
-            if (nowIndex < 0) {
-                nowIndex = $sections.length - 1
-            }
-        }
-        if (direction === 'next') {
-            nowIndex += 1
-            if (nowIndex >= $sections.length) {
-                nowIndex = 0
-            }
-        }
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (activeItem) activeItem.classList.remove('active');
+                item.classList.add('active');
+                activeItem = item;
+                showPreview(page, name);
+                window.location.hash = page;
+            });
 
-        latestMovement = direction || 'next'
-        $progress.classList.remove('slide-in')
-        setTimeout(() => {
-            $progress.classList.add('slide-in')
-        }, 100)
-        window.location.replace(`#${nowIndex + 1}`)
+            group.appendChild(item);
+        });
 
-        $sections.forEach(($el, idx) => {
-            const $iframe = $el.querySelector('iframe')
-            let isActive = false
-
-            $el.classList.remove('active')
-            $el.classList.remove('left')
-            $el.classList.remove('right')
-
-            if (idx === nowIndex) {
-                $el.classList.add('active')
-                isActive = true
-            } else if (idx === nowIndex + 1 || nowIndex === $sections.length - 1 && idx === 0) {
-                $el.classList.add('right')
-                isActive = true
-            } else if (idx === nowIndex - 1 || nowIndex === 0 && idx === $sections.length - 1) {
-                $el.classList.add('left')
-                isActive = true
-            }
-
-            if (!$iframe.src && $iframe.classList.contains('lazy') && isActive) {
-                const newElement = document.createElement('iframe');
-                newElement.src = $iframe.dataset.src;
-                newElement.onload = () => {
-                    newElement.className = 'fade-in';
-                };
-                $iframe.replaceWith(newElement);
-            }
-        })
-    }
-
-    $prev.addEventListener('click', () => {
-        carousel('prev')
-    })
-
-    $next.addEventListener('click', () => {
-        carousel('next')
-    })
-
-    $sections.forEach(($el, idx) => {
-        $el.addEventListener('click', () => {
-            if (idx === nowIndex) {
-                return
-            }
-            nowIndex = idx - 1
-            carousel('next')
-        })
-    })
-
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-            carousel('prev')
-            return
-        }
-        if (e.key === 'ArrowRight') {
-            carousel('next')
-            return
-        }
-    })
-
-    let prevClientX = 0
-
-    window.addEventListener('touchstart', (e) => {
-        const clientX = e.changedTouches[0].clientX
-        prevClientX = clientX
-    })
-
-    window.addEventListener('mousedown', (e) => {
-        const clientX = e.clientX
-        prevClientX = clientX
-    })
-
-    window.addEventListener('touchend', (e) => {
-        const clientX = e.changedTouches[0].clientX
-
-        if (clientX - prevClientX < -100) {
-            carousel('next')
-        }
-
-        if (clientX - prevClientX > 100) {
-            carousel('prev')
-        }
-    })
-
-    window.addEventListener('mouseup', (e) => {
-        const clientX = e.clientX
-
-        if (clientX - prevClientX < -100) {
-            carousel('next')
-        }
-
-        if (clientX - prevClientX > 100) {
-            carousel('prev')
-        }
-    })
-
-    document.body.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        if (e.deltaY < 0) {
-            carousel('prev')
-        } else {
-            carousel('next')
-        }
+        $nav.appendChild(group);
     });
 
-    $progress.classList.add('slide-in')
-    $progress.addEventListener('animationend', () => {
-        setTimeout(() => {
-            $progress.classList.remove('slide-in')
-            setTimeout(() => {
-                $progress.classList.add('slide-in')
-            }, 100)
-        }, 100)
-        carousel(latestMovement)
-    })
+    function showPreview(page: string, name: string) {
+        $preview.innerHTML = `
+            <div class="preview-card">
+                <div class="preview-header">
+                    <span class="preview-title">${name}</span>
+                    <a class="preview-link" href="/${page}">
+                        Open
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    </a>
+                </div>
+                <iframe src="/${page}"></iframe>
+            </div>
+        `;
+    }
 
-    carousel()
+    // Restore from hash
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+        const target = $nav.querySelector(`a[href="#${hash}"]`) as HTMLElement;
+        if (target) target.click();
+    } else {
+        const first = $nav.querySelector('.nav-item') as HTMLElement;
+        if (first) first.click();
+    }
 </script>
