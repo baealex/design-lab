@@ -15,7 +15,13 @@ const INIT_OPTIONS = {
     isDev: false,
 };
 
-export const pages = fs.readdirSync(PAGES_PATH);
+function scanPages(): string[] {
+    return fs.readdirSync(PAGES_PATH).filter(page => {
+        return fs.existsSync(`${PAGES_PATH}/${page}/index.html`);
+    });
+}
+
+export let pages = scanPages();
 
 export async function distDirInit() {
     if (fs.existsSync(DIST_PATH)) {
@@ -33,20 +39,31 @@ export async function distDirInit() {
 
 export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
     const indexPath = `${PAGES_PATH}/${pagePath}/index.html`;
+
+    if (!fs.existsSync(indexPath)) {
+        console.warn(`Skipped: ${indexPath} not found`);
+        return;
+    }
+
     const indexFile = (await fs.readFile(indexPath)).toString();
 
     const pagesData = pagePath === 'index'
         ? pages
             .filter(page => page !== 'index' && page !== '404')
-            .map(page => {
-                const pageSource = fs.readFileSync(`${PAGES_PATH}/${page}/index.html`).toString();
-                const { metadata } = parsePage(pageSource);
-                return {
-                    name: page,
-                    title: metadata.title,
-                    description: metadata.description,
-                };
-            })
+            .reduce<{ name: string; title: string; description: string }[]>((acc, page) => {
+                try {
+                    const pageSource = fs.readFileSync(`${PAGES_PATH}/${page}/index.html`).toString();
+                    const { metadata } = parsePage(pageSource);
+                    acc.push({
+                        name: page,
+                        title: metadata.title,
+                        description: metadata.description,
+                    });
+                } catch {
+                    console.warn(`Skipped: ${page}/index.html not found`);
+                }
+                return acc;
+            }, [])
         : [];
 
     const newIndex = await buildPage(pagePath, indexFile, {
@@ -89,7 +106,7 @@ export function watchSrc(onChange: (pagePath: string) => void) {
     });
 
     watcher.on('all', async (event, filePath) => {
-        if (event !== 'change' && event !== 'add') return;
+        if (event !== 'change' && event !== 'add' && event !== 'unlink') return;
 
         const time = new Date();
         const relativePath = path.relative(SOURCE_PATH, filePath);
@@ -114,7 +131,29 @@ export function watchSrc(onChange: (pagePath: string) => void) {
         if (relativePath.startsWith('pages/')) {
             const parts = relativePath.split(path.sep);
             const pageName = parts[1];
-            if (pageName && pages.includes(pageName)) {
+            if (!pageName) return;
+
+            const isIndexHtml = parts[2] === 'index.html';
+            const isNewOrRemoved = isIndexHtml && (event === 'add' || event === 'unlink');
+
+            if (isNewOrRemoved) {
+                const prevPages = pages;
+                pages = scanPages();
+                const added = pages.filter(p => !prevPages.includes(p));
+                const removed = prevPages.filter(p => !pages.includes(p));
+
+                if (added.length > 0 || removed.length > 0) {
+                    console.log(`Pages updated: +[${added.join(', ')}] -[${removed.join(', ')}]`);
+                    await Promise.all(
+                        pages.map(page => makePage(page, { isDev: true }))
+                    );
+                    console.log(`Rebuild all... : ${(new Date().getTime() - time.getTime()) / 1000}s`);
+                    onChange('index');
+                    return;
+                }
+            }
+
+            if (pages.includes(pageName)) {
                 await makePage(pageName, { isDev: true });
                 console.log(`Rebuild... ${pageName} : ${(new Date().getTime() - time.getTime()) / 1000}s`);
                 onChange(pageName);
