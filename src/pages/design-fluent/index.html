@@ -1,0 +1,1030 @@
+<!-- layout: base.html -->
+<!-- title: Fluent Desktop -->
+<!-- description: Windows 11 Fluent Design desktop with Mica and Acrylic effects -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
+
+    :root {
+        --win-accent: #0078D4;
+        --win-accent-hover: #1a86d9;
+        --win-taskbar: rgba(24, 24, 27, 0.85);
+        --win-surface: rgba(255, 255, 255, 0.7);
+        --win-surface-solid: #f3f3f3;
+        --win-text: #1a1a1a;
+        --win-text-secondary: #616161;
+        --win-border: rgba(0, 0, 0, 0.06);
+        --acrylic-blur: blur(20px) saturate(180%);
+    }
+
+    body {
+        font-family: 'Noto Sans', -apple-system, 'Segoe UI', sans-serif;
+        background-image: url('/assets/images/background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        user-select: none;
+        overflow: hidden;
+    }
+
+    /* Desktop Icons */
+    .desktop-icons {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        gap: 2px;
+        padding: 12px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 68px;
+    }
+
+    .desktop-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        width: 76px;
+        padding: 8px 4px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        &:active {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        &.selected {
+            background: rgba(255, 255, 255, 0.12);
+            outline: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        span {
+            font-size: 11px;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+            line-height: 1.2;
+            max-width: 72px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    /* Taskbar — floating dock */
+    .taskbar {
+        position: fixed;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 52px;
+        background: var(--win-taskbar);
+        backdrop-filter: var(--acrylic-blur);
+        -webkit-backdrop-filter: var(--acrylic-blur);
+        display: flex;
+        align-items: center;
+        z-index: 9999;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        padding: 0 6px;
+        gap: 2px;
+    }
+
+    .taskbar-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        flex-shrink: 0;
+        transition: background 0.15s;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+    }
+
+    .taskbar-btn.start-btn svg {
+        color: var(--win-accent);
+        filter: drop-shadow(0 0 6px rgba(0, 120, 212, 0.4));
+    }
+
+    .taskbar-divider {
+        width: 1px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 0 4px;
+        flex-shrink: 0;
+    }
+
+    .taskbar-apps {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        overflow: hidden;
+    }
+
+    .taskbar-app {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 12px;
+        gap: 6px;
+        position: relative;
+        max-width: 140px;
+        transition: background 0.15s;
+
+        svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            stroke: #fff;
+        }
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 3px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--win-accent), #a855f7);
+        }
+    }
+
+    .taskbar-tray {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.85);
+        flex-shrink: 0;
+        transition: background 0.15s;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+    }
+
+    .tray-clock {
+        text-align: center;
+        line-height: 1.3;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+    }
+
+    /* Start Menu */
+    .start-menu {
+        position: fixed;
+        bottom: 56px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        max-width: calc(100vw - 24px);
+        background: var(--win-surface);
+        backdrop-filter: var(--acrylic-blur);
+        -webkit-backdrop-filter: var(--acrylic-blur);
+        border-radius: 8px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(0, 0, 0, 0.08);
+        z-index: 10000;
+        padding: 32px 28px 20px;
+        display: none;
+
+        &.open {
+            display: block;
+        }
+    }
+
+    .start-menu-search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 18px;
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        margin-bottom: 24px;
+        color: var(--win-text-secondary);
+        font-size: 13px;
+
+        svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--win-text-secondary);
+        }
+    }
+
+    .start-section-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--win-text);
+        margin-bottom: 12px;
+    }
+
+    .start-pinned-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 2px;
+        margin-bottom: 24px;
+    }
+
+    .start-pinned-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        span {
+            font-size: 11px;
+            color: var(--win-text);
+            text-align: center;
+        }
+    }
+
+    .start-recommended {
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        padding-top: 16px;
+    }
+
+    .start-rec-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px;
+    }
+
+    .start-rec-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .rec-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            background: rgba(0, 120, 212, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .rec-info {
+            font-size: 12px;
+            color: var(--win-text);
+            line-height: 1.4;
+
+            .rec-sub {
+                color: var(--win-text-secondary);
+                font-size: 11px;
+            }
+        }
+    }
+
+    /* Windows */
+    .window {
+        width: 640px;
+        height: 440px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+        transition: box-shadow 0.2s;
+
+        &.focused {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(0, 0, 0, 0.06);
+        }
+    }
+
+    .window.dragging,
+    .window.resizing {
+        transition: none;
+    }
+
+    .window.minimize {
+        display: none;
+    }
+
+    .window.maximize {
+        width: 100% !important;
+        height: calc(100% - 68px) !important;
+        top: 0 !important;
+        left: 0 !important;
+        border-radius: 0;
+
+        .window-top { border-radius: 0; }
+        .window-top-icon:last-child { border-radius: 0; }
+        .resize-handle { display: none; }
+    }
+
+    .window-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        background: var(--win-surface);
+        backdrop-filter: var(--acrylic-blur);
+        -webkit-backdrop-filter: var(--acrylic-blur);
+        border-bottom: 1px solid var(--win-border);
+        border-radius: 8px 8px 0 0;
+        flex-shrink: 0;
+    }
+
+    .window-top-icons {
+        display: flex;
+    }
+
+    .window-top-icon svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .window-top-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 12px;
+        color: var(--win-text);
+    }
+
+    .window-top-icon:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .window-top-icon:last-child:hover {
+        background-color: #c42b1c;
+        color: #fff;
+    }
+
+    .window-top-icon:last-child {
+        border-radius: 0 8px 0 0;
+    }
+
+    .window-top-title {
+        padding: 12px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--win-text);
+    }
+
+    .window-body {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        background: var(--win-surface);
+        backdrop-filter: var(--acrylic-blur);
+        -webkit-backdrop-filter: var(--acrylic-blur);
+        border-radius: 0 0 8px 8px;
+        position: relative;
+    }
+
+    .window-body iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* Overlay blocks iframe mouse events during drag/resize */
+    .window-overlay {
+        display: none;
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+    }
+
+    .window.dragging .window-overlay,
+    .window.resizing .window-overlay {
+        display: block;
+    }
+
+    /* Resize handles */
+    .resize-handle {
+        position: absolute;
+        z-index: 4;
+    }
+
+    .resize-n  { top: -4px; left: 8px; right: 8px; height: 8px; cursor: n-resize; }
+    .resize-s  { bottom: -4px; left: 8px; right: 8px; height: 8px; cursor: s-resize; }
+    .resize-e  { right: -4px; top: 8px; bottom: 8px; width: 8px; cursor: e-resize; }
+    .resize-w  { left: -4px; top: 8px; bottom: 8px; width: 8px; cursor: w-resize; }
+    .resize-nw { top: -4px; left: -4px; width: 12px; height: 12px; cursor: nw-resize; }
+    .resize-ne { top: -4px; right: -4px; width: 12px; height: 12px; cursor: ne-resize; }
+    .resize-sw { bottom: -4px; left: -4px; width: 12px; height: 12px; cursor: sw-resize; }
+    .resize-se { bottom: -4px; right: -4px; width: 12px; height: 12px; cursor: se-resize; }
+
+    @media (max-width: 768px) {
+        .desktop-icons {
+            width: 80px;
+        }
+
+        .taskbar {
+            left: 8px;
+            right: 8px;
+            transform: none;
+            width: auto;
+        }
+
+        .start-menu {
+            width: calc(100vw - 16px);
+            bottom: 68px;
+        }
+
+        .start-pinned-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .start-rec-list {
+            grid-template-columns: 1fr;
+        }
+
+        .window {
+            border-radius: 0;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: calc(100% - 68px) !important;
+        }
+
+        .window-top { border-radius: 0; }
+        .window-body { border-radius: 0; }
+        .resize-handle { display: none; }
+
+        .window-top-icon:not(:last-child) {
+            display: none;
+        }
+    }
+</style>
+
+<body>
+    <!-- Desktop Icons -->
+    <div class="desktop-icons">
+        <div class="desktop-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+            </svg>
+            <span>This PC</span>
+        </div>
+        <div class="desktop-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span>Documents</span>
+        </div>
+        <div class="desktop-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 21"/>
+            </svg>
+            <span>Pictures</span>
+        </div>
+        <div class="desktop-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <path d="M3 6h18l-1.5 13a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6z"/>
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span>Recycle Bin</span>
+        </div>
+        <div class="desktop-icon" data-app-id="music" data-app-title="Music">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <path d="M2 6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6z"/>
+                <path d="M9 16.5V8.78a1 1 0 0 1 .757-.97l6-1.5A1 1 0 0 1 17 7.28V15"/>
+                <path d="M9 11l8-2"/>
+                <circle cx="7.5" cy="16.5" r="1.5"/>
+                <circle cx="15.5" cy="15.5" r="1.5"/>
+            </svg>
+            <span>Music</span>
+            <window-template style="display: none;">
+                <iframe src="https://demo-beato.baejino.com" frameborder="0"></iframe>
+            </window-template>
+        </div>
+        <div class="desktop-icon" data-app-id="notepad" data-app-title="Notepad">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <path d="M11 3v18"/>
+                <path d="M3 12h18"/>
+            </svg>
+            <span>Notepad</span>
+            <window-template style="display: none;">
+                <iframe src="https://demo-ocean-brain.baejino.com" frameborder="0"></iframe>
+            </window-template>
+        </div>
+    </div>
+
+    <!-- Start Menu -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-search">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            Type to search
+        </div>
+        <div class="start-section-title">Pinned</div>
+        <div class="start-pinned-grid">
+            <div class="start-pinned-item"><div class="icon">🌐</div><span>Browser</span></div>
+            <div class="start-pinned-item"><div class="icon">📁</div><span>Explorer</span></div>
+            <div class="start-pinned-item"><div class="icon">🛒</div><span>Store</span></div>
+            <div class="start-pinned-item"><div class="icon">📧</div><span>Mail</span></div>
+            <div class="start-pinned-item"><div class="icon">📅</div><span>Calendar</span></div>
+            <div class="start-pinned-item"><div class="icon">📷</div><span>Photos</span></div>
+            <div class="start-pinned-item"><div class="icon">🎵</div><span>Music</span></div>
+            <div class="start-pinned-item"><div class="icon">⚙️</div><span>Settings</span></div>
+            <div class="start-pinned-item"><div class="icon">📝</div><span>Notepad</span></div>
+            <div class="start-pinned-item"><div class="icon">🎮</div><span>Xbox</span></div>
+            <div class="start-pinned-item"><div class="icon">🖥️</div><span>Terminal</span></div>
+            <div class="start-pinned-item"><div class="icon">💬</div><span>Teams</span></div>
+        </div>
+        <div class="start-recommended">
+            <div class="start-section-title">Recommended</div>
+            <div class="start-rec-list">
+                <div class="start-rec-item">
+                    <div class="rec-icon">📄</div>
+                    <div class="rec-info">
+                        <div>Document.docx</div>
+                        <div class="rec-sub">Recently opened</div>
+                    </div>
+                </div>
+                <div class="start-rec-item">
+                    <div class="rec-icon">📊</div>
+                    <div class="rec-info">
+                        <div>Report.xlsx</div>
+                        <div class="rec-sub">Yesterday</div>
+                    </div>
+                </div>
+                <div class="start-rec-item">
+                    <div class="rec-icon">🖼️</div>
+                    <div class="rec-info">
+                        <div>Screenshot.png</div>
+                        <div class="rec-sub">2 days ago</div>
+                    </div>
+                </div>
+                <div class="start-rec-item">
+                    <div class="rec-icon">📂</div>
+                    <div class="rec-info">
+                        <div>Projects</div>
+                        <div class="rec-sub">This week</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Taskbar (floating pill dock) -->
+    <div class="taskbar">
+        <div class="taskbar-btn start-btn" id="start-btn">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="taskbar-divider"></div>
+        <div class="taskbar-apps" id="taskbar-apps"></div>
+        <div class="taskbar-divider"></div>
+        <div class="taskbar-tray">
+            <div class="tray-clock" id="tray-clock"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    /* ── Clock ── */
+    function updateTrayClock() {
+        const now = new Date();
+        const h = now.getHours();
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const period = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const year = now.getFullYear();
+
+        document.getElementById('tray-clock').innerHTML =
+            `<div>${h12}:${m} ${period}</div><div>${month}/${day}/${year}</div>`;
+    }
+    updateTrayClock();
+    setInterval(updateTrayClock, 1000);
+
+    /* ── Start Menu ── */
+    const $startMenu = document.getElementById('start-menu');
+    const $startBtn = document.getElementById('start-btn');
+
+    $startBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        $startMenu.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!$startMenu.contains(e.target) && !$startBtn.contains(e.target)) {
+            $startMenu.classList.remove('open');
+        }
+    });
+
+    /* ── Desktop icon selection ── */
+    let $selectedIcon = null;
+
+    document.querySelector('.desktop-icons').addEventListener('click', (e) => {
+        const $icon = e.target.closest('.desktop-icon');
+        if ($selectedIcon) $selectedIcon.classList.remove('selected');
+        if ($icon) {
+            $icon.classList.add('selected');
+            $selectedIcon = $icon;
+        } else {
+            $selectedIcon = null;
+        }
+    });
+
+    /* ── Window System ── */
+    const RESIZE_DIRS = ['n', 's', 'e', 'w', 'nw', 'ne', 'sw', 'se'];
+    const MIN_W = 320;
+    const MIN_H = 200;
+    let cascadeOffset = 0;
+    let focusedWindow = null;
+
+    const $taskbarApps = document.getElementById('taskbar-apps');
+
+    const WindowTemplate = ({ title, content }) => `
+        <div class="window">
+            <div class="window-top">
+                <div class="window-top-title">${title}</div>
+                <div class="window-top-icons">
+                    <div class="window-top-icon" data-action="minimize">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12H4"/></svg>
+                    </div>
+                    <div class="window-top-icon" data-action="maximize">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7V2h5"/><path d="M22 7V2h-5"/><path d="M7 22H2v-5"/><path d="M17 22h5v-5"/></svg>
+                    </div>
+                    <div class="window-top-icon" data-action="close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 20L4 4m16 0L4 20"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="window-body">
+                <div class="window-overlay"></div>
+                ${content}
+            </div>
+            ${RESIZE_DIRS.map(d => `<div class="resize-handle resize-${d}" data-dir="${d}"></div>`).join('')}
+        </div>
+    `;
+
+    function genZ() {
+        return Date.now() % 1000000;
+    }
+
+    function focusWindow($win) {
+        if (focusedWindow && focusedWindow !== $win) {
+            focusedWindow.classList.remove('focused');
+        }
+        $win.classList.add('focused');
+        $win.style.zIndex = genZ();
+        focusedWindow = $win;
+    }
+
+    /* ── Taskbar ── */
+    function addTaskbarApp(appId, title, icon, actions) {
+        if (document.querySelector(`.taskbar-app[data-app="${appId}"]`)) return;
+        const $app = document.createElement('div');
+        $app.className = 'taskbar-app';
+        $app.dataset.app = appId;
+        $app.innerHTML = `${icon}<span>${title}</span>`;
+        $app.addEventListener('click', () => {
+            const $win = document.querySelector(`#${appId} .window`);
+            if (!$win) return;
+            if ($win.classList.contains('minimize')) {
+                actions.restore();
+                focusWindow($win);
+            } else if ($win === focusedWindow) {
+                actions.minimize();
+            } else {
+                focusWindow($win);
+            }
+        });
+        $taskbarApps.appendChild($app);
+    }
+
+    function removeTaskbarApp(appId) {
+        const $el = document.querySelector(`.taskbar-app[data-app="${appId}"]`);
+        if ($el) $el.remove();
+    }
+
+    /* ── Window behavior ── */
+    function useWindow($win) {
+        const $top = $win.querySelector('.window-top');
+        const $icons = $win.querySelector('.window-top-icons');
+
+        let dragging = false;
+        let resizeDir = null;
+        let prevX = 0;
+        let prevY = 0;
+
+        /* Saved state for restore */
+        let savedRect = null;
+
+        function saveRect() {
+            return {
+                top: $win.offsetTop,
+                left: $win.offsetLeft,
+                width: $win.offsetWidth,
+                height: $win.offsetHeight,
+            };
+        }
+
+        function applyRect(r) {
+            $win.style.top = r.top + 'px';
+            $win.style.left = r.left + 'px';
+            $win.style.width = r.width + 'px';
+            $win.style.height = r.height + 'px';
+        }
+
+        /* Clamp position so title bar stays reachable */
+        function clampPosition() {
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 80;
+            let t = $win.offsetTop;
+            let l = $win.offsetLeft;
+            if (t < 0) t = 0;
+            if (t > maxY) t = maxY;
+            if (l < -$win.offsetWidth + 100) l = -$win.offsetWidth + 100;
+            if (l > maxX) l = maxX;
+            $win.style.top = t + 'px';
+            $win.style.left = l + 'px';
+        }
+
+        const maximize = () => {
+            if ($win.classList.contains('maximize')) {
+                $win.classList.remove('maximize');
+                if (savedRect) applyRect(savedRect);
+            } else {
+                savedRect = saveRect();
+                $win.classList.remove('minimize');
+                $win.style.display = '';
+                $win.classList.add('maximize');
+            }
+            focusWindow($win);
+        };
+
+        const minimize = () => {
+            if (!$win.classList.contains('minimize')) {
+                if (!$win.classList.contains('maximize')) {
+                    savedRect = saveRect();
+                }
+                $win.classList.remove('maximize');
+                $win.classList.add('minimize');
+            }
+        };
+
+        const restore = () => {
+            $win.classList.remove('minimize');
+            $win.classList.remove('maximize');
+            $win.style.display = '';
+            if (savedRect) applyRect(savedRect);
+            focusWindow($win);
+        };
+
+        /* ── Focus on any mousedown ── */
+        $win.addEventListener('mousedown', () => focusWindow($win));
+
+        /* ── Title bar double-click → maximize toggle ── */
+        $top.addEventListener('dblclick', (e) => {
+            if (e.target.closest('.window-top-icon')) return;
+            if (window.innerWidth > 768) maximize();
+        });
+
+        /* ── Title bar drag ── */
+        $top.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.window-top-icon')) return;
+            if ($win.classList.contains('minimize')) return;
+
+            /* Drag from maximized → restore at cursor position */
+            if ($win.classList.contains('maximize')) {
+                const pct = e.clientX / window.innerWidth;
+                const rect = savedRect || { width: 640, height: 440 };
+                $win.classList.remove('maximize');
+                $win.style.width = rect.width + 'px';
+                $win.style.height = rect.height + 'px';
+                $win.style.top = '0px';
+                $win.style.left = (e.clientX - rect.width * pct) + 'px';
+                savedRect = null;
+            }
+
+            focusWindow($win);
+            $win.classList.add('dragging');
+            dragging = true;
+            prevX = e.clientX;
+            prevY = e.clientY;
+        });
+
+        /* ── Button actions ── */
+        $icons.addEventListener('click', (e) => {
+            const btn = e.target.closest('.window-top-icon');
+            if (!btn) return;
+            const action = btn.dataset.action;
+            if (action === 'close') return; /* handled by createWindow */
+            if (action === 'minimize') minimize();
+            if (action === 'maximize') maximize();
+        });
+
+        /* ── Resize handles ── */
+        $win.querySelectorAll('.resize-handle').forEach($h => {
+            $h.addEventListener('mousedown', (e) => {
+                if ($win.classList.contains('maximize')) return;
+                e.stopPropagation();
+                focusWindow($win);
+                $win.classList.add('resizing');
+                resizeDir = $h.dataset.dir;
+                prevX = e.clientX;
+                prevY = e.clientY;
+            });
+        });
+
+        /* ── Global mouse handlers ── */
+        const onMouseMove = (e) => {
+            const dx = e.clientX - prevX;
+            const dy = e.clientY - prevY;
+
+            if (dragging) {
+                $win.style.top = ($win.offsetTop + dy) + 'px';
+                $win.style.left = ($win.offsetLeft + dx) + 'px';
+                prevX = e.clientX;
+                prevY = e.clientY;
+                return;
+            }
+
+            if (resizeDir) {
+                let t = $win.offsetTop;
+                let l = $win.offsetLeft;
+                let w = $win.offsetWidth;
+                let h = $win.offsetHeight;
+
+                const dir = resizeDir;
+                if (dir.includes('e')) w += dx;
+                if (dir.includes('s')) h += dy;
+                if (dir.includes('w')) { l += dx; w -= dx; }
+                if (dir.includes('n')) { t += dy; h -= dy; }
+
+                if (w >= MIN_W) {
+                    $win.style.width = w + 'px';
+                    if (dir.includes('w')) $win.style.left = l + 'px';
+                }
+                if (h >= MIN_H) {
+                    $win.style.height = h + 'px';
+                    if (dir.includes('n')) $win.style.top = t + 'px';
+                }
+
+                prevX = e.clientX;
+                prevY = e.clientY;
+            }
+        };
+
+        const onMouseUp = () => {
+            if (dragging) {
+                dragging = false;
+                $win.classList.remove('dragging');
+                clampPosition();
+
+                /* Snap to top → maximize */
+                if ($win.offsetTop <= 0 && window.innerWidth > 768) {
+                    savedRect = saveRect();
+                    $win.classList.add('maximize');
+                }
+            }
+            if (resizeDir) {
+                resizeDir = null;
+                $win.classList.remove('resizing');
+            }
+        };
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+
+        return {
+            maximize,
+            minimize,
+            restore,
+            destroy: () => {
+                window.removeEventListener('mousemove', onMouseMove);
+                window.removeEventListener('mouseup', onMouseUp);
+            },
+        };
+    }
+
+    /* ── Create / focus window ── */
+    function createWindow($el) {
+        const { appId, appTitle } = $el.dataset;
+        if (!appId) return;
+        const $icon = $el.querySelector('svg');
+
+        /* Already exists → focus or restore */
+        const existing = document.querySelector(`#${appId} .window`);
+        if (existing) {
+            if (existing.classList.contains('minimize')) {
+                existing.classList.remove('minimize');
+                existing.style.display = '';
+            }
+            focusWindow(existing);
+            return;
+        }
+
+        /* Cascade */
+        cascadeOffset = (cascadeOffset + 30) % 150;
+
+        const $container = document.createElement('window');
+        $container.id = appId;
+        $container.innerHTML = WindowTemplate({
+            title: appTitle,
+            content: $el.querySelector('window-template').innerHTML,
+        });
+        document.body.appendChild($container);
+
+        const $win = $container.querySelector('.window');
+        $win.style.top = (60 + cascadeOffset) + 'px';
+        $win.style.left = (120 + cascadeOffset) + 'px';
+
+        const actions = useWindow($win);
+        focusWindow($win);
+
+        /* Close button */
+        $win.querySelector('[data-action="close"]').addEventListener('click', () => {
+            actions.destroy();
+            $container.remove();
+            removeTaskbarApp(appId);
+            if (focusedWindow === $win) focusedWindow = null;
+        });
+
+        addTaskbarApp(appId, appTitle, $icon ? $icon.outerHTML : '', actions);
+    }
+
+    document.querySelectorAll('.desktop-icon[data-app-id]').forEach($el =>
+        $el.addEventListener('dblclick', () => {
+            $startMenu.classList.remove('open');
+            createWindow($el);
+        }));
+</script>
