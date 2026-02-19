@@ -1,9 +1,9 @@
 <!-- layout: base.html -->
 <!-- title: Material Design -->
-<!-- description: Card-based UI inspired by Google Material Design -->
+<!-- description: Inspired by Google Material Design — paper surfaces, elevation shadows, ripple physics, and meaningful motion -->
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
 
     :root {
         --primary: #6750A4;
@@ -11,550 +11,892 @@
         --primary-light: #D0BCFF;
         --primary-container: #EADDFF;
         --on-primary: #fff;
-        --surface: #FEF7FF;
+        --surface: #FFFBFE;
+        --surface-dim: #F4EFF4;
         --surface-container: #F3EDF7;
+        --surface-container-high: #ECE6F0;
         --on-surface: #1D1B20;
         --on-surface-variant: #49454F;
         --outline: #79747E;
         --outline-variant: #CAC4D0;
-        --error: #B3261E;
+        --success: #34A853;
+        --danger: #EA4335;
+        --text-muted: #625B71;
+        --shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+        --shadow-2: 0 3px 6px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+        --shadow-4: 0 6px 12px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+        --shadow-8: 0 12px 24px rgba(0,0,0,0.14), 0 8px 16px rgba(0,0,0,0.08);
+        --shadow-12: 0 18px 36px rgba(0,0,0,0.16), 0 12px 24px rgba(0,0,0,0.1);
     }
 
     body {
-        font-family: 'Roboto', sans-serif;
-        background: var(--primary);
+        font-family: 'Roboto', 'Noto Sans', sans-serif;
+        background: var(--surface-dim);
         color: var(--on-surface);
-    }
-
-    /* Background pattern */
-    .bg-layer {
-        position: fixed;
-        inset: 0;
-        background:
-            radial-gradient(ellipse at 20% 50%, rgba(208, 188, 255, 0.3) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, rgba(234, 221, 255, 0.2) 0%, transparent 40%),
-            radial-gradient(ellipse at 60% 80%, rgba(103, 80, 164, 0.15) 0%, transparent 40%);
-        z-index: 0;
+        min-height: 100vh;
     }
 
     .layout {
-        position: relative;
-        z-index: 1;
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
     }
 
-    /* Top Navigation */
-    .top-navigation {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 64px;
-        color: var(--on-primary);
-        flex-shrink: 0;
-
-        .nav-inner {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        h1 {
-            font-size: 1.25rem;
-            font-weight: 500;
-            letter-spacing: 0.01em;
-        }
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
     }
 
-    /* Hamburger Menu */
-    .menu {
-        width: 24px;
-        height: 24px;
-        display: block;
-        position: relative;
-        cursor: pointer;
-
-        &::after,
-        &::before,
-        & .third-line {
-            content: '';
-            display: block;
-            position: absolute;
-            right: 0;
-            width: 24px;
-            height: 2px;
-            background: var(--on-primary);
-            border-radius: 1px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        &::before { top: 6px; }
-        & .third-line { top: 11px; }
-        &::after { top: 16px; }
-
-        &.isOpen {
-            &::before {
-                transform: translateY(5px) rotate(45deg);
-            }
-
-            & .third-line {
-                opacity: 0;
-                transform: scaleX(0);
-            }
-
-            &::after {
-                transform: translateY(-5px) rotate(-45deg);
-            }
-        }
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: var(--primary-container);
+        color: var(--primary);
+        margin-bottom: 20px;
     }
 
-    /* Card area */
-    .card-area {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px 16px 48px;
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 300;
+        letter-spacing: 2px;
+        color: var(--on-surface);
     }
 
-    .card {
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* Surface card */
+    .surface {
         background: var(--surface);
-        border-radius: 28px;
-        width: 420px;
-        max-width: 100%;
-        box-shadow:
-            0 2px 6px rgba(0, 0, 0, 0.08),
-            0 8px 24px rgba(0, 0, 0, 0.12),
-            0 20px 48px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        position: relative;
         overflow: hidden;
     }
 
-    /* Card hero */
-    .card-hero {
-        background: var(--primary-container);
-        padding: 32px 32px 28px;
-        text-align: center;
+    .surface-1 { box-shadow: var(--shadow-1); }
+    .surface-2 { box-shadow: var(--shadow-2); }
+    .surface-4 { box-shadow: var(--shadow-4); }
+    .surface-8 { box-shadow: var(--shadow-8); }
+    .surface-12 { box-shadow: var(--shadow-12); }
+
+    /* Intro card */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
     }
 
-    .card-avatar {
-        width: 72px;
-        height: 72px;
-        border-radius: 36px;
-        background: var(--primary);
-        margin: 0 auto 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--on-primary);
-        box-shadow: 0 4px 12px rgba(103, 80, 164, 0.3);
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 300;
+        color: var(--on-surface-variant);
     }
 
-    .card-hero h2 {
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--on-surface);
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--primary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
         font-size: 1.5rem;
         font-weight: 500;
-        color: #1D1B20;
-    }
-
-    .card-hero p {
-        font-size: 0.875rem;
-        color: var(--on-surface-variant);
-        margin-top: 4px;
-    }
-
-    /* Card body */
-    .card-body {
-        padding: 28px 32px 32px;
-    }
-
-    /* Outlined Input */
-    .input {
-        position: relative;
-    }
-
-    .input + .input {
-        margin-top: 20px;
-    }
-
-    .input input {
-        width: 100%;
-        padding: 16px;
-        background: none;
-        outline: none;
-        border: 1px solid var(--outline);
-        border-radius: 12px;
+        margin-bottom: 12px;
         color: var(--on-surface);
-        font-size: 1rem;
-        font-family: inherit;
-        transition: border-color 0.2s;
-
-        &:hover {
-            border-color: var(--on-surface);
-        }
-
-        &:focus {
-            border: 2px solid var(--primary);
-            padding: 15px;
-        }
     }
 
-    .input label {
-        color: var(--on-surface-variant);
-        padding: 0 4px;
-        top: 16px;
-        left: 12px;
-        cursor: text;
-        position: absolute;
-        background: none;
-        font-size: 1rem;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        pointer-events: none;
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 20px;
     }
 
-    .input input:focus + label {
+    .section-desc code {
+        font-family: 'Roboto Mono', 'SF Mono', monospace;
+        font-size: 0.82em;
+        background: var(--surface-container-high);
+        padding: 2px 8px;
+        border-radius: 4px;
         color: var(--primary);
-    }
-
-    .input label.has-text,
-    .input input:focus + label {
-        top: -8px;
-        font-size: 0.75rem;
-        background: var(--surface);
-    }
-
-    .input .input-icon {
-        position: absolute;
-        right: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--on-surface-variant);
-        cursor: pointer;
-        display: flex;
-    }
-
-    /* Remember me row */
-    .options-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 16px;
-    }
-
-    .switch-label {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.875rem;
-        color: var(--on-surface-variant);
-        cursor: pointer;
-    }
-
-    .switch {
-        width: 44px;
-        height: 24px;
-        border-radius: 12px;
-        background: var(--outline-variant);
-        position: relative;
-        transition: background 0.2s;
-        border: 2px solid var(--outline);
-        cursor: pointer;
-
-        &::after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border-radius: 8px;
-            background: var(--outline);
-            top: 2px;
-            left: 2px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        &.on {
-            background: var(--primary);
-            border-color: var(--primary);
-
-            &::after {
-                background: var(--on-primary);
-                left: 22px;
-            }
-        }
-    }
-
-    .forgot-link {
-        font-size: 0.8rem;
-        color: var(--primary);
-        font-weight: 500;
-        cursor: pointer;
-        background: none;
-        border: none;
-        font-family: inherit;
-        padding: 4px 0;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-
-    /* Buttons */
-    .button-filled {
-        width: 100%;
-        height: 48px;
-        margin-top: 24px;
-        background: var(--primary);
-        color: var(--on-primary);
-        border: none;
-        border-radius: 24px;
-        font-family: inherit;
-        font-size: 0.95rem;
-        font-weight: 500;
-        letter-spacing: 0.02em;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        transition: background 0.15s, box-shadow 0.2s;
-
-        &:hover {
-            background: var(--primary-dark);
-            box-shadow: 0 2px 8px rgba(103, 80, 164, 0.35);
-        }
-
-        &:active {
-            background: #4A3580;
-        }
-    }
-
-    /* Ripple */
-    .ripple {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.35);
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        transition: all 0.6s ease;
-        opacity: 1;
-        transform: scale(0);
-        pointer-events: none;
     }
 
     /* Divider */
-    .divider-text {
-        text-align: center;
-        color: var(--on-surface-variant);
-        font-size: 0.8rem;
-        position: relative;
-        margin: 24px 0;
-
-        &::before,
-        &::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: calc(50% - 24px);
-            height: 1px;
-            background: var(--outline-variant);
-        }
-
-        &::before { left: 0; }
-        &::after { right: 0; }
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: var(--outline-variant);
     }
 
-    /* Social buttons */
-    .social-row {
+    /* Elevation demo */
+    .elevation-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .elevation-card {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 20px 12px;
+        text-align: center;
+        transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: default;
+    }
+
+    .elevation-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .elev-0 {
+        box-shadow: none;
+        border: 1px solid var(--outline-variant);
+    }
+    .elev-0:hover { box-shadow: var(--shadow-1); }
+
+    .elev-1 { box-shadow: var(--shadow-1); }
+    .elev-1:hover { box-shadow: var(--shadow-2); }
+
+    .elev-2 { box-shadow: var(--shadow-4); }
+    .elev-2:hover { box-shadow: var(--shadow-8); }
+
+    .elev-3 { box-shadow: var(--shadow-8); }
+    .elev-3:hover { box-shadow: var(--shadow-12); }
+
+    .elevation-dp {
+        font-size: 1.8rem;
+        font-weight: 300;
+        color: var(--on-surface);
+        margin-bottom: 6px;
+    }
+
+    .elevation-label {
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .elevation-sub {
+        font-size: 0.68rem;
+        color: var(--outline);
+        margin-top: 4px;
+    }
+
+    /* Ripple demo */
+    .ripple-demo-area {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .ripple-target {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 32px 20px;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        user-select: none;
+        -webkit-user-select: none;
+        transition: box-shadow 0.2s;
+        box-shadow: var(--shadow-1);
+    }
+
+    .ripple-target:active {
+        box-shadow: var(--shadow-4);
+    }
+
+    .ripple-target-label {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--on-surface);
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .ripple-target-sub {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        pointer-events: none;
+        opacity: 0.25;
+    }
+
+    .ripple.primary {
+        background: var(--primary);
+    }
+
+    .ripple.white {
+        background: #fff;
+    }
+
+    .ripple.animate {
+        animation: ripple-expand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes ripple-expand {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+
+    .ripple-target.primary-bg {
+        background: var(--primary);
+        box-shadow: var(--shadow-4);
+    }
+
+    .ripple-target.primary-bg .ripple-target-label,
+    .ripple-target.primary-bg .ripple-target-sub {
+        color: var(--on-primary);
+    }
+
+    .ripple-target.primary-bg .ripple-target-sub {
+        opacity: 0.8;
+    }
+
+    /* Motion demo */
+    .motion-stage {
+        background: var(--surface);
+        border-radius: 16px;
+        box-shadow: var(--shadow-2);
+        padding: 32px;
+        position: relative;
+        min-height: 240px;
+        overflow: hidden;
+    }
+
+    .motion-cards {
         display: flex;
         gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
-    .social-btn {
-        flex: 1;
-        height: 48px;
-        border-radius: 24px;
-        border: 1px solid var(--outline-variant);
-        background: none;
+    .motion-card {
+        width: 100px;
+        height: 72px;
+        background: var(--surface-container);
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--text-muted);
         cursor: pointer;
-        transition: background 0.15s, border-color 0.15s;
-        color: var(--on-surface);
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-1);
         position: relative;
         overflow: hidden;
-
-        &:hover {
-            background: var(--surface-container);
-            border-color: var(--outline);
-        }
     }
 
-    .social-btn .ripple {
-        background: rgba(103, 80, 164, 0.12);
+    .motion-card:hover {
+        box-shadow: var(--shadow-4);
+        transform: translateY(-4px);
     }
 
-    .sign-up-text {
-        text-align: center;
-        margin-top: 24px;
+    .motion-card.expanded {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        width: auto;
+        height: auto;
+        background: var(--primary-container);
+        z-index: 2;
+        font-size: 0.88rem;
+        color: var(--on-surface);
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: var(--shadow-8);
+    }
+
+    .motion-card .expand-hint {
+        font-size: 0.65rem;
+        color: var(--outline);
+        display: none;
+    }
+
+    .motion-card.expanded .expand-hint {
+        display: block;
+        color: var(--text-muted);
+    }
+
+    .motion-btn-row {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .motion-reset-btn {
+        padding: 8px 20px;
+        border-radius: 20px;
+        border: 1px solid var(--outline-variant);
+        background: none;
+        font-family: inherit;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--primary);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .motion-reset-btn:hover {
+        background: var(--primary-container);
+    }
+
+    /* Combined demo */
+    .combined-demo {
+        position: relative;
+        background: var(--surface-container);
+        border-radius: 16px;
+        padding: 32px;
+        min-height: 320px;
+        overflow: hidden;
+    }
+
+    .demo-app-bar {
+        background: var(--primary);
+        color: var(--on-primary);
+        padding: 14px 20px;
+        border-radius: 0;
+        margin: -32px -32px 24px;
+        font-size: 1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: var(--shadow-4);
+    }
+
+    .demo-app-bar-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .demo-content-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .demo-item {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: var(--shadow-1);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .demo-item:hover {
+        box-shadow: var(--shadow-4);
+        transform: translateY(-1px);
+    }
+
+    .demo-item:active {
+        box-shadow: var(--shadow-2);
+        transform: translateY(0);
+    }
+
+    .demo-item-color {
+        width: 100%;
+        height: 48px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .demo-item-title {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--on-surface);
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .demo-item-sub {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .demo-fab {
+        position: absolute;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: var(--primary-container);
+        color: var(--primary);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-8);
+        transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        z-index: 3;
+    }
+
+    .demo-fab:hover {
+        box-shadow: var(--shadow-12);
+        transform: scale(1.05);
+    }
+
+    .demo-fab:active {
+        box-shadow: var(--shadow-4);
+        transform: scale(0.95);
+    }
+
+    .demo-fab svg {
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Anti-pattern list */
+    .anti-card {
+        padding: 24px 28px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
         font-size: 0.85rem;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--outline-variant);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 300;
         color: var(--on-surface-variant);
-
-        span {
-            color: var(--primary);
-            font-weight: 500;
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
     }
 
-    @media screen and (max-width: 520px) {
-        .card {
-            border-radius: 24px;
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        color: var(--danger);
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .anti-list .o {
+        color: var(--success);
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1.7;
+        color: var(--on-surface);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--outline);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* Code block */
+    .code-block {
+        background: #1C1B1F;
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-family: 'Roboto Mono', 'SF Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 16px;
+    }
+
+    .code-block .kw { color: #D0BCFF; }
+    .code-block .val { color: #A8DB8F; }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.3); }
+
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.5rem;
         }
 
-        .card-hero {
-            padding: 24px 20px 20px;
+        .elevation-grid {
+            grid-template-columns: 1fr 1fr;
         }
 
-        .card-body {
-            padding: 20px;
+        .ripple-demo-area,
+        .demo-content-cards {
+            grid-template-columns: 1fr;
         }
 
-        .card-hero h2 {
-            font-size: 1.3rem;
+        .intro-card,
+        .anti-card {
+            padding: 20px 24px;
+        }
+
+        .motion-stage {
+            padding: 24px;
+        }
+
+        .motion-card {
+            width: 80px;
+            height: 60px;
+            font-size: 0.65rem;
+        }
+
+        .combined-demo {
+            padding: 24px;
+        }
+
+        .demo-app-bar {
+            margin: -24px -24px 20px;
         }
     }
 </style>
 
 <body>
-    <div class="bg-layer"></div>
     <div class="layout">
-        <header class="top-navigation">
-            <div class="nav-inner">
-                <h1>Material</h1>
-                <div class="menu">
-                    <div class="third-line"></div>
-                </div>
-            </div>
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Google Material Design</div>
+            <h1 class="hero-title">Material</h1>
+            <p class="hero-tagline">
+                Google asked: what if pixels were paper?<br>
+                Good question. Complicated answer.
+            </p>
         </header>
 
-        <div class="card-area">
-            <div class="card">
-                <div class="card-hero">
-                    <div class="card-avatar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    </div>
-                    <h2>Welcome back</h2>
-                    <p>Sign in to your account</p>
+        <!-- Intro -->
+        <div class="surface surface-2 intro-card">
+            <p class="intro-text">
+                2014. Google's design was a dumpster fire.
+                Android looked one way, Gmail another, Chrome OS like it was designed
+                by a completely different company. Which, emotionally, it was.
+                <br><br>
+                Material Design was the grand unification:
+                <strong>every surface is a sheet of paper</strong>.
+                Paper has thickness. It casts shadows. You can stack it, cut it, slide it.
+                Ink flows across it and settles where you touch.
+                <br><br>
+                The metaphor was <strong>genuinely brilliant</strong>.
+                The execution got... religious. But we'll get to that.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Paper and Ink -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Paper and Ink</h2>
+            <p class="section-desc">
+                Every surface has elevation. Elevation creates hierarchy.
+                A card at <code>1dp</code> is resting content. At <code>8dp</code>,
+                it's demanding your attention. Google specified this down to the pixel
+                -- dialogs at 24dp, FABs at 6dp, navigation drawers at 16dp.
+                The shadow is not decoration. It's a spatial coordinate system.
+                Hover to see them rise.
+            </p>
+            <div class="elevation-grid">
+                <div class="elevation-card elev-0">
+                    <div class="elevation-dp">0dp</div>
+                    <div class="elevation-label">Flat</div>
+                    <div class="elevation-sub">Text, background</div>
                 </div>
-
-                <div class="card-body">
-                    <div class="input">
-                        <input id="email" type="email" />
-                        <label for="email">Email</label>
-                    </div>
-                    <div class="input">
-                        <input id="password" type="password" />
-                        <label for="password">Password</label>
-                        <div class="input-icon" id="toggle-pw" aria-label="Show password">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </div>
-                    </div>
-
-                    <div class="options-row">
-                        <label class="switch-label">
-                            <div class="switch" id="remember-switch"></div>
-                            Remember me
-                        </label>
-                        <button class="forgot-link">Forgot password?</button>
-                    </div>
-
-                    <button class="button-filled" id="sign-in-btn">Sign In</button>
-
-                    <div class="divider-text">or</div>
-
-                    <div class="social-row">
-                        <button class="social-btn" aria-label="Google">
-                            <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                        </button>
-                        <button class="social-btn" aria-label="GitHub">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                        </button>
-                        <button class="social-btn" aria-label="Apple">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-                        </button>
-                    </div>
-
-                    <div class="sign-up-text">
-                        Don't have an account? <span>Sign Up</span>
-                    </div>
+                <div class="elevation-card elev-1">
+                    <div class="elevation-dp">2dp</div>
+                    <div class="elevation-label">Resting</div>
+                    <div class="elevation-sub">Cards, buttons</div>
+                </div>
+                <div class="elevation-card elev-2">
+                    <div class="elevation-dp">8dp</div>
+                    <div class="elevation-label">Raised</div>
+                    <div class="elevation-sub">Menus, pickers</div>
+                </div>
+                <div class="elevation-card elev-3">
+                    <div class="elevation-dp">16dp</div>
+                    <div class="elevation-label">Floating</div>
+                    <div class="elevation-sub">Drawers, dialogs</div>
                 </div>
             </div>
-        </div>
+            <div class="code-block">
+                <span class="cmt">/* Elevation = hierarchy, not decoration */</span><br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">0 6px 12px</span> rgba(0,0,0,0.12),<br>
+                &nbsp;&nbsp;<span class="val">0 4px 8px</span> rgba(0,0,0,0.06); <span class="cmt">/* 8dp — raised */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: The Ripple -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">The Ripple Effect</h2>
+            <p class="section-desc">
+                This was the stroke of genius. When you tap a surface, a ripple
+                radiates from the <strong>exact point of contact</strong>.
+                Not a generic highlight. Not a color change.
+                A physics-based wave that says "yes, here, I felt that."
+                It's the most honest piece of touch feedback ever designed.
+                Click anywhere on these surfaces.
+            </p>
+            <div class="ripple-demo-area">
+                <div class="ripple-target" id="ripple-light">
+                    <div class="ripple-target-label">Light Surface</div>
+                    <div class="ripple-target-sub">Tap anywhere</div>
+                </div>
+                <div class="ripple-target primary-bg" id="ripple-dark">
+                    <div class="ripple-target-label">Primary Surface</div>
+                    <div class="ripple-target-sub">Tap anywhere</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: Meaningful Motion -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Meaningful Motion</h2>
+            <p class="section-desc">
+                In Material's world, nothing just appears. Nothing just vanishes.
+                Elements <strong>expand from their origin</strong>,
+                <strong>share</strong> from one surface to another,
+                <strong>transform</strong> to reveal what was hidden.
+                Motion is not eye candy -- it's a spatial explanation.
+                Where did this come from? Where is it going?
+                If your animation can't answer that, kill it.
+                Click a card to see it expand.
+            </p>
+            <div class="motion-stage" id="motion-stage">
+                <div class="motion-cards" id="motion-cards">
+                    <div class="motion-card" data-label="Inbox">Inbox</div>
+                    <div class="motion-card" data-label="Sent">Sent</div>
+                    <div class="motion-card" data-label="Drafts">Drafts</div>
+                    <div class="motion-card" data-label="Starred">Starred</div>
+                </div>
+                <div class="motion-btn-row">
+                    <button class="motion-reset-btn" id="motion-reset">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Put It Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Put It Together</h2>
+            <p class="section-desc">
+                Elevated surfaces. Ripple on touch. A FAB floating above the content plane.
+                Three principles, one interface.
+                It looks like a Google app because, well, this is the system that defined what
+                a Google app looks like. The trick is stealing the principles without
+                copying the skin.
+            </p>
+            <div class="combined-demo">
+                <div class="demo-app-bar">
+                    <div class="demo-app-bar-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </div>
+                    Gallery
+                </div>
+                <div class="demo-content-cards">
+                    <div class="demo-item" id="demo-item-1">
+                        <div class="demo-item-color" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                        <div class="demo-item-title">Violet dusk</div>
+                        <div class="demo-item-sub">Elevation + ripple</div>
+                    </div>
+                    <div class="demo-item" id="demo-item-2">
+                        <div class="demo-item-color" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+                        <div class="demo-item-title">Rose bloom</div>
+                        <div class="demo-item-sub">Tap to feel it</div>
+                    </div>
+                    <div class="demo-item" id="demo-item-3">
+                        <div class="demo-item-color" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
+                        <div class="demo-item-title">Ocean fade</div>
+                        <div class="demo-item-sub">Shadow = depth</div>
+                    </div>
+                    <div class="demo-item" id="demo-item-4">
+                        <div class="demo-item-color" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
+                        <div class="demo-item-title">Mint field</div>
+                        <div class="demo-item-sub">Paper metaphor</div>
+                    </div>
+                </div>
+                <button class="demo-fab" id="demo-fab" aria-label="Add">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="surface surface-1 anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Following dp elevation tables like scripture</li>
+                    <li><span class="x">&#x2717;</span> FAB on every screen -- not everything is a primary action</li>
+                    <li><span class="x">&#x2717;</span> Ripple on non-interactive elements</li>
+                    <li><span class="x">&#x2717;</span> "It's Material so it must be right"</li>
+                    <li><span class="o">&#x2713;</span> Elevation as visual importance -- higher means louder</li>
+                    <li><span class="o">&#x2713;</span> Touch feedback at the exact point of contact</li>
+                    <li><span class="o">&#x2713;</span> Motion that explains spatial relationships</li>
+                    <li><span class="o">&#x2713;</span> Principles over spec -- steal the thinking, not the stylesheet</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Paper was the metaphor.<br>
+                Don't let it become the cage.
+            </p>
+            <p class="manifesto-sub">
+                Material gave Android a soul. Then it gave every Android app the same soul.<br>
+                Use the physics. Ignore the dogma. Your app isn't a Google product.
+            </p>
+        </footer>
     </div>
 </body>
 
 <script>
-    /** @param {HTMLButtonElement} $button */
-    function useRippleEffect($button) {
-        $button.addEventListener('click', function (e) {
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple');
-            this.appendChild(ripple);
+    /* Ripple effect utility */
+    function createRipple(element, e, colorClass) {
+        const rect = element.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple', colorClass);
 
-            const rect = this.getBoundingClientRect();
-            ripple.style.left = (e.clientX - rect.left - 25) + 'px';
-            ripple.style.top = (e.clientY - rect.top - 25) + 'px';
+        const size = Math.max(rect.width, rect.height) * 2;
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
 
-            setTimeout(() => {
-                ripple.style.opacity = '0';
-                ripple.style.transform = 'scale(5)';
-                setTimeout(() => ripple.remove(), 600);
-            }, 0);
+        element.appendChild(ripple);
+        requestAnimationFrame(() => {
+            ripple.classList.add('animate');
         });
+        setTimeout(() => ripple.remove(), 650);
     }
 
-    /** @param {HTMLElement} $input */
-    function useFloatingLabel($input) {
-        const input = $input.querySelector('input');
-        const label = $input.querySelector('label');
+    /* Ripple demo — light surface */
+    document.getElementById('ripple-light').addEventListener('click', function(e) {
+        createRipple(this, e, 'primary');
+    });
 
-        function update() {
-            if (input.value) {
-                label.classList.add('has-text');
-            } else {
-                label.classList.remove('has-text');
+    /* Ripple demo — dark surface */
+    document.getElementById('ripple-dark').addEventListener('click', function(e) {
+        createRipple(this, e, 'white');
+    });
+
+    /* Ripple on combined demo items */
+    document.querySelectorAll('.demo-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+            createRipple(this, e, 'primary');
+        });
+    });
+
+    /* Ripple on FAB */
+    document.getElementById('demo-fab').addEventListener('click', function(e) {
+        createRipple(this, e, 'primary');
+    });
+
+    /* Motion demo — expand cards */
+    document.querySelectorAll('.motion-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+            if (this.classList.contains('expanded')) {
+                this.classList.remove('expanded');
+                this.innerHTML = this.dataset.label;
+                return;
             }
-        }
 
-        input.addEventListener('input', update);
-        input.addEventListener('change', update);
-    }
+            /* Collapse others first */
+            document.querySelectorAll('.motion-card.expanded').forEach(function(c) {
+                c.classList.remove('expanded');
+                c.innerHTML = c.dataset.label;
+            });
 
-    /** @param {HTMLElement} $menu */
-    function useMenuToggle($menu) {
-        $menu.addEventListener('click', () => {
-            $menu.classList.toggle('isOpen');
+            this.classList.add('expanded');
+            this.innerHTML =
+                '<span>' + this.dataset.label + '</span>' +
+                '<span class="expand-hint">Click to collapse</span>';
         });
-    }
-
-    // Toggle password visibility
-    document.getElementById('toggle-pw').addEventListener('click', () => {
-        const pw = document.getElementById('password');
-        pw.type = pw.type === 'password' ? 'text' : 'password';
     });
 
-    // Switch toggle
-    document.getElementById('remember-switch').addEventListener('click', function () {
-        this.classList.toggle('on');
+    /* Motion reset */
+    document.getElementById('motion-reset').addEventListener('click', function() {
+        document.querySelectorAll('.motion-card.expanded').forEach(function(c) {
+            c.classList.remove('expanded');
+            c.innerHTML = c.dataset.label;
+        });
     });
-
-    document.querySelectorAll('.button-filled, .social-btn').forEach(useRippleEffect);
-    document.querySelectorAll('.input').forEach(useFloatingLabel);
-    document.querySelectorAll('.menu').forEach(useMenuToggle);
 </script>

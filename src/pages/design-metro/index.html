@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
-<!-- title: Metro Design -->
-<!-- description: Interactive tile dashboard with flat colors, bold type and live data -->
+<!-- title: Metro -->
+<!-- description: Inspired by Microsoft Metro UI — bold typography, living tiles, and chromeless content -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700;900&display=swap');
@@ -9,6 +9,7 @@
         --bg: #1d1d1d;
         --text: #fff;
         --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.35);
         --blue: #2d89ef;
         --red: #b91d47;
         --green: #00a300;
@@ -17,45 +18,160 @@
         --teal: #00aba9;
         --dark-blue: #2b5797;
         --magenta: #9f00a7;
+        --accent: var(--blue);
+        --danger: #e51400;
+        --success: #60a917;
     }
 
     body {
         font-family: 'Noto Sans', sans-serif;
         background: var(--bg);
         color: var(--text);
-        display: flex;
-        justify-content: center;
-        padding: 48px 16px;
+        min-height: 100vh;
     }
 
-    .hub {
-        width: 640px;
-        max-width: 100%;
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
     }
 
-    /* Header — extreme type */
-    .hub-header {
-        margin-bottom: 32px;
+    /* Hero */
+    .hero {
+        padding: 56px 0 48px;
     }
 
-    .hub-greeting {
+    .hero-badge {
+        display: inline-block;
         font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 6px 0;
+        color: var(--text-muted);
+        border-bottom: 2px solid var(--accent);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+        font-weight: 300;
+        letter-spacing: -2px;
+        line-height: 1;
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* Intro card */
+    .intro-card {
+        background: var(--dark-blue);
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 300;
+    }
+
+    .intro-text strong {
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 300;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 6px;
+    }
+
+    /* Divider — flat line, no gradient */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Typography demo */
+    .type-demo {
+        padding: 32px;
+        background: var(--dark-blue);
+    }
+
+    .type-demo-hero {
+        font-size: 2.8rem;
+        font-weight: 300;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        margin-bottom: 4px;
+    }
+
+    .type-demo-sub {
+        font-size: 1rem;
+        font-weight: 300;
+        color: var(--text-muted);
+        margin-bottom: 24px;
+    }
+
+    .type-demo-section {
+        font-size: 0.7rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.15em;
         color: var(--text-muted);
+        margin-bottom: 8px;
     }
 
-    .hub-title {
-        font-size: 2.8rem;
+    .type-demo-item {
+        font-size: 0.88rem;
         font-weight: 300;
-        line-height: 1.1;
-        margin-top: 4px;
-        letter-spacing: -1px;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* Tile grid — no gap, no radius, no shadow */
-    .tiles {
+    .type-demo-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Tile grid */
+    .tile-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-auto-rows: 120px;
@@ -66,510 +182,648 @@
         padding: 16px;
         display: flex;
         flex-direction: column;
-        cursor: pointer;
         position: relative;
         overflow: hidden;
-        transition: opacity 0.1s;
-
-        &:active {
-            opacity: 0.85;
-        }
+        cursor: default;
     }
 
     .tile-sm   { grid-column: span 1; grid-row: span 1; }
     .tile-wide { grid-column: span 2; grid-row: span 1; }
     .tile-lg   { grid-column: span 2; grid-row: span 2; }
 
-    /* Tile hover — just a flat overlay, no shadow */
-    .tile::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: rgba(255, 255, 255, 0);
-        transition: background 0.1s;
+    .tile-value {
+        font-size: 2.2rem;
+        font-weight: 300;
+        line-height: 1;
     }
 
-    .tile:hover::after {
-        background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* Clock tile */
-    .clock-time {
+    .tile-value-lg {
         font-size: 3rem;
         font-weight: 300;
         line-height: 1;
         letter-spacing: 2px;
     }
 
-    .clock-seconds {
+    .tile-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.6;
+        margin-top: auto;
+    }
+
+    .tile-sub {
+        font-size: 0.8rem;
+        font-weight: 300;
+        opacity: 0.7;
+        margin-top: 4px;
+    }
+
+    .tile-detail {
+        font-size: 0.7rem;
+        opacity: 0.5;
+        margin-top: auto;
+    }
+
+    .tile-content {
+        font-size: 0.82rem;
+        font-weight: 300;
+        line-height: 1.5;
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+
+    .tile-update {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    .tile-update-item {
+        font-size: 0.82rem;
+        font-weight: 300;
+        padding: 3px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tile-update-item:last-child {
+        border-bottom: none;
+    }
+
+    .tile-title-section {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.6;
+        margin-bottom: 8px;
+    }
+
+    .tile-bar {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.15);
+        margin-top: 10px;
+    }
+
+    .tile-bar-fill {
+        height: 100%;
+        background: #fff;
+        transition: width 0.6s;
+    }
+
+    /* Chromeless demo */
+    .chrome-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .chrome-panel {
+        padding: 24px;
+    }
+
+    .chrome-panel.with-chrome {
+        background: #2a2a2a;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .chrome-panel.no-chrome {
+        background: transparent;
+    }
+
+    .chrome-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+    }
+
+    .chrome-label.muted {
+        color: var(--text-dim);
+    }
+
+    .chrome-label.good {
+        color: var(--success);
+    }
+
+    .chrome-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .chrome-nav-item {
+        font-size: 0.88rem;
+        padding: 6px 0;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .chrome-nav-item.active {
+        font-weight: 700;
+        font-size: 1.4rem;
+        color: var(--text);
+        letter-spacing: -0.5px;
+    }
+
+    /* Dashboard demo */
+    .dash-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 120px;
+        gap: 3px;
+    }
+
+    .dash-tile {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dash-sm   { grid-column: span 1; grid-row: span 1; }
+    .dash-wide { grid-column: span 2; grid-row: span 1; }
+    .dash-lg   { grid-column: span 2; grid-row: span 2; }
+
+    .dash-time {
+        font-size: 3rem;
+        font-weight: 300;
+        line-height: 1;
+        letter-spacing: 2px;
+    }
+
+    .dash-time-sec {
         font-size: 1.2rem;
         font-weight: 300;
         opacity: 0.5;
         vertical-align: top;
     }
 
-    .clock-date {
+    .dash-date {
         font-size: 0.8rem;
         font-weight: 300;
         color: var(--text-muted);
         margin-top: auto;
     }
 
-    /* Weather tile */
-    .weather-temp {
-        font-size: 2.6rem;
+    .dash-value {
+        font-size: 2.2rem;
         font-weight: 300;
         line-height: 1;
     }
 
-    .weather-desc {
-        font-size: 0.8rem;
-        font-weight: 300;
-        opacity: 0.7;
-        margin-top: 4px;
-    }
-
-    .weather-details {
-        display: flex;
-        gap: 16px;
-        margin-top: auto;
-        font-size: 0.7rem;
-        opacity: 0.6;
-    }
-
-    /* Todo tile */
-    .todo-title {
-        font-size: 0.7rem;
-        font-weight: 600;
+    .dash-label {
+        font-size: 0.65rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         opacity: 0.6;
-        margin-bottom: 10px;
+        margin-top: auto;
     }
 
-    .todo-list {
+    .dash-sub {
+        font-size: 0.7rem;
+        opacity: 0.5;
+        margin-top: 4px;
+    }
+
+    .dash-bar {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.15);
+        margin-top: 10px;
+    }
+
+    .dash-bar-fill {
+        height: 100%;
+        background: #fff;
+        transition: width 0.6s;
+    }
+
+    .dash-update {
         display: flex;
         flex-direction: column;
         gap: 2px;
         flex: 1;
     }
 
-    .todo-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 5px 0;
-        font-size: 0.82rem;
-        cursor: pointer;
-        position: relative;
-        z-index: 1;
-    }
-
-    .todo-check {
-        width: 16px;
-        height: 16px;
-        border: 2px solid rgba(255, 255, 255, 0.5);
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.15s;
-    }
-
-    .todo-item.done .todo-check {
-        background: rgba(255, 255, 255, 0.8);
-        border-color: rgba(255, 255, 255, 0.8);
-    }
-
-    .todo-item.done .todo-check::after {
-        content: '';
-        width: 6px;
-        height: 6px;
-        background: var(--green);
-    }
-
-    .todo-item.done .todo-text {
-        text-decoration: line-through;
-        opacity: 0.4;
-    }
-
-    .todo-count {
+    .dash-update-label {
         font-size: 0.65rem;
-        opacity: 0.5;
-        margin-top: auto;
-    }
-
-    /* Counter tile */
-    .counter-value {
-        font-size: 2.2rem;
-        font-weight: 300;
-        line-height: 1;
-    }
-
-    .counter-label {
-        font-size: 0.65rem;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         opacity: 0.6;
-        margin-top: auto;
+        margin-bottom: 6px;
     }
 
-    .counter-delta {
-        font-size: 0.7rem;
-        font-weight: 600;
-        margin-top: 4px;
-    }
-
-    /* Calendar tile */
-    .cal-day {
-        font-size: 3.2rem;
+    .dash-update-item {
+        font-size: 0.82rem;
         font-weight: 300;
-        line-height: 1;
+        padding: 3px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .cal-month {
-        font-size: 0.9rem;
+    .dash-update-item:last-child {
+        border-bottom: none;
+    }
+
+    .dash-content {
+        font-size: 0.88rem;
         font-weight: 300;
-        opacity: 0.7;
-        margin-top: 4px;
-    }
-
-    .cal-weekday {
-        font-size: 0.7rem;
-        opacity: 0.5;
-        margin-top: auto;
-    }
-
-    /* Quote tile */
-    .quote-text {
-        font-size: 0.9rem;
-        font-weight: 300;
-        line-height: 1.5;
         font-style: italic;
+        line-height: 1.5;
         flex: 1;
         display: flex;
         align-items: center;
     }
 
-    .quote-author {
+    .dash-attr {
         font-size: 0.65rem;
         opacity: 0.5;
         margin-top: auto;
         text-align: right;
+        font-style: normal;
     }
 
-    /* Steps tile */
-    .steps-value {
-        font-size: 2.2rem;
-        font-weight: 300;
-        line-height: 1;
+    /* Anti-pattern list */
+    .anti-card {
+        padding: 24px 28px;
+        background: #2a2a2a;
     }
 
-    .steps-bar {
-        height: 3px;
-        background: rgba(255, 255, 255, 0.15);
-        margin-top: 10px;
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
     }
 
-    .steps-fill {
-        height: 100%;
-        background: #fff;
-        transition: width 0.6s;
-    }
-
-    .steps-label {
-        font-size: 0.65rem;
-        opacity: 0.5;
-        margin-top: auto;
-    }
-
-    /* Music tile */
-    .music-status {
-        font-size: 0.65rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        opacity: 0.5;
-    }
-
-    .music-title {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-top: 6px;
-    }
-
-    .music-artist {
-        font-size: 0.8rem;
-        font-weight: 300;
-        opacity: 0.6;
-        margin-top: 2px;
-    }
-
-    .music-controls {
-        display: flex;
-        gap: 16px;
-        margin-top: auto;
-        position: relative;
-        z-index: 1;
-    }
-
-    .music-btn {
-        width: 28px;
-        height: 28px;
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         display: flex;
         align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        opacity: 0.7;
-        transition: opacity 0.1s;
+        gap: 10px;
+        font-weight: 300;
+    }
 
-        &:hover { opacity: 1; }
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
 
-        svg {
-            width: 14px;
-            height: 14px;
-            fill: #fff;
+    .anti-list .x {
+        color: var(--danger);
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .anti-list .o {
+        color: var(--success);
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 2rem;
+        font-weight: 300;
+        line-height: 1.5;
+        letter-spacing: -0.5px;
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 3rem;
         }
-    }
 
-    /* Footer info */
-    .hub-footer {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 24px;
-        font-size: 0.65rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-    }
-
-    @media screen and (max-width: 520px) {
-        .tiles {
+        .tile-grid,
+        .dash-grid {
             grid-template-columns: repeat(2, 1fr);
             grid-auto-rows: 110px;
         }
 
-        .tile-lg {
-            grid-column: span 2;
-            grid-row: span 2;
+        .chrome-compare {
+            grid-template-columns: 1fr;
         }
 
-        .hub-title {
+        .type-demo-hero {
             font-size: 2rem;
         }
 
-        .clock-time {
-            font-size: 2.2rem;
+        .intro-card,
+        .anti-card {
+            padding: 20px 24px;
+        }
+
+        .manifesto-text {
+            font-size: 1.5rem;
         }
     }
 </style>
 
 <body>
-    <div class="hub">
-        <div class="hub-header">
-            <div class="hub-greeting" id="greeting"></div>
-            <h1 class="hub-title" id="hub-title">My Hub</h1>
+    <div class="layout">
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Microsoft Metro UI</div>
+            <h1 class="hero-title">Metro</h1>
+            <p class="hero-tagline">
+                Microsoft killed the glass, burned the shadows,<br>
+                and bet everything on Helvetica.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="intro-card">
+            <p class="intro-text">
+                Aero was beautiful. It was also a GPU-melting lie about physicality.
+                In 2010, Microsoft looked at all that translucent excess and said: <strong>enough</strong>.
+                They reached back past the desktop, past Windows itself, to the
+                <strong>Swiss International Typographic Style</strong> — the Bauhaus idea that
+                type and grid alone can carry an entire visual language.
+                <br><br>
+                The Zune HD was the quiet prototype. Windows Phone 7 was the manifesto.
+                Windows 8 was the overreach. But the core insight was brilliant:
+                <strong>content is the interface</strong>. No chrome. No decoration.
+                Just words and color, doing all the work.
+            </p>
         </div>
 
-        <div class="tiles">
-            <!-- Clock — large -->
-            <div class="tile tile-lg" style="background: var(--dark-blue)">
-                <div class="clock-time" id="clock-time">
-                    <span id="clock-hm"></span><span class="clock-seconds" id="clock-s"></span>
-                </div>
-                <div class="clock-date" id="clock-date"></div>
-            </div>
+        <div class="divider"></div>
 
-            <!-- Weather — wide -->
-            <div class="tile tile-wide" style="background: var(--blue)">
-                <div class="weather-temp">18°</div>
-                <div class="weather-desc">Partly Cloudy</div>
-                <div class="weather-details">
-                    <span>H: 22°</span>
-                    <span>L: 14°</span>
-                    <span>62% Humidity</span>
-                </div>
+        <!-- Principle 01: Typography IS the Interface -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Typography IS the Interface</h2>
+            <p class="section-desc">
+                Metro's most radical claim: you don't need icons, borders, or boxes.
+                A 42px light-weight header says "this is important."
+                A 12px uppercase label says "this is a category."
+                The type hierarchy does what buttons and panels used to do.
+                It sounds insane until you see it work.
+            </p>
+            <div class="type-demo">
+                <div class="type-demo-hero">my music</div>
+                <div class="type-demo-sub">collection</div>
+                <div class="type-demo-section">Recently Played</div>
+                <div class="type-demo-item">Shake It Off — Taylor Swift</div>
+                <div class="type-demo-item">Blinding Lights — The Weeknd</div>
+                <div class="type-demo-item">Levitating — Dua Lipa</div>
+                <div class="type-demo-section" style="margin-top: 16px;">Playlists</div>
+                <div class="type-demo-item">Morning Run</div>
+                <div class="type-demo-item">Deep Focus</div>
             </div>
+        </section>
 
-            <!-- Calendar — small -->
-            <div class="tile tile-sm" style="background: var(--purple)" id="cal-tile">
-                <div class="cal-day"></div>
-                <div class="cal-month"></div>
-                <div class="cal-weekday"></div>
-            </div>
-
-            <!-- Counter: Emails — small -->
-            <div class="tile tile-sm" style="background: var(--teal)">
-                <div class="counter-value">12</div>
-                <div class="counter-delta">+3 new</div>
-                <div class="counter-label">Emails</div>
-            </div>
-
-            <!-- Steps — small -->
-            <div class="tile tile-sm" style="background: var(--green)" id="steps-tile">
-                <div class="steps-value">6,240</div>
-                <div class="steps-bar"><div class="steps-fill" style="width: 62%"></div></div>
-                <div class="steps-label">of 10,000 steps</div>
-            </div>
-
-            <!-- Counter: Tasks — small -->
-            <div class="tile tile-sm" style="background: var(--orange)" id="task-counter">
-                <div class="counter-value" id="task-count-display">3</div>
-                <div class="counter-label">Tasks Left</div>
-            </div>
-
-            <!-- Todo — large -->
-            <div class="tile tile-lg" style="background: var(--red)" id="todo-tile">
-                <div class="todo-title">Today</div>
-                <div class="todo-list" id="todo-list"></div>
-                <div class="todo-count" id="todo-count"></div>
-            </div>
-
-            <!-- Music — wide -->
-            <div class="tile tile-wide" style="background: var(--magenta)">
-                <div class="music-status">Now Playing</div>
-                <div class="music-title" id="music-title">Shake It Off</div>
-                <div class="music-artist" id="music-artist">Taylor Swift</div>
-                <div class="music-controls">
-                    <div class="music-btn" id="m-prev">
-                        <svg viewBox="0 0 512 512"><path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/></svg>
+        <!-- Principle 02: The Living Tile -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">The Living Tile</h2>
+            <p class="section-desc">
+                Not an icon. Not a button. A <strong>tile</strong> — a content-forward rectangle
+                that updates and informs you without ever opening the app.
+                Your email count, the weather, your next meeting — all glanceable,
+                all alive. The home screen wasn't a launcher. It was a dashboard.
+                This was genuinely ahead of its time. Widgets wish they were this clean.
+            </p>
+            <div class="tile-grid">
+                <!-- Clock — large -->
+                <div class="tile tile-lg" style="background: var(--dark-blue)">
+                    <div class="tile-value-lg" id="tile-clock">
+                        <span id="tile-hm"></span><span style="font-size: 1.2rem; font-weight: 300; opacity: 0.5; vertical-align: top;" id="tile-sec"></span>
                     </div>
-                    <div class="music-btn" id="m-play">
-                        <svg viewBox="0 0 384 512" id="play-icon"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+                    <div class="tile-detail" id="tile-clock-date"></div>
+                </div>
+
+                <!-- Weather — wide -->
+                <div class="tile tile-wide" style="background: var(--blue)">
+                    <div class="tile-value">18°</div>
+                    <div class="tile-sub">Partly Cloudy</div>
+                    <div class="tile-detail">H: 22° &nbsp; L: 14°</div>
+                </div>
+
+                <!-- Calendar -->
+                <div class="tile tile-sm" style="background: var(--purple)">
+                    <div class="tile-value" id="cal-day"></div>
+                    <div class="tile-sub" id="cal-month"></div>
+                    <div class="tile-label" id="cal-weekday"></div>
+                </div>
+
+                <!-- Emails -->
+                <div class="tile tile-sm" style="background: var(--teal)">
+                    <div class="tile-value">12</div>
+                    <div class="tile-sub" style="opacity: 0.7; font-size: 0.7rem; font-weight: 600;">+3 new</div>
+                    <div class="tile-label">Emails</div>
+                </div>
+
+                <!-- News — wide -->
+                <div class="tile tile-wide" style="background: var(--red)">
+                    <div class="tile-title-section">Headlines</div>
+                    <div class="tile-update">
+                        <div class="tile-update-item">Design systems are eating the world</div>
+                        <div class="tile-update-item">Flat design turns 15 this year</div>
                     </div>
-                    <div class="music-btn" id="m-next">
-                        <svg viewBox="0 0 512 512"><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/></svg>
+                    <div class="tile-detail">2 minutes ago</div>
+                </div>
+
+                <!-- Steps -->
+                <div class="tile tile-sm" style="background: var(--green)">
+                    <div class="tile-value">6,240</div>
+                    <div class="tile-bar"><div class="tile-bar-fill" style="width: 62%"></div></div>
+                    <div class="tile-label">of 10,000 steps</div>
+                </div>
+
+                <!-- Quote -->
+                <div class="tile tile-sm" style="background: #444">
+                    <div class="tile-content" style="font-style: italic; font-size: 0.78rem;">"Less is more."</div>
+                    <div class="tile-detail" style="text-align: right;">— Mies van der Rohe</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: Chromeless Design -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Chromeless Design</h2>
+            <p class="section-desc">
+                Remove the border. Remove the shadow. Remove the rounded corner.
+                Now remove the background. What's left? The content.
+                That's Metro's gambit: <strong>content is the chrome</strong>.
+                Regions are defined by typography scale, not by boxes.
+                Navigation is a giant word, not a pill-shaped button.
+                It's ruthless minimalism, and when it works, nothing looks cleaner.
+            </p>
+            <div class="chrome-compare">
+                <div class="chrome-panel with-chrome">
+                    <div class="chrome-label muted">WITH CHROME</div>
+                    <div class="chrome-nav">
+                        <div class="chrome-nav-item" style="padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-bottom: 4px;">Dashboard</div>
+                        <div class="chrome-nav-item" style="padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-bottom: 4px;">Messages</div>
+                        <div class="chrome-nav-item" style="padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-bottom: 4px;">Settings</div>
+                        <div class="chrome-nav-item" style="padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px;">Profile</div>
+                    </div>
+                </div>
+                <div class="chrome-panel no-chrome">
+                    <div class="chrome-label good">CHROMELESS</div>
+                    <div class="chrome-nav">
+                        <div class="chrome-nav-item active">dashboard</div>
+                        <div class="chrome-nav-item">messages</div>
+                        <div class="chrome-nav-item">settings</div>
+                        <div class="chrome-nav-item">profile</div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Quote — wide -->
-            <div class="tile tile-wide" style="background: #444" id="quote-tile">
-                <div class="quote-text" id="quote-text"></div>
-                <div class="quote-author" id="quote-author"></div>
+        <div class="divider"></div>
+
+        <!-- Put It Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Put It Together</h2>
+            <p class="section-desc">
+                Typography hierarchy + living tiles + zero chrome.
+                Three principles, one dashboard. No gradients, no shadows,
+                no rounded corners. Just flat color, bold type, and content
+                that speaks for itself.
+            </p>
+            <div class="dash-grid">
+                <!-- Clock — large -->
+                <div class="dash-tile dash-lg" style="background: var(--dark-blue)">
+                    <div class="dash-time">
+                        <span id="dash-hm"></span><span class="dash-time-sec" id="dash-sec"></span>
+                    </div>
+                    <div class="dash-date" id="dash-date"></div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="dash-tile dash-wide" style="background: var(--blue)">
+                    <div class="dash-update-label">Notifications</div>
+                    <div class="dash-update">
+                        <div class="dash-update-item">Build #247 passed</div>
+                        <div class="dash-update-item">PR review requested</div>
+                        <div class="dash-update-item">Deploy to staging complete</div>
+                    </div>
+                </div>
+
+                <!-- Counter -->
+                <div class="dash-tile dash-sm" style="background: var(--green)">
+                    <div class="dash-value" id="dash-tasks">5</div>
+                    <div class="dash-sub">remaining</div>
+                    <div class="dash-label">Tasks</div>
+                </div>
+
+                <!-- Metric -->
+                <div class="dash-tile dash-sm" style="background: var(--orange)">
+                    <div class="dash-value">92%</div>
+                    <div class="dash-bar"><div class="dash-bar-fill" style="width: 92%"></div></div>
+                    <div class="dash-label">Uptime</div>
+                </div>
+
+                <!-- Quote -->
+                <div class="dash-tile dash-wide" style="background: #444">
+                    <div class="dash-content" id="dash-quote">"Content before chrome."</div>
+                    <div class="dash-attr" id="dash-quote-attr">— The Metro Manifesto</div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="hub-footer">
-            <span id="footer-date"></span>
-            <span>Metro Hub</span>
-        </div>
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <p class="section-desc">
+                Metro was right about a lot. It was also catastrophically wrong about some things.
+                Windows 8 forced a touch interface onto mouse-and-keyboard users, hid the Start menu,
+                and made flatness so extreme that people couldn't tell what was clickable.
+                Radical is good. Hostile is not.
+            </p>
+            <div class="anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Removing ALL visual affordance — users must know what's interactive</li>
+                    <li><span class="x">&#x2717;</span> Forcing touch UI on mouse and keyboard users</li>
+                    <li><span class="x">&#x2717;</span> Flat to the point of confusion — if everything looks the same, nothing communicates</li>
+                    <li><span class="x">&#x2717;</span> Tiles without meaningful content — a colored box with just an icon is a bad icon</li>
+                    <li><span class="o">&#x2713;</span> Let typography create hierarchy — size and weight replace borders and boxes</li>
+                    <li><span class="o">&#x2713;</span> Use color blocks as navigation — bold, confident, unmistakable</li>
+                    <li><span class="o">&#x2713;</span> Content-first, chrome-never — if it's not content, it shouldn't be there</li>
+                    <li><span class="o">&#x2713;</span> Bold but not confusing — clarity is not the enemy of minimalism</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                The content is the interface.<br>
+                The type is the hierarchy.<br>
+                The chrome was never needed.
+            </p>
+            <p class="manifesto-sub">
+                Metro proved you could build an entire design language from two ingredients:
+                typography and color. It also proved you shouldn't kill the Start menu.<br>
+                Take the conviction. Leave the hubris.
+            </p>
+        </footer>
     </div>
 </body>
 
 <script>
-    /* ── Clock ── */
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-    function updateClock() {
+    /* Clock — Tile demo */
+    function updateTileClock() {
         const now = new Date();
         const h = String(now.getHours()).padStart(2, '0');
         const m = String(now.getMinutes()).padStart(2, '0');
         const s = String(now.getSeconds()).padStart(2, '0');
 
-        document.getElementById('clock-hm').textContent = `${h}:${m}`;
-        document.getElementById('clock-s').textContent = `:${s}`;
-        document.getElementById('clock-date').textContent =
+        document.getElementById('tile-hm').textContent = `${h}:${m}`;
+        document.getElementById('tile-sec').textContent = `:${s}`;
+        document.getElementById('tile-clock-date').textContent =
             `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
-
-        /* Greeting */
-        const hr = now.getHours();
-        const greet = hr < 12 ? 'Good Morning' : hr < 18 ? 'Good Afternoon' : 'Good Evening';
-        document.getElementById('greeting').textContent = greet;
-
-        /* Footer */
-        document.getElementById('footer-date').textContent =
-            `${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
     }
-    updateClock();
-    setInterval(updateClock, 1000);
+    updateTileClock();
+    setInterval(updateTileClock, 1000);
 
-    /* ── Calendar ── */
+    /* Clock — Dashboard demo */
+    function updateDashClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+
+        document.getElementById('dash-hm').textContent = `${h}:${m}`;
+        document.getElementById('dash-sec').textContent = `:${s}`;
+        document.getElementById('dash-date').textContent =
+            `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+    }
+    updateDashClock();
+    setInterval(updateDashClock, 1000);
+
+    /* Calendar tile */
     const now = new Date();
-    document.querySelector('#cal-tile .cal-day').textContent = now.getDate();
-    document.querySelector('#cal-tile .cal-month').textContent = months[now.getMonth()];
-    document.querySelector('#cal-tile .cal-weekday').textContent = days[now.getDay()];
-
-    /* ── Todos ── */
-    const todos = [
-        { text: 'Review design specs', done: false },
-        { text: 'Update component library', done: false },
-        { text: 'Send project brief', done: true },
-        { text: 'Prepare presentation', done: false },
-        { text: 'Call with client', done: true },
-    ];
-
-    function renderTodos() {
-        const $list = document.getElementById('todo-list');
-        $list.innerHTML = todos.map((t, i) => `
-            <div class="todo-item ${t.done ? 'done' : ''}" data-i="${i}">
-                <div class="todo-check"></div>
-                <span class="todo-text">${t.text}</span>
-            </div>
-        `).join('');
-
-        $list.querySelectorAll('.todo-item').forEach(el => {
-            el.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const i = +el.dataset.i;
-                todos[i].done = !todos[i].done;
-                renderTodos();
-            });
-        });
-
-        const left = todos.filter(t => !t.done).length;
-        document.getElementById('todo-count').textContent = `${left} remaining`;
-        document.getElementById('task-count-display').textContent = left;
-    }
-    renderTodos();
-
-    /* ── Music ── */
-    const tracks = [
-        { title: 'Shake It Off', artist: 'Taylor Swift' },
-        { title: 'Blinding Lights', artist: 'The Weeknd' },
-        { title: 'Levitating', artist: 'Dua Lipa' },
-        { title: 'As It Was', artist: 'Harry Styles' },
-    ];
-    let trackIdx = 0;
-    let playing = false;
-
-    const PLAY_PATH = 'M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z';
-    const PAUSE_PATH = 'M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z';
-
-    function setTrack(i) {
-        trackIdx = ((i % tracks.length) + tracks.length) % tracks.length;
-        document.getElementById('music-title').textContent = tracks[trackIdx].title;
-        document.getElementById('music-artist').textContent = tracks[trackIdx].artist;
-    }
-
-    document.getElementById('m-play').addEventListener('click', (e) => {
-        e.stopPropagation();
-        playing = !playing;
-        const $icon = document.getElementById('play-icon');
-        $icon.querySelector('path').setAttribute('d', playing ? PAUSE_PATH : PLAY_PATH);
-        $icon.setAttribute('viewBox', playing ? '0 0 320 512' : '0 0 384 512');
-    });
-    document.getElementById('m-prev').addEventListener('click', (e) => { e.stopPropagation(); setTrack(trackIdx - 1); });
-    document.getElementById('m-next').addEventListener('click', (e) => { e.stopPropagation(); setTrack(trackIdx + 1); });
-
-    /* ── Quotes ── */
-    const quotes = [
-        { text: '"Content is king, but context is queen."', author: 'Gary Vaynerchuk' },
-        { text: '"Less is more."', author: 'Ludwig Mies van der Rohe' },
-        { text: '"Design is not just what it looks like. Design is how it works."', author: 'Steve Jobs' },
-    ];
-    let quoteIdx = 0;
-
-    function showQuote() {
-        document.getElementById('quote-text').textContent = quotes[quoteIdx].text;
-        document.getElementById('quote-author').textContent = '— ' + quotes[quoteIdx].author;
-    }
-    showQuote();
-
-    document.getElementById('quote-tile').addEventListener('click', () => {
-        quoteIdx = (quoteIdx + 1) % quotes.length;
-        showQuote();
-    });
+    document.getElementById('cal-day').textContent = now.getDate();
+    document.getElementById('cal-month').textContent = months[now.getMonth()];
+    document.getElementById('cal-weekday').textContent = days[now.getDay()];
 </script>

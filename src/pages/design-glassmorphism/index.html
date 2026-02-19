@@ -1,19 +1,23 @@
 <!-- layout: base.html -->
-<!-- title: Glassmorphism Design -->
-<!-- description: Apple Liquid Glass UI with gooey buttons and refraction effects -->
+<!-- title: Glassmorphism -->
+<!-- description: Inspired by Glassmorphism — frosted panels, translucent layers, and the border trick that makes it all work -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
     :root {
-        --glass-bg: rgba(255, 255, 255, 0.18);
-        --glass-border: rgba(255, 255, 255, 0.35);
-        --glass-highlight: rgba(255, 255, 255, 0.6);
-        --glass-shadow: rgba(0, 0, 0, 0.12);
+        --glass: rgba(255, 255, 255, 0.15);
+        --glass-strong: rgba(255, 255, 255, 0.25);
+        --glass-border: rgba(255, 255, 255, 0.3);
+        --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        --glass-blur: blur(20px) saturate(180%);
         --text: #fff;
-        --text-secondary: rgba(255, 255, 255, 0.7);
-        --accent: #007AFF;
-        --blur: blur(24px) saturate(180%);
+        --text-muted: rgba(255, 255, 255, 0.7);
+        --text-dim: rgba(255, 255, 255, 0.4);
+        --accent: #a78bfa;
+        --accent-glow: rgba(167, 139, 250, 0.4);
+        --danger: #ef4444;
+        --success: #34d399;
     }
 
     body {
@@ -24,885 +28,685 @@
         overflow-x: hidden;
     }
 
-    /* ── Animated gradient background ── */
+    /* Animated gradient background — the colorful blobs glassmorphism lives on */
     .bg {
         position: fixed;
         inset: 0;
         z-index: 0;
         background:
-            radial-gradient(ellipse at 20% 20%, #6366f1 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 20%, #ec4899 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 80%, #06b6d4 0%, transparent 50%),
-            radial-gradient(ellipse at 30% 60%, #8b5cf6 0%, transparent 40%),
-            radial-gradient(ellipse at 70% 50%, #f43f5e 0%, transparent 40%);
-        animation: bg-shift 12s ease-in-out infinite alternate;
+            radial-gradient(ellipse at 25% 25%, #6366f1 0%, transparent 50%),
+            radial-gradient(ellipse at 75% 20%, #ec4899 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 75%, #06b6d4 0%, transparent 50%),
+            radial-gradient(ellipse at 20% 65%, #8b5cf6 0%, transparent 40%);
+        animation: bg-shift 14s ease-in-out infinite alternate;
     }
 
     @keyframes bg-shift {
-        0% { filter: hue-rotate(0deg) brightness(0.8); }
-        50% { filter: hue-rotate(30deg) brightness(0.9); }
-        100% { filter: hue-rotate(-20deg) brightness(0.85); }
+        0% { filter: hue-rotate(0deg) brightness(0.7); }
+        50% { filter: hue-rotate(25deg) brightness(0.8); }
+        100% { filter: hue-rotate(-15deg) brightness(0.75); }
     }
 
-    /* Floating orbs for parallax depth */
-    .orb {
-        position: fixed;
-        border-radius: 50%;
-        z-index: 0;
-        pointer-events: none;
-    }
-
-    .orb-1 {
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent 70%);
-        top: 10%;
-        left: 5%;
-        animation: float-1 8s ease-in-out infinite;
-    }
-
-    .orb-2 {
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent 70%);
-        top: 40%;
-        right: -5%;
-        animation: float-2 10s ease-in-out infinite;
-    }
-
-    .orb-3 {
-        width: 250px;
-        height: 250px;
-        background: radial-gradient(circle, rgba(6, 182, 212, 0.35), transparent 70%);
-        bottom: 10%;
-        left: 30%;
-        animation: float-3 9s ease-in-out infinite;
-    }
-
-    @keyframes float-1 {
-        0%, 100% { transform: translate(0, 0); }
-        50% { transform: translate(40px, 30px); }
-    }
-
-    @keyframes float-2 {
-        0%, 100% { transform: translate(0, 0); }
-        50% { transform: translate(-30px, -40px); }
-    }
-
-    @keyframes float-3 {
-        0%, 100% { transform: translate(0, 0); }
-        50% { transform: translate(20px, -25px); }
-    }
-
-    /* ── SVG filters (hidden) ── */
-    .svg-filters {
-        position: absolute;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-    }
-
-    /* ── Layout ── */
     .layout {
         position: relative;
         z-index: 1;
         max-width: 720px;
         margin: 0 auto;
-        padding: 48px 24px 80px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+        padding: 32px 20px 64px;
     }
 
-    /* ── Glass Panel (base) ── */
+    /* Glass panel base */
     .glass {
-        background: var(--glass-bg);
-        backdrop-filter: var(--blur);
-        -webkit-backdrop-filter: var(--blur);
+        background: var(--glass);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        box-shadow:
-            0 8px 32px var(--glass-shadow),
-            inset 0 1px 0 var(--glass-highlight);
+        border-radius: 20px;
+        box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         position: relative;
         overflow: hidden;
     }
 
-    .glass::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    }
-
-    /* ── Header ── */
-    .header {
-        padding: 20px 28px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .header-left {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .header-logo {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-        backdrop-filter: blur(10px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .header-logo svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .header-title {
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-    }
-
-    .header-right {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .header-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background 0.2s, transform 0.2s;
-
-        svg {
-            width: 16px;
-            height: 16px;
-            color: var(--text);
-        }
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        &:active {
-            transform: scale(0.95);
-        }
-    }
-
-    /* ── Weather Main Card ── */
-    .weather-main {
-        padding: 36px 32px;
+    /* Hero */
+    .hero {
         text-align: center;
+        padding: 56px 0 48px;
     }
 
-    .weather-location {
-        font-size: 0.85rem;
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
         font-weight: 500;
-        color: var(--text-secondary);
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--text-muted);
+        margin-bottom: 20px;
     }
 
-    .weather-temp {
-        font-size: 6rem;
+    .hero-title {
+        font-size: 3.5rem;
         font-weight: 200;
-        line-height: 1;
-        margin: 8px 0;
-        letter-spacing: -0.04em;
+        letter-spacing: 2px;
         background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.5));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
-    .weather-desc {
-        font-size: 1.1rem;
-        font-weight: 400;
-        color: var(--text-secondary);
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 300;
     }
 
-    .weather-range {
-        margin-top: 8px;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-
-        span {
-            color: var(--text);
-            font-weight: 500;
-        }
+    /* Intro card */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
     }
 
-    /* ── Hourly Forecast (scrollable) ── */
-    .hourly {
-        padding: 20px 0;
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 300;
+        position: relative;
+        z-index: 1;
     }
 
-    .hourly-title {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: var(--text-secondary);
+    .intro-text strong {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding: 0 24px;
-        margin-bottom: 16px;
+        margin-bottom: 4px;
     }
 
-    .hourly-scroll {
-        display: flex;
-        gap: 4px;
-        overflow-x: auto;
-        padding: 0 24px;
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
     }
 
-    .hourly-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 14px;
-        border-radius: 20px;
-        flex-shrink: 0;
-        min-width: 60px;
-        transition: background 0.2s;
-
-        &.now {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 20px;
     }
 
-    .hourly-time {
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    /* Demo: Frosted Glass levels */
+    .frost-demo {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        padding: 24px;
+        background:
+            radial-gradient(ellipse at 30% 40%, rgba(236, 72, 153, 0.5), transparent 60%),
+            radial-gradient(ellipse at 70% 60%, rgba(99, 102, 241, 0.5), transparent 60%),
+            #1a1a2e;
+    }
+
+    .frost-demo-label {
         font-size: 0.72rem;
         font-weight: 500;
-        color: var(--text-secondary);
+        color: var(--text-dim);
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
     }
 
-    .now .hourly-time {
-        color: var(--text);
-    }
-
-    .hourly-icon {
-        font-size: 1.3rem;
-        line-height: 1;
-    }
-
-    .hourly-temp {
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-
-    /* ── Detail Grid ── */
-    .detail-grid {
+    .frost-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 12px;
     }
 
-    .detail-card {
-        padding: 18px 20px;
-    }
-
-    .detail-label {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.7rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 10px;
-
-        svg {
-            width: 13px;
-            height: 13px;
-            opacity: 0.7;
-        }
-    }
-
-    .detail-value {
-        font-size: 1.8rem;
-        font-weight: 300;
-        letter-spacing: -0.02em;
-        line-height: 1;
-
-        small {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-        }
-    }
-
-    .detail-sub {
-        font-size: 0.78rem;
-        color: var(--text-secondary);
-        margin-top: 6px;
-    }
-
-    /* ── UV Index bar ── */
-    .uv-bar {
-        height: 4px;
-        border-radius: 2px;
-        background: linear-gradient(90deg, #4ade80, #facc15, #f97316, #ef4444, #a855f7);
-        margin-top: 12px;
-        position: relative;
-    }
-
-    .uv-dot {
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #fff;
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-    }
-
-    /* ── Gooey Nav (sticky buttons) ── */
-    .gooey-nav-wrapper {
-        filter: url(#goo);
-    }
-
-    .gooey-nav {
-        display: flex;
-        justify-content: center;
-        gap: 0;
-        padding: 6px;
-        position: relative;
-    }
-
-    .gooey-blob {
-        position: absolute;
-        height: 44px;
-        border-radius: 22px;
-        background: rgba(255, 255, 255, 0.25);
-        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        pointer-events: none;
-    }
-
-    .gooey-btn {
-        position: relative;
-        z-index: 1;
-        padding: 12px 22px;
-        font-size: 0.82rem;
-        font-weight: 500;
-        font-family: inherit;
-        color: rgba(255, 255, 255, 0.6);
-        background: none;
-        border: none;
-        border-radius: 22px;
-        cursor: pointer;
-        transition: color 0.3s;
-        white-space: nowrap;
-
-        &.active {
-            color: #fff;
-        }
-
-        &:hover:not(.active) {
-            color: rgba(255, 255, 255, 0.85);
-        }
-    }
-
-    /* ── Gooey Toggles (sticky pill group) ── */
-    .gooey-toggles-section {
-        padding: 24px 28px;
-    }
-
-    .gooey-toggles-label {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 16px;
-    }
-
-    .gooey-toggles-wrapper {
-        filter: url(#goo);
-    }
-
-    .gooey-toggles {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .gooey-toggle {
-        padding: 10px 20px;
-        font-size: 0.82rem;
-        font-weight: 500;
-        font-family: inherit;
-        color: rgba(255, 255, 255, 0.5);
-        background: rgba(255, 255, 255, 0.08);
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: background 0.3s, color 0.3s, transform 0.2s;
-
-        &:hover {
-            transform: scale(1.05);
-        }
-
-        &:active {
-            transform: scale(0.95);
-        }
-
-        &.on {
-            background: rgba(255, 255, 255, 0.25);
-            color: #fff;
-        }
-    }
-
-    /* ── Liquid Glass Buttons ── */
-    .glass-buttons {
-        display: flex;
-        gap: 12px;
-        padding: 24px 28px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .glass-btn {
-        position: relative;
-        padding: 14px 32px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        font-family: inherit;
-        color: var(--text);
-        background: transparent;
-        border: none;
+    .frost-panel {
+        padding: 24px 16px;
+        text-align: center;
         border-radius: 16px;
-        cursor: pointer;
-        overflow: hidden;
-        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-
-        &:hover {
-            transform: scale(1.05);
-        }
-
-        &:active {
-            transform: scale(0.95);
-        }
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .glass-btn-filter {
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-        border-radius: inherit;
-        backdrop-filter: blur(16px) saturate(120%) brightness(1.15);
-        -webkit-backdrop-filter: blur(16px) saturate(120%) brightness(1.15);
-    }
-
-    .glass-btn-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        border-radius: inherit;
-        background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .glass-btn-specular {
-        position: absolute;
-        inset: 0;
-        z-index: 3;
-        border-radius: inherit;
-        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);
-        transition: background 0.15s;
-    }
-
-    .glass-btn-text {
-        position: relative;
-        z-index: 4;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .glass-btn-text svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .glass-btn.accent .glass-btn-overlay {
-        background: rgba(0, 122, 255, 0.35);
-        border-color: rgba(0, 122, 255, 0.5);
-    }
-
-    /* ── Specular Card (mouse-tracking highlight) ── */
-    .specular-card {
-        padding: 28px;
-        cursor: default;
-    }
-
-    .specular-card .specular-glow {
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        opacity: 0;
-        transition: opacity 0.3s;
-        pointer-events: none;
-        z-index: 0;
-    }
-
-    .specular-card:hover .specular-glow {
-        opacity: 1;
-    }
-
-    .specular-card-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .specular-title {
-        font-size: 0.85rem;
-        font-weight: 600;
+    .frost-panel-value {
+        font-size: 2rem;
+        font-weight: 200;
         margin-bottom: 8px;
     }
 
-    .specular-text {
+    .frost-panel-label {
         font-size: 0.8rem;
-        color: var(--text-secondary);
-        line-height: 1.6;
+        font-weight: 600;
+        margin-bottom: 4px;
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-        .layout {
-            padding: 24px 16px 60px;
-            gap: 16px;
+    .frost-panel-sub {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+    }
+
+    .frost-light {
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .frost-medium {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .frost-heavy {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(28px) saturate(180%);
+        -webkit-backdrop-filter: blur(28px) saturate(180%);
+    }
+
+    /* Demo: Border trick */
+    .border-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .border-panel {
+        padding: 28px 24px;
+        text-align: center;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .border-panel.with-border {
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .border-panel.without-border {
+        border: 1px solid transparent;
+    }
+
+    .border-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        margin-bottom: 12px;
+    }
+
+    .border-label.good {
+        color: var(--success);
+    }
+
+    .border-label.muted {
+        color: var(--text-dim);
+    }
+
+    .border-value {
+        font-size: 1.5rem;
+        font-weight: 300;
+    }
+
+    .border-sub {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+    }
+
+    /* Code block */
+    .code-block {
+        background: rgba(0, 0, 0, 0.35);
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .code-block .kw { color: #c792ea; }
+    .code-block .val { color: #c3e88d; }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.3); }
+
+    /* Layered depth demo */
+    .depth-demo {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        padding: 32px 24px;
+        min-height: 220px;
+        background:
+            radial-gradient(ellipse at 40% 50%, rgba(6, 182, 212, 0.4), transparent 60%),
+            radial-gradient(ellipse at 60% 40%, rgba(139, 92, 246, 0.4), transparent 60%),
+            #0f0f23;
+    }
+
+    .depth-layer {
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .depth-layer-back {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .depth-layer-mid {
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        margin: 12px 16px 0;
+    }
+
+    .depth-layer-front {
+        background: rgba(255, 255, 255, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        margin: 12px 32px 0;
+        text-align: center;
+    }
+
+    .depth-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        letter-spacing: 0.04em;
+    }
+
+    .depth-caption {
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 16px;
+        font-weight: 300;
+    }
+
+    /* Divider */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    }
+
+    /* Combined demo */
+    .combined-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .combined-card {
+        padding: 24px;
+    }
+
+    .combined-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        position: relative;
+        z-index: 1;
+    }
+
+    .combined-value {
+        font-size: 2.5rem;
+        font-weight: 200;
+        margin-top: 8px;
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.5));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .combined-sub {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .combined-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 2px;
+        margin-top: 16px;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+    }
+
+    .combined-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--accent), #ec4899);
+        box-shadow: 0 0 8px var(--accent-glow);
+        transition: width 0.8s ease;
+    }
+
+    /* Anti-pattern list */
+    .anti-card {
+        padding: 24px 28px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 300;
+    }
+
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        color: var(--danger);
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .anti-list .o {
+        color: var(--success);
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1.7;
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.5rem;
         }
 
-        .weather-temp {
-            font-size: 4.5rem;
+        .frost-row,
+        .border-compare,
+        .combined-demo {
+            grid-template-columns: 1fr;
         }
 
-        .detail-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        .intro-card,
+        .anti-card {
+            padding: 20px 24px;
         }
 
-        .detail-value {
-            font-size: 1.4rem;
+        .depth-layer-mid {
+            margin: 12px 8px 0;
         }
 
-        .glass-buttons {
-            padding: 20px;
-        }
-
-        .glass-btn {
-            padding: 12px 24px;
-            font-size: 0.82rem;
-        }
-
-        .gooey-btn {
-            padding: 10px 16px;
-            font-size: 0.75rem;
+        .depth-layer-front {
+            margin: 12px 16px 0;
         }
     }
 </style>
 
 <body>
-    <!-- SVG Filters -->
-    <svg class="svg-filters" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <!-- Gooey merge filter -->
-            <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-                <feColorMatrix in="blur" mode="matrix"
-                    values="1 0 0 0 0
-                            0 1 0 0 0
-                            0 0 1 0 0
-                            0 0 0 19 -9"
-                    result="goo" />
-                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-            </filter>
-        </defs>
-    </svg>
-
-    <!-- Animated Background -->
+    <!-- Animated gradient background -->
     <div class="bg"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
 
     <div class="layout">
-        <!-- Header -->
-        <header class="glass header">
-            <div class="header-left">
-                <div class="header-logo">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-                    </svg>
-                </div>
-                <span class="header-title">Weather</span>
-            </div>
-            <div class="header-right">
-                <div class="header-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                </div>
-                <div class="header-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                </div>
-            </div>
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Glassmorphism</div>
+            <h1 class="hero-title">Glassmorphism</h1>
+            <p class="hero-tagline">
+                Apple frosted the glass again.<br>
+                We're asking what's behind it.
+            </p>
         </header>
 
-        <!-- Weather Main -->
-        <div class="glass weather-main">
-            <div class="weather-location">Seoul, South Korea</div>
-            <div class="weather-temp">-3°</div>
-            <div class="weather-desc">Mostly Clear</div>
-            <div class="weather-range">H:<span>2°</span> L:<span>-7°</span></div>
+        <!-- Intro -->
+        <div class="glass intro-card">
+            <p class="intro-text">
+                2020. Apple launches macOS Big Sur and suddenly every designer on Dribbble
+                remembers that translucency exists. Rounder corners, gradient backgrounds,
+                frosted panels everywhere. It was <strong>Aero's ghost</strong>, dressed in
+                San Francisco font and a pastel palette.
+                <br><br>
+                The community ran with it. Everything became frosted glass overnight.
+                But underneath the hype? A genuinely smart idea about
+                <strong>context through transparency</strong> — letting background content
+                bleed through your UI to create spatial awareness.
+                That's the part worth keeping.
+            </p>
         </div>
 
-        <!-- Hourly Forecast -->
-        <div class="glass hourly">
-            <div class="hourly-title">Hourly Forecast</div>
-            <div class="hourly-scroll" id="hourly-scroll"></div>
-        </div>
+        <div class="divider"></div>
 
-        <!-- Gooey Navigation -->
-        <div class="glass" style="padding: 6px;">
-            <div class="gooey-nav-wrapper">
-                <div class="gooey-nav" id="gooey-nav">
-                    <div class="gooey-blob" id="gooey-blob"></div>
-                    <button class="gooey-btn active" data-idx="0">Today</button>
-                    <button class="gooey-btn" data-idx="1">Tomorrow</button>
-                    <button class="gooey-btn" data-idx="2">10 Days</button>
-                    <button class="gooey-btn" data-idx="3">Monthly</button>
+        <!-- Principle 01: Frosted Glass -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Frosted Glass</h2>
+            <p class="section-desc">
+                <code>backdrop-filter: blur()</code> with a semi-transparent
+                <code>background</code>. That's the entire trick. The background
+                bleeds through, softened into an ambient glow. Too little blur and you get
+                noise. Too much and you've painted a wall and called it glass. The sweet spot
+                is where you can sense what's behind the panel without being able to read it.
+            </p>
+            <div class="frost-demo">
+                <div class="frost-demo-label">Blur intensity comparison</div>
+                <div class="frost-row">
+                    <div class="frost-panel frost-light">
+                        <div class="frost-panel-value">4px</div>
+                        <div class="frost-panel-label">Too Thin</div>
+                        <div class="frost-panel-sub">Noise, not glass</div>
+                    </div>
+                    <div class="frost-panel frost-medium">
+                        <div class="frost-panel-value">16px</div>
+                        <div class="frost-panel-label">Sweet Spot</div>
+                        <div class="frost-panel-sub">Ambient awareness</div>
+                    </div>
+                    <div class="frost-panel frost-heavy">
+                        <div class="frost-panel-value">28px</div>
+                        <div class="frost-panel-label">Opaque</div>
+                        <div class="frost-panel-sub">Just use a solid bg</div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="code-block">
+                <span class="cmt">/* The frosted glass recipe */</span><br>
+                <span class="kw">background</span>: <span class="val">rgba(255, 255, 255, 0.12)</span>;<br>
+                <span class="kw">backdrop-filter</span>: <span class="val">blur(16px)</span> <span class="val">saturate(180%)</span>;<br>
+                <span class="kw">-webkit-backdrop-filter</span>: <span class="val">blur(16px)</span> <span class="val">saturate(180%)</span>;<br>
+                <br>
+                <span class="cmt">/* saturate() boosts the colors bleeding through */</span><br>
+                <span class="cmt">/* without it the glass looks washed out and dead */</span>
+            </div>
+        </section>
 
-        <!-- Detail Grid -->
-        <div class="detail-grid">
-            <div class="glass detail-card">
-                <div class="detail-label">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v10l4.2 2.5"/><circle cx="12" cy="12" r="10"/></svg>
-                    UV Index
+        <!-- Principle 02: The Border Trick -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">The Border Trick</h2>
+            <p class="section-desc">
+                This is the detail that separates "I tried glassmorphism" from "I understand glassmorphism."
+                A subtle <code>1px border</code> with low-opacity white. That's it.
+                It creates the glass edge — the refraction line where light catches the rim of
+                a real glass panel. Without it, your frosted panel just floats there, undefined,
+                like a blurry box someone forgot to finish.
+            </p>
+            <div class="border-compare">
+                <div class="border-panel with-border">
+                    <div class="border-label good">WITH BORDER</div>
+                    <div class="border-value">Defined</div>
+                    <div class="border-sub">1px rgba(255,255,255,0.25)</div>
                 </div>
-                <div class="detail-value">3</div>
-                <div class="detail-sub">Moderate</div>
-                <div class="uv-bar">
-                    <div class="uv-dot" style="left: 25%"></div>
+                <div class="border-panel without-border">
+                    <div class="border-label muted">WITHOUT</div>
+                    <div class="border-value">Lost</div>
+                    <div class="border-sub">Same glass, no edge</div>
                 </div>
             </div>
-
-            <div class="glass detail-card">
-                <div class="detail-label">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
-                    Humidity
-                </div>
-                <div class="detail-value">45<small>%</small></div>
-                <div class="detail-sub">Dew point -12°</div>
+            <div class="code-block">
+                <span class="cmt">/* The border that makes or breaks it */</span><br>
+                <span class="kw">border</span>: <span class="val">1px</span> solid <span class="val">rgba(255, 255, 255, 0.25)</span>;<br>
+                <br>
+                <span class="cmt">/* Bonus: inset highlight on top edge simulates light */</span><br>
+                <span class="kw">box-shadow</span>: inset <span class="val">0 1px 0</span> <span class="val">rgba(255, 255, 255, 0.2)</span>;
             </div>
+        </section>
 
-            <div class="glass detail-card">
-                <div class="detail-label">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>
-                    Wind
+        <!-- Principle 03: Layered Depth -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Layered Depth</h2>
+            <p class="section-desc">
+                Multiple glass panels at different opacities create spatial hierarchy
+                without drop shadows. The further back, the more transparent.
+                The further forward, the more frosted. Your eye reads it as depth
+                automatically — same principle as atmospheric perspective in painting.
+                But here's the trap: stack three glass layers and your phone's GPU
+                starts sweating. Two layers max. That's the rule.
+            </p>
+            <div class="depth-demo">
+                <div class="depth-layer depth-layer-back">
+                    <div class="depth-label">Layer 1 — 8% opacity, background context</div>
+                    <div class="depth-layer depth-layer-mid">
+                        <div class="depth-label">Layer 2 — 14% opacity, content group</div>
+                        <div class="depth-layer depth-layer-front">
+                            <div class="depth-label">Layer 3 — overkill (but pretty)</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-value">12 <small>km/h</small></div>
-                <div class="detail-sub">NW gusts 20 km/h</div>
+                <div class="depth-caption">Two layers create hierarchy. Three layers create a performance review.</div>
             </div>
+        </section>
 
-            <div class="glass detail-card">
-                <div class="detail-label">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-                    Feels Like
+        <div class="divider"></div>
+
+        <!-- Put It Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Put It Together</h2>
+            <p class="section-desc">
+                Frosted glass + the border trick + layered depth.
+                Three principles, one dashboard. The gradient background bleeds through
+                meaningfully. The borders define each panel. Nothing is stacked three deep.
+            </p>
+            <div class="combined-demo">
+                <div class="glass combined-card">
+                    <div class="combined-label">Storage</div>
+                    <div class="combined-value" id="storage-value">64%</div>
+                    <div class="combined-bar"><div class="combined-bar-fill" style="width: 64%"></div></div>
+                    <div class="combined-sub">128 GB used of 200 GB</div>
                 </div>
-                <div class="detail-value">-8°</div>
-                <div class="detail-sub">Wind chill factor</div>
-            </div>
-        </div>
-
-        <!-- Gooey Toggle Tags -->
-        <div class="glass gooey-toggles-section">
-            <div class="gooey-toggles-label">Alert Categories</div>
-            <div class="gooey-toggles-wrapper">
-                <div class="gooey-toggles" id="gooey-toggles">
-                    <button class="gooey-toggle on">Rain</button>
-                    <button class="gooey-toggle on">Snow</button>
-                    <button class="gooey-toggle">Severe</button>
-                    <button class="gooey-toggle on">Wind</button>
-                    <button class="gooey-toggle">UV</button>
-                    <button class="gooey-toggle">Fog</button>
-                    <button class="gooey-toggle">Thunder</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Liquid Glass Buttons -->
-        <div class="glass-buttons">
-            <button class="glass-btn accent">
-                <div class="glass-btn-filter"></div>
-                <div class="glass-btn-overlay"></div>
-                <div class="glass-btn-specular"></div>
-                <span class="glass-btn-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                    Get App
-                </span>
-            </button>
-            <button class="glass-btn">
-                <div class="glass-btn-filter"></div>
-                <div class="glass-btn-overlay"></div>
-                <div class="glass-btn-specular"></div>
-                <span class="glass-btn-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
-                    Share
-                </span>
-            </button>
-            <button class="glass-btn">
-                <div class="glass-btn-filter"></div>
-                <div class="glass-btn-overlay"></div>
-                <div class="glass-btn-specular"></div>
-                <span class="glass-btn-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    Settings
-                </span>
-            </button>
-        </div>
-
-        <!-- Specular Mouse-Tracking Card -->
-        <div class="glass specular-card" id="specular-card">
-            <div class="specular-glow" id="specular-glow"></div>
-            <div class="specular-card-content">
-                <div class="specular-title">About Liquid Glass</div>
-                <div class="specular-text">
-                    Move your cursor over this card to see the specular highlight follow your mouse.
-                    Apple's Liquid Glass creates depth through dynamic light reflections that respond to
-                    user interaction, making digital surfaces feel like real optical materials.
+                <div class="glass combined-card">
+                    <div class="combined-label">Bandwidth</div>
+                    <div class="combined-value" id="bandwidth-value">2.4</div>
+                    <div class="combined-bar"><div class="combined-bar-fill" id="bandwidth-bar" style="width: 48%"></div></div>
+                    <div class="combined-sub" id="bandwidth-sub">2.4 of 5 Gbps</div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="glass anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Glass over meaningless gradient blobs</li>
+                    <li><span class="x">&#x2717;</span> Stacking glass on glass on glass</li>
+                    <li><span class="x">&#x2717;</span> Frosted panels with no visible content behind them</li>
+                    <li><span class="x">&#x2717;</span> "It looks like macOS" as the design goal</li>
+                    <li><span class="o">&#x2713;</span> Glass that reveals underlying content</li>
+                    <li><span class="o">&#x2713;</span> The 1px white border — small but essential</li>
+                    <li><span class="o">&#x2713;</span> One glass layer, maybe two. Never three</li>
+                    <li><span class="o">&#x2713;</span> Test on low-end devices. backdrop-filter is expensive</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Glass is a window,<br>
+                not a wall.
+            </p>
+            <p class="manifesto-sub">
+                If nothing meaningful shows through, you just built a blurry box.<br>
+                Every panel on this page has a reason to be transparent. Yours should too.
+            </p>
+        </footer>
     </div>
 </body>
 
 <script>
-    /* ── Hourly Forecast Data ── */
-    const hours = [
-        { time: 'Now', icon: '☀️', temp: '-3°' },
-        { time: '1PM', icon: '☀️', temp: '-2°' },
-        { time: '2PM', icon: '⛅', temp: '-1°' },
-        { time: '3PM', icon: '⛅', temp: '0°' },
-        { time: '4PM', icon: '☁️', temp: '-1°' },
-        { time: '5PM', icon: '☁️', temp: '-2°' },
-        { time: '6PM', icon: '🌙', temp: '-3°' },
-        { time: '7PM', icon: '🌙', temp: '-4°' },
-        { time: '8PM', icon: '🌙', temp: '-5°' },
-        { time: '9PM', icon: '❄️', temp: '-5°' },
-        { time: '10PM', icon: '❄️', temp: '-6°' },
-        { time: '11PM', icon: '🌙', temp: '-6°' },
-    ];
-
-    const $hourly = document.getElementById('hourly-scroll');
-    $hourly.innerHTML = hours.map((h, i) =>
-        `<div class="hourly-item${i === 0 ? ' now' : ''}">
-            <span class="hourly-time">${h.time}</span>
-            <span class="hourly-icon">${h.icon}</span>
-            <span class="hourly-temp">${h.temp}</span>
-        </div>`
-    ).join('');
-
-    /* ── Gooey Navigation ── */
-    const $nav = document.getElementById('gooey-nav');
-    const $blob = document.getElementById('gooey-blob');
-    const $btns = $nav.querySelectorAll('.gooey-btn');
-
-    function moveBlob(btn) {
-        const navRect = $nav.getBoundingClientRect();
-        const btnRect = btn.getBoundingClientRect();
-        $blob.style.left = (btnRect.left - navRect.left) + 'px';
-        $blob.style.width = btnRect.width + 'px';
-        $blob.style.top = (btnRect.top - navRect.top) + 'px';
-    }
-
-    $btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            $btns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            moveBlob(btn);
-        });
-    });
-
-    /* Initialize blob position */
-    requestAnimationFrame(() => {
-        const activeBtn = $nav.querySelector('.gooey-btn.active');
-        if (activeBtn) moveBlob(activeBtn);
-    });
-
-    window.addEventListener('resize', () => {
-        const activeBtn = $nav.querySelector('.gooey-btn.active');
-        if (activeBtn) moveBlob(activeBtn);
-    });
-
-    /* ── Gooey Toggles ── */
-    document.getElementById('gooey-toggles').addEventListener('click', (e) => {
-        const btn = e.target.closest('.gooey-toggle');
-        if (btn) btn.classList.toggle('on');
-    });
-
-    /* ── Specular Mouse Tracking ── */
-    const $specCard = document.getElementById('specular-card');
-    const $specGlow = document.getElementById('specular-glow');
-
-    $specCard.addEventListener('mousemove', (e) => {
-        const rect = $specCard.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        $specGlow.style.background =
-            `radial-gradient(circle 200px at ${x}px ${y}px, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)`;
-    });
-
-    $specCard.addEventListener('mouseenter', () => {
-        $specGlow.style.opacity = '1';
-    });
-
-    $specCard.addEventListener('mouseleave', () => {
-        $specGlow.style.opacity = '0';
-    });
-
-    /* ── Liquid Glass Button Specular ── */
-    document.querySelectorAll('.glass-btn').forEach(btn => {
-        const specular = btn.querySelector('.glass-btn-specular');
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            specular.style.background =
-                `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)`;
-        });
-
-        btn.addEventListener('mouseleave', () => {
-            specular.style.background = '';
-        });
-    });
+    /* Fake bandwidth fluctuation */
+    setInterval(() => {
+        const val = (1.8 + Math.random() * 1.8).toFixed(1);
+        const pct = Math.round((val / 5) * 100);
+        const $val = document.getElementById('bandwidth-value');
+        const $bar = document.getElementById('bandwidth-bar');
+        const $sub = document.getElementById('bandwidth-sub');
+        if ($val) $val.textContent = val;
+        if ($bar) $bar.style.width = pct + '%';
+        if ($sub) $sub.textContent = val + ' of 5 Gbps';
+    }, 3000);
 </script>

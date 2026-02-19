@@ -1,159 +1,227 @@
 <!-- layout: base.html -->
-<!-- title: Fluent Design -->
-<!-- description: Discovery feed with Reveal Highlight, Acrylic material and depth layers -->
+<!-- title: Fluent -->
+<!-- description: Inspired by Microsoft Fluent — light, material, and motion as interface language -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
 
     :root {
         --mica: #f5f3f0;
+        --surface: #ffffff;
         --acrylic: rgba(255, 255, 255, 0.72);
         --acrylic-blur: blur(20px) saturate(150%);
-        --surface: #fff;
         --text: #1a1a1a;
         --text-secondary: #616161;
         --text-tertiary: #9a9a9a;
         --accent: #0078D4;
         --accent-light: rgba(0, 120, 212, 0.06);
-        --border: rgba(0, 0, 0, 0.05);
+        --accent-glow: rgba(0, 120, 212, 0.15);
+        --border: rgba(0, 0, 0, 0.06);
+        --border-strong: rgba(0, 0, 0, 0.12);
         --radius: 8px;
         --reveal-size: 200px;
+        --danger: #d13438;
+        --success: #107c10;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+        --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
     }
 
     body {
         font-family: 'Noto Sans', -apple-system, 'Segoe UI', sans-serif;
         background:
-            url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"),
+            var(--noise),
             var(--mica);
         background-size: 256px 256px;
         color: var(--text);
+        min-height: 100vh;
     }
 
     .layout {
-        max-width: 800px;
+        max-width: 720px;
         margin: 0 auto;
-        padding: 0 20px 48px;
+        padding: 32px 20px 64px;
     }
 
-    /* Top bar — Acrylic */
-    .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        padding: 16px 20px;
-        margin: 0 -20px 32px;
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: var(--accent-light);
+        border: 1px solid rgba(0, 120, 212, 0.12);
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 300;
+        letter-spacing: 4px;
+        color: var(--text);
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* Intro card — acrylic surface */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
         background:
-            url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
+            var(--noise),
             var(--acrylic);
         background-size: 256px 256px;
         backdrop-filter: var(--acrylic-blur);
         -webkit-backdrop-filter: var(--acrylic-blur);
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-    }
-
-    .topbar-title {
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    .topbar-search {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 7px 14px;
-        border-radius: 20px;
-        background: rgba(0, 0, 0, 0.04);
         border: 1px solid var(--border);
-        font-size: 0.8rem;
-        color: var(--text-tertiary);
-        cursor: text;
-        width: 220px;
-        transition: border-color 0.15s;
-
-        svg {
-            width: 14px;
-            height: 14px;
-            opacity: 0.4;
-            flex-shrink: 0;
-        }
-
-        &:hover {
-            border-color: rgba(0, 0, 0, 0.1);
-        }
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
     }
 
-    .topbar-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-
-        svg {
-            width: 16px;
-            height: 16px;
-        }
-    }
-
-    /* Category chips */
-    .chips {
-        display: flex;
-        gap: 6px;
-        margin-bottom: 28px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-
-        &::-webkit-scrollbar { display: none; }
-    }
-
-    .chip {
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 500;
-        cursor: pointer;
-        white-space: nowrap;
-        border: 1px solid var(--border);
-        background: var(--surface);
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 300;
         color: var(--text-secondary);
-        transition: all 0.15s;
+    }
 
-        &:hover {
-            border-color: rgba(0, 0, 0, 0.12);
-            color: var(--text);
-        }
+    .intro-text strong {
+        font-weight: 600;
+        color: var(--text);
+    }
 
-        &.active {
-            background: var(--text);
-            color: #fff;
-            border-color: var(--text);
-        }
+    /* Surface card base */
+    .surface {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
     }
 
     /* Section */
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 16px;
+    .section {
+        margin-bottom: 48px;
     }
 
-    /* ── Card grid — the Reveal Highlight showcase ── */
-    .card-grid {
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+
+    .section-desc code {
+        font-family: 'Cascadia Code', 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: rgba(0, 0, 0, 0.04);
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    /* Divider */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+    }
+
+    /* Acrylic demo panels */
+    .acrylic-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .acrylic-panel {
+        padding: 28px 24px;
+        text-align: center;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        position: relative;
+    }
+
+    .acrylic-panel.with-noise {
+        background:
+            var(--noise),
+            var(--acrylic);
+        background-size: 256px 256px;
+        backdrop-filter: var(--acrylic-blur);
+        -webkit-backdrop-filter: var(--acrylic-blur);
+    }
+
+    .acrylic-panel.without-noise {
+        background: var(--acrylic);
+        backdrop-filter: var(--acrylic-blur);
+        -webkit-backdrop-filter: var(--acrylic-blur);
+    }
+
+    .acrylic-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .acrylic-label.good {
+        color: var(--success);
+    }
+
+    .acrylic-label.muted {
+        color: var(--text-tertiary);
+    }
+
+    .acrylic-value {
+        font-size: 1.5rem;
+        font-weight: 300;
+    }
+
+    .acrylic-sub {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        margin-top: 8px;
+    }
+
+    /* Reveal Highlight demo */
+    .reveal-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
-        margin-bottom: 36px;
     }
 
-    .card {
+    .reveal-card {
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: var(--radius);
@@ -162,344 +230,515 @@
         position: relative;
         overflow: hidden;
         transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.2s;
-
-        /* Reveal highlight layer */
-        .reveal-border {
-            position: absolute;
-            inset: -1px;
-            border-radius: var(--radius);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        .reveal-bg {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-
-            .reveal-border { opacity: 1; }
-            .reveal-bg { opacity: 1; }
-        }
     }
 
-    .card-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 14px;
-
-        svg {
-            width: 20px;
-            height: 20px;
-            stroke-width: 1.5;
-        }
-    }
-
-    .card-title {
-        font-size: 0.88rem;
-        font-weight: 600;
-        line-height: 1.3;
-    }
-
-    .card-desc {
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-        line-height: 1.5;
-        margin-top: 6px;
-    }
-
-    .card-tag {
-        display: inline-block;
-        font-size: 0.65rem;
-        font-weight: 500;
-        padding: 2px 8px;
-        border-radius: 4px;
-        margin-top: 12px;
-    }
-
-    /* Featured card — span 2 columns */
-    .card.featured {
-        grid-column: span 2;
-        display: flex;
-        gap: 20px;
-        align-items: center;
-    }
-
-    .featured-visual {
-        width: 120px;
-        height: 100px;
+    .reveal-card .reveal-border {
+        position: absolute;
+        inset: -1px;
         border-radius: var(--radius);
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        svg {
-            width: 40px;
-            height: 40px;
-            opacity: 0.85;
-        }
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
     }
 
-    .featured-info {
-        flex: 1;
+    .reveal-card .reveal-bg {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
     }
 
-    .featured-badge {
-        font-size: 0.6rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--accent);
-        margin-bottom: 6px;
+    .reveal-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
     }
 
-    /* Horizontal list */
-    .hlist {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        margin-bottom: 36px;
-    }
+    .reveal-card:hover .reveal-border { opacity: 1; }
+    .reveal-card:hover .reveal-bg { opacity: 1; }
 
-    .hlist-item {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 12px 14px;
-        border-radius: var(--radius);
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        transition: background 0.1s;
-
-        .reveal-bg {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        &:hover {
-            background: rgba(0, 0, 0, 0.02);
-            .reveal-bg { opacity: 1; }
-        }
-    }
-
-    .hlist-icon {
+    .reveal-card-icon {
         width: 36px;
         height: 36px;
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-shrink: 0;
-
-        svg {
-            width: 18px;
-            height: 18px;
-            stroke-width: 1.5;
-        }
+        margin-bottom: 12px;
     }
 
-    .hlist-info {
-        flex: 1;
-        min-width: 0;
+    .reveal-card-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 1.5;
     }
 
-    .hlist-title {
-        font-size: 0.82rem;
-        font-weight: 500;
+    .reveal-card-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 1.3;
     }
 
-    .hlist-sub {
-        font-size: 0.7rem;
+    .reveal-card-sub {
+        font-size: 0.72rem;
         color: var(--text-secondary);
-        margin-top: 1px;
+        margin-top: 6px;
+        line-height: 1.5;
     }
 
-    .hlist-meta {
+    .reveal-hint {
+        text-align: center;
+        font-size: 0.72rem;
+        color: var(--text-tertiary);
+        margin-top: 12px;
+        font-style: italic;
+    }
+
+    /* Code block */
+    .code-block {
+        background: #1e1e1e;
+        border-radius: var(--radius);
+        padding: 16px 20px;
+        font-family: 'Cascadia Code', 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: #d4d4d4;
+        overflow-x: auto;
+        margin-top: 16px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .code-block .kw { color: #c586c0; }
+    .code-block .val { color: #ce9178; }
+    .code-block .fn { color: #dcdcaa; }
+    .code-block .cmt { color: #6a9955; }
+    .code-block .prop { color: #9cdcfe; }
+
+    /* Depth demo */
+    .depth-demo {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 32px 24px;
+        background: var(--mica);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+    }
+
+    .depth-layer {
+        padding: 20px 24px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .depth-layer:hover {
+        transform: translateY(-2px);
+    }
+
+    .depth-layer.layer-base {
+        background: var(--mica);
+        box-shadow: none;
+    }
+
+    .depth-layer.layer-card {
+        background: var(--surface);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .depth-layer.layer-dialog {
+        background: var(--surface);
+        box-shadow: var(--shadow-md);
+    }
+
+    .depth-layer.layer-flyout {
+        background: var(--surface);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .depth-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+    }
+
+    .depth-meta {
         font-size: 0.7rem;
         color: var(--text-tertiary);
-        flex-shrink: 0;
+    }
+
+    /* Combined demo */
+    .combined-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .combined-card {
+        padding: 24px;
+        background:
+            var(--noise),
+            var(--acrylic);
+        background-size: 256px 256px;
+        backdrop-filter: var(--acrylic-blur);
+        -webkit-backdrop-filter: var(--acrylic-blur);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.2s;
+    }
+
+    .combined-card .reveal-border {
+        position: absolute;
+        inset: -1px;
+        border-radius: var(--radius);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+
+    .combined-card .reveal-bg {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+
+    .combined-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .combined-card:hover .reveal-border { opacity: 1; }
+    .combined-card:hover .reveal-bg { opacity: 1; }
+
+    .combined-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+    }
+
+    .combined-value {
+        font-size: 2rem;
+        font-weight: 300;
+        margin-top: 8px;
+    }
+
+    .combined-sub {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
+
+    .combined-bar {
+        height: 4px;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 2px;
+        margin-top: 16px;
+        overflow: hidden;
+    }
+
+    .combined-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--accent), #5c6bc0);
+        transition: width 0.8s ease;
+    }
+
+    /* Anti-pattern list */
+    .anti-card {
+        padding: 24px 28px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 300;
+        color: var(--text-secondary);
+    }
+
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        color: var(--danger);
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .anti-list .o {
+        color: var(--success);
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1.7;
+        color: var(--text);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--text-tertiary);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 300;
     }
 
     @media screen and (max-width: 600px) {
-        .card-grid {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .acrylic-demo,
+        .reveal-grid,
+        .combined-demo {
             grid-template-columns: 1fr;
         }
 
-        .card.featured {
-            grid-column: span 1;
-            flex-direction: column;
-        }
-
-        .featured-visual {
-            width: 100%;
-            height: 80px;
-        }
-
-        .topbar-search {
-            display: none;
+        .intro-card,
+        .anti-card {
+            padding: 20px 24px;
         }
     }
 </style>
 
 <body>
     <div class="layout">
-        <!-- Top bar -->
-        <div class="topbar">
-            <div class="topbar-title">Discover</div>
-            <div class="topbar-search">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                Search everything
-            </div>
-            <div class="topbar-avatar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Microsoft Fluent Design System</div>
+            <h1 class="hero-title">Fluent</h1>
+            <p class="hero-tagline">
+                Metro stripped everything away.<br>
+                Fluent figured out what to bring back.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="intro-card">
+            <p class="intro-text">
+                After Windows 8 went full flat, Microsoft had a problem.
+                Users missed depth. They missed the feeling that UI elements existed
+                in space, not just on a colored rectangle.
+                But going back to Aero's glossy excess? That wasn't an option either.
+                <br><br>
+                So they built <strong>Fluent</strong>. Five pillars:
+                <strong>Light, Depth, Motion, Material, Scale</strong>.
+                The pitch was ambitious — a design system that would work from
+                a phone screen to a HoloLens.
+                The reality? Most of Windows still doesn't use all five.
+                But the ideas that did ship? They're genuinely brilliant.
+                A radial gradient following your cursor says more about hierarchy
+                than a drop shadow ever could.
+            </p>
         </div>
 
-        <!-- Chips -->
-        <div class="chips">
-            <div class="chip active">All</div>
-            <div class="chip">Productivity</div>
-            <div class="chip">Design</div>
-            <div class="chip">Development</div>
-            <div class="chip">Communication</div>
-            <div class="chip">Media</div>
-        </div>
+        <div class="divider"></div>
 
-        <!-- Featured + Cards -->
-        <div class="section-title">Featured</div>
-        <div class="card-grid" id="card-grid">
-            <!-- Featured -->
-            <div class="card featured">
-                <div class="reveal-border"></div>
-                <div class="reveal-bg"></div>
-                <div class="featured-visual" style="background: linear-gradient(135deg, #e8def8, #d0bcff);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#6750a4" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <!-- Principle 01: Acrylic Material -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Acrylic Material</h2>
+            <p class="section-desc">
+                Acrylic is Fluent's frosted glass — <code>backdrop-filter: blur()</code> plus
+                a noise texture overlay. That noise is doing more work than you think.
+                Without it, blurred surfaces look like vaseline on a lens.
+                With it, they feel like actual material — ground glass, not a rendering artifact.
+                Microsoft's design team spent months tuning the noise frequency.
+                We're borrowing their homework.
+            </p>
+            <div class="acrylic-demo">
+                <div class="acrylic-panel with-noise">
+                    <div class="acrylic-label good">WITH NOISE TEXTURE</div>
+                    <div class="acrylic-value">Material</div>
+                    <div class="acrylic-sub">blur + noise = frosted glass</div>
                 </div>
-                <div class="featured-info">
-                    <div class="featured-badge">Editor's Pick</div>
-                    <div class="card-title">Fluent UI Framework</div>
-                    <div class="card-desc">Build modern, accessible interfaces with the Fluent design system. Components with Reveal, Acrylic, and depth built-in.</div>
+                <div class="acrylic-panel without-noise">
+                    <div class="acrylic-label muted">WITHOUT NOISE</div>
+                    <div class="acrylic-value">Smudge</div>
+                    <div class="acrylic-sub">just blur = camera trick</div>
                 </div>
             </div>
+            <div class="code-block">
+                <span class="cmt">/* Acrylic material — blur + noise + tint */</span><br>
+                <span class="kw">background</span>:<br>
+                &nbsp;&nbsp;<span class="fn">url</span>(<span class="val">"noise.svg"</span>),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* fractalNoise texture */</span><br>
+                &nbsp;&nbsp;<span class="fn">rgba</span>(255, 255, 255, <span class="val">0.72</span>);&nbsp;<span class="cmt">/* tint layer */</span><br>
+                <span class="kw">backdrop-filter</span>: <span class="fn">blur</span>(<span class="val">20px</span>) <span class="fn">saturate</span>(<span class="val">150%</span>);<br>
+            </div>
+        </section>
 
-            <div class="card">
-                <div class="reveal-border"></div>
-                <div class="reveal-bg"></div>
-                <div class="card-icon" style="background: rgba(0, 120, 212, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <!-- Principle 02: Reveal Highlight -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Reveal Highlight</h2>
+            <p class="section-desc">
+                This is the party trick. A <code>radial-gradient</code> that follows your cursor,
+                illuminating borders and surfaces as you move.
+                It's not decoration — it's <strong>light as interaction feedback</strong>.
+                Your cursor becomes a flashlight, and the UI responds by showing you
+                where things are, where boundaries exist, what you can click.
+                No other design system has done this. Not before, not since.
+            </p>
+            <div class="reveal-grid" id="reveal-grid">
+                <div class="reveal-card">
+                    <div class="reveal-border"></div>
+                    <div class="reveal-bg"></div>
+                    <div class="reveal-card-icon" style="background: var(--accent-light);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    </div>
+                    <div class="reveal-card-title">Light</div>
+                    <div class="reveal-card-sub">Cursor as flashlight. Boundaries emerge on hover.</div>
                 </div>
-                <div class="card-title">Reveal Highlight</div>
-                <div class="card-desc">Light follows your cursor across surfaces, creating depth and guiding focus.</div>
-                <div class="card-tag" style="background: var(--accent-light); color: var(--accent);">Light</div>
+                <div class="reveal-card">
+                    <div class="reveal-border"></div>
+                    <div class="reveal-bg"></div>
+                    <div class="reveal-card-icon" style="background: rgba(168, 85, 247, 0.08);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    </div>
+                    <div class="reveal-card-title">Material</div>
+                    <div class="reveal-card-sub">Surfaces you can almost touch. Frosted, not faked.</div>
+                </div>
+                <div class="reveal-card">
+                    <div class="reveal-border"></div>
+                    <div class="reveal-bg"></div>
+                    <div class="reveal-card-icon" style="background: rgba(34, 197, 94, 0.08);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <div class="reveal-card-title">Motion</div>
+                    <div class="reveal-card-sub">Movement that connects, not distracts.</div>
+                </div>
             </div>
+            <p class="reveal-hint">Move your cursor across the cards above.</p>
+        </section>
 
-            <div class="card">
-                <div class="reveal-border"></div>
-                <div class="reveal-bg"></div>
-                <div class="card-icon" style="background: rgba(168, 85, 247, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        <!-- Principle 03: Depth System -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Depth Without Weight</h2>
+            <p class="section-desc">
+                Fluent doesn't need heavy shadows to create spatial relationships.
+                The system uses four elevation levels — Base, Card, Dialog, Flyout —
+                each with progressively stronger shadows.
+                The jump between levels is subtle. That's the point.
+                Where Material Design screams "I'm floating at 8dp!",
+                Fluent whispers. And somehow you still know exactly which layer is on top.
+            </p>
+            <div class="depth-demo">
+                <div class="depth-layer layer-base">
+                    <span class="depth-label">Base</span>
+                    <span class="depth-meta">Mica background, no shadow</span>
                 </div>
-                <div class="card-title">Acrylic Material</div>
-                <div class="card-desc">Frosted glass surfaces with noise texture that establish visual hierarchy.</div>
-                <div class="card-tag" style="background: rgba(168, 85, 247, 0.08); color: #a855f7;">Material</div>
+                <div class="depth-layer layer-card">
+                    <span class="depth-label">Card</span>
+                    <span class="depth-meta">Content surface, 1px shadow</span>
+                </div>
+                <div class="depth-layer layer-dialog">
+                    <span class="depth-label">Dialog</span>
+                    <span class="depth-meta">Focused context, soft shadow</span>
+                </div>
+                <div class="depth-layer layer-flyout">
+                    <span class="depth-label">Flyout</span>
+                    <span class="depth-meta">Elevated action, deep shadow</span>
+                </div>
             </div>
+        </section>
 
-            <div class="card">
-                <div class="reveal-border"></div>
-                <div class="reveal-bg"></div>
-                <div class="card-icon" style="background: rgba(34, 197, 94, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                </div>
-                <div class="card-title">Connected Motion</div>
-                <div class="card-desc">Elements move with purpose, creating a sense of continuity between states.</div>
-                <div class="card-tag" style="background: rgba(34, 197, 94, 0.08); color: #22c55e;">Motion</div>
-            </div>
+        <div class="divider"></div>
 
-            <div class="card">
-                <div class="reveal-border"></div>
-                <div class="reveal-bg"></div>
-                <div class="card-icon" style="background: rgba(249, 115, 22, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#f97316"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <!-- Put It Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Put It Together</h2>
+            <p class="section-desc">
+                Acrylic material + Reveal Highlight + depth layering.
+                Three principles, one interface. The surface is frosted.
+                The light follows you. The shadows know their place.
+                It looks like something Microsoft dreamed up in 2017 but shipped in fragments.
+                We're shipping it whole.
+            </p>
+            <div class="combined-demo" id="combined-demo">
+                <div class="combined-card">
+                    <div class="reveal-border"></div>
+                    <div class="reveal-bg"></div>
+                    <div class="combined-label">System</div>
+                    <div class="combined-value" id="clock-time"></div>
+                    <div class="combined-sub" id="clock-date"></div>
                 </div>
-                <div class="card-title">Adaptive Scale</div>
-                <div class="card-desc">Interfaces that gracefully adapt from mobile screens to multi-monitor setups.</div>
-                <div class="card-tag" style="background: rgba(249, 115, 22, 0.08); color: #f97316;">Scale</div>
+                <div class="combined-card">
+                    <div class="reveal-border"></div>
+                    <div class="reveal-bg"></div>
+                    <div class="combined-label">Memory</div>
+                    <div class="combined-value" id="mem-value">4.2 GB</div>
+                    <div class="combined-bar"><div class="combined-bar-fill" id="mem-bar" style="width: 52%"></div></div>
+                    <div class="combined-sub" id="mem-sub">4.2 of 8 GB used</div>
+                </div>
             </div>
+        </section>
 
-            <div class="card">
-                <div class="reveal-border"></div>
-                <div class="reveal-bg"></div>
-                <div class="card-icon" style="background: rgba(236, 72, 153, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#ec4899"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                </div>
-                <div class="card-title">Depth System</div>
-                <div class="card-desc">Subtle shadows and layering create spatial relationships without heavy elevation.</div>
-                <div class="card-tag" style="background: rgba(236, 72, 153, 0.08); color: #ec4899;">Depth</div>
-            </div>
-        </div>
+        <div class="divider"></div>
 
-        <!-- Trending list -->
-        <div class="section-title">Trending</div>
-        <div class="hlist">
-            <div class="hlist-item">
-                <div class="reveal-bg"></div>
-                <div class="hlist-icon" style="background: rgba(0, 120, 212, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                </div>
-                <div class="hlist-info">
-                    <div class="hlist-title">Mica vs Acrylic: When to Use Which</div>
-                    <div class="hlist-sub">Understanding material choices in layered UI</div>
-                </div>
-                <div class="hlist-meta">4 min</div>
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="surface anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Reveal Highlight on every element — it loses meaning when everything glows</li>
+                    <li><span class="x">&#x2717;</span> Acrylic over dense content — frosted glass on a spreadsheet helps no one</li>
+                    <li><span class="x">&#x2717;</span> Animating everything — motion sickness is a real accessibility concern</li>
+                    <li><span class="x">&#x2717;</span> Five pillars on a page that only needs two</li>
+                    <li><span class="o">&#x2713;</span> Light as interaction feedback — cursor reveals boundaries, not decoration</li>
+                    <li><span class="o">&#x2713;</span> Material to establish hierarchy — frosted panels separate layers</li>
+                    <li><span class="o">&#x2713;</span> Motion that connects states — enter here, exit there, stay oriented</li>
+                    <li><span class="o">&#x2713;</span> Depth through restraint — four levels, not forty</li>
+                </ul>
             </div>
-            <div class="hlist-item">
-                <div class="reveal-bg"></div>
-                <div class="hlist-icon" style="background: rgba(168, 85, 247, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-                </div>
-                <div class="hlist-info">
-                    <div class="hlist-title">Accessible by Default</div>
-                    <div class="hlist-sub">How Fluent handles contrast, focus, and screen readers</div>
-                </div>
-                <div class="hlist-meta">6 min</div>
-            </div>
-            <div class="hlist-item">
-                <div class="reveal-bg"></div>
-                <div class="hlist-icon" style="background: rgba(34, 197, 94, 0.08);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-                </div>
-                <div class="hlist-info">
-                    <div class="hlist-title">Performance in Translucency</div>
-                    <div class="hlist-sub">GPU costs of backdrop-filter and how to optimize</div>
-                </div>
-                <div class="hlist-meta">8 min</div>
-            </div>
-        </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Depth without weight.<br>
+                Light without heat.
+            </p>
+            <p class="manifesto-sub">
+                Fluent proved you can have richness without excess.<br>
+                The vision was bigger than the execution. We're closing the gap.
+            </p>
+        </footer>
     </div>
 </body>
 
 <script>
-    /* ── Reveal Highlight — cursor-tracking light ── */
-    const $grid = document.getElementById('card-grid');
-
+    /* -- Reveal Highlight -- cursor-tracking light effect -- */
     function applyReveal(e) {
-        const cards = document.querySelectorAll('.card, .hlist-item');
+        const cards = document.querySelectorAll('.reveal-card, .combined-card');
         cards.forEach(card => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -508,24 +747,40 @@
             /* Border reveal — light ring on edges */
             const $border = card.querySelector('.reveal-border');
             if ($border) {
-                $border.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,0,0,0.06) 0%, transparent 100%)`;
+                $border.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,0,0,0.08) 0%, transparent 100%)`;
             }
 
             /* Background reveal — subtle spotlight */
             const $bg = card.querySelector('.reveal-bg');
             if ($bg) {
-                $bg.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,0,0,0.02) 0%, transparent 100%)`;
+                $bg.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,0,0,0.03) 0%, transparent 100%)`;
             }
         });
     }
 
     document.addEventListener('mousemove', applyReveal);
 
-    /* ── Chip toggle ── */
-    document.querySelectorAll('.chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-        });
-    });
+    /* -- Clock -- */
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+        document.getElementById('clock-time').textContent = `${h}:${m}:${s}`;
+        document.getElementById('clock-date').textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* -- Fake memory fluctuation -- */
+    setInterval(() => {
+        const val = (3.8 + Math.random() * 1.2).toFixed(1);
+        const pct = Math.round((val / 8) * 100);
+        document.getElementById('mem-value').textContent = val + ' GB';
+        document.getElementById('mem-bar').style.width = pct + '%';
+        document.getElementById('mem-sub').textContent = val + ' of 8 GB used';
+    }, 3000);
 </script>
