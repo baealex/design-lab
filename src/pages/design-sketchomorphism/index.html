@@ -1,0 +1,760 @@
+<!-- layout: base.html -->
+<!-- title: Sketchomorphism -->
+<!-- description: A living, human interface — engineered to feel alive -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap');
+
+    :root {
+        --surface: #fffcf7;
+        --page-bg: #fdf8f3;
+        --fg: #2a2a2a;
+        --fg-muted: #71717a;
+        --border: #2a2a2a;
+        --accent: #e85d4a;
+        --pastel-yellow: #FCEBAF;
+        --pastel-pink: #FFB3C1;
+        --pastel-blue: #A4D8E1;
+        --pastel-green: #B2E0B2;
+        --pastel-orange: #FFCCB3;
+        --pastel-purple: #E1B7E1;
+    }
+
+    body {
+        background: var(--page-bg);
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+        background-size: 400px 400px;
+        background-blend-mode: multiply;
+        font-family: 'Gaegu', cursive;
+        color: var(--fg);
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 4px;
+    }
+
+    .hero-underline {
+        display: block;
+        margin: 0 auto;
+        height: 8px;
+        width: 200px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 4px 14px;
+        border: 2px solid var(--border);
+        border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+        color: var(--accent);
+        margin-bottom: 12px;
+        letter-spacing: 0.03em;
+    }
+
+    .hero-project {
+        display: inline-block;
+        font-size: 0.9rem;
+        color: var(--fg-muted);
+        margin-top: 12px;
+    }
+
+    .hero-project a {
+        color: var(--accent);
+        font-weight: 700;
+        text-decoration: none;
+        position: relative;
+    }
+
+    .hero-tagline {
+        font-size: 1.2rem;
+        color: var(--fg-muted);
+        margin-top: 16px;
+        line-height: 1.5;
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .section-desc {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: var(--fg-muted);
+        margin-bottom: 20px;
+    }
+
+    /* Sketch card with alive SVG border */
+    .sketch-card {
+        position: relative;
+        background: var(--surface);
+        padding: 24px;
+        margin-bottom: 16px;
+    }
+
+    .sketch-border {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+    }
+
+    .sketch-border path {
+        fill: none;
+        stroke: var(--border);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    /* Demo grid */
+    .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .demo-card {
+        position: relative;
+        background: var(--surface);
+        padding: 20px 16px;
+        text-align: center;
+    }
+
+    .demo-icon {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .demo-label {
+        font-size: 1.15rem;
+        font-weight: 700;
+    }
+
+    .demo-sublabel {
+        font-size: 0.9rem;
+        color: var(--fg-muted);
+        margin-top: 4px;
+    }
+
+    /* Pencil underline links */
+    .pencil-link {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        font-weight: 700;
+        color: var(--fg);
+    }
+
+    /* Sticky notes */
+    .note-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .note {
+        padding: 16px;
+        border: 1.5px solid rgba(0, 0, 0, 0.1);
+        border-radius: 4px 2px 5px 2px / 2px 4px 2px 4px;
+        box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.08);
+        font-size: 1.05rem;
+        line-height: 1.5;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .note:hover {
+        transform: translateY(-2px) rotate(-0.5deg);
+        box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .note-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    .note-body {
+        color: var(--fg-muted);
+        font-size: 0.95rem;
+    }
+
+    /* Card title */
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    /* Todo list */
+    .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1.5px dashed #d4d4d8;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    .todo-item:last-child {
+        border-bottom: none;
+    }
+
+    .todo-item:hover {
+        opacity: 0.7;
+    }
+
+    .todo-checkbox {
+        width: 22px;
+        height: 22px;
+        border: 2px solid var(--border);
+        border-radius: 4px 2px 5px 2px / 2px 4px 2px 4px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        transition: background 0.15s;
+    }
+
+    .todo-item.done .todo-checkbox {
+        background: var(--pastel-green);
+    }
+
+    .todo-item.done .todo-text {
+        text-decoration: line-through;
+        color: var(--fg-muted);
+    }
+
+    .todo-text {
+        font-size: 1.2rem;
+        line-height: 1.4;
+    }
+
+    .todo-tag {
+        font-size: 0.85rem;
+        padding: 2px 10px;
+        border-radius: 125px 10px 115px 10px / 10px 115px 10px 125px;
+        border: 1.5px solid var(--border);
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+        margin-top: 12px;
+    }
+
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1rem;
+        color: var(--fg-muted);
+        margin-bottom: 6px;
+    }
+
+    .progress-bar {
+        height: 14px;
+        background: #d4d4d8;
+        border-radius: 125px 10px 115px 10px / 10px 115px 10px 125px;
+        border: 1.5px solid var(--border);
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: var(--pastel-green);
+        border-radius: 125px 10px 115px 10px / 10px 115px 10px 125px;
+        transition: width 0.4s ease;
+    }
+
+    /* Ruled lines card */
+    .ruled {
+        background-image: repeating-linear-gradient(
+            transparent,
+            transparent 31px,
+            #e8e4df 31px,
+            #e8e4df 32px
+        );
+        background-position: 0 20px;
+        padding-top: 20px;
+    }
+
+    .ruled-text {
+        font-size: 1.15rem;
+        line-height: 32px;
+        white-space: pre-wrap;
+    }
+
+    /* Anti-patterns list */
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 1.1rem;
+        padding: 8px 0;
+        border-bottom: 1.5px dashed #d4d4d8;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        color: var(--accent);
+        font-weight: 700;
+    }
+
+    .anti-list .o {
+        color: #22c55e;
+        font-weight: 700;
+    }
+
+    /* Divider */
+    .sketch-divider {
+        text-align: center;
+        margin: 32px 0;
+    }
+
+    .sketch-divider svg {
+        width: 120px;
+        height: 8px;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.4rem;
+        font-weight: 700;
+        line-height: 1.6;
+    }
+
+    .manifesto-sub {
+        font-size: 1.05rem;
+        color: var(--fg-muted);
+        margin-top: 12px;
+        line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 520px) {
+        .demo-grid,
+        .note-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+        }
+
+        .btn-row {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Original Design</div>
+            <h1 class="hero-title">Sketchomorphism</h1>
+            <svg class="hero-underline" aria-hidden="true"></svg>
+            <p class="hero-tagline">
+                Hand-drawn UI that actually works.<br>
+                No, seriously.
+            </p>
+            <p class="hero-project">
+                Used in <a href="https://github.com/baealex/ocean-brain" target="_blank" rel="noopener" class="pencil-link" data-underline>Ocean Brain</a>
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="sketch-card" data-alive>
+            <svg class="sketch-border" aria-hidden="true"></svg>
+            <p style="font-size: 1.2rem; line-height: 1.7; margin: 0;">
+                Every border on this page wobbles. On purpose.
+                We spent actual engineering hours making these lines look
+                <span class="pencil-link" data-underline>exactly this imperfect</span>.
+            </p>
+        </div>
+
+        <div class="sketch-divider"><svg aria-hidden="true"></svg></div>
+
+        <!-- Principle 01: Lines That Breathe -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Lines That Breathe</h2>
+            <p class="section-desc">
+                These borders are redrawn every few seconds.
+                If you didn't notice, good — that means we calibrated the
+                wobble just right. Hover over them if you want to see them panic a little.
+            </p>
+            <div class="demo-grid">
+                <div class="demo-card" data-alive>
+                    <svg class="sketch-border" aria-hidden="true"></svg>
+                    <div class="demo-label">Alive</div>
+                    <div class="demo-sublabel">Lines shift and breathe</div>
+                </div>
+                <div class="demo-card" data-alive>
+                    <svg class="sketch-border" aria-hidden="true"></svg>
+                    <div class="demo-label">Unique</div>
+                    <div class="demo-sublabel">Different every time</div>
+                </div>
+                <div class="demo-card" data-alive>
+                    <svg class="sketch-border" aria-hidden="true"></svg>
+                    <div class="demo-label">Responsive</div>
+                    <div class="demo-sublabel">Reacts to your touch</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 02: Never Identical -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Never Identical</h2>
+            <p class="section-desc">
+                Hit refresh. The borders changed. Hit it again. Different again.
+                We could've just used a PNG, but where's the fun in that?
+            </p>
+            <div class="note-grid" id="note-grid"></div>
+        </section>
+
+        <!-- Principle 03: Responds to You -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Responds to You</h2>
+            <p class="section-desc">
+                Go ahead, <span class="pencil-link" data-underline>click the tasks</span>.
+                Check them off. Watch the progress bar fill up.
+                It won't change your life, but it might make you smile a little.
+            </p>
+
+            <!-- Todo list -->
+            <div class="sketch-card" data-alive>
+                <svg class="sketch-border" aria-hidden="true"></svg>
+                <div class="card-title">Today's Tasks</div>
+                <div id="todo-list"></div>
+                <div class="progress-wrap">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span id="progress-text">0 / 0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diary -->
+            <div class="sketch-card ruled" data-alive>
+                <svg class="sketch-border" aria-hidden="true"></svg>
+                <div class="ruled-text">Dear diary,
+Today I made the borders wobble
+and spent 3 hours calibrating the
+exact amount of imperfection.
+
+Sometimes the best interfaces are
+the ones that feel human.</div>
+            </div>
+        </section>
+
+        <div class="sketch-divider"><svg aria-hidden="true"></svg></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="sketch-card" data-alive>
+                <svg class="sketch-border" aria-hidden="true"></svg>
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Wobbly lines just because it's "cute"</li>
+                    <li><span class="x">&#x2717;</span> Making users squint to read things</li>
+                    <li><span class="x">&#x2717;</span> Pretending it's 2005 and we miss paper</li>
+                    <li><span class="o">&#x2713;</span> Wobbly lines because they feel alive</li>
+                    <li><span class="o">&#x2713;</span> Imperfect on purpose, usable by default</li>
+                    <li><span class="o">&#x2713;</span> More engineering than you'd think</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <svg class="hero-underline" aria-hidden="true" style="margin-bottom: 20px;"></svg>
+            <p class="manifesto-text">
+                We overthink borders<br>
+                so you don't have to.
+            </p>
+            <p class="manifesto-sub">
+                Every line on this page is generated by code.<br>
+                No two visits look the same. That's the point.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* ── Utility ── */
+    function rnd(r) {
+        return (Math.random() - 0.5) * r * 2;
+    }
+
+    /* ── Generate hand-drawn rectangle points ── */
+    function sketchRect(w, h, roughness) {
+        const segs = 6;
+        const pts = [];
+        for (let i = 0; i <= segs; i++) pts.push([(w / segs) * i + rnd(roughness), rnd(roughness)]);
+        for (let i = 1; i <= segs; i++) pts.push([w + rnd(roughness), (h / segs) * i + rnd(roughness)]);
+        for (let i = segs - 1; i >= 0; i--) pts.push([(w / segs) * i + rnd(roughness), h + rnd(roughness)]);
+        for (let i = segs - 1; i >= 1; i--) pts.push([rnd(roughness), (h / segs) * i + rnd(roughness)]);
+        return pts;
+    }
+
+    function ptsToPath(pts) {
+        return 'M ' + pts.map(function (p) { return p[0].toFixed(2) + ',' + p[1].toFixed(2); }).join(' L ') + ' Z';
+    }
+
+    /* ── Alive Border System ── */
+    function AliveBorder(el, roughness) {
+        this.el = el;
+        this.baseRoughness = roughness || 2;
+        this.roughness = this.baseRoughness;
+        this.svg = el.querySelector('.sketch-border');
+        if (!this.svg) return;
+
+        this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        this.svg.appendChild(this.path);
+
+        var rect = el.getBoundingClientRect();
+        this.w = rect.width;
+        this.h = rect.height;
+
+        this.current = sketchRect(this.w, this.h, this.roughness);
+        this.target = sketchRect(this.w, this.h, this.roughness);
+        this.render();
+
+        var self = this;
+        this.interval = setInterval(function () {
+            self.target = sketchRect(self.w, self.h, self.roughness);
+        }, 3000);
+
+        el.addEventListener('mouseenter', function () { self.roughness = self.baseRoughness * 1.5; });
+        el.addEventListener('mouseleave', function () { self.roughness = self.baseRoughness; });
+
+        this.animate();
+    }
+
+    AliveBorder.prototype.render = function () {
+        this.path.setAttribute('d', ptsToPath(this.current));
+    };
+
+    AliveBorder.prototype.animate = function () {
+        for (var i = 0; i < this.current.length; i++) {
+            this.current[i][0] += (this.target[i][0] - this.current[i][0]) * 0.04;
+            this.current[i][1] += (this.target[i][1] - this.current[i][1]) * 0.04;
+        }
+        this.render();
+        var self = this;
+        requestAnimationFrame(function () { self.animate(); });
+    };
+
+    /* ── Generate wavy line points ── */
+    function wavyLine(w) {
+        var pts = [];
+        var segs = 8;
+        for (var i = 0; i <= segs; i++) {
+            pts.push([(w / segs) * i, 3 + rnd(1.5)]);
+        }
+        return pts;
+    }
+
+    /* ── Hero underline — alive wavy line ── */
+    document.querySelectorAll('.hero-underline').forEach(function (svg) {
+        var w = 200;
+        svg.setAttribute('viewBox', '0 0 ' + w + ' 8');
+
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#e85d4a');
+        path.setAttribute('stroke-width', '3');
+        path.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(path);
+
+        var current = wavyLine(w);
+        var target = wavyLine(w);
+
+        function render() {
+            path.setAttribute('d', 'M ' + current.map(function (p) {
+                return p[0].toFixed(2) + ',' + p[1].toFixed(2);
+            }).join(' L '));
+        }
+
+        setInterval(function () { target = wavyLine(w); }, 2500);
+
+        function animate() {
+            for (var i = 0; i < current.length; i++) {
+                current[i][0] += (target[i][0] - current[i][0]) * 0.04;
+                current[i][1] += (target[i][1] - current[i][1]) * 0.04;
+            }
+            render();
+            requestAnimationFrame(animate);
+        }
+        animate();
+    });
+
+    /* ── Pencil underline on hover ── */
+    document.querySelectorAll('[data-underline]').forEach(function (el) {
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.style.cssText = 'position:absolute;bottom:-3px;left:0;width:100%;height:8px;overflow:visible;pointer-events:none;';
+
+        var w = el.offsetWidth || 100;
+        var pts = wavyLine(w);
+        var d = 'M ' + pts.map(function (p) { return p.join(','); }).join(' L ');
+
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#e85d4a');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('stroke-linecap', 'round');
+        svg.setAttribute('viewBox', '0 0 ' + w + ' 8');
+
+        var len = w * 1.2;
+        path.style.strokeDasharray = len;
+        path.style.strokeDashoffset = len;
+        path.style.transition = 'stroke-dashoffset 0.4s ease';
+
+        svg.appendChild(path);
+        el.appendChild(svg);
+
+        el.addEventListener('mouseenter', function () { path.style.strokeDashoffset = '0'; });
+        el.addEventListener('mouseleave', function () { path.style.strokeDashoffset = len; });
+    });
+
+    /* ── Sketch divider ── */
+    document.querySelectorAll('.sketch-divider svg').forEach(function (svg) {
+        svg.setAttribute('viewBox', '0 0 120 8');
+        var pts = [];
+        for (var i = 0; i <= 10; i++) {
+            pts.push([(120 / 10) * i, 4 + rnd(2)]);
+        }
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M ' + pts.map(function (p) { return p.join(','); }).join(' L '));
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#d4d4d8');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(path);
+    });
+
+    /* ── Todo list ── */
+    var todos = [
+        { text: 'Sketch new landing page layout', tag: 'Design', done: true },
+        { text: 'Choose a color palette', tag: 'Design', done: true },
+        { text: 'Implement card component', tag: 'Code', done: false },
+        { text: 'Write blog post draft', tag: 'Writing', done: false },
+        { text: 'Review pull requests', tag: 'Code', done: false },
+    ];
+
+    var tagColors = {
+        Design: 'var(--pastel-pink)',
+        Code: 'var(--pastel-blue)',
+        Writing: 'var(--pastel-yellow)',
+    };
+
+    function renderTodos() {
+        var list = document.getElementById('todo-list');
+        if (!list) return;
+        list.innerHTML = todos.map(function (todo, i) {
+            return '<div class="todo-item ' + (todo.done ? 'done' : '') + '" data-index="' + i + '">' +
+                '<div class="todo-checkbox">' + (todo.done ? '~' : '') + '</div>' +
+                '<span class="todo-text">' + todo.text + '</span>' +
+                '<span class="todo-tag" style="background:' + (tagColors[todo.tag] || 'var(--pastel-yellow)') + '">' + todo.tag + '</span>' +
+                '</div>';
+        }).join('');
+
+        list.querySelectorAll('.todo-item').forEach(function (item) {
+            item.addEventListener('click', function () {
+                var idx = Number(item.dataset.index);
+                todos[idx].done = !todos[idx].done;
+                renderTodos();
+            });
+        });
+
+        var done = todos.filter(function (t) { return t.done; }).length;
+        document.getElementById('progress-text').textContent = done + ' / ' + todos.length;
+        document.getElementById('progress-fill').style.width = (done / todos.length * 100) + '%';
+    }
+
+    renderTodos();
+
+    /* ── Sticky notes (unique each load) ── */
+    var noteColors = ['#FCEBAF', '#FFB3C1', '#A4D8E1', '#B2E0B2', '#FFCCB3', '#E1B7E1'];
+    var notes = [
+        { title: 'To do', body: 'Make borders wobble. Spend 3 hours calibrating wobble amount.' },
+        { title: 'Shower thought', body: 'If a border is perfectly straight, is it even hand-drawn?' },
+        { title: 'Note to self', body: 'Stop adding more sticky notes. Ship it.' },
+        { title: 'Bug report', body: 'The lines look too perfect. Intentionally make them worse.' },
+        { title: 'Question', body: 'How imperfect is too imperfect? When users file a bug.' },
+        { title: 'Answered', body: 'Yes, we did use Math.random() for the aesthetic. No regrets.' },
+    ];
+
+    var grid = document.getElementById('note-grid');
+    if (grid) {
+        var shuffled = notes.slice().sort(function () { return Math.random() - 0.5; });
+        grid.innerHTML = shuffled.slice(0, 3).map(function (note) {
+            var color = noteColors[Math.floor(Math.random() * noteColors.length)];
+            var rot = (Math.random() - 0.5) * 3;
+            return '<div class="note" style="background:' + color + ';transform:rotate(' + rot + 'deg);">' +
+                '<div class="note-title">' + note.title + '</div>' +
+                '<div class="note-body">' + note.body + '</div>' +
+                '</div>';
+        }).join('');
+    }
+
+    document.querySelectorAll('[data-alive]').forEach(function (el) {
+        new AliveBorder(el);
+    });
+</script>
