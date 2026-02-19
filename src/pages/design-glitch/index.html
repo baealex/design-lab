@@ -1,0 +1,806 @@
+<!-- layout: base.html -->
+<!-- title: Glitch -->
+<!-- description: Controlled corruption — where digital errors become a design language -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+    :root {
+        --bg: #050508;
+        --surface: rgba(255, 255, 255, 0.03);
+        --surface-border: rgba(255, 255, 255, 0.06);
+        --text: rgba(255, 255, 255, 0.9);
+        --text-muted: rgba(255, 255, 255, 0.5);
+        --text-dim: rgba(255, 255, 255, 0.22);
+        --red: #ff0040;
+        --red-glow: rgba(255, 0, 64, 0.4);
+        --cyan: #00e5ff;
+        --cyan-glow: rgba(0, 229, 255, 0.4);
+        --green: #b0ff57;
+        --green-dim: rgba(176, 255, 87, 0.15);
+        --danger: #ff5c5c;
+        --success: #5cffaa;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Scanline overlay */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.08) 2px,
+            rgba(0, 0, 0, 0.08) 4px
+        );
+    }
+
+    /* Noise texture — SVG feTurbulence as background */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: -50%;
+        width: 200%;
+        height: 200%;
+        z-index: 9998;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+        animation: noise-drift 0.3s steps(4) infinite;
+    }
+
+    @keyframes noise-drift {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(-5%, -8%); }
+        50% { transform: translate(3%, 5%); }
+        75% { transform: translate(-7%, 2%); }
+        100% { transform: translate(4%, -6%); }
+    }
+
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    .panel {
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* ── Hero ── */
+    .hero {
+        text-align: center;
+        padding: 64px 0 56px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        padding: 6px 18px;
+        border-radius: 20px;
+        background: var(--green-dim);
+        border: 1px solid rgba(176, 255, 87, 0.2);
+        color: var(--green);
+        margin-bottom: 24px;
+    }
+
+    .hero-title {
+        font-size: 5rem;
+        font-weight: 700;
+        letter-spacing: 12px;
+        text-transform: uppercase;
+        color: #fff;
+        position: relative;
+    }
+
+    /* RGB split layers — afterimage ghosts */
+    .hero-title::before,
+    .hero-title::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        mix-blend-mode: screen;
+    }
+
+    .hero-title::before {
+        color: var(--red);
+        z-index: -1;
+        animation: glitch-red 4s infinite steps(2, jump-none);
+    }
+
+    .hero-title::after {
+        color: var(--cyan);
+        z-index: -1;
+        animation: glitch-cyan 4s infinite steps(2, jump-none);
+    }
+
+    /* Red channel — sudden horizontal tears */
+    @keyframes glitch-red {
+        0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        5% { clip-path: inset(15% 0 60% 0); transform: translate(6px, -1px); }
+        10% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        32% { clip-path: inset(65% 0 0 0); transform: translate(-4px, 2px); }
+        34% { clip-path: inset(0 0 85% 0); transform: translate(8px, 0); }
+        36% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        58% { clip-path: inset(40% 0 20% 0); transform: translate(5px, -1px); }
+        59% { clip-path: inset(20% 0 40% 0); transform: translate(-3px, 1px); }
+        61% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        82% { clip-path: inset(0 0 70% 0); transform: translate(7px, 0); }
+        83% { clip-path: inset(80% 0 0 0); transform: translate(-5px, 2px); }
+        85% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    /* Cyan channel — offset timing for chaotic feel */
+    @keyframes glitch-cyan {
+        0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        8% { clip-path: inset(50% 0 10% 0); transform: translate(-6px, 1px); }
+        10% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        40% { clip-path: inset(0 0 60% 0); transform: translate(4px, -2px); }
+        42% { clip-path: inset(70% 0 0 0); transform: translate(-7px, 0); }
+        44% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        65% { clip-path: inset(30% 0 30% 0); transform: translate(-5px, 1px); }
+        67% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        88% { clip-path: inset(10% 0 50% 0); transform: translate(6px, -1px); }
+        89% { clip-path: inset(60% 0 10% 0); transform: translate(-4px, 2px); }
+        91% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 24px;
+        line-height: 1.7;
+        font-weight: 300;
+        animation: tagline-afterimage 6s infinite;
+    }
+
+    @keyframes tagline-afterimage {
+        0%, 100% { text-shadow: none; transform: none; }
+        55% { text-shadow: none; transform: none; }
+        56% { text-shadow: 3px 0 rgba(255,0,64,0.3), -3px 0 rgba(0,229,255,0.3); transform: translateX(-2px); }
+        57.5% { text-shadow: -2px 0 rgba(255,0,64,0.2), 2px 0 rgba(0,229,255,0.2); transform: translateX(1px); }
+        59% { text-shadow: none; transform: none; }
+    }
+
+    /* ── Intro card ── */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.9;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    /* ── Section ── */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--green);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--cyan);
+        font-style: normal;
+    }
+
+    .section-desc code {
+        font-family: 'JetBrains Mono', 'SF Mono', monospace;
+        font-size: 0.82em;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: var(--green);
+    }
+
+    /* CRT vignette — darker edges like an old monitor */
+    .vignette {
+        position: fixed;
+        inset: 0;
+        z-index: 9996;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+    }
+
+    /* ── Divider ── */
+    .divider {
+        margin: 48px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 0, 64, 0.15), rgba(0, 229, 255, 0.15), transparent);
+    }
+
+    /* ── Chromatic Aberration Demo ── */
+    .chroma-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+    }
+
+    .chroma-card {
+        padding: 32px 16px;
+        text-align: center;
+        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+    }
+
+    .chroma-card-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+    }
+
+    .chroma-card-text {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .chroma-card-sub {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        margin-top: 16px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .chroma-subtle .chroma-card-text {
+        text-shadow:
+            1px 0 var(--red),
+            -1px 0 var(--cyan);
+    }
+
+    .chroma-balanced .chroma-card-text {
+        text-shadow:
+            2px 0 var(--red),
+            -2px 0 var(--cyan);
+    }
+
+    .chroma-heavy .chroma-card-text {
+        text-shadow:
+            4px 1px var(--red),
+            -4px -1px var(--cyan);
+    }
+
+    /* ── Code block ── */
+    .code-block {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        padding: 18px 22px;
+        font-family: 'JetBrains Mono', 'SF Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: rgba(255, 255, 255, 0.5);
+        overflow-x: auto;
+        margin-top: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .code-block .kw { color: var(--cyan); }
+    .code-block .val { color: var(--red); }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.2); }
+
+    /* ── Compare panels (scanline demo) ── */
+    .compare-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .compare-panel {
+        padding: 36px 24px;
+        text-align: center;
+        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .compare-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .compare-label.good { color: var(--green); }
+    .compare-label.muted { color: var(--text-dim); }
+
+    .compare-text {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.7;
+    }
+
+    .compare-sub {
+        font-size: 0.7rem;
+        margin-top: 12px;
+        color: var(--text-dim);
+    }
+
+    /* Scanline overlay on specific panel */
+    .with-scanlines::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.15) 2px,
+            rgba(0, 0, 0, 0.15) 4px
+        );
+        border-radius: 14px;
+    }
+
+    /* ── Button demo ── */
+    .btn-demo {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .glitch-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 11px 26px;
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: 0.06em;
+        color: var(--text);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.15s;
+        position: relative;
+    }
+
+    .glitch-btn:hover {
+        text-shadow:
+            2px 0 var(--red),
+            -2px 0 var(--cyan);
+        border-color: var(--cyan);
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
+    }
+
+    .glitch-btn.corrupted {
+        opacity: 0.35;
+        cursor: not-allowed;
+        border-style: dashed;
+        border-color: rgba(255, 255, 255, 0.08);
+        animation: corrupt-flicker 4s infinite;
+    }
+
+    @keyframes corrupt-flicker {
+        0%, 100% { opacity: 0.35; }
+        47% { opacity: 0.35; }
+        48% { opacity: 0.15; transform: translateX(1px); }
+        49% { opacity: 0.4; transform: translateX(-1px); }
+        50% { opacity: 0.35; transform: translateX(0); }
+    }
+
+    /* ── Dashboard ── */
+    .dash-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .dash-card {
+        padding: 28px;
+    }
+
+    .dash-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-dim);
+        font-weight: 500;
+    }
+
+    .dash-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-top: 10px;
+        font-family: 'JetBrains Mono', monospace;
+        transition: text-shadow 0.1s;
+    }
+
+    .dash-value.red {
+        color: var(--red);
+        text-shadow: 0 0 16px rgba(255, 0, 64, 0.2);
+    }
+
+    .dash-value.cyan {
+        color: var(--cyan);
+        text-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
+    }
+
+    .dash-sub {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        margin-top: 6px;
+    }
+
+    /* Prism bar */
+    .prism-bar-track {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 2px;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .prism-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--red), #ff8800, var(--green), var(--cyan), #7b5eff, var(--red));
+        background-size: 200% 100%;
+        animation: prism-shift 3s linear infinite;
+    }
+
+    @keyframes prism-shift {
+        0% { background-position: 0% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    /* ── Anti-pattern list ── */
+    .anti-card {
+        padding: 28px 32px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.84rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 700; font-size: 0.85rem; }
+    .anti-list .o { color: var(--success); font-weight: 700; font-size: 0.85rem; }
+
+    /* ── Manifesto ── */
+    .manifesto {
+        text-align: center;
+        margin-top: 64px;
+    }
+
+    .manifesto-text {
+        font-size: 1.4rem;
+        font-weight: 700;
+        line-height: 1.8;
+        color: #fff;
+        text-shadow:
+            2px 0 var(--red),
+            -2px 0 var(--cyan);
+    }
+
+    .manifesto-sub {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    /* ── Responsive ── */
+    @media screen and (max-width: 600px) {
+        .hero-title { font-size: 2.8rem; letter-spacing: 6px; }
+
+        .chroma-demo,
+        .compare-row,
+        .dash-grid { grid-template-columns: 1fr; }
+
+        .btn-demo { flex-direction: column; }
+
+        .intro-card,
+        .anti-card { padding: 24px 24px; }
+    }
+</style>
+
+<body>
+    <div class="vignette"></div>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">BaeJino Original Design</div>
+            <h1 class="hero-title" data-text="Glitch">Glitch</h1>
+            <p class="hero-tagline">
+                The most honest design<br>
+                happens when the system breaks.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="panel intro-card">
+            <p class="intro-text">
+                Every pixel on your screen is a lie — a perfectly coordinated one.
+                Millions of transistors agreeing, every frame, to show you a seamless surface.
+                <strong>Glitch</strong> is what happens when that agreement falters.
+                A signal splits. A frame tears. For a fraction of a second,
+                you see the <strong>machinery underneath</strong>.
+                <br><br>
+                Most designers hide errors. Glitch design <strong>embraces</strong> them.
+                Not as chaos, but as <em>controlled corruption</em> —
+                the deliberate introduction of digital artifact into a system
+                that knows exactly how to break and exactly how to recover.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Chromatic Aberration -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Chromatic Aberration</h2>
+            <p class="section-desc">
+                Real screens are RGB — three color channels stacked in perfect alignment.
+                When that alignment breaks, colors <em>split</em>.
+                Red drifts right, cyan drifts left. The image looks corrupted,
+                but it's actually more honest — you're seeing the individual channels
+                that were always there, just now <strong>separated</strong>.
+            </p>
+            <div class="chroma-demo">
+                <div class="chroma-card chroma-subtle">
+                    <div class="chroma-card-label">Subtle</div>
+                    <div class="chroma-card-text">Aa</div>
+                    <div class="chroma-card-sub">offset: 1px</div>
+                </div>
+                <div class="chroma-card chroma-balanced">
+                    <div class="chroma-card-label">Balanced</div>
+                    <div class="chroma-card-text">Aa</div>
+                    <div class="chroma-card-sub">offset: 2px</div>
+                </div>
+                <div class="chroma-card chroma-heavy">
+                    <div class="chroma-card-label">Heavy</div>
+                    <div class="chroma-card-text">Aa</div>
+                    <div class="chroma-card-sub">offset: 4px</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Chromatic aberration — RGB channel split */</span><br>
+                <span class="kw">text-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">2px</span> 0 <span class="val">#ff0040</span>,&nbsp;&nbsp;<span class="cmt">/* red channel — shift right */</span><br>
+                &nbsp;&nbsp;<span class="val">-2px</span> 0 <span class="val">#00e5ff</span>; <span class="cmt">/* cyan channel — shift left */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: Scan Lines as Texture -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Scan Lines as Texture</h2>
+            <p class="section-desc">
+                CRT monitors painted images one horizontal line at a time.
+                Between those lines: darkness. That <em>in-between</em> gave screens
+                their signature texture — a subtle grid you felt more than you saw.
+                As a CSS <code>::after</code> overlay, scanlines add physical depth
+                to flat digital surfaces.
+            </p>
+            <div class="compare-row">
+                <div class="compare-panel with-scanlines">
+                    <div class="compare-label good">With Scanlines</div>
+                    <div class="compare-text">
+                        The surface has<br>
+                        weight and grain.
+                    </div>
+                    <div class="compare-sub">repeating-linear-gradient</div>
+                </div>
+                <div class="compare-panel">
+                    <div class="compare-label muted">Without</div>
+                    <div class="compare-text">
+                        Same content,<br>
+                        flat and sterile.
+                    </div>
+                    <div class="compare-sub">No overlay</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* CRT scanline overlay */</span><br>
+                <span class="kw">&amp;::after</span> {<br>
+                &nbsp;&nbsp;<span class="kw">content</span>: <span class="val">''</span>;<br>
+                &nbsp;&nbsp;<span class="kw">position</span>: absolute;<br>
+                &nbsp;&nbsp;<span class="kw">inset</span>: 0;<br>
+                &nbsp;&nbsp;<span class="kw">background</span>: <span class="val">repeating-linear-gradient</span>(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;0deg, transparent, transparent <span class="val">2px</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;rgba(0,0,0,0.15) <span class="val">2px</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;rgba(0,0,0,0.15) <span class="val">4px</span><br>
+                &nbsp;&nbsp;);<br>
+                }
+            </div>
+        </section>
+
+        <!-- Principle 03: Controlled Corruption -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Controlled Corruption</h2>
+            <p class="section-desc">
+                The power of glitch isn't in the breaking — it's in the <em>recovery</em>.
+                A button that glitches on hover says "this thing is alive."
+                A disabled button that flickers says "the system knows it's down."
+                The corruption is <strong>intentional</strong>, and the user can feel
+                the difference between random noise and designed tension.
+            </p>
+            <div class="btn-demo">
+                <button class="glitch-btn">NORMAL</button>
+                <button class="glitch-btn" data-glitch-hover>HOVER ME</button>
+                <button class="glitch-btn corrupted" disabled>SYS_ERR</button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Corrupted Dashboard</h2>
+            <p class="section-desc">
+                Data that feels alive. Values flicker with digital noise
+                before settling back — like a signal fighting through interference.
+                The prism bar shifts through the full RGB spectrum,
+                a reminder that beneath every clean number is a stream of raw data.
+            </p>
+            <div class="dash-grid">
+                <div class="panel dash-card">
+                    <div class="dash-label">Signal</div>
+                    <div class="dash-value red" data-glitch-val data-original="98.7%">98.7%</div>
+                    <div class="dash-sub">Strength — last 60s</div>
+                    <div class="prism-bar-track"><div class="prism-bar-fill" style="width: 87%"></div></div>
+                </div>
+                <div class="panel dash-card">
+                    <div class="dash-value cyan" data-glitch-val data-original="1,204">1,204</div>
+                    <div class="dash-label">Packets</div>
+                    <div class="dash-sub">Received — no loss</div>
+                    <div class="prism-bar-track"><div class="prism-bar-fill" style="width: 64%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="panel anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Random noise sprayed across the screen</li>
+                    <li><span class="x">&#x2717;</span> Text so broken it can't be read</li>
+                    <li><span class="x">&#x2717;</span> A VHS filter for 90s nostalgia</li>
+                    <li><span class="x">&#x2717;</span> Flashing that ignores accessibility</li>
+                    <li><span class="o">&#x2713;</span> Controlled distortion — CSS only, no canvas</li>
+                    <li><span class="o">&#x2713;</span> Chromatic aberration for depth and tension</li>
+                    <li><span class="o">&#x2713;</span> Error states turned into aesthetic</li>
+                    <li><span class="o">&#x2713;</span> Scan lines are texture, not decoration</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Perfect pixels are a lie.<br>
+                The glitch is the truth<br>
+                the screen was hiding.
+            </p>
+            <p class="manifesto-sub">
+                Break it on purpose. Recover on purpose. That's the whole trick.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    const glitchChars = '!@#$%^&*_+-[]{}|;:<>?/~0123456789ABCDEF░▒▓█▄▀';
+
+    /* Dashboard value glitch — multi-step corrupt → recover */
+    function glitchValue(el) {
+        const original = el.dataset.original;
+        const len = original.length;
+
+        /* Phase 1: full corruption + RGB split */
+        let corrupted = '';
+        for (let i = 0; i < len; i++) {
+            corrupted += original[i] === ' '
+                ? ' '
+                : glitchChars[Math.floor(Math.random() * glitchChars.length)];
+        }
+        el.textContent = corrupted;
+        el.style.textShadow = '4px 0 var(--red), -4px 0 var(--cyan)';
+
+        /* Phase 2: partial recovery — some chars flicker back */
+        setTimeout(() => {
+            let partial = '';
+            for (let i = 0; i < len; i++) {
+                partial += Math.random() > 0.5
+                    ? original[i]
+                    : glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            }
+            el.textContent = partial;
+            el.style.textShadow = '2px 0 var(--red), -2px 0 var(--cyan)';
+        }, 60);
+
+        /* Phase 3: full recovery */
+        setTimeout(() => {
+            el.textContent = original;
+            el.style.textShadow = '';
+        }, 140);
+    }
+
+    document.querySelectorAll('[data-glitch-val]').forEach(el => {
+        setInterval(() => {
+            if (Math.random() > 0.5) glitchValue(el);
+        }, 2500);
+    });
+</script>
