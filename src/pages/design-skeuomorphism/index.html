@@ -1,0 +1,1279 @@
+<!-- layout: base.html -->
+<!-- title: Skeuomorphism -->
+<!-- description: Inspired by Skeuomorphism — texture, light, and real-world metaphor as interface language -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Georgia&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --cream: #faf6ef;
+        --cream-dark: #f0e8d8;
+        --leather: #8b5e3c;
+        --leather-dark: #5c3a1e;
+        --leather-light: #a87b56;
+        --wood: #6b4226;
+        --wood-light: #a0724e;
+        --paper: #fefcf5;
+        --paper-ruled: #e0d8c8;
+        --felt-green: #2d6b3f;
+        --text: #2a2420;
+        --text-muted: #7a7068;
+        --text-dim: #a09888;
+        --accent: #c04020;
+        --accent-warm: #d4692a;
+        --success: #3a7d44;
+        --danger: #b53a2a;
+        --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.12);
+        --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+        --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.2);
+        --emboss-light: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+        --deboss: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--cream);
+        background-image:
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 49px,
+                rgba(0, 0, 0, 0.02) 49px,
+                rgba(0, 0, 0, 0.02) 50px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 49px,
+                rgba(0, 0, 0, 0.02) 49px,
+                rgba(0, 0, 0, 0.02) 50px
+            );
+        background-attachment: fixed;
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* ─── Texture patterns (pure CSS) ─── */
+
+    .texture-leather {
+        background:
+            radial-gradient(ellipse at 20% 50%, rgba(139, 94, 60, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 50%, rgba(139, 94, 60, 0.05) 0%, transparent 50%),
+            linear-gradient(180deg, #7a5233 0%, #8b5e3c 20%, #7a5233 40%, #8b5e3c 60%, #7a5233 80%, #8b5e3c 100%);
+        background-size: 100% 100%, 100% 100%, 100% 12px;
+        position: relative;
+    }
+
+    .texture-leather::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+        pointer-events: none;
+        border-radius: inherit;
+    }
+
+    .texture-linen {
+        background:
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 1px,
+                rgba(0, 0, 0, 0.03) 1px,
+                rgba(0, 0, 0, 0.03) 2px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 1px,
+                rgba(0, 0, 0, 0.03) 1px,
+                rgba(0, 0, 0, 0.03) 2px
+            ),
+            linear-gradient(180deg, #f0e8d8, #e8dcc8);
+    }
+
+    .texture-paper {
+        background:
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.06'/%3E%3C/svg%3E"),
+            linear-gradient(180deg, #fefcf5, #faf6ef);
+        background-size: 300px 300px, 100% 100%;
+    }
+
+    .texture-wood {
+        background:
+            repeating-linear-gradient(
+                2deg,
+                transparent,
+                transparent 3px,
+                rgba(107, 66, 38, 0.08) 3px,
+                rgba(107, 66, 38, 0.08) 4px
+            ),
+            repeating-linear-gradient(
+                178deg,
+                transparent,
+                transparent 7px,
+                rgba(107, 66, 38, 0.04) 7px,
+                rgba(107, 66, 38, 0.04) 8px
+            ),
+            linear-gradient(180deg, #a0724e 0%, #8b6340 30%, #7a5633 60%, #8b6340 100%);
+    }
+
+    .texture-felt {
+        background:
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)' opacity='0.15'/%3E%3C/svg%3E"),
+            linear-gradient(180deg, #2d6b3f, #245a33);
+        background-size: 200px 200px, 100% 100%;
+    }
+
+    /* ─── Stitching detail ─── */
+    .stitching-top {
+        position: relative;
+    }
+
+    .stitching-top::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 16px;
+        right: 16px;
+        height: 0;
+        border-top: 2px dashed rgba(255, 255, 255, 0.25);
+    }
+
+    .stitching-bottom::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 16px;
+        right: 16px;
+        height: 0;
+        border-top: 2px dashed rgba(255, 255, 255, 0.25);
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: linear-gradient(180deg, rgba(139, 94, 60, 0.12) 0%, rgba(139, 94, 60, 0.06) 100%);
+        border: 1px solid rgba(139, 94, 60, 0.25);
+        color: var(--leather);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: var(--leather-dark);
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* ─── Intro card ─── */
+    .intro-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        margin-bottom: 48px;
+    }
+
+    .intro-card-header {
+        padding: 16px 32px;
+        color: #f0e8d8;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        font-family: Georgia, serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .intro-card-body {
+        padding: 28px 32px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.85;
+        font-weight: 300;
+    }
+
+    .intro-text strong {
+        font-weight: 600;
+        color: var(--leather-dark);
+    }
+
+    /* ─── Sections ─── */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--leather);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-family: Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--leather-dark);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.85;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: rgba(139, 94, 60, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--leather-dark);
+    }
+
+    /* ─── Divider ─── */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(139, 94, 60, 0.2), transparent);
+    }
+
+    /* ─── Texture demo grid ─── */
+    .demo-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .demo-row-4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 12px;
+    }
+
+    .texture-swatch {
+        border-radius: 8px;
+        padding: 28px 16px;
+        text-align: center;
+        box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: default;
+    }
+
+    .texture-swatch:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .swatch-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        position: relative;
+        z-index: 1;
+    }
+
+    .swatch-sub {
+        font-size: 0.72rem;
+        margin-top: 4px;
+        opacity: 0.7;
+        position: relative;
+        z-index: 1;
+    }
+
+    .texture-leather .swatch-label,
+    .texture-leather .swatch-sub,
+    .texture-wood .swatch-label,
+    .texture-wood .swatch-sub,
+    .texture-felt .swatch-label,
+    .texture-felt .swatch-sub {
+        color: #f0e8d8;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ─── Shadow/Depth demos ─── */
+    .depth-demo-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+    }
+
+    .depth-card {
+        background: var(--cream);
+        border-radius: 8px;
+        padding: 24px 16px;
+        text-align: center;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .depth-card.raised {
+        box-shadow:
+            0 4px 8px rgba(0, 0, 0, 0.12),
+            0 1px 2px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .depth-card.embossed {
+        box-shadow:
+            inset 0 2px 3px rgba(255, 255, 255, 0.8),
+            inset 0 -2px 3px rgba(0, 0, 0, 0.08),
+            0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .depth-card.debossed {
+        box-shadow:
+            inset 0 2px 6px rgba(0, 0, 0, 0.15),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.7);
+        background: linear-gradient(180deg, #ede5d5, #f0e8d8);
+    }
+
+    .depth-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+    }
+
+    .depth-sublabel {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+    }
+
+    .depth-icon {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+    }
+
+    /* ─── Code block ─── */
+    .code-block {
+        background: linear-gradient(180deg, #2a2420, #1e1a16);
+        border-radius: 8px;
+        padding: 16px 20px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(240, 232, 216, 0.7);
+        overflow-x: auto;
+        margin-top: 16px;
+        border: 1px solid rgba(139, 94, 60, 0.2);
+        box-shadow: var(--deboss);
+    }
+
+    .code-block .kw { color: #c49a6c; }
+    .code-block .val { color: #a0c878; }
+    .code-block .cmt { color: rgba(240, 232, 216, 0.3); }
+
+    /* ─── Metaphor demo ─── */
+    .metaphor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .metaphor-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow-medium);
+    }
+
+    .metaphor-header {
+        padding: 12px 16px;
+        font-family: Georgia, serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+    }
+
+    .metaphor-body {
+        padding: 16px;
+    }
+
+    /* Calculator */
+    .calc-display {
+        background: linear-gradient(180deg, #c8d8c0, #b0c4a0);
+        border-radius: 4px;
+        padding: 12px 16px;
+        text-align: right;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 1.5rem;
+        color: #2a3a22;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.4);
+        margin-bottom: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .calc-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+
+    .calc-btn {
+        background: linear-gradient(180deg, #f8f4ed 0%, #e8e0d2 100%);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 5px;
+        padding: 10px 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+        cursor: pointer;
+        box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transition: all 0.1s;
+    }
+
+    .calc-btn:active {
+        box-shadow:
+            inset 0 2px 4px rgba(0, 0, 0, 0.15),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+        transform: translateY(1px);
+        background: linear-gradient(180deg, #e0d8c8 0%, #d8d0c0 100%);
+    }
+
+    .calc-btn.op {
+        background: linear-gradient(180deg, #e8a050 0%, #d08030 100%);
+        color: #fff;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+        border-color: rgba(0, 0, 0, 0.2);
+        box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .calc-btn.op:active {
+        background: linear-gradient(180deg, #c07028 0%, #b06020 100%);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Notepad */
+    .notepad-lines {
+        background-image:
+            linear-gradient(transparent 31px, #c8c0b0 31px, #c8c0b0 32px);
+        background-size: 100% 32px;
+        min-height: 140px;
+    }
+
+    .notepad-margin {
+        border-left: 2px solid #e8a8a8;
+        padding-left: 16px;
+        margin-left: 24px;
+    }
+
+    .notepad-text {
+        font-family: Georgia, serif;
+        font-size: 0.88rem;
+        line-height: 32px;
+        color: #3a3630;
+    }
+
+    /* ─── Put It Together — Note card demo ─── */
+    .note-demo {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow-heavy), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .note-demo-header {
+        padding: 20px 28px;
+        color: #f0e8d8;
+        position: relative;
+    }
+
+    .note-demo-header-title {
+        font-family: Georgia, serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        position: relative;
+        z-index: 1;
+    }
+
+    .note-demo-header-date {
+        font-size: 0.75rem;
+        opacity: 0.6;
+        margin-top: 4px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .note-demo-body {
+        padding: 0;
+        position: relative;
+    }
+
+    .note-demo-content {
+        padding: 20px 28px 20px 62px;
+        min-height: 160px;
+        border-left: 2px solid #e8a8a8;
+        margin-left: 40px;
+        background-image:
+            linear-gradient(transparent 31px, #d8d0c0 31px, #d8d0c0 32px);
+        background-size: 100% 32px;
+        background-position: 0 20px;
+    }
+
+    .note-demo-content p {
+        font-family: Georgia, serif;
+        font-size: 0.9rem;
+        line-height: 32px;
+        color: #3a3630;
+        margin: 0;
+    }
+
+    .note-demo-toolbar {
+        padding: 14px 28px;
+        display: flex;
+        gap: 8px;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .skeu-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        border-radius: 6px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.1s;
+        background: linear-gradient(180deg, #f8f4ed 0%, #e0d8c8 100%);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        color: var(--text);
+        box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .skeu-btn:hover {
+        background: linear-gradient(180deg, #fff 0%, #e8e0d2 100%);
+    }
+
+    .skeu-btn:active {
+        box-shadow:
+            inset 0 2px 4px rgba(0, 0, 0, 0.12),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+        transform: translateY(1px);
+        background: linear-gradient(180deg, #e0d8c8 0%, #d8d0c0 100%);
+    }
+
+    .skeu-btn.primary {
+        background: linear-gradient(180deg, #a87b56 0%, #8b5e3c 100%);
+        color: #f0e8d8;
+        border-color: rgba(0, 0, 0, 0.25);
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+        box-shadow:
+            0 2px 6px rgba(139, 94, 60, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .skeu-btn.primary:hover {
+        background: linear-gradient(180deg, #b88a64 0%, #9a6d48 100%);
+    }
+
+    .skeu-btn.primary:active {
+        background: linear-gradient(180deg, #7a5233 0%, #6b4226 100%);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    /* ─── Toggle switch (skeuomorphic) ─── */
+    .switch-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .switch-label {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    .skeu-switch {
+        width: 52px;
+        height: 28px;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #c8c0b0, #d0c8b8);
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        position: relative;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .skeu-switch.on {
+        background: linear-gradient(180deg, #5a9a4a, #4a8a3a);
+    }
+
+    .skeu-switch-knob {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #fff 0%, #e8e0d8 100%);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: left 0.2s;
+    }
+
+    .skeu-switch.on .skeu-switch-knob {
+        left: 26px;
+    }
+
+    /* ─── Anti-patterns ─── */
+    .anti-card {
+        background: var(--paper);
+        border-radius: 8px;
+        padding: 24px 28px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-weight: 300;
+        line-height: 1.5;
+    }
+
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        color: var(--danger);
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .anti-list .o {
+        color: var(--success);
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    /* ─── Manifesto ─── */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-family: Georgia, serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        line-height: 1.7;
+        color: var(--leather-dark);
+    }
+
+    .manifesto-sub {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* ─── Interactive slider ─── */
+    .slider-demo {
+        margin-top: 16px;
+    }
+
+    .skeu-slider-track {
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, #c8c0b0, #d0c8b8);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+        position: relative;
+        cursor: pointer;
+    }
+
+    .skeu-slider-fill {
+        height: 100%;
+        border-radius: 4px;
+        background: linear-gradient(180deg, #a87b56, #8b5e3c);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        width: 40%;
+        transition: width 0.1s;
+    }
+
+    .skeu-slider-thumb {
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #fff 0%, #e8e0d2 100%);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow:
+            0 2px 6px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        cursor: grab;
+        transition: box-shadow 0.15s;
+    }
+
+    .skeu-slider-thumb:active {
+        cursor: grabbing;
+        box-shadow:
+            0 4px 12px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .skeu-slider-thumb::after {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.6) 0%, transparent 60%);
+    }
+
+    .slider-value {
+        text-align: center;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 12px;
+        font-weight: 500;
+    }
+
+    /* ─── Responsive ─── */
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .demo-row,
+        .metaphor-grid,
+        .depth-demo-row {
+            grid-template-columns: 1fr;
+        }
+
+        .demo-row-4 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .intro-card-body,
+        .anti-card {
+            padding: 20px 24px;
+        }
+
+        .calc-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .note-demo-content {
+            margin-left: 20px;
+            padding-left: 32px;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Skeuomorphism</div>
+            <h1 class="hero-title">Skeuomorphism</h1>
+            <p class="hero-tagline">
+                Your pixels used to have splinters.<br>
+                That was a feature, not a bug.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="intro-card">
+            <div class="texture-leather stitching-top intro-card-header">
+                About This Philosophy
+            </div>
+            <div class="texture-paper intro-card-body">
+                <p class="intro-text">
+                    Early touchscreens were alien technology. Nobody knew what to tap.
+                    So Steve Jobs did the only sane thing: he made the notepad look like an
+                    <strong>actual notepad</strong>. The bookshelf got real wood grain.
+                    The calendar wore stitched leather. It worked. People understood.
+                    <br><br>
+                    Then it became parody. Decorative leather on a podcast app. Green felt on Game Center.
+                    Jony Ive killed it overnight with iOS 7. His argument:
+                    <strong>"the user has learned what a button is."</strong>
+                    He was right. But he also threw out the baby with the bathwater.
+                </p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Texture as Material -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Texture as Material</h2>
+            <p class="section-desc">
+                Leather, linen, wood, felt. The original skeuomorphic palette treated every surface
+                like a real thing you could touch. These days we build them with
+                <code>linear-gradient</code>, <code>repeating-linear-gradient</code>, and
+                inline SVG noise filters. No images. No download penalty. Just CSS pretending
+                to be a craft store.
+            </p>
+            <div class="demo-row-4">
+                <div class="texture-swatch texture-leather">
+                    <div class="swatch-label">Leather</div>
+                    <div class="swatch-sub">Warm, authoritative</div>
+                </div>
+                <div class="texture-swatch texture-linen">
+                    <div class="swatch-label">Linen</div>
+                    <div class="swatch-sub">Quiet, familiar</div>
+                </div>
+                <div class="texture-swatch texture-wood">
+                    <div class="swatch-label">Wood</div>
+                    <div class="swatch-sub">Grounded, organic</div>
+                </div>
+                <div class="texture-swatch texture-felt">
+                    <div class="swatch-label">Felt</div>
+                    <div class="swatch-sub">Playful, soft</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Linen texture — pure CSS, no images */</span><br>
+                <span class="kw">background</span>:<br>
+                &nbsp;&nbsp;repeating-linear-gradient(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;0deg,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;transparent, transparent <span class="val">1px</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;rgba(0,0,0,<span class="val">0.03</span>) <span class="val">1px</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;rgba(0,0,0,<span class="val">0.03</span>) <span class="val">2px</span><br>
+                &nbsp;&nbsp;),<br>
+                &nbsp;&nbsp;repeating-linear-gradient(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;90deg,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;transparent, transparent <span class="val">1px</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;rgba(0,0,0,<span class="val">0.03</span>) <span class="val">1px</span>,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;rgba(0,0,0,<span class="val">0.03</span>) <span class="val">2px</span><br>
+                &nbsp;&nbsp;),<br>
+                &nbsp;&nbsp;linear-gradient(180deg, <span class="val">#f0e8d8</span>, <span class="val">#e8dcc8</span>);<br>
+                <span class="cmt">/* Cross-hatch at 2px intervals + warm base = linen */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: Light and Shadow -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Light and Shadow</h2>
+            <p class="section-desc">
+                Inner shadows, emboss, deboss. The skeuomorphic trick for making flat pixels
+                feel physically pressed or raised. A <code>box-shadow: inset</code> with the right
+                values and suddenly your div has weight. Light comes from above, shadow falls below.
+                Physics class, but for rectangles.
+            </p>
+            <div class="depth-demo-row">
+                <div class="depth-card raised" id="depth-raised">
+                    <div class="depth-icon">&#9650;</div>
+                    <div class="depth-label">Raised</div>
+                    <div class="depth-sublabel">Outer shadow + inner highlight</div>
+                </div>
+                <div class="depth-card embossed" id="depth-embossed">
+                    <div class="depth-icon">&#8213;</div>
+                    <div class="depth-label">Embossed</div>
+                    <div class="depth-sublabel">Subtle top-light, bottom-dark</div>
+                </div>
+                <div class="depth-card debossed" id="depth-debossed">
+                    <div class="depth-icon">&#9660;</div>
+                    <div class="depth-label">Debossed</div>
+                    <div class="depth-sublabel">Pressed inward, inner shadow</div>
+                </div>
+            </div>
+
+            <div class="slider-demo">
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">
+                    Drag it. It wants to be dragged.
+                </p>
+                <div class="skeu-slider-track" id="slider-track">
+                    <div class="skeu-slider-fill" id="slider-fill"></div>
+                    <div class="skeu-slider-thumb" id="slider-thumb"></div>
+                </div>
+                <div class="slider-value" id="slider-value">Volume: 40%</div>
+            </div>
+
+            <div class="code-block">
+                <span class="cmt">/* Raised — physically above the surface */</span><br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">0 4px 8px</span> rgba(0,0,0,0.12),&nbsp;&nbsp;&nbsp;<span class="cmt">/* drop shadow */</span><br>
+                &nbsp;&nbsp;<span class="val">0 1px 2px</span> rgba(0,0,0,0.08),&nbsp;&nbsp;&nbsp;<span class="cmt">/* tight shadow */</span><br>
+                &nbsp;&nbsp;<span class="val">inset 0 1px 0</span> rgba(255,255,255,0.9); <span class="cmt">/* top highlight */</span><br>
+                <br>
+                <span class="cmt">/* Debossed — pressed into the surface */</span><br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">inset 0 2px 6px</span> rgba(0,0,0,0.15),&nbsp;<span class="cmt">/* inner shadow */</span><br>
+                &nbsp;&nbsp;<span class="val">inset 0 -1px 0</span> rgba(255,255,255,0.7); <span class="cmt">/* bottom rim light */</span>
+            </div>
+        </section>
+
+        <!-- Principle 03: Real-World Metaphor -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Real-World Metaphor</h2>
+            <p class="section-desc">
+                The notepad looks like a notepad. The calculator has button bezels.
+                The bookshelf has wood grain. Skeuomorphism's killer insight: if a thing
+                behaves like a real object, it should <em>look</em> like that object.
+                The user's existing knowledge becomes the instruction manual.
+            </p>
+            <div class="metaphor-grid">
+                <!-- Calculator -->
+                <div class="metaphor-card">
+                    <div class="texture-linen metaphor-header" style="color: var(--text); border-bottom: 1px solid rgba(0,0,0,0.08);">
+                        Calculator
+                    </div>
+                    <div class="texture-linen metaphor-body">
+                        <div class="calc-display" id="calc-display">0</div>
+                        <div class="calc-grid">
+                            <button class="calc-btn" data-calc="7">7</button>
+                            <button class="calc-btn" data-calc="8">8</button>
+                            <button class="calc-btn" data-calc="9">9</button>
+                            <button class="calc-btn op" data-calc="/">&divide;</button>
+                            <button class="calc-btn" data-calc="4">4</button>
+                            <button class="calc-btn" data-calc="5">5</button>
+                            <button class="calc-btn" data-calc="6">6</button>
+                            <button class="calc-btn op" data-calc="*">&times;</button>
+                            <button class="calc-btn" data-calc="1">1</button>
+                            <button class="calc-btn" data-calc="2">2</button>
+                            <button class="calc-btn" data-calc="3">3</button>
+                            <button class="calc-btn op" data-calc="-">&minus;</button>
+                            <button class="calc-btn" data-calc="C">C</button>
+                            <button class="calc-btn" data-calc="0">0</button>
+                            <button class="calc-btn" data-calc="=">=</button>
+                            <button class="calc-btn op" data-calc="+">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notepad -->
+                <div class="metaphor-card">
+                    <div class="texture-leather stitching-top metaphor-header" style="color: #f0e8d8; text-shadow: 0 -1px 0 rgba(0,0,0,0.4);">
+                        Notes
+                    </div>
+                    <div class="texture-paper metaphor-body notepad-lines">
+                        <div class="notepad-margin">
+                            <div class="notepad-text">
+                                Skeuomorphism works<br>
+                                when it teaches.<br>
+                                <br>
+                                It fails when it<br>
+                                decorates.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Put It Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Put It Together</h2>
+            <p class="section-desc">
+                Leather header with stitching detail. Paper texture body with ruled lines.
+                Beveled buttons with real press feedback. One card, all three principles.
+                It looks like something from 2011. That's the compliment.
+            </p>
+            <div class="note-demo">
+                <div class="texture-leather stitching-top stitching-bottom note-demo-header">
+                    <div class="note-demo-header-title">My Journal</div>
+                    <div class="note-demo-header-date" id="journal-date"></div>
+                </div>
+                <div class="texture-paper note-demo-body">
+                    <div class="note-demo-content">
+                        <p id="journal-text">
+                            Today I learned that pixels can have texture.
+                            Not the kind you download from a stock photo site,
+                            but the kind you build with gradients and shadows.
+                            <br><br>
+                            The leather header took four CSS properties.
+                            The paper lines took one repeating gradient.
+                            These buttons? They just want to be pressed.
+                        </p>
+                    </div>
+                </div>
+                <div class="texture-linen note-demo-toolbar">
+                    <button class="skeu-btn" id="btn-clear" title="Clear">&#9998; New</button>
+                    <button class="skeu-btn primary" id="btn-save" title="Save">&#10003; Save</button>
+                    <div style="margin-left: auto; display: flex; align-items: center;">
+                        <div class="switch-row">
+                            <span class="switch-label">Dark ink</span>
+                            <div class="skeu-switch" id="ink-switch">
+                                <div class="skeu-switch-knob"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Leather texture on a SaaS dashboard (your B2B users don't want a saddle)</li>
+                    <li><span class="x">&#x2717;</span> Realistic stitching that serves no purpose (decoration is not affordance)</li>
+                    <li><span class="x">&#x2717;</span> Wood grain on a music player (looking at you, early iOS)</li>
+                    <li><span class="x">&#x2717;</span> Textures that slow down rendering (CSS noise, not PNG noise)</li>
+                    <li><span class="o">&#x2713;</span> Affordance: interactive elements that look interactive</li>
+                    <li><span class="o">&#x2713;</span> Texture as personality (one surface with warmth, not everything cowhide)</li>
+                    <li><span class="o">&#x2713;</span> Emboss and deboss for subtle depth cues</li>
+                    <li><span class="o">&#x2713;</span> Physical metaphors that genuinely aid understanding</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                A button should look<br>
+                like it wants to be pressed.
+            </p>
+            <p class="manifesto-sub">
+                Flat design taught us restraint. Skeuomorphism taught us empathy.<br>
+                The best interfaces remember both lessons.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* ─── Calculator ─── */
+    (function() {
+        var display = document.getElementById('calc-display');
+        var current = '0';
+        var operator = null;
+        var previous = null;
+        var fresh = true;
+
+        document.querySelectorAll('[data-calc]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var val = btn.dataset.calc;
+
+                if (val === 'C') {
+                    current = '0';
+                    operator = null;
+                    previous = null;
+                    fresh = true;
+                } else if (val === '=') {
+                    if (operator && previous !== null) {
+                        var a = parseFloat(previous);
+                        var b = parseFloat(current);
+                        var result = 0;
+                        if (operator === '+') result = a + b;
+                        else if (operator === '-') result = a - b;
+                        else if (operator === '*') result = a * b;
+                        else if (operator === '/') result = b !== 0 ? a / b : 'Err';
+                        current = String(typeof result === 'number' ? parseFloat(result.toFixed(8)) : result);
+                        operator = null;
+                        previous = null;
+                        fresh = true;
+                    }
+                } else if (['+', '-', '*', '/'].indexOf(val) !== -1) {
+                    operator = val;
+                    previous = current;
+                    fresh = true;
+                } else {
+                    if (fresh) {
+                        current = val;
+                        fresh = false;
+                    } else {
+                        current = current === '0' ? val : current + val;
+                    }
+                }
+
+                display.textContent = current.length > 10 ? current.slice(0, 10) : current;
+            });
+        });
+    })();
+
+    /* ─── Slider ─── */
+    (function() {
+        var track = document.getElementById('slider-track');
+        var fill = document.getElementById('slider-fill');
+        var thumb = document.getElementById('slider-thumb');
+        var label = document.getElementById('slider-value');
+        var dragging = false;
+
+        function updateSlider(pct) {
+            pct = Math.max(0, Math.min(100, pct));
+            fill.style.width = pct + '%';
+            thumb.style.left = pct + '%';
+            label.textContent = 'Volume: ' + Math.round(pct) + '%';
+        }
+
+        function getPercent(e) {
+            var rect = track.getBoundingClientRect();
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            return ((clientX - rect.left) / rect.width) * 100;
+        }
+
+        thumb.addEventListener('mousedown', function(e) {
+            dragging = true;
+            e.preventDefault();
+        });
+
+        thumb.addEventListener('touchstart', function(e) {
+            dragging = true;
+        }, { passive: true });
+
+        document.addEventListener('mousemove', function(e) {
+            if (dragging) updateSlider(getPercent(e));
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (dragging) updateSlider(getPercent(e));
+        }, { passive: true });
+
+        document.addEventListener('mouseup', function() { dragging = false; });
+        document.addEventListener('touchend', function() { dragging = false; });
+
+        track.addEventListener('click', function(e) {
+            updateSlider(getPercent(e));
+        });
+    })();
+
+    /* ─── Toggle switch ─── */
+    (function() {
+        var sw = document.getElementById('ink-switch');
+        var text = document.getElementById('journal-text');
+        sw.addEventListener('click', function() {
+            sw.classList.toggle('on');
+            if (sw.classList.contains('on')) {
+                text.style.color = '#1a1614';
+                text.style.fontWeight = '500';
+            } else {
+                text.style.color = '#3a3630';
+                text.style.fontWeight = '';
+            }
+        });
+    })();
+
+    /* ─── Journal date ─── */
+    (function() {
+        var el = document.getElementById('journal-date');
+        var now = new Date();
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        el.textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+    })();
+
+    /* ─── Button feedback ─── */
+    (function() {
+        var btnSave = document.getElementById('btn-save');
+        var btnClear = document.getElementById('btn-clear');
+        var text = document.getElementById('journal-text');
+        var original = text.innerHTML;
+
+        btnSave.addEventListener('click', function() {
+            btnSave.textContent = '✓ Saved!';
+            setTimeout(function() {
+                btnSave.innerHTML = '&#10003; Save';
+            }, 1200);
+        });
+
+        btnClear.addEventListener('click', function() {
+            if (text.innerHTML === original) {
+                text.innerHTML = '<em style="color: var(--text-dim);">A fresh page. The lines are waiting.</em>';
+            } else {
+                text.innerHTML = original;
+            }
+        });
+    })();
+
+    /* ─── Depth card click interaction ─── */
+    (function() {
+        ['depth-raised', 'depth-embossed', 'depth-debossed'].forEach(function(id) {
+            var card = document.getElementById(id);
+            card.style.cursor = 'pointer';
+            card.style.transition = 'transform 0.15s, box-shadow 0.15s';
+
+            card.addEventListener('mousedown', function() {
+                card.style.transform = 'scale(0.97)';
+                if (id === 'depth-raised') {
+                    card.style.boxShadow = 'inset 0 2px 6px rgba(0,0,0,0.15), inset 0 -1px 0 rgba(255,255,255,0.5)';
+                }
+            });
+
+            card.addEventListener('mouseup', function() {
+                card.style.transform = '';
+                if (id === 'depth-raised') {
+                    card.style.boxShadow = '';
+                }
+            });
+
+            card.addEventListener('mouseleave', function() {
+                card.style.transform = '';
+                if (id === 'depth-raised') {
+                    card.style.boxShadow = '';
+                }
+            });
+        });
+    })();
+</script>
