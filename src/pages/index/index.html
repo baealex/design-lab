@@ -2,521 +2,684 @@
 <!-- title: BaeJino Design -->
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Inter:wght@400;500&display=swap');
 
     body {
-        background: #0f0f13;
+        background: #08080f;
         color: #fff;
+        font-family: 'Inter', sans-serif;
         overflow: hidden;
+        height: 100vh;
     }
 
-    .gallery {
+    /* Ambient background orbs for glassmorphism depth */
+    .bg-ambient {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .bg-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        animation: drift 25s ease-in-out infinite;
+    }
+
+    .bg-orb-1 {
+        width: 500px;
+        height: 500px;
+        background: rgba(99, 102, 241, 0.12);
+        top: -10%;
+        left: -5%;
+        animation-delay: 0s;
+    }
+
+    .bg-orb-2 {
+        width: 400px;
+        height: 400px;
+        background: rgba(6, 182, 212, 0.08);
+        bottom: -15%;
+        right: 15%;
+        animation-delay: -8s;
+    }
+
+    .bg-orb-3 {
+        width: 350px;
+        height: 350px;
+        background: rgba(236, 72, 153, 0.06);
+        top: 50%;
+        right: -5%;
+        animation-delay: -16s;
+    }
+
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(30px, -20px) scale(1.05); }
+        66% { transform: translate(-20px, 15px) scale(0.95); }
+    }
+
+    /* App layout */
+    .app {
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-direction: column;
+        height: 100vh;
+    }
+
+    /* Header */
+    .app-header {
+        display: flex;
+        align-items: center;
+        padding: 16px 24px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    .app-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    }
+
+    .header-left {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .logo {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .tagline {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.3);
+        margin: 0;
+    }
+
+    .header-link {
+        color: rgba(255, 255, 255, 0.3);
+        text-decoration: none;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+    }
+
+    .header-link:hover {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Main split */
+    .app-main {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+    }
+
+    /* Preview pane */
+    .preview-pane {
+        flex: 3;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .preview-frame {
+        position: relative;
         width: 100%;
         height: 100%;
-        font-family: 'Montserrat', sans-serif;
-    }
-
-    /* Hero */
-    .hero {
-        flex: 12;
-        position: relative;
+        border-radius: 16px;
         overflow: hidden;
-        min-height: 0;
-
-        iframe {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            opacity: 1;
-            transition: opacity 0.4s ease;
-
-            &.fade-out { opacity: 0; }
-        }
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
-    .hero-overlay {
+    .preview-frame::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.15) 50%, transparent 90%);
+        z-index: 2;
+    }
+
+    .preview-frame iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    .preview-frame iframe.fade-out {
+        opacity: 0;
+    }
+
+    .preview-bar {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-        padding: 32px 40px 20px;
-        background: linear-gradient(to top, rgba(15,15,19,0.95) 0%, rgba(15,15,19,0.6) 50%, transparent 100%);
+        padding: 12px 20px;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        pointer-events: none;
-    }
-
-    .hero-info {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.65rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: rgba(255,255,255,0.6);
-    }
-
-    .hero-title {
-        font-size: 1.6rem;
-        font-weight: 900;
-        line-height: 1.2;
-    }
-
-    .hero-desc {
-        font-size: 0.85rem;
-        color: rgba(255,255,255,0.5);
-        font-weight: 400;
-    }
-
-    .hero-open {
-        pointer-events: auto;
-        color: #fff;
-        text-decoration: none;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 16px;
-        border-radius: 8px;
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,0.15);
-        transition: background 0.2s;
-        flex-shrink: 0;
-        cursor: pointer;
-
-        &:hover { background: rgba(255,255,255,0.2); }
-    }
-
-    /* Bottom Panel */
-    .bottom-panel {
-        flex: 3;
-        display: flex;
-        flex-direction: column;
-        background: #16161d;
-        border-top: 1px solid rgba(255,255,255,0.06);
-        min-height: 0;
-    }
-
-    /* Filters */
-    .filters {
-        display: flex;
-        gap: 8px;
-        padding: 12px 24px;
-        flex-shrink: 0;
-    }
-
-    .chip {
-        padding: 5px 14px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        cursor: pointer;
-        border: 1px solid rgba(255,255,255,0.1);
-        background: transparent;
-        color: rgba(255,255,255,0.5);
-        transition: all 0.2s;
-        font-family: 'Montserrat', sans-serif;
-
-        &:hover {
-            border-color: rgba(255,255,255,0.3);
-            color: rgba(255,255,255,0.8);
-        }
-
-        &.active {
-            background: rgba(255,255,255,0.12);
-            border-color: rgba(255,255,255,0.25);
-            color: #fff;
-        }
-    }
-
-    /* Carousel */
-    .carousel-wrap {
-        flex: 1;
-        position: relative;
-        min-height: 0;
-        overflow-x: auto;
-        overflow-y: hidden;
-        cursor: grab;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(255,255,255,0.15) transparent;
-
-        &.dragging {
-            cursor: grabbing;
-            scroll-behavior: auto;
-        }
-
-        &::-webkit-scrollbar { height: 4px; }
-        &::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.15);
-            border-radius: 2px;
-        }
-    }
-
-    .carousel {
-        display: flex;
         gap: 12px;
-        padding: 0 24px 16px;
-        height: 100%;
-        align-items: stretch;
-        user-select: none;
+        background: rgba(8, 8, 15, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
-    .card {
-        min-width: 180px;
-        max-width: 180px;
-        padding: 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.06);
-        background: rgba(255,255,255,0.03);
-        cursor: pointer;
+    .preview-frame:hover .preview-bar {
+        opacity: 1;
+    }
+
+    .preview-info {
+        min-width: 0;
+    }
+
+    .preview-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .preview-desc {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .preview-open {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         transition: all 0.2s;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .preview-open:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+    }
+
+    .preview-open:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.5);
+        outline-offset: 2px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        flex: 2;
+        min-width: 320px;
+        max-width: 420px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        flex-shrink: 0;
-
-        &:hover {
-            border-color: rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.06);
-        }
-
-        &.active {
-            border-color: rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.1);
-        }
+        min-height: 0;
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+        position: relative;
     }
 
-    .card-cat {
-        display: flex;
-        align-items: center;
-        gap: 6px;
+    .sidebar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 30%, transparent 70%, rgba(255, 255, 255, 0.1));
+        z-index: 1;
+    }
+
+    .sidebar-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar { width: 3px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 2px;
+    }
+
+    /* Section divider */
+    .section-divider {
+        font-family: 'Montserrat', sans-serif;
         font-size: 0.6rem;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: rgba(255,255,255,0.4);
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.2);
+        padding: 16px 12px 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Card */
+    .card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        margin-bottom: 2px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        color: #fff;
+        width: 100%;
+        text-align: left;
+        font-family: inherit;
+        font-size: inherit;
+    }
+
+    .card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .card.active {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .card:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.5);
+        outline-offset: 1px;
+    }
+
+    .card-year {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.18);
+        min-width: 36px;
+        flex-shrink: 0;
+    }
+
+    .card-icon {
+        font-size: 1.1rem;
+        min-width: 36px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .card-body {
+        flex: 1;
+        min-width: 0;
     }
 
     .card-title {
-        font-size: 0.8rem;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.78rem;
         font-weight: 700;
         line-height: 1.3;
     }
 
     .card-desc {
         font-size: 0.68rem;
-        color: rgba(255,255,255,0.4);
+        color: rgba(255, 255, 255, 0.3);
+        margin-top: 1px;
         line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    /* Dots */
-    .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        flex-shrink: 0;
+    .card.active .card-year {
+        color: rgba(255, 255, 255, 0.35);
     }
 
-    .card-cat .dot { width: 6px; height: 6px; }
+    .card.active .card-desc {
+        color: rgba(255, 255, 255, 0.45);
+    }
 
-    .dot.design { background: #ff6b9d; }
-    .dot.effect { background: #735af2; }
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        .bg-orb { animation: none !important; }
+        .preview-frame iframe { transition: none !important; }
+        .preview-bar { transition: none !important; opacity: 1 !important; }
+        .card { transition: none !important; }
+    }
 
     /* Mobile */
     @media screen and (max-width: 768px) {
-        .hero { flex: 5; }
-        .bottom-panel { flex: 5; }
-
-        .hero-overlay {
+        .app-main {
             flex-direction: column;
-            align-items: flex-start;
-            padding: 24px 20px 14px;
         }
 
-        .hero-title { font-size: 1.2rem; }
-        .filters { padding: 10px 16px; }
+        .app-header {
+            padding: 12px 16px;
+        }
 
-        .carousel { padding: 0 16px 12px; }
+        .tagline {
+            display: none;
+        }
+
+        .preview-pane {
+            flex: none;
+            height: 38vh;
+            padding: 12px;
+        }
+
+        .preview-frame {
+            border-radius: 12px;
+        }
+
+        .preview-bar {
+            opacity: 1;
+            padding: 10px 16px;
+        }
+
+        .sidebar {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+            border-left: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar::before {
+            display: none;
+        }
+
+        .sidebar-scroll {
+            padding: 8px;
+        }
 
         .card {
-            min-width: 150px;
-            max-width: 150px;
-            padding: 12px;
+            padding: 10px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .preview-pane {
+            height: 32vh;
+            padding: 8px;
+        }
+
+        .card-desc {
+            display: none;
         }
     }
 </style>
 
 <body>
-    <div class="gallery">
-        <div class="hero">
-            <iframe id="hero-iframe"></iframe>
-            <div class="hero-overlay">
-                <div class="hero-info">
-                    <div class="hero-badge">
-                        <span class="dot" id="hero-dot"></span>
-                        <span id="hero-cat"></span>
+    <div class="bg-ambient">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <div class="app">
+        <header class="app-header" role="banner">
+            <div class="header-left">
+                <h1 class="logo">BaeJino Design</h1>
+                <p class="tagline">Design trends, reimagined</p>
+            </div>
+            <a class="header-link" href="https://github.com/baealex/design" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        </header>
+
+        <div class="app-main">
+            <div class="preview-pane" aria-label="Design preview">
+                <div class="preview-frame">
+                    <iframe id="preview-iframe" title="Design preview"></iframe>
+                    <div class="preview-bar">
+                        <div class="preview-info">
+                            <div class="preview-title" id="preview-title"></div>
+                            <div class="preview-desc" id="preview-desc"></div>
+                        </div>
+                        <a class="preview-open" id="preview-open" href="#">Open</a>
                     </div>
-                    <h1 class="hero-title" id="hero-title"></h1>
-                    <p class="hero-desc" id="hero-desc"></p>
                 </div>
-                <a class="hero-open" id="hero-link" href="#">
-                    Open
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                </a>
             </div>
-        </div>
-        <div class="bottom-panel">
-            <div class="filters" id="filters"></div>
-            <div class="carousel-wrap" id="carousel-wrap">
-                <div class="carousel" id="carousel"></div>
-            </div>
+
+            <aside class="sidebar" role="complementary" aria-label="Design catalog">
+                <div class="sidebar-scroll" id="sidebar-scroll"></div>
+            </aside>
         </div>
     </div>
 </body>
 
 <script>
-    const pages = $DATA.pages;
+    var pages = $DATA.pages;
 
-    const categories = [
-        { key: 'all', label: 'All' },
-        { key: 'effect', label: 'Effects' },
-        { key: 'design', label: 'Design' },
-    ];
+    var EFFECT_ICONS = {
+        'effect-confetti': '\u{1F38A}',
+        'effect-fireworks': '\u{1F386}',
+        'effect-magnetic': '\u{1F9F2}',
+        'effect-reveal': '\u{1F441}',
+        'effect-stack': '\u{1F0CF}',
+    };
 
-    function getCategory(name) {
-        return name.split('-')[0] || '';
-    }
+    var designPages = pages
+        .filter(function(p) { return p.year !== null; })
+        .sort(function(a, b) { return a.year - b.year; });
 
-    function getCategoryLabel(cat) {
-        const found = categories.find(c => c.key === cat);
-        return found ? found.label : cat;
-    }
+    var effectPages = pages.filter(function(p) { return p.category === 'effect'; });
 
-    const $iframe = document.getElementById('hero-iframe');
-    const $heroTitle = document.getElementById('hero-title');
-    const $heroDesc = document.getElementById('hero-desc');
-    const $heroDot = document.getElementById('hero-dot');
-    const $heroCat = document.getElementById('hero-cat');
-    const $heroLink = document.getElementById('hero-link');
-    const $filters = document.getElementById('filters');
-    const $carouselWrap = document.getElementById('carousel-wrap');
-    const $carousel = document.getElementById('carousel');
-    let currentIndex = 0;
-    let activeFilter = 'all';
-    let filteredPages = [...pages];
-    let activeCard = null;
-    let isFirstLoad = true;
+    var $iframe = document.getElementById('preview-iframe');
+    var $previewTitle = document.getElementById('preview-title');
+    var $previewDesc = document.getElementById('preview-desc');
+    var $previewOpen = document.getElementById('preview-open');
+    var $sidebarScroll = document.getElementById('sidebar-scroll');
 
-    // ── Filter chips ──
-    categories.forEach(cat => {
-        const chip = document.createElement('button');
-        chip.className = 'chip' + (cat.key === 'all' ? ' active' : '');
-        chip.textContent = cat.label;
-        chip.addEventListener('click', () => {
-            activeFilter = cat.key;
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-            updateFilteredPages();
-        });
-        $filters.appendChild(chip);
-    });
+    var currentPage = null;
+    var activeCard = null;
+    var isFirstLoad = true;
 
-    function updateFilteredPages() {
-        filteredPages = activeFilter === 'all'
-            ? [...pages]
-            : pages.filter(p => getCategory(p.name) === activeFilter);
+    // Render cards
+    function renderCards() {
+        var frag = document.createDocumentFragment();
 
-        renderCarousel();
+        // Design label
+        var designLabel = document.createElement('div');
+        designLabel.className = 'section-divider';
+        designLabel.textContent = 'Trends';
+        frag.appendChild(designLabel);
 
-        const currentName = pages[currentIndex]?.name;
-        const idx = filteredPages.findIndex(p => p.name === currentName);
-        if (idx >= 0) {
-            selectByFilteredIndex(idx);
-        } else if (filteredPages.length > 0) {
-            selectByFilteredIndex(0);
-        }
-    }
-
-    // ── Carousel rendering ──
-    function renderCarousel() {
-        $carousel.innerHTML = '';
-        filteredPages.forEach((page, i) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-
-            const cat = getCategory(page.name);
-            card.innerHTML = `
-                <div class="card-cat">
-                    <span class="dot ${cat}"></span>
-                    ${getCategoryLabel(cat)}
-                </div>
-                <div class="card-title">${page.title}</div>
-                <div class="card-desc">${page.description}</div>
-            `;
-
-            card.addEventListener('click', () => {
-                selectByFilteredIndex(i);
+        designPages.forEach(function(page) {
+            var btn = document.createElement('button');
+            btn.className = 'card';
+            btn.dataset.name = page.name;
+            btn.innerHTML =
+                '<span class="card-year">' + page.year + '</span>' +
+                '<div class="card-body">' +
+                    '<div class="card-title">' + page.title + '</div>' +
+                    '<div class="card-desc">' + page.description + '</div>' +
+                '</div>';
+            btn.addEventListener('click', function() {
+                selectPage(page);
             });
-
-            $carousel.appendChild(card);
+            frag.appendChild(btn);
         });
+
+        // Effects label
+        if (effectPages.length > 0) {
+            var effectLabel = document.createElement('div');
+            effectLabel.className = 'section-divider';
+            effectLabel.textContent = 'Effects';
+            frag.appendChild(effectLabel);
+
+            effectPages.forEach(function(page) {
+                var btn = document.createElement('button');
+                btn.className = 'card';
+                btn.dataset.name = page.name;
+                var icon = EFFECT_ICONS[page.name] || '\u2728';
+                btn.innerHTML =
+                    '<span class="card-icon">' + icon + '</span>' +
+                    '<div class="card-body">' +
+                        '<div class="card-title">' + page.title + '</div>' +
+                        '<div class="card-desc">' + page.description + '</div>' +
+                    '</div>';
+                btn.addEventListener('click', function() {
+                    selectPage(page);
+                });
+                frag.appendChild(btn);
+            });
+        }
+
+        $sidebarScroll.appendChild(frag);
     }
 
-    // ── Selection ──
-    function selectByFilteredIndex(filteredIdx) {
-        if (filteredIdx < 0 || filteredIdx >= filteredPages.length) return;
+    // Update preview (pure UI, no history manipulation)
+    function updatePreview(page) {
+        if (currentPage && currentPage.name === page.name) return;
+        currentPage = page;
 
-        const page = filteredPages[filteredIdx];
-        currentIndex = pages.findIndex(p => p.name === page.name);
-
-        // Hero info
-        const cat = getCategory(page.name);
-        $heroDot.className = `dot ${cat}`;
-        $heroCat.textContent = getCategoryLabel(cat);
-        $heroTitle.textContent = page.title;
-        $heroDesc.textContent = page.description;
-        $heroLink.href = `/${page.name}`;
+        // Update preview info
+        $previewTitle.textContent = page.title;
+        $previewDesc.textContent = page.description;
+        $previewOpen.href = '/' + page.name;
 
         // Iframe transition
         if (isFirstLoad) {
             isFirstLoad = false;
-            $iframe.src = `/${page.name}`;
+            $iframe.src = '/' + page.name;
         } else {
             $iframe.classList.add('fade-out');
-            setTimeout(() => {
-                $iframe.src = `/${page.name}`;
-                $iframe.onload = () => {
+            setTimeout(function() {
+                $iframe.src = '/' + page.name;
+                $iframe.onload = function() {
                     $iframe.classList.remove('fade-out');
                 };
-            }, 200);
+            }, 150);
         }
 
-        // Card highlight
+        // Active card
         if (activeCard) activeCard.classList.remove('active');
-        const cards = $carousel.querySelectorAll('.card');
-        const targetCard = cards[filteredIdx];
-        if (targetCard) {
-            targetCard.classList.add('active');
-            activeCard = targetCard;
-            targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        var card = $sidebarScroll.querySelector('[data-name="' + page.name + '"]');
+        if (card) {
+            card.classList.add('active');
+            activeCard = card;
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-
-        window.location.hash = page.name;
     }
 
-    // ── Drag/swipe on carousel ──
-    let isDragging = false;
-    let dragStartX = 0;
-    let scrollStart = 0;
-    let hasMoved = false;
-
-    function onDragStart(clientX) {
-        isDragging = true;
-        hasMoved = false;
-        dragStartX = clientX;
-        scrollStart = $carouselWrap.scrollLeft;
-        $carouselWrap.classList.add('dragging');
+    // Select page (updates UI + pushes hash to history)
+    function selectPage(page) {
+        updatePreview(page);
+        var targetHash = '#' + page.name;
+        if (window.location.hash !== targetHash) {
+            window.location.hash = page.name;
+        }
     }
 
-    function onDragMove(clientX) {
-        if (!isDragging) return;
-        const dx = clientX - dragStartX;
-        if (Math.abs(dx) > 4) hasMoved = true;
-        $carouselWrap.scrollLeft = scrollStart - dx;
+    // Find page by name
+    function findPage(name) {
+        return designPages.find(function(p) { return p.name === name; })
+            || effectPages.find(function(p) { return p.name === name; });
     }
 
-    function onDragEnd() {
-        isDragging = false;
-        $carouselWrap.classList.remove('dragging');
+    // Get all pages in display order
+    function getAllPages() {
+        return designPages.concat(effectPages);
     }
 
-    // Mouse
-    $carouselWrap.addEventListener('mousedown', (e) => {
-        onDragStart(e.clientX);
-    });
-    window.addEventListener('mousemove', (e) => {
-        onDragMove(e.clientX);
-    });
-    window.addEventListener('mouseup', () => {
-        onDragEnd();
-    });
+    // Navigate to next/prev page
+    function navigateOffset(offset) {
+        var all = getAllPages();
+        if (!currentPage || all.length === 0) return;
+        var idx = all.findIndex(function(p) { return p.name === currentPage.name; });
+        var next = (idx + offset + all.length) % all.length;
+        selectPage(all[next]);
+    }
 
-    // Touch
-    $carouselWrap.addEventListener('touchstart', (e) => {
-        onDragStart(e.touches[0].clientX);
-    }, { passive: true });
-    $carouselWrap.addEventListener('touchmove', (e) => {
-        onDragMove(e.touches[0].clientX);
-    }, { passive: true });
-    $carouselWrap.addEventListener('touchend', () => {
-        onDragEnd();
-    });
-
-    // Prevent click after drag
-    $carouselWrap.addEventListener('click', (e) => {
-        if (hasMoved) {
-            e.stopPropagation();
+    // Keyboard
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
             e.preventDefault();
-        }
-    }, true);
-
-    // ── Touch swipe on hero (prev/next) ──
-    const $hero = document.querySelector('.hero');
-    let heroTouchStartX = 0;
-
-    $hero.addEventListener('touchstart', (e) => {
-        heroTouchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    $hero.addEventListener('touchend', (e) => {
-        const dx = e.changedTouches[0].clientX - heroTouchStartX;
-        if (Math.abs(dx) > 50) {
-            const currentName = pages[currentIndex]?.name;
-            const idx = filteredPages.findIndex(p => p.name === currentName);
-            if (dx < 0) {
-                selectByFilteredIndex((idx + 1) % filteredPages.length);
-            } else {
-                selectByFilteredIndex((idx - 1 + filteredPages.length) % filteredPages.length);
-            }
-        }
-    });
-
-    // ── Keyboard ──
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            navigateOffset(1);
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
             e.preventDefault();
-            const currentName = pages[currentIndex]?.name;
-            const idx = filteredPages.findIndex(p => p.name === currentName);
-            const next = e.key === 'ArrowRight'
-                ? (idx + 1) % filteredPages.length
-                : (idx - 1 + filteredPages.length) % filteredPages.length;
-            selectByFilteredIndex(next);
+            navigateOffset(-1);
         }
     });
 
-    // ── Init ──
-    renderCarousel();
+    // Back/forward navigation
+    window.addEventListener('hashchange', function() {
+        var hash = window.location.hash.slice(1);
+        var page = findPage(hash);
+        if (page) {
+            updatePreview(page);
+        }
+    });
 
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-        const idx = filteredPages.findIndex(p => p.name === hash);
-        selectByFilteredIndex(idx >= 0 ? idx : 0);
-    } else {
-        selectByFilteredIndex(0);
+    // Init
+    renderCards();
+
+    var hash = window.location.hash.slice(1);
+    var initialPage = (hash && findPage(hash)) || designPages[0];
+    if (initialPage) {
+        if (!hash) {
+            history.replaceState(null, '', '#' + initialPage.name);
+        }
+        updatePreview(initialPage);
     }
 </script>
