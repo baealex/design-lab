@@ -50,7 +50,7 @@ export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
     const pagesData = pagePath === 'index'
         ? pages
             .filter(page => page !== 'index' && page !== '404')
-            .reduce<{ name: string; title: string; description: string }[]>((acc, page) => {
+            .reduce<{ name: string; title: string; description: string; year: number | null; category: string }[]>((acc, page) => {
                 try {
                     const pageSource = fs.readFileSync(`${PAGES_PATH}/${page}/index.html`).toString();
                     const { metadata } = parsePage(pageSource);
@@ -58,6 +58,8 @@ export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
                         name: page,
                         title: metadata.title,
                         description: metadata.description,
+                        year: page.match(/^design-(\d{4})/)?.[1] ? parseInt(page.match(/^design-(\d{4})/)![1], 10) : null,
+                        category: page.split('-')[0] || '',
                     });
                 } catch {
                     console.warn(`Skipped: ${page}/index.html not found`);
@@ -155,8 +157,14 @@ export function watchSrc(onChange: (pagePath: string) => void) {
 
             if (pages.includes(pageName)) {
                 await makePage(pageName, { isDev: true });
+                if (pageName !== 'index') {
+                    await makePage('index', { isDev: true });
+                }
                 console.log(`Rebuild... ${pageName} : ${(new Date().getTime() - time.getTime()) / 1000}s`);
                 onChange(pageName);
+                if (pageName !== 'index') {
+                    onChange('index');
+                }
             }
         }
     });
