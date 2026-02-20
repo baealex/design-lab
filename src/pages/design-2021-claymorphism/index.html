@@ -1,0 +1,908 @@
+<!-- layout: base.html -->
+<!-- title: Claymorphism (2021) -->
+<!-- description: The day UI started playing with clay -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --bg: #f5ebe0;
+        --bg-warm: #faf3ec;
+        --surface: #f0c4a8;
+        --surface-peach: #f2b8a2;
+        --surface-lavender: #d5c8e6;
+        --surface-mint: #b8dfd0;
+        --surface-sky: #b3d4e8;
+        --surface-lemon: #f0e4a6;
+        --surface-rose: #e8b4c8;
+        --text: #4a3728;
+        --text-muted: #7d6555;
+        --text-dim: #a89585;
+        --accent: #d4845a;
+        --danger: #c9605a;
+        --success: #6aab7b;
+        --shadow-outer: rgba(0, 0, 0, 0.15);
+        --shadow-inner-dark: rgba(0, 0, 0, 0.08);
+        --shadow-inner-light: rgba(255, 255, 255, 0.6);
+        --radius: 24px;
+    }
+
+    body {
+        font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background:
+            radial-gradient(ellipse 60% 50% at 20% 30%, rgba(213, 200, 230, 0.3) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 40% at 80% 20%, rgba(240, 196, 168, 0.25) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 40% at 50% 85%, rgba(184, 223, 208, 0.2) 0%, transparent 70%);
+    }
+
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    *:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+    }
+
+    /* Clay surface */
+    .clay {
+        border-radius: var(--radius);
+        box-shadow:
+            8px 8px 16px var(--shadow-outer),
+            inset -4px -4px 8px var(--shadow-inner-dark),
+            inset 4px 4px 8px var(--shadow-inner-light);
+    }
+
+    .clay-sm {
+        border-radius: 16px;
+        box-shadow:
+            6px 6px 12px var(--shadow-outer),
+            inset -3px -3px 6px var(--shadow-inner-dark),
+            inset 3px 3px 6px var(--shadow-inner-light);
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        padding: 8px 20px;
+        border-radius: 20px;
+        background: var(--surface-lavender);
+        box-shadow:
+            4px 4px 8px var(--shadow-outer),
+            inset -2px -2px 4px var(--shadow-inner-dark),
+            inset 2px 2px 4px var(--shadow-inner-light);
+        color: #6b5b8a;
+        margin-bottom: 24px;
+    }
+
+    .hero-title {
+        font-size: 3.8rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: var(--text);
+        line-height: 1.1;
+    }
+
+    .hero-title-clay {
+        display: inline-block;
+        background: var(--surface);
+        padding: 12px 40px 16px;
+        border-radius: 32px;
+        box-shadow:
+            10px 10px 20px var(--shadow-outer),
+            inset -5px -5px 10px var(--shadow-inner-dark),
+            inset 5px 5px 10px var(--shadow-inner-light);
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 24px;
+        line-height: 1.7;
+        font-weight: 400;
+    }
+
+    /* Intro card */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+        background: var(--bg-warm);
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.9;
+        font-weight: 400;
+        color: var(--text-muted);
+    }
+
+    .intro-text strong {
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* Divider */
+    .divider {
+        margin: 48px 0;
+        height: 2px;
+        border-radius: 1px;
+        background: linear-gradient(90deg, transparent, rgba(212, 132, 90, 0.2), rgba(213, 200, 230, 0.25), transparent);
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--accent);
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: rgba(0, 0, 0, 0.05);
+        padding: 2px 8px;
+        border-radius: 6px;
+        color: #8b5e3c;
+    }
+
+    /* Clay cards demo */
+    .clay-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+    }
+
+    .clay-card {
+        padding: 28px 16px;
+        text-align: center;
+        border-radius: var(--radius);
+        box-shadow:
+            8px 8px 16px var(--shadow-outer),
+            inset -4px -4px 8px var(--shadow-inner-dark),
+            inset 4px 4px 8px var(--shadow-inner-light);
+    }
+
+    .clay-card.peach { background: var(--surface-peach); }
+    .clay-card.lavender { background: var(--surface-lavender); }
+    .clay-card.mint { background: var(--surface-mint); }
+
+    .clay-card-icon {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+
+    .clay-card-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .clay-card.peach .clay-card-label { color: #8b5e4a; }
+    .clay-card.lavender .clay-card-label { color: #6b5b8a; }
+    .clay-card.mint .clay-card-label { color: #4a7a66; }
+
+    .clay-card-sub {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        margin-top: 4px;
+    }
+
+    /* Shadow anatomy */
+    .shadow-anatomy {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .shadow-layer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    .shadow-swatch {
+        width: 32px;
+        height: 18px;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    .shadow-swatch.outer { background: rgba(0, 0, 0, 0.15); }
+    .shadow-swatch.inner-dark { background: rgba(0, 0, 0, 0.08); }
+    .shadow-swatch.inner-light {
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    /* Comparison grid */
+    .compare-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        margin-bottom: 20px;
+    }
+
+    .compare-panel {
+        padding: 28px 20px;
+        text-align: center;
+        border-radius: 20px;
+    }
+
+    .compare-panel.neu {
+        background: #e0e5ec;
+        box-shadow:
+            8px 8px 16px rgba(163, 177, 198, 0.7),
+            -8px -8px 16px rgba(255, 255, 255, 0.9);
+    }
+
+    .compare-panel.is-clay {
+        background: var(--surface-peach);
+        box-shadow:
+            8px 8px 16px var(--shadow-outer),
+            inset -4px -4px 8px var(--shadow-inner-dark),
+            inset 4px 4px 8px var(--shadow-inner-light);
+    }
+
+    .compare-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .compare-panel.neu .compare-label { color: #566573; }
+    .compare-panel.is-clay .compare-label { color: #8b5e4a; }
+
+    .compare-value {
+        font-size: 1.2rem;
+        font-weight: 400;
+    }
+
+    .compare-panel.neu .compare-value { color: #2d3440; }
+    .compare-panel.is-clay .compare-value { color: #4a3728; }
+
+    .compare-sub {
+        font-size: 0.7rem;
+        margin-top: 6px;
+        font-weight: 500;
+    }
+
+    .compare-panel.neu .compare-sub { color: #7a8696; }
+    .compare-panel.is-clay .compare-sub { color: var(--text-dim); }
+
+    /* Palette demo */
+    .palette-demo {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .palette-swatch {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .swatch-box {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        box-shadow:
+            6px 6px 12px var(--shadow-outer),
+            inset -3px -3px 6px var(--shadow-inner-dark),
+            inset 3px 3px 6px var(--shadow-inner-light);
+    }
+
+    .swatch-label {
+        font-size: 0.62rem;
+        color: var(--text-dim);
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        text-align: center;
+    }
+
+    /* Code block */
+    .code-block {
+        background: #3d2e24;
+        border-radius: 16px;
+        padding: 18px 22px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: rgba(255, 255, 255, 0.6);
+        overflow-x: auto;
+        margin-top: 20px;
+        box-shadow:
+            8px 8px 16px var(--shadow-outer),
+            inset -4px -4px 8px rgba(0, 0, 0, 0.2),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.05);
+    }
+
+    .code-block .kw { color: #d4a574; }
+    .code-block .val { color: #a8d8a8; }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.25); }
+
+    /* Pet clinic demo */
+    .clinic {
+        padding: 28px;
+        background: var(--bg-warm);
+        border-radius: var(--radius);
+        box-shadow:
+            10px 10px 20px var(--shadow-outer),
+            inset -5px -5px 10px var(--shadow-inner-dark),
+            inset 5px 5px 10px var(--shadow-inner-light);
+    }
+
+    .clinic-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+    }
+
+    .clinic-icon {
+        font-size: 1.2rem;
+    }
+
+    .clinic-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .clinic-sub {
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+
+    .clinic-patients {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .pet-card {
+        text-align: center;
+        padding: 20px 12px;
+        border-radius: 20px;
+        box-shadow:
+            6px 6px 12px var(--shadow-outer),
+            inset -3px -3px 6px var(--shadow-inner-dark),
+            inset 3px 3px 6px var(--shadow-inner-light);
+        transition: transform 0.15s;
+    }
+
+    .pet-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .pet-card.peach { background: var(--surface-peach); }
+    .pet-card.lavender { background: var(--surface-lavender); }
+    .pet-card.mint { background: var(--surface-mint); }
+
+    .pet-emoji {
+        font-size: 2.2rem;
+        margin-bottom: 8px;
+    }
+
+    .pet-name {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .pet-breed {
+        font-size: 0.62rem;
+        color: var(--text-dim);
+        margin-top: 2px;
+        font-weight: 500;
+    }
+
+    .pet-time {
+        font-size: 0.68rem;
+        font-weight: 700;
+        margin-top: 10px;
+        padding: 4px 12px;
+        border-radius: 10px;
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    .pet-card.peach .pet-name { color: #7a4a3a; }
+    .pet-card.lavender .pet-name { color: #5b4b7a; }
+    .pet-card.mint .pet-name { color: #3a6a56; }
+
+    .pet-card.peach .pet-time { color: #7a4a3a; }
+    .pet-card.lavender .pet-time { color: #5b4b7a; }
+    .pet-card.mint .pet-time { color: #3a6a56; }
+
+    .clinic-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .clinic-btn {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 50px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.15s;
+        box-shadow:
+            6px 6px 12px var(--shadow-outer),
+            inset -3px -3px 6px var(--shadow-inner-dark),
+            inset 3px 3px 6px var(--shadow-inner-light);
+    }
+
+    .clinic-btn:active {
+        transform: scale(0.97);
+        box-shadow:
+            3px 3px 6px var(--shadow-outer),
+            inset -3px -3px 6px var(--shadow-inner-dark),
+            inset 3px 3px 6px var(--shadow-inner-light);
+    }
+
+    .clinic-btn.primary {
+        background: var(--surface);
+        color: #6b4028;
+    }
+
+    .clinic-btn.secondary {
+        background: var(--bg);
+        color: var(--text-muted);
+    }
+
+    .clinic-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .clinic-footer-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .clay-toggle {
+        width: 52px;
+        height: 28px;
+        border-radius: 14px;
+        background: var(--bg);
+        box-shadow:
+            inset 3px 3px 8px var(--shadow-inner-dark),
+            inset -2px -2px 6px var(--shadow-inner-light);
+        position: relative;
+        cursor: pointer;
+        transition: background 0.3s;
+        border: none;
+    }
+
+    .clay-toggle::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--surface-peach);
+        box-shadow:
+            3px 3px 6px var(--shadow-outer),
+            inset -2px -2px 3px var(--shadow-inner-dark),
+            inset 2px 2px 3px var(--shadow-inner-light);
+        transition: transform 0.3s, background 0.3s;
+    }
+
+    .clay-toggle.on {
+        background: rgba(184, 223, 208, 0.3);
+    }
+
+    .clay-toggle.on::after {
+        transform: translateX(24px);
+        background: var(--surface-mint);
+    }
+
+    /* Anti-pattern list */
+    .anti-card {
+        padding: 24px 28px;
+        background: var(--bg-warm);
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 400;
+        color: var(--text-muted);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 800; font-size: 0.9rem; }
+    .anti-list .o { color: var(--success); font-weight: 800; font-size: 0.9rem; }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        line-height: 1.8;
+        color: var(--text);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 14px;
+        line-height: 1.7;
+        font-weight: 400;
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title { font-size: 2.6rem; }
+
+        .clay-demo,
+        .clinic-patients,
+        .compare-grid { grid-template-columns: 1fr; }
+
+        .intro-card,
+        .anti-card { padding: 20px 24px; }
+
+        .clinic { padding: 20px; }
+        .clinic-actions { flex-direction: column; }
+
+        .palette-demo { gap: 8px; }
+        .swatch-box { width: 44px; height: 44px; }
+    }
+</style>
+
+<body>
+    <div class="bg"></div>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Claymorphism</div>
+            <h1 class="hero-title">
+                <span class="hero-title-clay">Clay</span>
+            </h1>
+            <p class="hero-tagline">
+                Neumorphism learned to smile.<br>
+                Not every UI needs this warmth. The ones that do, really do.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="clay intro-card">
+            <p class="intro-text">
+                Claymorphism is <strong>neumorphism that went to art school.</strong>
+                Same shadow engine — outer depth + inner highlights — but with color,
+                bigger radii, and a personality that actually makes you smile.
+                <br><br>
+                The Dribbble shots that went viral were Blender renders, not CSS.
+                The CSS version is a softer echo — it can't replicate that puffy
+                3D volume. And that's fine.
+                <br><br>
+                <strong>Because the real gift isn't the shadow formula.
+                It's the warmth.</strong> The pastels. The roundness that says
+                "don't worry, this is friendly." And there are specific contexts
+                where that's exactly what an interface needs.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Technique: Triple Shadow -->
+        <section class="section">
+            <div class="section-label">Technique</div>
+            <h2 class="section-title">The Triple Shadow</h2>
+            <p class="section-desc">
+                Three shadows working together. An <em>outer shadow</em>
+                lifts the element off the page. An <em>inner dark shadow</em> on the
+                bottom-right simulates the clay curving away from the light.
+                An <em>inner light shadow</em> on the top-left catches the highlight.
+                Together they create the illusion of a soft, inflated 3D shape — using
+                nothing but <code>box-shadow</code> and <code>border-radius</code>.
+            </p>
+            <div class="clay-demo">
+                <div class="clay-card peach">
+                    <div class="clay-card-icon">&#x1F3F5;</div>
+                    <div class="clay-card-label">Peach</div>
+                    <div class="clay-card-sub">Warm and tactile</div>
+                </div>
+                <div class="clay-card lavender">
+                    <div class="clay-card-icon">&#x2728;</div>
+                    <div class="clay-card-label">Lavender</div>
+                    <div class="clay-card-sub">Soft and dreamy</div>
+                </div>
+                <div class="clay-card mint">
+                    <div class="clay-card-icon">&#x1F331;</div>
+                    <div class="clay-card-label">Mint</div>
+                    <div class="clay-card-sub">Fresh and calm</div>
+                </div>
+            </div>
+            <div class="shadow-anatomy">
+                <div class="shadow-layer">
+                    <span class="shadow-swatch outer"></span>
+                    <span>Outer shadow — lifts element off the surface</span>
+                </div>
+                <div class="shadow-layer">
+                    <span class="shadow-swatch inner-dark"></span>
+                    <span>Inner dark — curves away from light (bottom-right)</span>
+                </div>
+                <div class="shadow-layer">
+                    <span class="shadow-swatch inner-light"></span>
+                    <span>Inner light — catches the highlight (top-left)</span>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* The claymorphism triple shadow */</span><br>
+                <span class="kw">background</span>: <span class="val">#f0c4a8</span>;<br>
+                <span class="kw">border-radius</span>: <span class="val">24px</span>;<br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">8px 8px 16px</span> rgba(0,0,0,0.15),&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* outer depth */</span><br>
+                &nbsp;&nbsp;<span class="val">inset -4px -4px 8px</span> rgba(0,0,0,0.08),&nbsp;<span class="cmt">/* inner dark */</span><br>
+                &nbsp;&nbsp;<span class="val">inset 4px 4px 8px</span> rgba(255,255,255,0.6);<span class="cmt">/* inner light */</span>
+            </div>
+        </section>
+
+        <!-- The Honest Truth -->
+        <section class="section">
+            <div class="section-label">The Honest Truth</div>
+            <h2 class="section-title">Neumorphism's Warmer Sibling</h2>
+            <p class="section-desc">
+                Let's be direct. Look at the shadow formula: outer + inset dark + inset light.
+                That's neumorphism with an extra layer and color. The anti-pattern guides
+                love to say "this isn't rebranded neumorphism" — but the CSS doesn't lie.
+            </p>
+            <div class="compare-grid">
+                <div class="compare-panel neu">
+                    <div class="compare-label">Neumorphism</div>
+                    <div class="compare-value">Monochrome</div>
+                    <div class="compare-sub">Cold, clinical, minimal</div>
+                </div>
+                <div class="compare-panel is-clay">
+                    <div class="compare-label">Claymorphism</div>
+                    <div class="compare-value">Pastel</div>
+                    <div class="compare-sub">Warm, playful, inviting</div>
+                </div>
+            </div>
+            <p class="section-desc">
+                And that's fine. Evolution isn't plagiarism. Neumorphism was monochrome
+                and cold — you couldn't tell a button from a wall. Claymorphism added
+                pastel color (solving affordance) and warmth (adding personality).
+                Same bones, different soul.
+            </p>
+            <div class="palette-demo">
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--surface-peach);"></div>
+                    <span class="swatch-label">Peach</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--surface-lavender);"></div>
+                    <span class="swatch-label">Lavender</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--surface-mint);"></div>
+                    <span class="swatch-label">Mint</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--surface-sky);"></div>
+                    <span class="swatch-label">Sky</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--surface-lemon);"></div>
+                    <span class="swatch-label">Lemon</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--surface-rose);"></div>
+                    <span class="swatch-label">Rose</span>
+                </div>
+            </div>
+            <p class="section-desc" style="margin-bottom: 0;">
+                This palette is the real differentiator. Neumorphism was trapped in
+                a single gray. Claymorphism escaped into a box of pastels — and that
+                escape changed the emotional register from "design museum" to
+                "kindergarten art room." For some products, that's exactly right.
+            </p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Where Clay Belongs -->
+        <section class="section">
+            <div class="section-label">Our Take</div>
+            <h2 class="section-title">Where Clay Belongs</h2>
+            <p class="section-desc">
+                Not every interface should feel like a warm hug.
+                A stock trading app in pastels would be terrifying.
+                A legal document system made of clay would feel unserious.
+                <br><br>
+                But a <em>children's learning app</em>? A <em>pet clinic</em>?
+                A <em>wellness tracker</em>? These products want warmth.
+                They need approachability. They benefit from an interface that
+                says "this is safe, this is friendly, come on in."
+                <br><br>
+                Claymorphism isn't a universal design system — it's a <em>personality</em>.
+                Use it for products that have that personality.
+            </p>
+        </section>
+
+        <!-- Pet Clinic Demo -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Pawsome Clinic</h2>
+            <p class="section-desc">
+                A pet clinic doesn't need to look like a Bloomberg terminal.
+                It needs to feel like a place you'd trust with your dog.
+                The pastel cards reduce anxiety. The soft shapes say
+                "gentle hands work here." The warmth is the feature.
+            </p>
+            <div class="clinic">
+                <div class="clinic-header">
+                    <span class="clinic-icon">&#x1F43E;</span>
+                    <span class="clinic-name">Pawsome Clinic</span>
+                </div>
+                <div class="clinic-sub">Today's Appointments</div>
+                <div class="clinic-patients">
+                    <div class="pet-card peach">
+                        <div class="pet-emoji">&#x1F415;</div>
+                        <div class="pet-name">Mochi</div>
+                        <div class="pet-breed">Golden Retriever</div>
+                        <div class="pet-time">2:00 PM</div>
+                    </div>
+                    <div class="pet-card lavender">
+                        <div class="pet-emoji">&#x1F408;</div>
+                        <div class="pet-name">Luna</div>
+                        <div class="pet-breed">Russian Blue</div>
+                        <div class="pet-time">3:30 PM</div>
+                    </div>
+                    <div class="pet-card mint">
+                        <div class="pet-emoji">&#x1F430;</div>
+                        <div class="pet-name">Bun</div>
+                        <div class="pet-breed">Holland Lop</div>
+                        <div class="pet-time">4:00 PM</div>
+                    </div>
+                </div>
+                <div class="clinic-actions">
+                    <button class="clinic-btn primary">Book Appointment</button>
+                    <button class="clinic-btn secondary">View All</button>
+                </div>
+                <div class="clinic-footer">
+                    <span class="clinic-footer-label">Appointment reminders</span>
+                    <button class="clay-toggle on" id="clinic-toggle" role="switch" aria-checked="true" aria-label="Toggle appointment reminders"></button>
+                </div>
+            </div>
+            <p class="section-desc" style="margin-top: 16px; margin-bottom: 0;">
+                Small cards, pill buttons, a toggle with a clay knob — every element
+                is small enough for the triple shadow to sell the volume. The context
+                earns the aesthetic. No one questions soft pastels in a place that
+                takes care of animals.
+            </p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Rules -->
+        <section class="section">
+            <h2 class="section-title">The Rules</h2>
+            <div class="clay anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Clay everything — not every product has a playful personality</li>
+                    <li><span class="x">&#x2717;</span> Pretending CSS clay equals Blender clay — those viral shots are 3D renders</li>
+                    <li><span class="x">&#x2717;</span> Clay for authority contexts — finance, medical records, legal</li>
+                    <li><span class="x">&#x2717;</span> Triple shadows on every element — the GPU budget is real</li>
+                    <li><span class="x">&#x2717;</span> Elements too close together — overlapping shadows break the clay illusion and look floaty</li>
+                    <li><span class="o">&#x2713;</span> Clay for warmth-first contexts — kids, pets, wellness, playful brands</li>
+                    <li><span class="o">&#x2713;</span> The pastel palette is the real gift — warm, muted, non-threatening</li>
+                    <li><span class="o">&#x2713;</span> Small elements first — buttons, badges, cards. Not full-page layouts</li>
+                    <li><span class="o">&#x2713;</span> Neumorphism evolved, not replaced — same engine, warmer soul</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Not everything needs to<br>
+                look professional.<br>
+                Some things need to look kind.
+            </p>
+            <p class="manifesto-sub">
+                Clay isn't for stock tickers or hospital records.<br>
+                But when a child opens your app, or a pet parent books a checkup,<br>
+                that warmth isn't decoration — it's trust.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Clinic toggle */
+    const clinicToggle = document.getElementById('clinic-toggle');
+    clinicToggle.addEventListener('click', function () {
+        this.classList.toggle('on');
+        const isOn = this.classList.contains('on');
+        this.setAttribute('aria-checked', String(isOn));
+    });
+</script>

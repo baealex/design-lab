@@ -1,0 +1,1145 @@
+<!-- layout: base.html -->
+<!-- title: Material You (2021) -->
+<!-- description: Where real personalization began -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --seed: #6750A4;
+        --primary: #6750A4;
+        --on-primary: #FFFFFF;
+        --primary-container: #EADDFF;
+        --on-primary-container: #21005D;
+        --secondary: #625B71;
+        --secondary-container: #E8DEF8;
+        --on-secondary-container: #1D192B;
+        --tertiary: #7D5260;
+        --tertiary-container: #FFD8E4;
+        --on-tertiary-container: #31111D;
+        --surface: #FFFBFE;
+        --surface-dim: #E7E0EC;
+        --surface-container-low: #F7F2FA;
+        --surface-container: #F3EDF7;
+        --surface-container-high: #ECE6F0;
+        --on-surface: #1C1B1F;
+        --on-surface-variant: #49454F;
+        --outline: #79747E;
+        --outline-variant: #CAC4D0;
+        --success: #386A20;
+        --danger: #BA1A1A;
+    }
+
+    body {
+        font-family: 'Google Sans', 'Noto Sans', -apple-system, sans-serif;
+        background: var(--surface-container-low);
+        color: var(--on-surface);
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* =========================================
+       HERO
+       ========================================= */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding: 6px 18px;
+        border-radius: 20px;
+        background: var(--primary-container);
+        color: var(--on-primary-container);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 400;
+        color: var(--on-surface);
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--on-surface-variant);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 400;
+    }
+
+    /* =========================================
+       SURFACE — M3 rounded, tonal
+       ========================================= */
+    .surface {
+        background: var(--surface);
+        border-radius: 28px;
+        overflow: hidden;
+    }
+
+    .surface-1 { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .surface-2 { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+
+    /* =========================================
+       SECTION
+       ========================================= */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--primary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 12px;
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--on-surface-variant);
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+
+    .section-desc em {
+        color: var(--on-surface);
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .section-desc code {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.82em;
+        background: var(--surface-container-high);
+        padding: 2px 8px;
+        border-radius: 8px;
+        color: var(--primary);
+    }
+
+    /* =========================================
+       DIVIDER
+       ========================================= */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: var(--outline-variant);
+    }
+
+    /* =========================================
+       INTRO
+       ========================================= */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 400;
+        color: var(--on-surface-variant);
+    }
+
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--on-surface);
+    }
+
+    /* =========================================
+       DYNAMIC COLOR DEMO — wallpaper → palette
+       ========================================= */
+    .color-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .wallpaper-card {
+        border-radius: 28px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .wallpaper-img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        display: block;
+    }
+
+    .wallpaper-img.purple {
+        background: linear-gradient(135deg, #6750A4 0%, #D0BCFF 40%, #EADDFF 70%, #FFFBFE 100%);
+    }
+
+    .wallpaper-img.green {
+        background: linear-gradient(135deg, #006D3B 0%, #6DD58C 40%, #B9F6CA 70%, #F5FFF8 100%);
+    }
+
+    .wallpaper-palette {
+        display: flex;
+        gap: 0;
+    }
+
+    .wallpaper-palette-swatch {
+        flex: 1;
+        height: 32px;
+    }
+
+    .wp-p1 { background: #6750A4; }
+    .wp-p2 { background: #625B71; }
+    .wp-p3 { background: #7D5260; }
+    .wp-p4 { background: #EADDFF; }
+    .wp-p5 { background: #FFFBFE; }
+
+    .wp-g1 { background: #006D3B; }
+    .wp-g2 { background: #506352; }
+    .wp-g3 { background: #3A665C; }
+    .wp-g4 { background: #B9F6CA; }
+    .wp-g5 { background: #F5FFF8; }
+
+    .wallpaper-label {
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: var(--on-surface-variant);
+        text-align: center;
+        padding: 10px 0;
+        background: var(--surface);
+    }
+
+    /* =========================================
+       COLOR ROLES DEMO
+       ========================================= */
+    .roles-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .role-card {
+        border-radius: 16px;
+        padding: 20px 14px;
+        text-align: center;
+    }
+
+    .role-card-label {
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        margin-bottom: 6px;
+    }
+
+    .role-card-name {
+        font-size: 0.82rem;
+        font-weight: 500;
+    }
+
+    .role-card-hex {
+        font-size: 0.62rem;
+        margin-top: 4px;
+        opacity: 0.7;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .role-primary { background: var(--primary); color: var(--on-primary); }
+    .role-secondary { background: var(--secondary); color: #fff; }
+    .role-tertiary { background: var(--tertiary); color: #fff; }
+    .role-primary-c { background: var(--primary-container); color: var(--on-primary-container); }
+    .role-secondary-c { background: var(--secondary-container); color: var(--on-secondary-container); }
+    .role-tertiary-c { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+
+    /* =========================================
+       TONAL ELEVATION DEMO
+       ========================================= */
+    .tonal-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+    }
+
+    .tonal-card {
+        border-radius: 16px;
+        padding: 24px 12px;
+        text-align: center;
+        transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+        cursor: default;
+    }
+
+    .tonal-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .tonal-0 { background: var(--surface); }
+    .tonal-1 { background: var(--surface-container-low); }
+    .tonal-2 { background: var(--surface-container); }
+    .tonal-3 { background: var(--surface-container-high); }
+
+    .tonal-level {
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin-bottom: 4px;
+    }
+
+    .tonal-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--on-surface-variant);
+    }
+
+    .tonal-sub {
+        font-size: 0.62rem;
+        color: var(--outline);
+        margin-top: 4px;
+    }
+
+    /* =========================================
+       SHAPE DEMO — the radius shift
+       ========================================= */
+    .shape-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .shape-card {
+        padding: 28px 20px;
+        text-align: center;
+        background: var(--surface);
+    }
+
+    .shape-card.m1 {
+        border-radius: 2px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+
+    .shape-card.m3 {
+        border-radius: 28px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .shape-label {
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .shape-label.old { color: var(--outline); }
+    .shape-label.new { color: var(--primary); }
+
+    .shape-value {
+        font-size: 1.8rem;
+        font-weight: 400;
+    }
+
+    .shape-sub {
+        font-size: 0.72rem;
+        color: var(--on-surface-variant);
+        margin-top: 8px;
+    }
+
+    /* =========================================
+       BUTTONS — M3 style
+       ========================================= */
+    .btn-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-filled {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 24px;
+        height: 40px;
+        border-radius: 20px;
+        border: none;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-filled:hover {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .btn-tonal {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 24px;
+        height: 40px;
+        border-radius: 20px;
+        border: none;
+        background: var(--secondary-container);
+        color: var(--on-secondary-container);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-tonal:hover {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .btn-outlined {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 24px;
+        height: 40px;
+        border-radius: 20px;
+        border: 1px solid var(--outline);
+        background: none;
+        color: var(--primary);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-outlined:hover {
+        background: rgba(103, 80, 164, 0.08);
+    }
+
+    .btn-filled:disabled,
+    .btn-tonal:disabled,
+    .btn-outlined:disabled {
+        opacity: 0.38;
+        cursor: not-allowed;
+    }
+
+    .fab-m3 {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        border: none;
+        background: var(--primary-container);
+        color: var(--on-primary-container);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        transition: box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fab-m3:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+    }
+
+    /* Ripple */
+    .ripple-surface {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        border-radius: inherit;
+        pointer-events: none;
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        width: 1px;
+        height: 1px;
+        pointer-events: none;
+        background: var(--primary);
+    }
+
+    .ripple.on-primary { background: var(--on-primary); }
+
+    .ripple.animate {
+        animation: ripple-expand 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
+    }
+
+    @keyframes ripple-expand {
+        from { transform: scale(0); opacity: 0.16; }
+        to { transform: scale(var(--ripple-scale, 4)); opacity: 0; }
+    }
+
+    /* =========================================
+       COMBINED — M3 app mockup
+       ========================================= */
+    .app-frame {
+        border-radius: 28px;
+        overflow: hidden;
+        background: var(--surface-container-low);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        position: relative;
+    }
+
+    .frame-top-bar {
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: var(--on-surface);
+        background: var(--surface);
+    }
+
+    .frame-top-bar-icon {
+        display: flex;
+        align-items: center;
+        color: var(--on-surface-variant);
+    }
+
+    .frame-top-bar-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .frame-search-bar {
+        margin: 12px 16px;
+        padding: 12px 16px;
+        background: var(--surface-container-high);
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--on-surface-variant);
+        font-size: 0.82rem;
+    }
+
+    .frame-search-bar svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+
+    .frame-body {
+        padding: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .frame-card {
+        background: var(--surface);
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .frame-card:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .frame-card-img {
+        width: 100%;
+        height: 80px;
+    }
+
+    .frame-card-body {
+        padding: 12px;
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .frame-card-title {
+        font-size: 0.82rem;
+        font-weight: 500;
+    }
+
+    .frame-card-sub {
+        font-size: 0.7rem;
+        color: var(--on-surface-variant);
+        margin-top: 2px;
+    }
+
+    .frame-nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0 12px;
+        background: var(--surface-container);
+    }
+
+    .frame-nav-item {
+        text-align: center;
+        font-size: 0.62rem;
+        font-weight: 500;
+        color: var(--on-surface-variant);
+        cursor: pointer;
+    }
+
+    .frame-nav-item.active {
+        color: var(--on-secondary-container);
+    }
+
+    .frame-nav-icon {
+        width: 56px;
+        height: 32px;
+        border-radius: 16px;
+        margin: 0 auto 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .frame-nav-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .frame-nav-item.active .frame-nav-icon {
+        background: var(--secondary-container);
+    }
+
+    .frame-fab-m3 {
+        position: absolute;
+        bottom: 68px;
+        right: 16px;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        border: none;
+        background: var(--primary-container);
+        color: var(--on-primary-container);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        cursor: pointer;
+        overflow: hidden;
+        z-index: 3;
+        transition: box-shadow 0.2s;
+    }
+
+    .frame-fab-m3:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+    }
+
+    .frame-fab-m3 svg {
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* =========================================
+       CODE BLOCK
+       ========================================= */
+    .code-block {
+        background: #1C1B1F;
+        border-radius: 16px;
+        padding: 16px 20px;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 16px;
+    }
+
+    .code-block .kw { color: #D0BCFF; }
+    .code-block .val { color: #A8DB8F; }
+    .code-block .fn { color: #82AAFF; }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.3); }
+
+    /* =========================================
+       ANTI-PATTERNS
+       ========================================= */
+    .anti-card {
+        padding: 24px 28px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--outline-variant);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 400;
+        color: var(--on-surface-variant);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 700; flex-shrink: 0; }
+    .anti-list .o { color: var(--success); font-weight: 700; flex-shrink: 0; }
+
+    /* =========================================
+       MANIFESTO
+       ========================================= */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 400;
+        line-height: 1.7;
+        color: var(--on-surface);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--outline);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    /* =========================================
+       RESPONSIVE
+       ========================================= */
+    @media screen and (max-width: 600px) {
+        .hero-title { font-size: 2.5rem; }
+
+        .color-demo,
+        .shape-compare,
+        .frame-body { grid-template-columns: 1fr; }
+
+        .roles-grid,
+        .tonal-row { grid-template-columns: 1fr 1fr; }
+
+        .btn-row { gap: 8px; }
+
+        .intro-card,
+        .anti-card { padding: 20px 24px; }
+    }
+</style>
+
+<body>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Android 12</div>
+            <h1 class="hero-title">Material You</h1>
+            <p class="hero-tagline">
+                Your wallpaper became the design system.<br>
+                We keep the personal color. Ensure the app still has its own voice.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="surface surface-1 intro-card">
+            <p class="intro-text">
+                Material You asked a radical question:
+                <strong>what if the OS looked like you?</strong>
+                Android 12 extracts a color palette from your wallpaper
+                and paints the entire system with it. Buttons, toggles,
+                notifications, even the keyboard — all tinted by one
+                photo you chose.
+                <br><br>
+                The strength is emotional — your phone feels <strong>yours</strong>.
+                The weakness is identity — when the OS recolors every app,
+                apps lose their own brand. Everything becomes the same
+                pastel blob in a different shade.
+                <br><br>
+                <strong>We keep the personal warmth. We protect the app's identity.</strong>
+                Dynamic color is a starting point, not a straitjacket.
+                The system suggests a palette. The app decides how much to use.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Dynamic Color -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Dynamic Color</h2>
+            <p class="section-desc">
+                One image. One seed color. An entire tonal palette generated
+                algorithmically. Google's "Monet" engine extracts the
+                dominant hue from your wallpaper and builds a complete
+                color system — primary, secondary, tertiary, plus neutral
+                surface tones. The same app looks different on every phone.
+                We embrace the idea: <em>let users influence the palette</em>.
+                But we pick which surfaces accept dynamic color
+                and which keep the brand.
+            </p>
+            <div class="color-demo">
+                <div class="wallpaper-card">
+                    <div class="wallpaper-img purple"></div>
+                    <div class="wallpaper-palette">
+                        <div class="wallpaper-palette-swatch wp-p1"></div>
+                        <div class="wallpaper-palette-swatch wp-p2"></div>
+                        <div class="wallpaper-palette-swatch wp-p3"></div>
+                        <div class="wallpaper-palette-swatch wp-p4"></div>
+                        <div class="wallpaper-palette-swatch wp-p5"></div>
+                    </div>
+                    <div class="wallpaper-label">Purple seed &rarr; tonal palette</div>
+                </div>
+                <div class="wallpaper-card">
+                    <div class="wallpaper-img green"></div>
+                    <div class="wallpaper-palette">
+                        <div class="wallpaper-palette-swatch wp-g1"></div>
+                        <div class="wallpaper-palette-swatch wp-g2"></div>
+                        <div class="wallpaper-palette-swatch wp-g3"></div>
+                        <div class="wallpaper-palette-swatch wp-g4"></div>
+                        <div class="wallpaper-palette-swatch wp-g5"></div>
+                    </div>
+                    <div class="wallpaper-label">Green seed &rarr; tonal palette</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* M3 color roles — generated from a single seed */</span><br>
+                <span class="kw">--primary</span>: <span class="fn">tonalPalette</span>(<span class="val">seed</span>, <span class="val">40</span>);<br>
+                <span class="kw">--primary-container</span>: <span class="fn">tonalPalette</span>(<span class="val">seed</span>, <span class="val">90</span>);<br>
+                <span class="kw">--secondary</span>: <span class="fn">tonalPalette</span>(<span class="val">seed</span>, <span class="val">40</span>, <span class="cmt">desaturated</span>);<br>
+                <span class="kw">--tertiary</span>: <span class="fn">tonalPalette</span>(<span class="val">seed + 60&deg;</span>, <span class="val">40</span>);<br>
+                <span class="cmt">/* One seed. Five tonal groups. Entire system colored. */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: Color Roles -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Color Roles</h2>
+            <p class="section-desc">
+                M3 doesn't just have "primary" and "accent" like Lollipop.
+                Every color has a <em>container</em> pair —
+                a muted background tint designed to hold content.
+                Primary for key actions. Secondary for supporting elements.
+                Tertiary for expressive accents. Each with an
+                <code>on-*</code> text color guaranteed to have contrast.
+                We use this system: containers for backgrounds,
+                full tones only for the moments that matter.
+            </p>
+            <div class="roles-grid">
+                <div class="role-card role-primary">
+                    <div class="role-card-label">Primary</div>
+                    <div class="role-card-name">Key action</div>
+                    <div class="role-card-hex">#6750A4</div>
+                </div>
+                <div class="role-card role-secondary">
+                    <div class="role-card-label">Secondary</div>
+                    <div class="role-card-name">Support</div>
+                    <div class="role-card-hex">#625B71</div>
+                </div>
+                <div class="role-card role-tertiary">
+                    <div class="role-card-label">Tertiary</div>
+                    <div class="role-card-name">Expressive</div>
+                    <div class="role-card-hex">#7D5260</div>
+                </div>
+                <div class="role-card role-primary-c">
+                    <div class="role-card-label">Primary Container</div>
+                    <div class="role-card-name">FAB, chips</div>
+                    <div class="role-card-hex">#EADDFF</div>
+                </div>
+                <div class="role-card role-secondary-c">
+                    <div class="role-card-label">Secondary Container</div>
+                    <div class="role-card-name">Nav, toggles</div>
+                    <div class="role-card-hex">#E8DEF8</div>
+                </div>
+                <div class="role-card role-tertiary-c">
+                    <div class="role-card-label">Tertiary Container</div>
+                    <div class="role-card-name">Badges, tags</div>
+                    <div class="role-card-hex">#FFD8E4</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: Tonal Elevation -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Tonal Elevation</h2>
+            <p class="section-desc">
+                Lollipop used shadows to show depth.
+                Material You uses <em>color tint</em>.
+                Higher surfaces get more primary color mixed into them —
+                they don't float above, they glow warmer.
+                The shadow is nearly gone. Depth is communicated
+                by surface tone, not by darkness underneath.
+                We adopt this: subtle tonal shifts replace heavy shadows.
+            </p>
+            <div class="tonal-row">
+                <div class="tonal-card tonal-0">
+                    <div class="tonal-level">0</div>
+                    <div class="tonal-label">Surface</div>
+                    <div class="tonal-sub">Base</div>
+                </div>
+                <div class="tonal-card tonal-1">
+                    <div class="tonal-level">1</div>
+                    <div class="tonal-label">Low</div>
+                    <div class="tonal-sub">Cards</div>
+                </div>
+                <div class="tonal-card tonal-2">
+                    <div class="tonal-level">2</div>
+                    <div class="tonal-label">Medium</div>
+                    <div class="tonal-sub">Menus</div>
+                </div>
+                <div class="tonal-card tonal-3">
+                    <div class="tonal-level">3</div>
+                    <div class="tonal-label">High</div>
+                    <div class="tonal-sub">Sheets</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Tonal elevation — color tint, not shadow */</span><br>
+                <span class="kw">--surface</span>: <span class="val">#FFFBFE</span>; <span class="cmt">/* level 0 */</span><br>
+                <span class="kw">--surface-container-low</span>: <span class="val">#F7F2FA</span>; <span class="cmt">/* level 1 — slight tint */</span><br>
+                <span class="kw">--surface-container</span>: <span class="val">#F3EDF7</span>; <span class="cmt">/* level 2 — warmer */</span><br>
+                <span class="kw">--surface-container-high</span>: <span class="val">#ECE6F0</span>; <span class="cmt">/* level 3 — most tinted */</span><br>
+                <span class="cmt">/* No box-shadow needed. Depth is color, not darkness. */</span>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Shape -->
+        <section class="section">
+            <div class="section-label">Visual Shift</div>
+            <h2 class="section-title">From Paper to Pebble</h2>
+            <p class="section-desc">
+                Lollipop was paper — sharp, flat, rigid.
+                Material You is a <em>pebble</em> — rounded, warm, organic.
+                The radius went from <code>2px</code> to <code>28px</code>.
+                FABs became rounded squares. Chips became pills.
+                Cards became soft containers.
+                The entire OS stopped feeling like a clipboard
+                and started feeling like something you'd hold in your hand.
+            </p>
+            <div class="shape-compare">
+                <div class="shape-card m1">
+                    <div class="shape-label old">Material 1</div>
+                    <div class="shape-value">2px</div>
+                    <div class="shape-sub">Sharp. Rigid. Paper.</div>
+                </div>
+                <div class="shape-card m3">
+                    <div class="shape-label new">Material You</div>
+                    <div class="shape-value">28px</div>
+                    <div class="shape-sub">Round. Warm. Pebble.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <section class="section">
+            <div class="section-label">Components</div>
+            <h2 class="section-title">Filled, Tonal, Outlined</h2>
+            <p class="section-desc">
+                M3 replaced "raised vs flat" with a richer hierarchy.
+                <em>Filled</em> buttons use full primary — highest emphasis.
+                <em>Tonal</em> buttons use the secondary container — medium emphasis,
+                the new default. <em>Outlined</em> for low emphasis.
+                The FAB is now a rounded square in the primary container color.
+                Everything is a pill. Everything is soft.
+            </p>
+            <div class="btn-row">
+                <button class="btn-filled" id="btn-filled">Submit</button>
+                <button class="btn-tonal" id="btn-tonal">Settings</button>
+                <button class="btn-outlined" id="btn-outlined">Cancel</button>
+                <button class="btn-filled" disabled>Disabled</button>
+                <button class="fab-m3" id="fab-m3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Android 12 App</h2>
+            <p class="section-desc">
+                Rounded surfaces. Tonal elevation. Color containers.
+                A bottom navigation bar with an active pill indicator.
+                A FAB in primary-container, rounded square.
+                No heavy shadows. No sharp edges. No uppercase buttons.
+                This is what "personal" looks like as a system.
+            </p>
+            <div class="app-frame">
+                <div class="frame-top-bar">
+                    <div class="frame-top-bar-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </div>
+                    Discover
+                </div>
+                <div class="frame-search-bar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                    Search your content
+                </div>
+                <div class="frame-body">
+                    <div class="frame-card" id="frame-card-1">
+                        <div class="frame-card-img" style="background: linear-gradient(135deg, #EADDFF, #D0BCFF);"></div>
+                        <div class="frame-card-body">
+                            <div class="frame-card-title">Evening walk</div>
+                            <div class="frame-card-sub">3 min read</div>
+                        </div>
+                    </div>
+                    <div class="frame-card" id="frame-card-2">
+                        <div class="frame-card-img" style="background: linear-gradient(135deg, #FFD8E4, #EADDFF);"></div>
+                        <div class="frame-card-body">
+                            <div class="frame-card-title">Morning light</div>
+                            <div class="frame-card-sub">5 min read</div>
+                        </div>
+                    </div>
+                    <div class="frame-card" id="frame-card-3">
+                        <div class="frame-card-img" style="background: linear-gradient(135deg, #E8DEF8, #F3EDF7);"></div>
+                        <div class="frame-card-body">
+                            <div class="frame-card-title">City sounds</div>
+                            <div class="frame-card-sub">2 min read</div>
+                        </div>
+                    </div>
+                    <div class="frame-card" id="frame-card-4">
+                        <div class="frame-card-img" style="background: linear-gradient(135deg, #D0BCFF, #FFD8E4);"></div>
+                        <div class="frame-card-body">
+                            <div class="frame-card-title">Late summer</div>
+                            <div class="frame-card-sub">4 min read</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="frame-fab-m3" id="frame-fab" aria-label="Add">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <div class="frame-nav">
+                    <div class="frame-nav-item active">
+                        <div class="frame-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        </div>
+                        Home
+                    </div>
+                    <div class="frame-nav-item">
+                        <div class="frame-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                        </div>
+                        Saved
+                    </div>
+                    <div class="frame-nav-item">
+                        <div class="frame-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1112 8.4a3.6 3.6 0 010 7.2z"/></svg>
+                        </div>
+                        Settings
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="surface surface-1 anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Letting the OS recolor your brand out of existence</li>
+                    <li><span class="x">&#x2717;</span> Pastel everything — some surfaces need to stay neutral</li>
+                    <li><span class="x">&#x2717;</span> Material 1 with rounded corners — this is a new system</li>
+                    <li><span class="x">&#x2717;</span> "It's the default M3 theme" — adapt it, don't copy it</li>
+                    <li><span class="o">&#x2713;</span> Dynamic color as personal touch — not as total control</li>
+                    <li><span class="o">&#x2713;</span> Tonal elevation — depth through color tint, not shadow</li>
+                    <li><span class="o">&#x2713;</span> Container colors for comfort, full tones for emphasis</li>
+                    <li><span class="o">&#x2713;</span> Rounded shapes that feel held, not clicked</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Your wallpaper is the seed.<br>
+                Your phone is the garden.<br>
+                But the app is still the gardener.
+            </p>
+            <p class="manifesto-sub">
+                Material You made the system personal. We make sure<br>
+                the app still has a voice inside that personal system.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Ripple — span container isolates overflow from <button> quirks */
+    function createRipple(el, e, cls) {
+        var rect = el.getBoundingClientRect();
+        var surface = el.querySelector('.ripple-surface');
+        if (!surface) {
+            surface = document.createElement('span');
+            surface.className = 'ripple-surface';
+            el.appendChild(surface);
+        }
+        var r = document.createElement('span');
+        r.classList.add('ripple');
+        if (cls) r.classList.add(cls);
+        var scale = Math.ceil(Math.sqrt(rect.width * rect.width + rect.height * rect.height) * 2.5);
+        r.style.left = (e.clientX - rect.left) + 'px';
+        r.style.top = (e.clientY - rect.top) + 'px';
+        r.style.setProperty('--ripple-scale', scale);
+        surface.appendChild(r);
+        requestAnimationFrame(function() { r.classList.add('animate'); });
+        setTimeout(function() { r.remove(); }, 550);
+    }
+
+    /* Ripple on buttons */
+    document.querySelectorAll('.btn-filled:not(:disabled)').forEach(function(btn) {
+        btn.addEventListener('click', function(e) { createRipple(this, e, 'on-primary'); });
+    });
+
+    document.querySelectorAll('.btn-tonal:not(:disabled), .btn-outlined:not(:disabled)').forEach(function(btn) {
+        btn.addEventListener('click', function(e) { createRipple(this, e); });
+    });
+
+    document.querySelectorAll('.fab-m3').forEach(function(btn) {
+        btn.addEventListener('click', function(e) { createRipple(this, e); });
+    });
+
+    /* Ripple on frame cards */
+    document.querySelectorAll('.frame-card').forEach(function(card) {
+        card.addEventListener('click', function(e) { createRipple(this, e); });
+    });
+
+    /* Ripple on FAB */
+    document.getElementById('frame-fab').addEventListener('click', function(e) {
+        createRipple(this, e);
+    });
+
+    /* Nav item active toggle */
+    document.querySelectorAll('.frame-nav-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            this.parentElement.querySelectorAll('.frame-nav-item').forEach(function(i) {
+                i.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+    });
+</script>

@@ -1,0 +1,1602 @@
+<!-- layout: base.html -->
+<!-- title: Windows 95 (1995) -->
+<!-- description: The legendary “Start” -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
+
+    :root {
+        --bg: #c0c0c0;
+        --surface: #c0c0c0;
+        --window-bg: #ffffff;
+        --titlebar: #000080;
+        --titlebar-inactive: #808080;
+        --titlebar-text: #ffffff;
+        --text: #000000;
+        --text-muted: #444444;
+        --text-dim: #808080;
+        --highlight: #000080;
+        --highlight-text: #ffffff;
+        --border-light: #ffffff;
+        --border-mid: #c0c0c0;
+        --border-dark: #808080;
+        --border-darker: #000000;
+        --btn-face: #c0c0c0;
+        --field-bg: #ffffff;
+        --desktop-teal: #008080;
+        --danger: #ff0000;
+        --success: #008000;
+    }
+
+    body {
+        font-family: 'Noto Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* ─── Win95 beveled border system ─── */
+
+    .bevel-raised {
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        box-shadow: inset 1px 1px 0px var(--border-mid), inset -1px -1px 0px var(--border-dark);
+    }
+
+    .bevel-sunken {
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-darker), inset -1px -1px 0px var(--border-mid);
+    }
+
+    /* ─── Win95 Window ─── */
+
+    .win-window {
+        background: var(--surface);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        box-shadow: inset 1px 1px 0px var(--border-mid), inset -1px -1px 0px var(--border-dark);
+        padding: 3px;
+    }
+
+    .win-titlebar {
+        background: linear-gradient(90deg, var(--titlebar), #1084d0);
+        color: var(--titlebar-text);
+        padding: 3px 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        user-select: none;
+        margin-bottom: 2px;
+    }
+
+    .win-titlebar-icon {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        flex-shrink: 0;
+    }
+
+    .win-titlebar-text {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: 0.02em;
+    }
+
+    .win-titlebar-buttons {
+        display: flex;
+        gap: 2px;
+        flex-shrink: 0;
+    }
+
+    .win-titlebar-btn {
+        width: 16px;
+        height: 14px;
+        background: var(--btn-face);
+        border-top: 1px solid var(--border-light);
+        border-left: 1px solid var(--border-light);
+        border-bottom: 1px solid var(--border-darker);
+        border-right: 1px solid var(--border-darker);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--text);
+        cursor: pointer;
+        padding: 0;
+        font-family: 'Noto Sans', sans-serif;
+        line-height: 1;
+    }
+
+    .win-titlebar-btn:active {
+        border-top: 1px solid var(--border-darker);
+        border-left: 1px solid var(--border-darker);
+        border-bottom: 1px solid var(--border-light);
+        border-right: 1px solid var(--border-light);
+        padding-top: 1px;
+        padding-left: 1px;
+    }
+
+    .win-menubar {
+        display: flex;
+        gap: 0;
+        padding: 1px 0;
+        margin-bottom: 2px;
+    }
+
+    .win-menu-item {
+        padding: 2px 8px;
+        font-size: 11px;
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+    }
+
+    .win-menu-item:hover {
+        background: var(--highlight);
+        color: var(--highlight-text);
+    }
+
+    .win-menu-underline {
+        text-decoration: underline;
+    }
+
+    .win-body {
+        background: var(--field-bg);
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-darker), inset -1px -1px 0px var(--border-mid);
+        padding: 8px;
+        min-height: 60px;
+    }
+
+    .win-statusbar {
+        margin-top: 2px;
+        padding: 2px 6px;
+        font-size: 11px;
+        color: var(--text);
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+    }
+
+    /* ─── Win95 Button ─── */
+
+    .win-btn {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 12px;
+        padding: 4px 16px;
+        background: var(--btn-face);
+        color: var(--text);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        box-shadow: inset 1px 1px 0px var(--border-mid), inset -1px -1px 0px var(--border-dark);
+        cursor: pointer;
+        outline: none;
+        min-width: 75px;
+        text-align: center;
+    }
+
+    .win-btn:active, .win-btn.pressed {
+        border-top: 2px solid var(--border-darker);
+        border-left: 2px solid var(--border-darker);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-dark), inset -1px -1px 0px var(--border-mid);
+        padding: 5px 15px 3px 17px;
+    }
+
+    .win-btn:focus-visible {
+        outline: 1px dotted var(--text);
+        outline-offset: -4px;
+    }
+
+    .win-btn-default {
+        box-shadow: inset 1px 1px 0px var(--border-mid), inset -1px -1px 0px var(--border-dark);
+        outline: 2px solid var(--border-darker);
+        outline-offset: -1px;
+    }
+
+    /* ─── Win95 Input ─── */
+
+    .win-input {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 12px;
+        padding: 3px 4px;
+        background: var(--field-bg);
+        color: var(--text);
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-darker), inset -1px -1px 0px var(--border-mid);
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .win-input:focus {
+        background: var(--field-bg);
+    }
+
+    /* ─── Hero ─── */
+
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 16px;
+        background: var(--titlebar);
+        color: var(--titlebar-text);
+        margin-bottom: 28px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -1px;
+        color: var(--text);
+        position: relative;
+    }
+
+    .hero-title-highlight {
+        display: inline-block;
+        background: var(--titlebar);
+        color: var(--titlebar-text);
+        padding: 4px 16px;
+        margin: 4px 0;
+    }
+
+    .hero-title-95 {
+        display: block;
+        font-size: 5rem;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -2px;
+        line-height: 1;
+        margin-top: 4px;
+    }
+
+    .hero-tagline {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 24px;
+        line-height: 1.8;
+        font-weight: 400;
+    }
+
+    .hero-tagline strong {
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* ─── Intro card ─── */
+
+    .intro-card {
+        padding: 3px;
+        margin-bottom: 48px;
+    }
+
+    .intro-card .intro-titlebar {
+        background: linear-gradient(90deg, var(--titlebar), #1084d0);
+        color: var(--titlebar-text);
+        padding: 3px 6px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 2px;
+    }
+
+    .intro-card-body {
+        background: var(--field-bg);
+        padding: 20px 24px;
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+    }
+
+    .intro-text {
+        font-size: 12px;
+        line-height: 1.9;
+        font-weight: 400;
+        color: var(--text);
+    }
+
+    .intro-text strong {
+        font-weight: 700;
+    }
+
+    .intro-text code {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 11px;
+        background: var(--surface);
+        padding: 1px 4px;
+        border-top: 1px solid var(--border-dark);
+        border-left: 1px solid var(--border-dark);
+        border-bottom: 1px solid var(--border-light);
+        border-right: 1px solid var(--border-light);
+    }
+
+    /* ─── Section ─── */
+
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--titlebar-text);
+        background: var(--titlebar);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        margin-bottom: 10px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        letter-spacing: -0.3px;
+    }
+
+    .section-desc {
+        font-size: 12px;
+        line-height: 1.9;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--text);
+        font-style: normal;
+        font-weight: 700;
+        background: #ffff00;
+        padding: 0 3px;
+    }
+
+    .section-desc code {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 11px;
+        background: var(--field-bg);
+        padding: 1px 4px;
+        border-top: 1px solid var(--border-dark);
+        border-left: 1px solid var(--border-dark);
+        border-bottom: 1px solid var(--border-light);
+        border-right: 1px solid var(--border-light);
+    }
+
+    /* ─── Divider ─── */
+
+    .divider {
+        margin: 48px 0;
+        height: 2px;
+        border: none;
+        border-top: 1px solid var(--border-dark);
+        border-bottom: 1px solid var(--border-light);
+        background: transparent;
+    }
+
+    /* ─── Code block ─── */
+
+    .code-block {
+        background: var(--titlebar);
+        padding: 16px 20px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 11px;
+        line-height: 1.9;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 20px;
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+    }
+
+    .code-block .kw { color: #5dade2; }
+    .code-block .val { color: #ffff80; }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.3); }
+
+    /* ─── Bevel demo ─── */
+
+    .bevel-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+    }
+
+    .bevel-demo-card {
+        padding: 24px 16px;
+        text-align: center;
+        background: var(--surface);
+        cursor: default;
+        transition: none;
+    }
+
+    .bevel-demo-card-icon {
+        font-size: 24px;
+        margin-bottom: 10px;
+        image-rendering: pixelated;
+    }
+
+    .bevel-demo-card-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+    }
+
+    .bevel-demo-card-sub {
+        font-size: 10px;
+        margin-top: 6px;
+        color: var(--text-dim);
+    }
+
+    /* ─── Button states demo ─── */
+
+    .btn-states-demo {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 20px;
+        background: var(--surface);
+    }
+
+    .btn-state-label {
+        font-size: 10px;
+        color: var(--text-dim);
+        margin-top: 6px;
+        text-align: center;
+    }
+
+    .btn-state-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .win-btn-disabled {
+        color: var(--border-dark);
+        text-shadow: 1px 1px 0 var(--border-light);
+        cursor: default;
+    }
+
+    /* ─── Window chrome demo ─── */
+
+    .chrome-demo {
+        margin-top: 16px;
+    }
+
+    .notepad-content {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        min-height: 120px;
+        outline: none;
+        width: 100%;
+        border: none;
+        resize: none;
+        background: transparent;
+        color: var(--text);
+    }
+
+    /* ─── Start menu demo ─── */
+
+    .desktop-demo {
+        position: relative;
+        background: var(--desktop-teal);
+        height: 360px;
+        overflow: hidden;
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+    }
+
+    .desktop-icons {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: fit-content;
+    }
+
+    .desktop-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        padding: 4px;
+        text-align: center;
+    }
+
+    .desktop-icon:hover .desktop-icon-label {
+        background: var(--highlight);
+        color: var(--highlight-text);
+    }
+
+    .desktop-icon-img {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .desktop-icon-label {
+        font-size: 11px;
+        color: #ffffff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        padding: 1px 3px;
+    }
+
+    .taskbar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 32px;
+        background: var(--surface);
+        border-top: 2px solid var(--border-light);
+        display: flex;
+        align-items: center;
+        padding: 2px 3px;
+        gap: 4px;
+        z-index: 20;
+    }
+
+    .start-btn {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 2px 8px;
+        background: var(--btn-face);
+        color: var(--text);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        box-shadow: inset 1px 1px 0px var(--border-mid), inset -1px -1px 0px var(--border-dark);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 24px;
+        outline: none;
+        user-select: none;
+    }
+
+    .start-btn:active, .start-btn.pressed {
+        border-top: 2px solid var(--border-darker);
+        border-left: 2px solid var(--border-darker);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-dark), inset -1px -1px 0px var(--border-mid);
+    }
+
+    .start-logo {
+        width: 16px;
+        height: 16px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 1px;
+    }
+
+    .start-logo span:nth-child(1) { background: #ff0000; }
+    .start-logo span:nth-child(2) { background: #00ff00; }
+    .start-logo span:nth-child(3) { background: #0000ff; }
+    .start-logo span:nth-child(4) { background: #ffff00; }
+
+    .taskbar-tray {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 8px;
+        border-top: 1px solid var(--border-dark);
+        border-left: 1px solid var(--border-dark);
+        border-bottom: 1px solid var(--border-light);
+        border-right: 1px solid var(--border-light);
+        font-size: 11px;
+        height: 20px;
+    }
+
+    .taskbar-task {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 11px;
+        padding: 2px 8px;
+        background: var(--btn-face);
+        color: var(--text);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 22px;
+        outline: none;
+        flex-shrink: 1;
+        min-width: 0;
+        max-width: 160px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .taskbar-task.active {
+        border-top: 2px solid var(--border-darker);
+        border-left: 2px solid var(--border-darker);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-dark);
+        background: repeating-conic-gradient(var(--btn-face) 0% 25%, var(--border-light) 0% 50%) 0 0 / 2px 2px;
+    }
+
+    /* ─── Start Menu ─── */
+
+    .start-menu {
+        position: absolute;
+        bottom: 32px;
+        left: 3px;
+        width: 220px;
+        background: var(--surface);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        box-shadow: inset 1px 1px 0px var(--border-mid), inset -1px -1px 0px var(--border-dark);
+        display: none;
+        z-index: 30;
+        padding: 3px;
+    }
+
+    .start-menu.open {
+        display: flex;
+    }
+
+    .start-menu-sidebar {
+        width: 24px;
+        background: var(--titlebar);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 6px;
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    .start-menu-sidebar-text {
+        color: var(--border-mid);
+        font-size: 16px;
+        font-weight: 700;
+        writing-mode: vertical-lr;
+        transform: rotate(180deg);
+        letter-spacing: 2px;
+    }
+
+    .start-menu-sidebar-text strong {
+        color: var(--titlebar-text);
+    }
+
+    .start-menu-items {
+        flex: 1;
+        padding: 2px 0;
+    }
+
+    .start-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        font-size: 11px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .start-menu-item:hover {
+        background: var(--highlight);
+        color: var(--highlight-text);
+    }
+
+    .start-menu-item-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .start-menu-item-arrow {
+        margin-left: auto;
+        font-size: 8px;
+    }
+
+    .start-menu-divider {
+        height: 1px;
+        margin: 3px 4px;
+        border-top: 1px solid var(--border-dark);
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    /* ─── All Together: calculator ─── */
+
+    .calc-window {
+        max-width: 280px;
+    }
+
+    .calc-display {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18px;
+        text-align: right;
+        padding: 4px 6px;
+        background: var(--field-bg);
+        color: var(--text);
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-darker), inset -1px -1px 0px var(--border-mid);
+        margin-bottom: 6px;
+        min-height: 24px;
+        line-height: 24px;
+        overflow: hidden;
+    }
+
+    .calc-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 3px;
+    }
+
+    .calc-btn {
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 12px;
+        padding: 4px 2px;
+        background: var(--btn-face);
+        color: var(--text);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        box-shadow: inset 1px 1px 0px var(--border-mid), inset -1px -1px 0px var(--border-dark);
+        cursor: pointer;
+        outline: none;
+        text-align: center;
+        min-height: 28px;
+    }
+
+    .calc-btn:active {
+        border-top: 2px solid var(--border-darker);
+        border-left: 2px solid var(--border-darker);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+        box-shadow: inset 1px 1px 0px var(--border-dark), inset -1px -1px 0px var(--border-mid);
+    }
+
+    .calc-btn.red { color: #cc0000; }
+    .calc-btn.blue { color: #000080; }
+
+    /* ─── Anti-pattern list ─── */
+
+    .anti-card {
+        padding: 3px;
+    }
+
+    .anti-card-body {
+        background: var(--field-bg);
+        padding: 20px 24px;
+        border-top: 2px solid var(--border-dark);
+        border-left: 2px solid var(--border-dark);
+        border-bottom: 2px solid var(--border-light);
+        border-right: 2px solid var(--border-light);
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 400;
+        color: var(--text-muted);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+
+    .anti-list .x {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        background: #cc0000;
+        color: #fff;
+        font-weight: 900;
+        font-size: 11px;
+        flex-shrink: 0;
+        border-top: 2px solid #ff4444;
+        border-left: 2px solid #ff4444;
+        border-bottom: 2px solid #880000;
+        border-right: 2px solid #880000;
+    }
+
+    .anti-list .o {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        background: #008000;
+        color: #fff;
+        font-weight: 900;
+        font-size: 11px;
+        flex-shrink: 0;
+        border-top: 2px solid #00bb00;
+        border-left: 2px solid #00bb00;
+        border-bottom: 2px solid #004400;
+        border-right: 2px solid #004400;
+    }
+
+    /* ─── Manifesto ─── */
+
+    .manifesto {
+        text-align: center;
+        margin-top: 64px;
+    }
+
+    .manifesto-text {
+        font-size: 1.35rem;
+        font-weight: 700;
+        line-height: 1.8;
+        letter-spacing: -0.3px;
+        color: var(--text);
+        position: relative;
+    }
+
+    .manifesto-highlight {
+        display: inline;
+        background: var(--titlebar);
+        color: var(--titlebar-text);
+        padding: 2px 8px;
+    }
+
+    .manifesto-sub {
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-top: 16px;
+        line-height: 1.8;
+        font-weight: 400;
+    }
+
+    /* ─── Scrollbar styling (subtle Win95 nod) ─── */
+
+    ::-webkit-scrollbar {
+        width: 16px;
+        height: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: repeating-conic-gradient(var(--surface) 0% 25%, var(--border-light) 0% 50%) 0 0 / 2px 2px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--surface);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+    }
+
+    ::-webkit-scrollbar-button {
+        background: var(--surface);
+        border-top: 2px solid var(--border-light);
+        border-left: 2px solid var(--border-light);
+        border-bottom: 2px solid var(--border-darker);
+        border-right: 2px solid var(--border-darker);
+        display: block;
+        height: 16px;
+        width: 16px;
+    }
+
+    /* ─── Selection highlight ─── */
+
+    ::selection {
+        background: var(--highlight);
+        color: var(--highlight-text);
+    }
+
+    /* ─── All-together desktop section ─── */
+
+    .together-desktop {
+        position: relative;
+    }
+
+    .together-desktop .win-window {
+        position: absolute;
+    }
+
+    /* ─── Responsive ─── */
+
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.4rem;
+        }
+
+        .hero-title-95 {
+            font-size: 3.2rem;
+        }
+
+        .bevel-demo {
+            grid-template-columns: 1fr;
+        }
+
+        .desktop-demo {
+            height: 420px;
+        }
+
+        .start-menu {
+            width: 190px;
+        }
+
+        .calc-window {
+            max-width: 100%;
+        }
+
+        .intro-card-body,
+        .anti-card-body {
+            padding: 16px 18px;
+        }
+
+        .btn-states-demo {
+            gap: 8px;
+            padding: 16px;
+        }
+
+        .manifesto-text {
+            font-size: 1.15rem;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Windows Classic</div>
+            <h1 class="hero-title">
+                WINDOWS
+                <span class="hero-title-highlight">95</span>
+                <span class="hero-title-95">&rsquo;95</span>
+            </h1>
+            <p class="hero-tagline">
+                It taught the world what a button looks like.<br>
+                We're keeping that <strong>affordance clarity</strong> and making it work today.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="win-window intro-card">
+            <div class="intro-titlebar">
+                <span>README.txt - Notepad</span>
+            </div>
+            <div class="intro-card-body">
+                <p class="intro-text">
+                    Windows 95's beveled borders made every clickable thing
+                    <strong>obviously clickable</strong>. Raised means push it.
+                    Sunken means type in it. A child could understand it. A billion people did.
+                    <strong>That was the strength: instant affordance.</strong>
+                    <br><br>
+                    The weakness? The 3D effects aged poorly. The gray surfaces became
+                    oppressive. The visual weight overwhelmed the content. But the
+                    <strong>principle</strong> underneath &mdash; that every element should
+                    communicate its function through its appearance &mdash; is eternal.
+                    <br><br>
+                    This page takes that principle and proves it still works.
+                    Not pixel-perfect retro emulation, but <strong>the affordance system
+                    itself</strong> &mdash; rebuilt for a modern context where
+                    raised surfaces, sunken fields, and window chrome aren't
+                    nostalgia. They're <strong>usable UI</strong>.
+                </p>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Principle 01: The Beveled Border -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">The Beveled Border</h2>
+            <p class="section-desc">
+                The defining visual trick of Windows 95.
+                A <em>white highlight on the top-left</em> and a <em>dark shadow on the bottom-right</em>
+                creates the illusion of a 3D surface lit from the upper left.
+                Reverse the colors and the surface looks pressed inward. This single technique
+                gave every pixel a physical meaning: raised means <em>clickable</em>,
+                sunken means <em>editable</em>. No labels needed.
+                Try pressing the buttons below.
+            </p>
+
+            <div class="bevel-demo">
+                <div class="bevel-demo-card bevel-raised">
+                    <div class="bevel-demo-card-icon">&#128194;</div>
+                    <div class="bevel-demo-card-label">Raised</div>
+                    <div class="bevel-demo-card-sub">Outset border</div>
+                </div>
+                <div class="bevel-demo-card bevel-sunken">
+                    <div class="bevel-demo-card-icon">&#128196;</div>
+                    <div class="bevel-demo-card-label">Sunken</div>
+                    <div class="bevel-demo-card-sub">Inset border</div>
+                </div>
+                <div class="bevel-demo-card bevel-raised" style="background: var(--btn-face);">
+                    <div class="bevel-demo-card-icon">&#128190;</div>
+                    <div class="bevel-demo-card-label">Flat</div>
+                    <div class="bevel-demo-card-sub">Button face</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 12px; font-weight: 600;">
+                    Click the buttons to see the press effect:
+                </p>
+                <div class="btn-states-demo bevel-raised">
+                    <div class="btn-state-group">
+                        <button class="win-btn win-btn-default">OK</button>
+                        <div class="btn-state-label">Default</div>
+                    </div>
+                    <div class="btn-state-group">
+                        <button class="win-btn">Cancel</button>
+                        <div class="btn-state-label">Normal</div>
+                    </div>
+                    <div class="btn-state-group">
+                        <button class="win-btn">Apply</button>
+                        <div class="btn-state-label">Normal</div>
+                    </div>
+                    <div class="btn-state-group">
+                        <button class="win-btn win-btn-disabled" disabled>Disabled</button>
+                        <div class="btn-state-label">Disabled</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <span class="cmt">/* The Win95 raised surface — light top-left, dark bottom-right */</span><br>
+                <span class="kw">border-top</span>: <span class="val">2px solid #ffffff</span>;<br>
+                <span class="kw">border-left</span>: <span class="val">2px solid #ffffff</span>;<br>
+                <span class="kw">border-bottom</span>: <span class="val">2px solid #000000</span>;<br>
+                <span class="kw">border-right</span>: <span class="val">2px solid #000000</span>;<br>
+                <span class="kw">background</span>: <span class="val">#c0c0c0</span>;&nbsp;&nbsp;<span class="cmt">/* the iconic gray */</span><br>
+                <br>
+                <span class="cmt">/* Pressed state — just invert the borders */</span><br>
+                <span class="kw">border-top</span>: <span class="val">2px solid #000000</span>;<br>
+                <span class="kw">border-left</span>: <span class="val">2px solid #000000</span>;<br>
+                <span class="kw">border-bottom</span>: <span class="val">2px solid #ffffff</span>;<br>
+                <span class="kw">border-right</span>: <span class="val">2px solid #ffffff</span>;
+            </div>
+        </section>
+
+        <!-- Principle 02: The Window Chrome -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">The Window Chrome</h2>
+            <p class="section-desc">
+                Every application in Windows 95 lived inside a <em>framed window</em>.
+                A blue gradient title bar told you what you were looking at. Three buttons
+                in the corner gave you <em>minimize, maximize, and close</em>.
+                A menu bar organized every action under predictable headings:
+                File, Edit, View, Help. And a status bar at the bottom kept you informed.
+                This chrome wasn't decoration — it was <em>structure</em>. Try typing in the
+                notepad below.
+            </p>
+
+            <div class="chrome-demo">
+                <div class="win-window">
+                    <div class="win-titlebar">
+                        <div class="win-titlebar-icon">&#128196;</div>
+                        <div class="win-titlebar-text">Untitled - Notepad</div>
+                        <div class="win-titlebar-buttons">
+                            <button class="win-titlebar-btn" title="Minimize">_</button>
+                            <button class="win-titlebar-btn" title="Maximize">&#9633;</button>
+                            <button class="win-titlebar-btn" title="Close">&#10005;</button>
+                        </div>
+                    </div>
+                    <div class="win-menubar">
+                        <div class="win-menu-item"><span class="win-menu-underline">F</span>ile</div>
+                        <div class="win-menu-item"><span class="win-menu-underline">E</span>dit</div>
+                        <div class="win-menu-item"><span class="win-menu-underline">S</span>earch</div>
+                        <div class="win-menu-item"><span class="win-menu-underline">H</span>elp</div>
+                    </div>
+                    <div class="win-body">
+                        <textarea class="notepad-content" id="notepad-input" spellcheck="false">Welcome to Windows 95.
+
+The interface you are looking at defined
+a generation of computer users.
+
+Every raised surface is a button.
+Every sunken field is an input.
+Every blue title bar is a handle.
+
+This is the language of affordance.</textarea>
+                    </div>
+                    <div class="win-statusbar" id="notepad-status">
+                        Ln 1, Col 1
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <span class="cmt">/* Title bar — the window's identity */</span><br>
+                <span class="kw">background</span>: <span class="val">linear-gradient(90deg, #000080, #1084d0)</span>;<br>
+                <span class="kw">color</span>: <span class="val">#ffffff</span>;<br>
+                <span class="kw">font-weight</span>: <span class="val">bold</span>;<br>
+                <span class="kw">padding</span>: <span class="val">3px 4px</span>;<br>
+                <br>
+                <span class="cmt">/* Title bar buttons — minimize, maximize, close */</span><br>
+                <span class="kw">width</span>: <span class="val">16px</span>; <span class="kw">height</span>: <span class="val">14px</span>;<br>
+                <span class="kw">border-top</span>: <span class="val">1px solid #ffffff</span>;<br>
+                <span class="kw">border-bottom</span>: <span class="val">1px solid #000000</span>;
+            </div>
+        </section>
+
+        <!-- Principle 03: The Start Menu -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">The Start Menu</h2>
+            <p class="section-desc">
+                Microsoft's answer to "Where do I begin?" was revolutionary in its simplicity:
+                <em>a single button labeled "Start."</em> Everything you could do with your
+                computer funneled through one entry point. Programs, documents, settings,
+                help — all organized in a cascading menu that rewarded exploration.
+                The Start button became so iconic that it survived as a concept for
+                <em>thirty years</em>. Click "Start" in the demo below.
+            </p>
+
+            <div class="desktop-demo" id="desktop-demo">
+                <div class="desktop-icons">
+                    <div class="desktop-icon">
+                        <div class="desktop-icon-img">&#128187;</div>
+                        <div class="desktop-icon-label">My Computer</div>
+                    </div>
+                    <div class="desktop-icon">
+                        <div class="desktop-icon-img">&#128193;</div>
+                        <div class="desktop-icon-label">My Documents</div>
+                    </div>
+                    <div class="desktop-icon">
+                        <div class="desktop-icon-img">&#127760;</div>
+                        <div class="desktop-icon-label">Internet<br>Explorer</div>
+                    </div>
+                    <div class="desktop-icon">
+                        <div class="desktop-icon-img">&#128465;</div>
+                        <div class="desktop-icon-label">Recycle Bin</div>
+                    </div>
+                </div>
+
+                <!-- Start Menu -->
+                <div class="start-menu" id="start-menu">
+                    <div class="start-menu-sidebar">
+                        <div class="start-menu-sidebar-text">
+                            <strong>Windows</strong>95
+                        </div>
+                    </div>
+                    <div class="start-menu-items">
+                        <div class="start-menu-item">
+                            <div class="start-menu-item-icon">&#128194;</div>
+                            <span>Programs</span>
+                            <span class="start-menu-item-arrow">&#9654;</span>
+                        </div>
+                        <div class="start-menu-item">
+                            <div class="start-menu-item-icon">&#128196;</div>
+                            <span>Documents</span>
+                            <span class="start-menu-item-arrow">&#9654;</span>
+                        </div>
+                        <div class="start-menu-item">
+                            <div class="start-menu-item-icon">&#9881;</div>
+                            <span>Settings</span>
+                            <span class="start-menu-item-arrow">&#9654;</span>
+                        </div>
+                        <div class="start-menu-item">
+                            <div class="start-menu-item-icon">&#128269;</div>
+                            <span>Find</span>
+                            <span class="start-menu-item-arrow">&#9654;</span>
+                        </div>
+                        <div class="start-menu-item">
+                            <div class="start-menu-item-icon">&#10067;</div>
+                            <span>Help</span>
+                        </div>
+                        <div class="start-menu-item">
+                            <div class="start-menu-item-icon">&#9654;</div>
+                            <span>Run...</span>
+                        </div>
+                        <div class="start-menu-divider"></div>
+                        <div class="start-menu-item" id="shutdown-item">
+                            <div class="start-menu-item-icon">&#9211;</div>
+                            <span>Shut Down...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Taskbar -->
+                <div class="taskbar">
+                    <button class="start-btn" id="start-btn">
+                        <div class="start-logo">
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                        Start
+                    </button>
+                    <div class="taskbar-tray" id="taskbar-clock">
+                        12:00 AM
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <span class="cmt">/* The Start button — one entry point for everything */</span><br>
+                <span class="kw">position</span>: <span class="val">fixed</span>;<br>
+                <span class="kw">bottom</span>: <span class="val">0</span>; <span class="kw">left</span>: <span class="val">0</span>;<br>
+                <span class="kw">display</span>: <span class="val">flex</span>;<br>
+                <span class="kw">align-items</span>: <span class="val">center</span>;<br>
+                <span class="kw">gap</span>: <span class="val">4px</span>;<br>
+                <br>
+                <span class="cmt">/* The Start Menu — cascading hierarchy */</span><br>
+                <span class="kw">position</span>: <span class="val">absolute</span>;<br>
+                <span class="kw">bottom</span>: <span class="val">32px</span>;&nbsp;&nbsp;<span class="cmt">/* sits above the taskbar */</span><br>
+                <span class="kw">left</span>: <span class="val">3px</span>;
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Calculator</h2>
+            <p class="section-desc">
+                Beveled buttons, window chrome, and status feedback — combined into one of
+                Windows 95's most-used accessories.
+                Every button has <em>tactile press feedback</em>. The display is a sunken field.
+                The whole thing lives inside a proper window frame.
+                This is what <em>affordance</em> looks like: you can tell what everything does
+                just by looking at it. Try calculating something.
+            </p>
+
+            <div class="win-window calc-window" id="calc-window">
+                <div class="win-titlebar">
+                    <div class="win-titlebar-icon">&#128290;</div>
+                    <div class="win-titlebar-text">Calculator</div>
+                    <div class="win-titlebar-buttons">
+                        <button class="win-titlebar-btn" title="Minimize">_</button>
+                        <button class="win-titlebar-btn" title="Maximize">&#9633;</button>
+                        <button class="win-titlebar-btn" title="Close">&#10005;</button>
+                    </div>
+                </div>
+                <div class="win-menubar">
+                    <div class="win-menu-item"><span class="win-menu-underline">E</span>dit</div>
+                    <div class="win-menu-item"><span class="win-menu-underline">V</span>iew</div>
+                    <div class="win-menu-item"><span class="win-menu-underline">H</span>elp</div>
+                </div>
+                <div style="padding: 6px;">
+                    <div class="calc-display" id="calc-display">0</div>
+                    <div class="calc-grid">
+                        <button class="calc-btn blue" data-action="backspace" style="grid-column: span 3;">&#9003;</button>
+                        <button class="calc-btn red" data-action="clear-entry">CE</button>
+                        <button class="calc-btn red" data-action="clear">C</button>
+
+                        <button class="calc-btn red" data-action="memory">MC</button>
+                        <button class="calc-btn" data-val="7">7</button>
+                        <button class="calc-btn" data-val="8">8</button>
+                        <button class="calc-btn" data-val="9">9</button>
+                        <button class="calc-btn" data-op="/">/</button>
+
+                        <button class="calc-btn red" data-action="memory">MR</button>
+                        <button class="calc-btn" data-val="4">4</button>
+                        <button class="calc-btn" data-val="5">5</button>
+                        <button class="calc-btn" data-val="6">6</button>
+                        <button class="calc-btn" data-op="*">*</button>
+
+                        <button class="calc-btn red" data-action="memory">MS</button>
+                        <button class="calc-btn" data-val="1">1</button>
+                        <button class="calc-btn" data-val="2">2</button>
+                        <button class="calc-btn" data-val="3">3</button>
+                        <button class="calc-btn" data-op="-">-</button>
+
+                        <button class="calc-btn red" data-action="memory">M+</button>
+                        <button class="calc-btn" data-val="0">0</button>
+                        <button class="calc-btn" data-val=".">.</button>
+                        <button class="calc-btn" data-op="+">+</button>
+                        <button class="calc-btn blue" data-action="equals">=</button>
+                    </div>
+                </div>
+                <div class="win-statusbar" id="calc-status">&nbsp;</div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="win-window anti-card">
+                <div class="anti-card-body">
+                    <ul class="anti-list">
+                        <li><span class="x">&#x2717;</span> Pixel-perfect retro emulation as visual gimmick</li>
+                        <li><span class="x">&#x2717;</span> Gray boxes without interaction feedback</li>
+                        <li><span class="x">&#x2717;</span> Skeuomorphism taken to absurdity</li>
+                        <li><span class="x">&#x2717;</span> Nostalgia without function</li>
+                        <li><span class="o">&#x2713;</span> 3D borders as instant affordance — "this is clickable"</li>
+                        <li><span class="o">&#x2713;</span> Window chrome that frames and organizes content</li>
+                        <li><span class="o">&#x2713;</span> Start menu pattern — one entry point to everything</li>
+                        <li><span class="o">&#x2713;</span> Status bars that keep the user informed</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Windows 95 taught a<br>
+                <span class="manifesto-highlight">billion people</span><br>
+                what a button looks like.<br>
+                <span class="manifesto-highlight">Affordance</span> — making things<br>
+                look like what they do —<br>
+                is still the most important<br>
+                principle in <span class="manifesto-highlight">UI design</span>.
+            </p>
+            <p class="manifesto-sub">
+                Raised means push it. Sunken means type in it.<br>
+                Blue bar means grab it. That's the whole system.<br>
+                Thirty years later, we're still catching up.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* ─── Notepad status bar: track cursor position ─── */
+    (function () {
+        var notepad = document.getElementById('notepad-input');
+        var status = document.getElementById('notepad-status');
+        if (!notepad || !status) return;
+
+        function updateStatus() {
+            var val = notepad.value.substring(0, notepad.selectionStart);
+            var lines = val.split('\n');
+            var ln = lines.length;
+            var col = lines[lines.length - 1].length + 1;
+            status.textContent = 'Ln ' + ln + ', Col ' + col;
+        }
+
+        notepad.addEventListener('click', updateStatus);
+        notepad.addEventListener('keyup', updateStatus);
+        notepad.addEventListener('input', updateStatus);
+    })();
+
+    /* ─── Start Menu toggle ─── */
+    (function () {
+        var startBtn = document.getElementById('start-btn');
+        var startMenu = document.getElementById('start-menu');
+        var desktopDemo = document.getElementById('desktop-demo');
+        if (!startBtn || !startMenu || !desktopDemo) return;
+
+        startBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var isOpen = startMenu.classList.contains('open');
+            startMenu.classList.toggle('open');
+            if (isOpen) {
+                startBtn.classList.remove('pressed');
+            } else {
+                startBtn.classList.add('pressed');
+            }
+        });
+
+        desktopDemo.addEventListener('click', function (e) {
+            if (e.target !== startBtn && !startBtn.contains(e.target)) {
+                startMenu.classList.remove('open');
+                startBtn.classList.remove('pressed');
+            }
+        });
+
+        /* Shut Down button closes menu */
+        var shutdownItem = document.getElementById('shutdown-item');
+        if (shutdownItem) {
+            shutdownItem.addEventListener('click', function () {
+                startMenu.classList.remove('open');
+                startBtn.classList.remove('pressed');
+            });
+        }
+    })();
+
+    /* ─── Taskbar clock ─── */
+    (function () {
+        var clock = document.getElementById('taskbar-clock');
+        if (!clock) return;
+
+        function updateClock() {
+            var now = new Date();
+            var h = now.getHours();
+            var m = now.getMinutes();
+            var ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            if (h === 0) h = 12;
+            m = m < 10 ? '0' + m : m;
+            clock.textContent = h + ':' + m + ' ' + ampm;
+        }
+
+        updateClock();
+        setInterval(updateClock, 30000);
+    })();
+
+    /* ─── Calculator ─── */
+    (function () {
+        var display = document.getElementById('calc-display');
+        var statusEl = document.getElementById('calc-status');
+        var calcWindow = document.getElementById('calc-window');
+        if (!display || !calcWindow) return;
+
+        var current = '0';
+        var previous = '';
+        var operator = '';
+        var shouldReset = false;
+
+        function updateDisplay() {
+            display.textContent = current;
+        }
+
+        function calculate(a, b, op) {
+            a = parseFloat(a);
+            b = parseFloat(b);
+            if (isNaN(a) || isNaN(b)) return b;
+            switch (op) {
+                case '+': return a + b;
+                case '-': return a - b;
+                case '*': return a * b;
+                case '/': return b === 0 ? 'Error' : a / b;
+                default: return b;
+            }
+        }
+
+        calcWindow.addEventListener('click', function (e) {
+            var btn = e.target.closest('.calc-btn');
+            if (!btn) return;
+
+            var val = btn.getAttribute('data-val');
+            var op = btn.getAttribute('data-op');
+            var action = btn.getAttribute('data-action');
+
+            if (val !== null) {
+                if (current === '0' || shouldReset) {
+                    current = val === '.' ? '0.' : val;
+                    shouldReset = false;
+                } else {
+                    if (val === '.' && current.indexOf('.') !== -1) return;
+                    current = current + val;
+                }
+                updateDisplay();
+            } else if (op) {
+                if (operator && !shouldReset) {
+                    var result = calculate(previous, current, operator);
+                    current = String(result);
+                    updateDisplay();
+                }
+                previous = current;
+                operator = op;
+                shouldReset = true;
+                if (statusEl) statusEl.textContent = previous + ' ' + operator;
+            } else if (action === 'equals') {
+                if (operator) {
+                    var result = calculate(previous, current, operator);
+                    current = String(result);
+                    if (current === 'Error') {
+                        current = 'Error';
+                    } else {
+                        var num = parseFloat(current);
+                        if (num === Math.floor(num) && Math.abs(num) < 1e15) {
+                            current = String(num);
+                        } else {
+                            current = String(parseFloat(num.toPrecision(12)));
+                        }
+                    }
+                    operator = '';
+                    previous = '';
+                    shouldReset = true;
+                    updateDisplay();
+                    if (statusEl) statusEl.innerHTML = '&nbsp;';
+                }
+            } else if (action === 'clear') {
+                current = '0';
+                previous = '';
+                operator = '';
+                shouldReset = false;
+                updateDisplay();
+                if (statusEl) statusEl.innerHTML = '&nbsp;';
+            } else if (action === 'clear-entry') {
+                current = '0';
+                shouldReset = false;
+                updateDisplay();
+            } else if (action === 'backspace') {
+                if (current.length > 1) {
+                    current = current.slice(0, -1);
+                } else {
+                    current = '0';
+                }
+                updateDisplay();
+            }
+        });
+    })();
+
+    /* ─── Desktop icon selection highlight ─── */
+    (function () {
+        var icons = document.querySelectorAll('.desktop-icon');
+        icons.forEach(function (icon) {
+            icon.addEventListener('click', function (e) {
+                e.stopPropagation();
+                icons.forEach(function (i) { i.classList.remove('selected'); });
+                icon.classList.add('selected');
+            });
+        });
+
+        var desktopDemo = document.getElementById('desktop-demo');
+        if (desktopDemo) {
+            desktopDemo.addEventListener('click', function (e) {
+                if (!e.target.closest('.desktop-icon') &&
+                    !e.target.closest('.start-btn') &&
+                    !e.target.closest('.start-menu') &&
+                    !e.target.closest('.taskbar')) {
+                    icons.forEach(function (i) { i.classList.remove('selected'); });
+                }
+            });
+        }
+    })();
+</script>

@@ -1,0 +1,1490 @@
+<!-- layout: base.html -->
+<!-- title: Luna (2001) -->
+<!-- description: Blue skies, green hills, you know the vibe -->
+
+<style>
+    :root {
+        --xp-blue: #0054E3;
+        --xp-blue-light: #2E8AEF;
+        --xp-blue-btn: #003C9A;
+        --xp-green: #21A121;
+        --xp-green-dark: #188218;
+        --xp-taskbar: #235ADD;
+        --xp-start-green: #388E3C;
+        --xp-window-border: #0054E3;
+        --xp-body-bg: #ECE9D8;
+        --xp-field-bg: #ffffff;
+        --text: #1a3a2a;
+        --text-muted: #4a6a58;
+        --text-dim: #7a9a88;
+        --danger: #c0392b;
+        --success: #27ae60;
+    }
+
+    body {
+        font-family: Tahoma, 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 30px;
+        min-height: 100vh;
+        overflow-x: hidden;
+        color: var(--text);
+        font-size: 11px;
+        background: linear-gradient(
+            180deg,
+            #0054E3 0%,
+            #2E8AEF 50%,
+            #21A121 80%,
+            #188218 100%
+        );
+        background-attachment: fixed;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* === XP Luna Window Frame === */
+    .xp-window {
+        border-radius: 8px 8px 4px 4px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 60, 0.25);
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.18),
+            0 1px 3px rgba(0, 0, 0, 0.1);
+        background: var(--xp-body-bg);
+        margin-bottom: 16px;
+    }
+
+    .xp-titlebar {
+        background: linear-gradient(180deg,
+                #3C7BD6 0%,
+                #245EC9 12%,
+                #1851BE 40%,
+                #1549B5 60%,
+                #1A4FB8 80%,
+                #245CC5 100%);
+        padding: 6px 8px 5px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border-radius: 8px 8px 0 0;
+        border-top: 1px solid rgba(120, 160, 220, 0.5);
+    }
+
+    .xp-titlebar-icon {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        flex-shrink: 0;
+    }
+
+    .xp-titlebar-text {
+        flex: 1;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        text-shadow: 1px 1px 1px rgba(0, 0, 80, 0.6);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: 0.02em;
+    }
+
+    .xp-titlebar-buttons {
+        display: flex;
+        gap: 2px;
+        flex-shrink: 0;
+    }
+
+    .xp-titlebar-btn {
+        width: 21px;
+        height: 21px;
+        border: 1px solid rgba(0, 0, 60, 0.35);
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        color: #fff;
+        cursor: default;
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+        position: relative;
+        padding: 0;
+        font-family: Tahoma, sans-serif;
+    }
+
+    .xp-titlebar-btn.minimize {
+        background: linear-gradient(180deg, #3574C3 0%, #254FA6 60%, #2D5AB0 100%);
+        border-color: rgba(10, 30, 80, 0.4);
+    }
+
+    .xp-titlebar-btn.maximize {
+        background: linear-gradient(180deg, #3574C3 0%, #254FA6 60%, #2D5AB0 100%);
+        border-color: rgba(10, 30, 80, 0.4);
+    }
+
+    .xp-titlebar-btn.close {
+        background: linear-gradient(180deg, #C06040 0%, #A83820 60%, #B04028 100%);
+        border-color: rgba(80, 10, 0, 0.4);
+    }
+
+    .xp-titlebar-btn:active {
+        filter: brightness(0.88);
+    }
+
+    .xp-body {
+        background: var(--xp-field-bg);
+        padding: 16px 20px;
+        border: 2px solid #ACA899;
+        border-top: none;
+        margin: 0 3px 3px;
+    }
+
+    .xp-body-plain {
+        background: var(--xp-body-bg);
+        padding: 16px 20px;
+        margin: 0 3px 3px;
+    }
+
+    /* === Hero === */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 16px;
+        border-radius: 3px;
+        background: linear-gradient(180deg, #3A78C4 0%, #2A5CA8 100%);
+        color: #fff;
+        margin-bottom: 20px;
+        border: 1px solid rgba(0, 0, 60, 0.25);
+        text-shadow: 1px 1px 1px rgba(0, 0, 60, 0.35);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #fff;
+        text-shadow:
+            1px 2px 4px rgba(0, 20, 60, 0.4);
+        line-height: 1.1;
+    }
+
+    .hero-title-sub {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 1px 1px 2px rgba(0, 20, 60, 0.3);
+        display: block;
+        margin-top: 6px;
+    }
+
+    .hero-tagline {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 400;
+        text-shadow: 1px 1px 1px rgba(0, 20, 40, 0.2);
+    }
+
+    /* === Intro text === */
+    .intro-text {
+        font-size: 11px;
+        line-height: 1.9;
+        font-weight: 400;
+        color: #333;
+    }
+
+    .intro-text strong {
+        font-weight: 700;
+        color: #000;
+    }
+
+    /* === Section === */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.8);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        text-shadow: 1px 1px 2px rgba(0, 20, 60, 0.3);
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #fff;
+        text-shadow: 1px 1px 3px rgba(0, 20, 60, 0.35);
+    }
+
+    .section-desc {
+        font-size: 12px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.88);
+        font-weight: 400;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 1px rgba(0, 20, 40, 0.2);
+    }
+
+    .section-desc em {
+        color: #fff;
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    .section-desc code {
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        background: rgba(255, 255, 255, 0.25);
+        padding: 2px 6px;
+        border-radius: 3px;
+        color: #fff;
+    }
+
+    /* === Divider === */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    }
+
+    /* === XP Style Button — satin plastic, not gel === */
+    .xp-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 5px 18px;
+        border-radius: 3px;
+        border: 1px solid #8E8F8A;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 400;
+        font-family: Tahoma, 'Segoe UI', sans-serif;
+        color: #000;
+        position: relative;
+        background: linear-gradient(180deg,
+                #F5F4EE 0%,
+                #ECEADF 40%,
+                #E2DFCF 70%,
+                #D9D5C4 100%);
+        box-shadow:
+            inset 1px 1px 0 rgba(255, 255, 255, 0.6),
+            inset -1px -1px 0 rgba(0, 0, 0, 0.06);
+        transition: all 0.1s ease;
+        min-height: 23px;
+        box-sizing: border-box;
+    }
+
+    .xp-btn:hover {
+        background: linear-gradient(180deg,
+                #FAFAF5 0%,
+                #F2F0E8 40%,
+                #EAE7D8 70%,
+                #E2DECC 100%);
+        border-color: #6E8AB8;
+        box-shadow:
+            inset 1px 1px 0 rgba(255, 255, 255, 0.7),
+            inset -1px -1px 0 rgba(0, 0, 0, 0.04),
+            0 0 3px rgba(60, 100, 160, 0.15);
+    }
+
+    .xp-btn:active {
+        background: linear-gradient(180deg,
+                #D8D5C6 0%,
+                #DDDACC 50%,
+                #E0DDD0 100%);
+        box-shadow:
+            inset 1px 1px 2px rgba(0, 0, 0, 0.12),
+            inset -1px -1px 0 rgba(255, 255, 255, 0.3);
+        border-color: #7A7B76;
+    }
+
+    .xp-btn.primary {
+        color: #fff;
+        text-shadow: 1px 1px 1px rgba(0, 0, 60, 0.4);
+        border: 1px solid #1840A0;
+        background: linear-gradient(180deg,
+                #4888D0 0%,
+                #3570BE 30%,
+                #2A60B0 60%,
+                #2858A8 80%,
+                #3068B8 100%);
+        box-shadow:
+            inset 1px 1px 0 rgba(130, 170, 220, 0.4),
+            inset -1px -1px 0 rgba(0, 20, 60, 0.15);
+    }
+
+    .xp-btn.primary:hover {
+        background: linear-gradient(180deg,
+                #5898D8 0%,
+                #4078C4 30%,
+                #3468B8 60%,
+                #3060B0 80%,
+                #3870C0 100%);
+        box-shadow:
+            inset 1px 1px 0 rgba(140, 180, 230, 0.5),
+            inset -1px -1px 0 rgba(0, 20, 60, 0.1),
+            0 0 4px rgba(40, 80, 150, 0.2);
+    }
+
+    .xp-btn.primary:active {
+        background: linear-gradient(180deg,
+                #2250A0 0%,
+                #2858A5 40%,
+                #2C5CAA 100%);
+        box-shadow:
+            inset 1px 1px 2px rgba(0, 10, 40, 0.25),
+            inset -1px -1px 0 rgba(80, 120, 180, 0.15);
+    }
+
+    .xp-btn.green {
+        color: #fff;
+        text-shadow: 1px 1px 1px rgba(0, 40, 0, 0.4);
+        border: 1px solid #1A6818;
+        background: linear-gradient(180deg,
+                #50A848 0%,
+                #3C9234 30%,
+                #30822C 60%,
+                #2C7828 80%,
+                #348430 100%);
+        box-shadow:
+            inset 1px 1px 0 rgba(120, 190, 120, 0.35),
+            inset -1px -1px 0 rgba(0, 30, 0, 0.12);
+    }
+
+    .xp-btn.green:hover {
+        background: linear-gradient(180deg,
+                #5CB854 0%,
+                #48A040 30%,
+                #3C9036 60%,
+                #388832 80%,
+                #409038 100%);
+        box-shadow:
+            inset 1px 1px 0 rgba(140, 200, 140, 0.45),
+            inset -1px -1px 0 rgba(0, 30, 0, 0.08),
+            0 0 4px rgba(40, 120, 40, 0.2);
+    }
+
+    .xp-btn.green:active {
+        background: linear-gradient(180deg,
+                #266C22 0%,
+                #2C7428 40%,
+                #30782C 100%);
+        box-shadow:
+            inset 1px 1px 2px rgba(0, 20, 0, 0.25),
+            inset -1px -1px 0 rgba(80, 150, 80, 0.15);
+    }
+
+    .xp-btn.sm {
+        padding: 3px 12px;
+        font-size: 10px;
+        min-height: 20px;
+    }
+
+    .xp-btn.lg {
+        padding: 7px 28px;
+        font-size: 12px;
+        min-height: 28px;
+    }
+
+    .xp-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .xp-btn:disabled:hover {
+        background: linear-gradient(180deg,
+                #F5F4EE 0%,
+                #ECEADF 40%,
+                #E2DFCF 70%,
+                #D9D5C4 100%);
+        border-color: #8E8F8A;
+        box-shadow:
+            inset 1px 1px 0 rgba(255, 255, 255, 0.6),
+            inset -1px -1px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .xp-btn.bounce {
+        animation: btn-bounce 0.35s ease;
+    }
+
+    @keyframes btn-bounce {
+        0% {
+            transform: scale(1);
+        }
+
+        30% {
+            transform: scale(0.94);
+        }
+
+        50% {
+            transform: scale(1.04);
+        }
+
+        70% {
+            transform: scale(0.98);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* === Button demo area === */
+    .btn-states {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-state-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .btn-state-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #808080;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        width: 55px;
+        text-align: right;
+    }
+
+    /* === Nature demo cards (inside XP window) === */
+    .nature-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .nature-card {
+        padding: 20px 16px;
+        border-radius: 4px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .nature-card.sky {
+        background: linear-gradient(180deg, #5aa0e8 0%, #88c8f0 100%);
+        color: #fff;
+    }
+
+    .nature-card.meadow {
+        background: linear-gradient(180deg, #88c870 0%, #5aaa38 100%);
+        color: #fff;
+    }
+
+    .nature-card.sunrise {
+        background: linear-gradient(180deg, #f0c860 0%, #e8a030 100%);
+        color: #6a4a10;
+    }
+
+    .nature-card.bliss {
+        background: linear-gradient(180deg, #5aa0e8 0%, #78c0e8 40%, #90d8a0 65%, #68b840 100%);
+        color: #fff;
+    }
+
+    .nature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 40%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+        pointer-events: none;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .nature-card-title {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 3px;
+        position: relative;
+        z-index: 1;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+    }
+
+    .nature-card-sub {
+        font-size: 10px;
+        opacity: 0.85;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Floating animation */
+    .float {
+        animation: gentle-float 4s ease-in-out infinite;
+    }
+
+    .float-delay {
+        animation: gentle-float 4s ease-in-out 1s infinite;
+    }
+
+    @keyframes gentle-float {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-4px);
+        }
+    }
+
+    /* === Friendly surface — XP property sheet style === */
+    .surface-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+    }
+
+    .surface-card {
+        padding: 18px 12px;
+        text-align: center;
+        border-radius: 3px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s;
+        border: 1px solid #ACA899;
+        background: #fff;
+    }
+
+    .surface-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .surface-card.warm {
+        border-color: #D4B880;
+        background: linear-gradient(180deg, #FFFCF5 0%, #FFF5E0 100%);
+    }
+
+    .surface-card.cool {
+        border-color: #8EACC8;
+        background: linear-gradient(180deg, #F5F8FF 0%, #E0EEFF 100%);
+    }
+
+    .surface-card.neutral {
+        border-color: #8EAE8E;
+        background: linear-gradient(180deg, #F5FFF5 0%, #E0F5E0 100%);
+    }
+
+    .surface-card-icon {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .surface-card-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 3px;
+    }
+
+    .surface-card-sub {
+        font-size: 10px;
+        color: #808080;
+    }
+
+    .surface-card-shadow-label {
+        font-size: 9px;
+        font-family: 'Courier New', monospace;
+        color: #808080;
+        margin-top: 6px;
+    }
+
+    /* === Code block — XP Notepad style === */
+    .code-block {
+        background: #fff;
+        border: 2px solid #7F9DB9;
+        border-radius: 0;
+        padding: 14px 18px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 11px;
+        line-height: 1.8;
+        color: #333;
+        overflow-x: auto;
+        margin-top: 16px;
+    }
+
+    .code-block .kw {
+        color: #0054E3;
+    }
+
+    .code-block .val {
+        color: #388E3C;
+    }
+
+    .code-block .cmt {
+        color: #999;
+    }
+
+    /* === Weather widget — XP sidebar gadget style === */
+    .weather-widget {
+        overflow: hidden;
+    }
+
+    .weather-header {
+        background: linear-gradient(180deg, #5aa0e8 0%, #78c0e8 50%, #90d8a0 100%);
+        padding: 24px 24px 18px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .weather-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+        pointer-events: none;
+    }
+
+    .weather-bokeh {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .weather-bokeh-1 {
+        width: 100px;
+        height: 100px;
+        top: -15px;
+        right: -5px;
+        background: radial-gradient(circle, rgba(255, 255, 200, 0.15) 0%, transparent 70%);
+    }
+
+    .weather-bokeh-2 {
+        width: 50px;
+        height: 50px;
+        top: 25px;
+        right: 70px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    }
+
+    .weather-bokeh-3 {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 25px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    }
+
+    .weather-sun {
+        font-size: 2.4rem;
+        position: relative;
+        z-index: 1;
+        animation: sun-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes sun-pulse {
+
+        0%,
+        100% {
+            filter: brightness(1);
+            transform: scale(1);
+        }
+
+        50% {
+            filter: brightness(1.15);
+            transform: scale(1.05);
+        }
+    }
+
+    .weather-temp {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 1px 1px 2px rgba(0, 20, 60, 0.25);
+        position: relative;
+        z-index: 1;
+        margin-top: 2px;
+    }
+
+    .weather-temp-unit {
+        font-size: 1rem;
+        font-weight: 400;
+        opacity: 0.85;
+    }
+
+    .weather-condition {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.9);
+        position: relative;
+        z-index: 1;
+        margin-top: 2px;
+    }
+
+    .weather-location {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.7);
+        position: relative;
+        z-index: 1;
+        margin-top: 4px;
+    }
+
+    .weather-body {
+        padding: 16px 20px 18px;
+        background: #fff;
+    }
+
+    .weather-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    .weather-detail {
+        text-align: center;
+        padding: 10px 6px;
+        background: #F5F5F0;
+        border-radius: 3px;
+        border: 1px solid #D4D0C8;
+    }
+
+    .weather-detail-icon {
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+
+    .weather-detail-value {
+        font-size: 12px;
+        font-weight: 700;
+        color: #000;
+    }
+
+    .weather-detail-label {
+        font-size: 9px;
+        color: #808080;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 2px;
+    }
+
+    .weather-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .weather-actions .xp-btn {
+        flex: 1;
+    }
+
+    /* === Anti-pattern list === */
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 11px;
+        padding: 8px 0;
+        border-bottom: 1px solid #ECE9D8;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 400;
+        color: #333;
+    }
+
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        background: linear-gradient(180deg, #C05838 0%, #A83020 100%);
+        color: #fff;
+        font-weight: 900;
+        font-size: 10px;
+        flex-shrink: 0;
+        border-radius: 2px;
+        border: 1px solid rgba(80, 10, 0, 0.3);
+    }
+
+    .anti-list .o {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        background: linear-gradient(180deg, #48A040 0%, #2C7828 100%);
+        color: #fff;
+        font-weight: 900;
+        font-size: 10px;
+        flex-shrink: 0;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 40, 0, 0.3);
+    }
+
+    /* === Manifesto === */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        line-height: 1.7;
+        color: #fff;
+        text-shadow: 1px 2px 4px rgba(0, 20, 60, 0.35);
+    }
+
+    .manifesto-sub {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 14px;
+        line-height: 1.7;
+        font-weight: 400;
+        text-shadow: 1px 1px 1px rgba(0, 20, 40, 0.2);
+    }
+
+    /* === Tab control (for property sheet feel) === */
+    .xp-tabs {
+        display: flex;
+        gap: 0;
+        margin: 0 3px;
+        padding: 0 8px;
+        background: var(--xp-body-bg);
+    }
+
+    .xp-tab {
+        padding: 4px 14px;
+        font-size: 11px;
+        font-family: Tahoma, sans-serif;
+        background: #ECE9D8;
+        border: 1px solid #ACA899;
+        border-bottom: none;
+        border-radius: 3px 3px 0 0;
+        cursor: default;
+        position: relative;
+        top: 1px;
+        color: #000;
+    }
+
+    .xp-tab.active {
+        background: #fff;
+        border-bottom: 1px solid #fff;
+        z-index: 1;
+        font-weight: 700;
+    }
+
+    /* === XP Taskbar === */
+    .xp-taskbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: linear-gradient(180deg,
+                #3168D5 0%,
+                #2456C8 15%,
+                #1E4EBF 50%,
+                #1946B0 85%,
+                #2150C0 100%);
+        border-top: 1px solid #5C8AE0;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        z-index: 100;
+        box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .xp-start-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 22px 2px 14px;
+        height: 40px;
+        border-radius: 0 8px 8px 0;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: Tahoma, sans-serif;
+        color: #fff;
+        text-shadow: 1px 1px 1px rgba(0, 40, 0, 0.5);
+        background: linear-gradient(180deg,
+                #5DBB3F 0%,
+                #3EA828 20%,
+                #2D9418 50%,
+                #288A14 80%,
+                #34A020 100%);
+        border: 1px solid #1A6810;
+        box-shadow:
+            inset 0 1px 0 rgba(160, 230, 140, 0.35),
+            inset 0 -1px 0 rgba(0, 40, 0, 0.15);
+        letter-spacing: 0.02em;
+    }
+
+    .xp-start-btn:hover {
+        background: linear-gradient(180deg,
+                #6CCA4E 0%,
+                #4AB832 20%,
+                #38A024 50%,
+                #329618 80%,
+                #3EAA2C 100%);
+    }
+
+    .xp-start-btn:active {
+        background: linear-gradient(180deg,
+                #228010 0%,
+                #268814 30%,
+                #2A8C18 100%);
+    }
+
+    .xp-start-logo {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .xp-start-flag {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .xp-start-flag span {
+        border-radius: 1px;
+    }
+
+    .xp-start-flag .f-red { background: #FF4040; }
+    .xp-start-flag .f-green { background: #40C040; }
+    .xp-start-flag .f-blue { background: #4080FF; }
+    .xp-start-flag .f-yellow { background: #FFD040; }
+
+    .xp-taskbar-tray {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 24px;
+        height: 40px;
+        background: linear-gradient(180deg,
+                #1C48A8 0%,
+                #183C94 50%,
+                #1C44A0 100%);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        font-size: 16px;
+        color: #fff;
+        text-shadow: 1px 1px 0 rgba(0, 0, 40, 0.4);
+    }
+
+    .xp-taskbar-clock {
+        font-family: Tahoma, sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.02em;
+    }
+
+    .xp-quick-icon:hover {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* === Responsive === */
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-title-sub {
+            font-size: 1rem;
+        }
+
+        .nature-demo,
+        .surface-demo,
+        .weather-details {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-state-row {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+        }
+
+        .btn-state-label {
+            text-align: left;
+            width: auto;
+        }
+
+        .xp-body,
+        .xp-body-plain {
+            padding: 12px 14px;
+        }
+
+        .weather-body {
+            padding: 12px 14px 16px;
+        }
+
+        .weather-actions {
+            flex-direction: column;
+        }
+
+        .xp-taskbar {
+            display: none;
+        }
+
+        body {
+            padding-bottom: 0;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Windows XP Luna</div>
+            <h1 class="hero-title">
+                Luna
+                <span class="hero-title-sub">The visual style that made computers feel like home</span>
+            </h1>
+            <p class="hero-tagline">
+                Blue titlebar. Green Start button. Rolling hills.<br>
+                The OS that taught a generation to trust their computer.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="xp-window">
+            <div class="xp-titlebar">
+                <div class="xp-titlebar-icon">&#128196;</div>
+                <div class="xp-titlebar-text">README.txt - Notepad</div>
+                <div class="xp-titlebar-buttons">
+                    <button class="xp-titlebar-btn minimize" title="Minimize">&#8722;</button>
+                    <button class="xp-titlebar-btn maximize" title="Maximize">&#9633;</button>
+                    <button class="xp-titlebar-btn close" title="Close">&#10005;</button>
+                </div>
+            </div>
+            <div class="xp-body">
+                <p class="intro-text">
+                    October 25, 2001. Windows XP launched with <strong>Luna</strong> &mdash;
+                    a visual style that threw away every gray, boxy convention of the 90s.
+                    Suddenly, titlebars were blue. The Start button was green. Buttons had
+                    gradient highlights. The default wallpaper was a photograph of a green
+                    hill under a perfect sky called <strong>"Bliss"</strong>, and it became
+                    the most viewed image in human history.
+                    <br><br>
+                    Luna wasn't subtle. It was <strong>aggressively friendly</strong>.
+                    Every pixel said: don't be afraid of this machine.
+                    It's sunny outside. Everything is fine. Click the green button.
+                    <br><br>
+                    The design world mocked it. Users loved it.
+                    And two decades later, that blue-and-green warmth still hits different.
+                </p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: The Glossy Blue Button -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">The Glossy Blue Button</h2>
+            <p class="section-desc">
+                This is the icon of the era. A <em>rounded blue button</em> with a glossy highlight
+                splitting it horizontally &mdash; bright on top, deeper below. It looks like a drop of
+                sky captured in gel. The Koreans have a perfect word for it: <em>tangtanghada</em>
+                (&#53489;&#44544;&#53489;&#44544;) &mdash; something soft but taut, like pressing on a rubber ball that
+                pushes back.
+                That bounce, that friendly resistance &mdash; that is the Luna button.
+            </p>
+            <div class="xp-window">
+                <div class="xp-titlebar">
+                    <div class="xp-titlebar-icon">&#128736;</div>
+                    <div class="xp-titlebar-text">Button Demo</div>
+                    <div class="xp-titlebar-buttons">
+                        <button class="xp-titlebar-btn minimize" title="Minimize">&#8722;</button>
+                        <button class="xp-titlebar-btn maximize" title="Maximize">&#9633;</button>
+                        <button class="xp-titlebar-btn close" title="Close">&#10005;</button>
+                    </div>
+                </div>
+                <div class="xp-body">
+                    <div class="btn-states">
+                        <div class="btn-state-row">
+                            <span class="btn-state-label">Default</span>
+                            <button class="xp-btn primary" id="demo-btn-1">Click Me</button>
+                            <button class="xp-btn green" id="demo-btn-2">Accept</button>
+                            <button class="xp-btn" id="demo-btn-std">Cancel</button>
+                        </div>
+                        <div class="btn-state-row">
+                            <span class="btn-state-label">Sizes</span>
+                            <button class="xp-btn primary sm" id="demo-btn-3">Small</button>
+                            <button class="xp-btn primary" id="demo-btn-4">Normal</button>
+                            <button class="xp-btn primary lg" id="demo-btn-5">Large</button>
+                        </div>
+                        <div class="btn-state-row">
+                            <span class="btn-state-label">State</span>
+                            <button class="xp-btn primary" id="demo-btn-6">Hover Me</button>
+                            <button class="xp-btn" disabled>Disabled</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* The XP Luna button &mdash; satin matte, not gel */</span><br>
+                <span class="kw">border-radius</span>: <span class="val">3px</span>;<br>
+                <span class="kw">border</span>: <span class="val">1px solid #1840A0</span>;<br>
+                <span class="kw">background</span>: <span class="val">linear-gradient</span>(180deg,<br>
+                &nbsp;&nbsp;#4888D0 0%,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* top &mdash; slight warmth
+                    */</span><br>
+                &nbsp;&nbsp;#3570BE 30%,&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* upper body */</span><br>
+                &nbsp;&nbsp;#2A60B0 60%,&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* middle &mdash; smooth transition
+                    */</span><br>
+                &nbsp;&nbsp;#2858A8 80%,&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* lower &mdash; just deeper
+                    */</span><br>
+                &nbsp;&nbsp;#3068B8 100%&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* bottom &mdash; subtle lift
+                    */</span><br>
+                );<br>
+                <br>
+                <span class="cmt">/* Satin inset &mdash; soft directional light, not mirror */</span><br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">inset 1px 1px 0 rgba(130,170,220,0.4)</span>,<br>
+                &nbsp;&nbsp;<span class="val">inset -1px -1px 0 rgba(0,20,60,0.15)</span>;
+            </div>
+        </section>
+
+        <!-- Principle 02: Nature as Interface -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Nature as Interface</h2>
+            <p class="section-desc">
+                The background <em>is</em> the design. Blue sky at the top, green earth at the bottom.
+                Not a photograph &mdash; a gradient. An <em>emotional gradient</em> that says:
+                it is a clear day, everything is fine, your computer is your friend.
+                Windows XP shipped with "Bliss" &mdash; a photo of a green hill under a blue sky &mdash;
+                and it became the most viewed image in human history.
+                That was not an accident. That was design philosophy.
+            </p>
+            <div class="xp-window">
+                <div class="xp-titlebar">
+                    <div class="xp-titlebar-icon">&#127796;</div>
+                    <div class="xp-titlebar-text">Display Properties - Appearance</div>
+                    <div class="xp-titlebar-buttons">
+                        <button class="xp-titlebar-btn minimize" title="Minimize">&#8722;</button>
+                        <button class="xp-titlebar-btn maximize" title="Maximize">&#9633;</button>
+                        <button class="xp-titlebar-btn close" title="Close">&#10005;</button>
+                    </div>
+                </div>
+                <div class="xp-tabs">
+                    <div class="xp-tab">Themes</div>
+                    <div class="xp-tab">Desktop</div>
+                    <div class="xp-tab active">Appearance</div>
+                    <div class="xp-tab">Settings</div>
+                </div>
+                <div class="xp-body" style="border-top: 1px solid #ACA899;">
+                    <div class="nature-demo">
+                        <div class="nature-card sky float">
+                            <div class="nature-card-title">Sky</div>
+                            <div class="nature-card-sub">Optimism above</div>
+                        </div>
+                        <div class="nature-card meadow float-delay">
+                            <div class="nature-card-title">Meadow</div>
+                            <div class="nature-card-sub">Grounding below</div>
+                        </div>
+                        <div class="nature-card sunrise float">
+                            <div class="nature-card-title">Sunlight</div>
+                            <div class="nature-card-sub">Warmth throughout</div>
+                        </div>
+                        <div class="nature-card bliss float-delay">
+                            <div class="nature-card-title">Bliss</div>
+                            <div class="nature-card-sub">All together</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: The Friendly Surface -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">The Friendly Surface</h2>
+            <p class="section-desc">
+                Every panel in Luna says the same thing: <em>welcome</em>.
+                White backgrounds, rounded corners, gentle shadows. No sharp edges, no dark themes,
+                no brutalist aggression. These surfaces feel like a handshake &mdash;
+                open, warm, non-threatening. The rounded corners signal that nothing here will hurt you.
+                The soft shadows say: this floats. It is light. It is easy.
+            </p>
+            <div class="xp-window">
+                <div class="xp-titlebar">
+                    <div class="xp-titlebar-icon">&#9881;</div>
+                    <div class="xp-titlebar-text">Surface Properties</div>
+                    <div class="xp-titlebar-buttons">
+                        <button class="xp-titlebar-btn minimize" title="Minimize">&#8722;</button>
+                        <button class="xp-titlebar-btn maximize" title="Maximize">&#9633;</button>
+                        <button class="xp-titlebar-btn close" title="Close">&#10005;</button>
+                    </div>
+                </div>
+                <div class="xp-body">
+                    <div class="surface-demo">
+                        <div class="surface-card warm">
+                            <div class="surface-card-icon">&#x2600;</div>
+                            <div class="surface-card-title">Warm</div>
+                            <div class="surface-card-sub">Sunlit surface</div>
+                            <div class="surface-card-shadow-label">golden shadow</div>
+                        </div>
+                        <div class="surface-card cool">
+                            <div class="surface-card-icon">&#x2601;</div>
+                            <div class="surface-card-title">Cool</div>
+                            <div class="surface-card-sub">Sky-touched</div>
+                            <div class="surface-card-shadow-label">blue shadow</div>
+                        </div>
+                        <div class="surface-card neutral">
+                            <div class="surface-card-icon">&#x1F33F;</div>
+                            <div class="surface-card-title">Natural</div>
+                            <div class="surface-card-sub">Forest floor</div>
+                            <div class="surface-card-shadow-label">green shadow</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">A Sunny Day Widget</h2>
+            <p class="section-desc">
+                Nature gradient + glossy buttons + friendly white surfaces.
+                Three principles, one interface. A weather widget that feels like opening a window.
+                This is what Luna believed: your screen should feel like looking outside
+                on the best day of the year.
+            </p>
+            <div class="xp-window weather-widget">
+                <div class="xp-titlebar">
+                    <div class="xp-titlebar-icon">&#x2600;&#xFE0F;</div>
+                    <div class="xp-titlebar-text">Weather - Seoul</div>
+                    <div class="xp-titlebar-buttons">
+                        <button class="xp-titlebar-btn minimize" title="Minimize">&#8722;</button>
+                        <button class="xp-titlebar-btn maximize" title="Maximize">&#9633;</button>
+                        <button class="xp-titlebar-btn close" title="Close">&#10005;</button>
+                    </div>
+                </div>
+                <div class="weather-header">
+                    <div class="weather-bokeh weather-bokeh-1"></div>
+                    <div class="weather-bokeh weather-bokeh-2"></div>
+                    <div class="weather-bokeh weather-bokeh-3"></div>
+                    <div class="weather-sun">&#x2600;&#xFE0F;</div>
+                    <div class="weather-temp" id="weather-temp">24<span class="weather-temp-unit">&deg;C</span></div>
+                    <div class="weather-condition" id="weather-condition">Sunny &amp; Clear</div>
+                    <div class="weather-location">Seoul, South Korea</div>
+                </div>
+                <div class="weather-body">
+                    <div class="weather-details">
+                        <div class="weather-detail">
+                            <div class="weather-detail-icon">&#x1F4A7;</div>
+                            <div class="weather-detail-value" id="weather-humidity">42%</div>
+                            <div class="weather-detail-label">Humidity</div>
+                        </div>
+                        <div class="weather-detail">
+                            <div class="weather-detail-icon">&#x1F32C;&#xFE0F;</div>
+                            <div class="weather-detail-value" id="weather-wind">12 km/h</div>
+                            <div class="weather-detail-label">Wind</div>
+                        </div>
+                        <div class="weather-detail">
+                            <div class="weather-detail-icon">&#x2600;&#xFE0F;</div>
+                            <div class="weather-detail-value" id="weather-uv">6</div>
+                            <div class="weather-detail-label">UV Index</div>
+                        </div>
+                    </div>
+                    <div class="weather-actions">
+                        <button class="xp-btn primary" id="weather-refresh">Refresh</button>
+                        <button class="xp-btn green" id="weather-details-btn">See Forecast</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="xp-window">
+                <div class="xp-titlebar">
+                    <div class="xp-titlebar-icon">&#9888;</div>
+                    <div class="xp-titlebar-text">Design Guidelines</div>
+                    <div class="xp-titlebar-buttons">
+                        <button class="xp-titlebar-btn minimize" title="Minimize">&#8722;</button>
+                        <button class="xp-titlebar-btn maximize" title="Maximize">&#9633;</button>
+                        <button class="xp-titlebar-btn close" title="Close">&#10005;</button>
+                    </div>
+                </div>
+                <div class="xp-body">
+                    <ul class="anti-list">
+                        <li><span class="x">&#x2717;</span> Stock photography of happy people sitting on grass</li>
+                        <li><span class="x">&#x2717;</span> Gradients without purpose or emotional direction</li>
+                        <li><span class="x">&#x2717;</span> Corporate wallpaper masquerading as design</li>
+                        <li><span class="x">&#x2717;</span> Glossy everything &mdash; some surfaces should breathe</li>
+                        <li><span class="o">&#x2713;</span> Nature gradients as emotional backdrop &mdash; "technology
+                            serves life"</li>
+                        <li><span class="o">&#x2713;</span> Glossy buttons that feel tactile and responsive</li>
+                        <li><span class="o">&#x2713;</span> Warm, optimistic color temperature throughout</li>
+                        <li><span class="o">&#x2713;</span> The radical belief that computers should make you smile</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                It wasn't just an OS.<br>
+                It was the first computer that smiled at you.
+            </p>
+            <p class="manifesto-sub">
+                Luna made a radical bet: that a computer could feel warm, safe, and inviting.
+                That blue titlebar, that green Start button, that impossible hill under a perfect sky
+                &mdash; they weren't decoration. They were a handshake.<br>
+                Every pixel said the same thing: welcome home.
+            </p>
+        </footer>
+    </div>
+
+    <!-- XP Taskbar -->
+    <div class="xp-taskbar">
+        <button class="xp-start-btn" id="start-btn">
+            <div class="xp-start-logo">
+                <div class="xp-start-flag">
+                    <span class="f-red"></span>
+                    <span class="f-green"></span>
+                    <span class="f-blue"></span>
+                    <span class="f-yellow"></span>
+                </div>
+            </div>
+            start
+        </button>
+        <div class="xp-taskbar-tray">
+            <span class="xp-taskbar-clock" id="taskbar-clock">12:00 PM</span>
+        </div>
+    </div>
+</body>
+
+<script>
+    /* Bounce animation on button click */
+    document.querySelectorAll('.xp-btn:not(:disabled)').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            btn.classList.remove('bounce');
+            void btn.offsetWidth;
+            btn.classList.add('bounce');
+        });
+        btn.addEventListener('animationend', function () {
+            btn.classList.remove('bounce');
+        });
+    });
+
+    /* Weather widget live updates */
+    function updateWeather() {
+        var temp = Math.floor(20 + Math.random() * 10);
+        var humidity = Math.floor(35 + Math.random() * 30);
+        var wind = Math.floor(5 + Math.random() * 20);
+        var uv = Math.floor(3 + Math.random() * 7);
+        var conditions = ['Sunny & Clear', 'Partly Cloudy', 'Clear Skies', 'Warm & Bright', 'Perfect Day'];
+        var condition = conditions[Math.floor(Math.random() * conditions.length)];
+
+        document.getElementById('weather-temp').innerHTML = temp + '<span class="weather-temp-unit">\u00B0C</span>';
+        document.getElementById('weather-humidity').textContent = humidity + '%';
+        document.getElementById('weather-wind').textContent = wind + ' km/h';
+        document.getElementById('weather-uv').textContent = uv;
+        document.getElementById('weather-condition').textContent = condition;
+    }
+
+    var refreshBtn = document.getElementById('weather-refresh');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', updateWeather);
+    }
+
+    setInterval(updateWeather, 8000);
+
+    /* Taskbar clock */
+    function updateClock() {
+        var now = new Date();
+        var h = now.getHours();
+        var m = now.getMinutes();
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        var mm = m < 10 ? '0' + m : m;
+        var el = document.getElementById('taskbar-clock');
+        if (el) el.textContent = h + ':' + mm + ' ' + ampm;
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+
+    /* Forecast button interaction */
+    var forecastBtn = document.getElementById('weather-details-btn');
+    if (forecastBtn) {
+        forecastBtn.addEventListener('click', function () {
+            var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+            var forecast = days.map(function (d) {
+                return d + ': ' + Math.floor(18 + Math.random() * 12) + '\u00B0C';
+            }).join('  \u00B7  ');
+
+            var existing = document.getElementById('forecast-row');
+            if (existing) {
+                existing.remove();
+                forecastBtn.textContent = 'See Forecast';
+                return;
+            }
+
+            var row = document.createElement('div');
+            row.id = 'forecast-row';
+            row.style.cssText = 'margin-top: 12px; padding: 10px 14px; background: #F5F5F0; border-radius: 3px; border: 1px solid #D4D0C8; font-size: 11px; color: #333; text-align: center; font-weight: 500;';
+            row.textContent = forecast;
+
+            var body = document.querySelector('.weather-body');
+            body.appendChild(row);
+
+            forecastBtn.textContent = 'Hide Forecast';
+        });
+    }
+</script>

@@ -1,0 +1,1110 @@
+<!-- layout: base.html -->
+<!-- title: CLI / TUI (1960s) -->
+<!-- description: A blinking cursor—that was all -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg: #0a0a0a;
+        --surface: rgba(255, 255, 255, 0.03);
+        --surface-border: rgba(51, 255, 51, 0.08);
+        --text: rgba(51, 255, 51, 0.9);
+        --text-muted: rgba(51, 255, 51, 0.5);
+        --text-dim: rgba(51, 255, 51, 0.2);
+        --green: #33ff33;
+        --green-glow: rgba(51, 255, 51, 0.4);
+        --green-ambient: rgba(51, 255, 51, 0.06);
+        --amber: #ffb000;
+        --amber-glow: rgba(255, 176, 0, 0.4);
+        --amber-dim: rgba(255, 176, 0, 0.15);
+        --cyan: #00e5ff;
+        --cyan-dim: rgba(0, 229, 255, 0.15);
+        --white: rgba(255, 255, 255, 0.85);
+        --white-dim: rgba(255, 255, 255, 0.3);
+        --danger: #ff5c5c;
+        --success: #5cffaa;
+    }
+
+    body {
+        font-family: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* CRT scanline overlay */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.06) 2px,
+            rgba(0, 0, 0, 0.06) 4px
+        );
+    }
+
+    /* CRT vignette */
+    .vignette {
+        position: fixed;
+        inset: 0;
+        z-index: 9996;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+    }
+
+    /* Subtle phosphor glow ambient */
+    .bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background:
+            radial-gradient(ellipse 60% 40% at 50% 30%, rgba(51, 255, 51, 0.02) 0%, transparent 70%),
+            radial-gradient(ellipse 40% 50% at 30% 70%, rgba(51, 255, 51, 0.015) 0%, transparent 70%);
+    }
+
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    .panel {
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* ── Hero ── */
+    .hero {
+        text-align: center;
+        padding: 64px 0 56px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        padding: 6px 18px;
+        border-radius: 2px;
+        background: var(--green-ambient);
+        border: 1px solid rgba(51, 255, 51, 0.15);
+        color: var(--green);
+        margin-bottom: 24px;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        letter-spacing: 8px;
+        text-transform: uppercase;
+        color: var(--green);
+        text-shadow: 0 0 20px var(--green-glow), 0 0 40px rgba(51, 255, 51, 0.15);
+        position: relative;
+    }
+
+    .hero-tagline {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        margin-top: 24px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    /* Blinking cursor */
+    .cursor {
+        display: inline-block;
+        width: 0.6em;
+        height: 1.1em;
+        background: var(--green);
+        vertical-align: text-bottom;
+        animation: blink 1s step-end infinite;
+        box-shadow: 0 0 6px var(--green-glow);
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    /* ── Intro card ── */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.85rem;
+        line-height: 1.9;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    /* ── Section ── */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--amber);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--green);
+        text-shadow: 0 0 8px rgba(51, 255, 51, 0.2);
+    }
+
+    .section-desc {
+        font-size: 0.82rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--amber);
+        font-style: normal;
+    }
+
+    .section-desc code {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85em;
+        background: rgba(51, 255, 51, 0.06);
+        padding: 2px 8px;
+        border-radius: 2px;
+        color: var(--green);
+        border: 1px solid rgba(51, 255, 51, 0.1);
+    }
+
+    /* ── Divider ── */
+    .divider {
+        margin: 48px 0;
+        height: 1px;
+        background: var(--surface-border);
+        position: relative;
+    }
+
+    .divider::after {
+        content: '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -';
+        position: absolute;
+        top: -0.5em;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.6rem;
+        color: var(--text-dim);
+        letter-spacing: 2px;
+        background: var(--bg);
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    /* ── Monospace Grid Demo ── */
+    .grid-demo {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--surface-border);
+        border-radius: 2px;
+        padding: 20px 24px;
+        overflow-x: auto;
+    }
+
+    .grid-demo pre {
+        margin: 0;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        line-height: 1.6;
+        color: var(--text);
+        white-space: pre;
+    }
+
+    .grid-demo .header-line {
+        color: var(--amber);
+        font-weight: 600;
+    }
+
+    .grid-demo .separator-line {
+        color: var(--text-dim);
+    }
+
+    .grid-demo .highlight {
+        color: var(--green);
+        text-shadow: 0 0 4px rgba(51, 255, 51, 0.2);
+    }
+
+    .grid-demo .muted {
+        color: var(--text-muted);
+    }
+
+    .grid-demo .val-green {
+        color: var(--success);
+    }
+
+    .grid-demo .val-amber {
+        color: var(--amber);
+    }
+
+    .grid-demo .val-red {
+        color: var(--danger);
+    }
+
+    /* ── Terminal Demo ── */
+    .terminal {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid var(--surface-border);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .terminal-titlebar {
+        background: rgba(51, 255, 51, 0.06);
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid var(--surface-border);
+    }
+
+    .terminal-titlebar-text {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+    }
+
+    .terminal-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--text-dim);
+    }
+
+    .terminal-dot.active { background: var(--green); box-shadow: 0 0 4px var(--green-glow); }
+
+    .terminal-body {
+        padding: 20px 24px;
+        font-size: 0.75rem;
+        line-height: 1.7;
+        min-height: 200px;
+    }
+
+    .terminal-line {
+        margin-bottom: 2px;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    .terminal-prompt {
+        color: var(--amber);
+        font-weight: 500;
+    }
+
+    .terminal-cmd {
+        color: var(--green);
+    }
+
+    .terminal-output {
+        color: var(--text-muted);
+    }
+
+    .terminal-output.bright {
+        color: var(--text);
+    }
+
+    .terminal-input-area {
+        display: flex;
+        align-items: center;
+        margin-top: 8px;
+    }
+
+    .cmd-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        padding: 0 24px 20px;
+        border-top: 1px solid rgba(51, 255, 51, 0.04);
+        padding-top: 16px;
+    }
+
+    .cmd-btn {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(51, 255, 51, 0.06);
+        border: 1px solid rgba(51, 255, 51, 0.15);
+        border-radius: 2px;
+        color: var(--green);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.72rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        font-weight: 500;
+    }
+
+    .cmd-btn:hover {
+        background: rgba(51, 255, 51, 0.12);
+        border-color: rgba(51, 255, 51, 0.3);
+        text-shadow: 0 0 6px var(--green-glow);
+    }
+
+    .cmd-btn:active {
+        background: rgba(51, 255, 51, 0.2);
+    }
+
+    /* ── Dashboard Demo ── */
+    .dash-container {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid var(--surface-border);
+        border-radius: 2px;
+        padding: 20px 24px;
+        overflow-x: auto;
+    }
+
+    .dash-container pre {
+        margin: 0;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.5;
+        color: var(--text);
+        white-space: pre;
+    }
+
+    .dash-container .box-char {
+        color: var(--text-dim);
+    }
+
+    .dash-container .dash-title {
+        color: var(--amber);
+        font-weight: 600;
+    }
+
+    .dash-container .dash-label {
+        color: var(--text-muted);
+    }
+
+    .dash-container .dash-val {
+        color: var(--green);
+        text-shadow: 0 0 4px rgba(51, 255, 51, 0.15);
+    }
+
+    .dash-container .dash-bar-on {
+        color: var(--green);
+    }
+
+    .dash-container .dash-bar-off {
+        color: var(--text-dim);
+    }
+
+    .dash-container .dash-warn {
+        color: var(--amber);
+    }
+
+    .dash-container .dash-crit {
+        color: var(--danger);
+    }
+
+    /* ── All Together: File Manager ── */
+    .fm-container {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid var(--surface-border);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .fm-titlebar {
+        background: rgba(51, 255, 51, 0.08);
+        padding: 6px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--surface-border);
+    }
+
+    .fm-titlebar-text {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--amber);
+    }
+
+    .fm-titlebar-path {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+    }
+
+    .fm-body {
+        padding: 0;
+        font-size: 0.72rem;
+        line-height: 1.5;
+    }
+
+    .fm-body pre {
+        margin: 0;
+        padding: 16px 20px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.5;
+        white-space: pre;
+        color: var(--text);
+    }
+
+    .fm-row {
+        padding: 4px 20px;
+        cursor: pointer;
+        transition: background 0.1s;
+        display: block;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.5;
+        white-space: pre;
+    }
+
+    .fm-row:hover {
+        background: rgba(51, 255, 51, 0.06);
+    }
+
+    .fm-row.selected {
+        background: rgba(51, 255, 51, 0.12);
+    }
+
+    .fm-row .dir {
+        color: var(--amber);
+        font-weight: 600;
+    }
+
+    .fm-row .file {
+        color: var(--text);
+    }
+
+    .fm-row .size {
+        color: var(--text-muted);
+    }
+
+    .fm-row .date {
+        color: var(--text-dim);
+    }
+
+    .fm-statusbar {
+        background: rgba(51, 255, 51, 0.06);
+        padding: 6px 20px;
+        border-top: 1px solid var(--surface-border);
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .fm-keys {
+        display: flex;
+        gap: 12px;
+        padding: 8px 20px;
+        border-top: 1px solid var(--surface-border);
+        flex-wrap: wrap;
+    }
+
+    .fm-key {
+        font-size: 0.62rem;
+        color: var(--text-dim);
+    }
+
+    .fm-key kbd {
+        color: var(--amber);
+        font-weight: 600;
+        font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── Progress Bar Animation ── */
+    .progress-demo {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--surface-border);
+        border-radius: 2px;
+        padding: 20px 24px;
+        margin-top: 16px;
+    }
+
+    .progress-line {
+        font-size: 0.75rem;
+        line-height: 1.7;
+        margin-bottom: 8px;
+    }
+
+    .progress-label {
+        color: var(--text-muted);
+    }
+
+    .progress-bar {
+        color: var(--green);
+    }
+
+    .progress-pct {
+        color: var(--amber);
+    }
+
+    /* ── Code Block ── */
+    .code-block {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 2px;
+        padding: 18px 22px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: rgba(51, 255, 51, 0.5);
+        overflow-x: auto;
+        margin-top: 20px;
+        border: 1px solid rgba(51, 255, 51, 0.06);
+    }
+
+    .code-block .kw { color: var(--amber); }
+    .code-block .val { color: var(--green); }
+    .code-block .cmt { color: var(--text-dim); }
+
+    /* ── Anti-pattern list ── */
+    .anti-card {
+        padding: 28px 32px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.8rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(51, 255, 51, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 700; font-size: 0.85rem; }
+    .anti-list .o { color: var(--success); font-weight: 700; font-size: 0.85rem; }
+
+    /* ── Manifesto ── */
+    .manifesto {
+        text-align: center;
+        margin-top: 64px;
+    }
+
+    .manifesto-text {
+        font-size: 1.1rem;
+        font-weight: 600;
+        line-height: 2;
+        color: var(--green);
+        text-shadow: 0 0 12px rgba(51, 255, 51, 0.25);
+    }
+
+    .manifesto-sub {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    /* Typed effect */
+    .typed-line {
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 2px solid var(--green);
+        animation: typed-cursor 0.8s step-end infinite;
+        width: 0;
+    }
+
+    .typed-line.done {
+        width: 100%;
+        border-right: none;
+        animation: none;
+    }
+
+    @keyframes typed-cursor {
+        0%, 100% { border-color: var(--green); }
+        50% { border-color: transparent; }
+    }
+
+    /* ── Responsive ── */
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.4rem;
+            letter-spacing: 4px;
+        }
+
+        .grid-demo,
+        .dash-container,
+        .fm-body pre,
+        .fm-row {
+            font-size: 0.62rem;
+        }
+
+        .grid-demo,
+        .dash-container {
+            padding: 16px 12px;
+        }
+
+        .terminal-body {
+            padding: 16px 12px;
+            font-size: 0.68rem;
+        }
+
+        .cmd-buttons {
+            padding: 12px 12px 16px;
+        }
+
+        .intro-card,
+        .anti-card {
+            padding: 24px 24px;
+        }
+
+        .manifesto-text {
+            font-size: 0.95rem;
+        }
+
+        .fm-row {
+            padding: 4px 12px;
+        }
+
+        .fm-body pre {
+            padding: 12px;
+        }
+    }
+</style>
+
+<body>
+    <div class="vignette"></div>
+    <div class="bg"></div>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by CLI &amp; TUI</div>
+            <h1 class="hero-title">CLI/TUI<span class="cursor"></span></h1>
+            <p class="hero-tagline">
+                No interface ever packed more power per pixel.<br>
+                We kept the density and the speed. We lost the learning curve.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="panel intro-card">
+            <p class="intro-text">
+                The Command Line Interface was the most efficient interface ever built.
+                A Teletype Model 33 printed <strong>READY</strong> in 1964, and for three
+                decades that blinking prompt was <strong>the</strong> interface &mdash;
+                monospace grids, input-output loops, raw information density that no GUI
+                has ever matched.
+                <br><br>
+                But it demanded memorization. It punished typos. It assumed the user
+                already knew everything. <strong>That was the weakness.</strong>
+                The density, the speed, the directness &mdash; those were the strengths,
+                and they never went away. Every Cmd+K palette, every AI chat, every
+                terminal emulator proves it. This page keeps what the CLI got right
+                and builds it into a <strong>usable, modern interface</strong> that
+                doesn't require a manual to operate.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: The Monospace Grid -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">The Monospace Grid</h2>
+            <p class="section-desc">
+                Every character occupies the same width. That single constraint
+                creates <em>perfect vertical alignment</em> without CSS Grid,
+                without Flexbox, without any layout engine at all.
+                Columns line up because the font forces them to.
+                Tables, borders, charts &mdash; all drawn with text alone.
+                This is the original design system: <code>80 columns x 24 rows</code>.
+            </p>
+            <div class="grid-demo" id="grid-demo">
+                <pre><span class="header-line">  PID  USER       CPU%   MEM%   STATE    COMMAND</span>
+<span class="separator-line">  ---- ---------- ------ ------ -------- ----------------</span>
+<span class="highlight">  1024 root        <span class="val-green"> 0.3</span>    <span class="val-green"> 1.2</span>   running  systemd</span>
+  1891 www-data    <span class="val-amber"> 8.4</span>    <span class="val-green"> 3.1</span>   running  nginx
+  2047 postgres    <span class="val-green"> 2.1</span>    <span class="val-amber">12.8</span>   sleeping postgresql
+  3201 node        <span class="val-red">45.2</span>    <span class="val-amber"> 8.4</span>   running  next-server
+  3344 redis       <span class="val-green"> 0.1</span>    <span class="val-green"> 2.3</span>   sleeping redis-server
+  4102 root        <span class="val-green"> 0.0</span>    <span class="val-green"> 0.4</span>   sleeping sshd</pre>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* The monospace secret: every char = same width */</span><br>
+                <span class="kw">font-family</span>: <span class="val">'IBM Plex Mono', monospace</span>;<br>
+                <span class="cmt">/* 80 columns at 9px = 720px. That's the whole grid. */</span><br>
+                <span class="kw">white-space</span>: <span class="val">pre</span>; <span class="cmt">/* preserve every space */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: Command & Response -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Command &amp; Response</h2>
+            <p class="section-desc">
+                You type. The system answers. No loading spinners,
+                no skeleton screens, no optimistic updates.
+                The <em>input-output loop</em> is the most honest interaction pattern
+                ever designed. It's also the ancestor of every chatbot,
+                every AI assistant, every command palette you use today.
+                <code>Cmd+K</code> is just a terminal that went to design school.
+            </p>
+            <div class="terminal" id="terminal-demo">
+                <div class="terminal-titlebar">
+                    <div class="terminal-dot active"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-titlebar-text">guest@design-system ~ </div>
+                </div>
+                <div class="terminal-body" id="terminal-body">
+                    <div class="terminal-line">
+                        <span class="terminal-output">Welcome to Design System v1.0</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-output">Type a command or click one below.</span>
+                    </div>
+                    <div class="terminal-line">&nbsp;</div>
+                    <div class="terminal-input-area">
+                        <span class="terminal-prompt">$ </span>
+                        <span class="cursor" style="margin-left: 2px;"></span>
+                    </div>
+                </div>
+                <div class="cmd-buttons">
+                    <button class="cmd-btn" data-cmd="help">help</button>
+                    <button class="cmd-btn" data-cmd="ls">ls</button>
+                    <button class="cmd-btn" data-cmd="whoami">whoami</button>
+                    <button class="cmd-btn" data-cmd="date">date</button>
+                    <button class="cmd-btn" data-cmd="uptime">uptime</button>
+                    <button class="cmd-btn" data-cmd="clear">clear</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: Information Density -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Information Density</h2>
+            <p class="section-desc">
+                A terminal shows more data per pixel than any GUI ever built.
+                No padding, no whitespace worship, no card-based layouts
+                that wrap three words in a 200px box. Just <em>raw information</em>,
+                structured by alignment and box-drawing characters.
+                This is what <code>htop</code> understood:
+                density is not clutter when the structure is clear.
+            </p>
+            <div class="dash-container" id="sys-monitor">
+                <pre id="sys-monitor-pre"></pre>
+            </div>
+            <div class="progress-demo" id="progress-demo">
+                <div class="progress-line" id="prog-1">
+                    <span class="progress-label">Compiling  </span>
+                    <span class="progress-bar" id="bar-1">[                    ]</span>
+                    <span class="progress-pct" id="pct-1">  0%</span>
+                </div>
+                <div class="progress-line" id="prog-2">
+                    <span class="progress-label">Linking    </span>
+                    <span class="progress-bar" id="bar-2">[                    ]</span>
+                    <span class="progress-pct" id="pct-2">  0%</span>
+                </div>
+                <div class="progress-line" id="prog-3">
+                    <span class="progress-label">Optimizing </span>
+                    <span class="progress-bar" id="bar-3">[                    ]</span>
+                    <span class="progress-pct" id="pct-3">  0%</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">File Manager</h2>
+            <p class="section-desc">
+                Monospace grid for alignment. Command pattern for interaction.
+                Dense information display. Three principles, one interface.
+                This is what Midnight Commander, ranger, and every TUI file manager
+                understood: <em>text is enough</em> when the structure does the work.
+            </p>
+            <div class="fm-container" id="file-manager">
+                <div class="fm-titlebar">
+                    <span class="fm-titlebar-text">FM v2.0</span>
+                    <span class="fm-titlebar-path" id="fm-path">~/projects/design-system</span>
+                </div>
+                <div class="fm-body">
+                    <pre><span class="header-line" style="color: var(--amber); font-weight: 600;">  TYPE  NAME                SIZE       MODIFIED</span>
+<span style="color: var(--text-dim);">  ───── ─────────────────── ────────── ──────────</span></pre>
+                    <div class="fm-row" data-type="dir" data-name="src">  <span class="dir"> DIR</span>  <span class="dir">src/</span>                <span class="size">     &mdash;</span>    <span class="date">Feb 20 09:14</span></div>
+                    <div class="fm-row" data-type="dir" data-name="dist">  <span class="dir"> DIR</span>  <span class="dir">dist/</span>               <span class="size">     &mdash;</span>    <span class="date">Feb 20 11:32</span></div>
+                    <div class="fm-row" data-type="dir" data-name="node_modules">  <span class="dir"> DIR</span>  <span class="dir">node_modules/</span>       <span class="size">     &mdash;</span>    <span class="date">Feb 18 16:05</span></div>
+                    <div class="fm-row" data-type="file" data-name="package.json">  <span class="file">FILE</span>  <span class="file">package.json</span>        <span class="size">   1.2 KB</span>  <span class="date">Feb 19 14:22</span></div>
+                    <div class="fm-row" data-type="file" data-name="tsconfig.json">  <span class="file">FILE</span>  <span class="file">tsconfig.json</span>       <span class="size">   0.8 KB</span>  <span class="date">Feb 15 10:00</span></div>
+                    <div class="fm-row" data-type="file" data-name="README.md">  <span class="file">FILE</span>  <span class="file">README.md</span>           <span class="size">   4.5 KB</span>  <span class="date">Feb 20 08:30</span></div>
+                    <div class="fm-row" data-type="file" data-name=".gitignore">  <span class="file">FILE</span>  <span class="file">.gitignore</span>          <span class="size">   0.2 KB</span>  <span class="date">Jan 12 09:00</span></div>
+                    <div class="fm-row" data-type="file" data-name="index.html">  <span class="file">FILE</span>  <span class="file">index.html</span>          <span class="size">  12.7 KB</span>  <span class="date">Feb 20 11:31</span></div>
+                </div>
+                <div class="fm-statusbar">
+                    <span id="fm-status">8 items | 3 directories, 5 files</span>
+                    <span id="fm-selected">No selection</span>
+                </div>
+                <div class="fm-keys">
+                    <span class="fm-key"><kbd>Enter</kbd> Open</span>
+                    <span class="fm-key"><kbd>Del</kbd> Delete</span>
+                    <span class="fm-key"><kbd>F5</kbd> Copy</span>
+                    <span class="fm-key"><kbd>F6</kbd> Move</span>
+                    <span class="fm-key"><kbd>F7</kbd> Mkdir</span>
+                    <span class="fm-key"><kbd>F10</kbd> Quit</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="panel anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Green text on black for "hacker aesthetic"</li>
+                    <li><span class="x">&#x2717;</span> Unreadable tiny monospace everywhere</li>
+                    <li><span class="x">&#x2717;</span> Terminal emulation without purpose</li>
+                    <li><span class="x">&#x2717;</span> Nostalgia cosplay with no UX value</li>
+                    <li><span class="o">&#x2713;</span> Monospace grid for perfect data alignment</li>
+                    <li><span class="o">&#x2713;</span> Command patterns for direct, efficient interaction</li>
+                    <li><span class="o">&#x2713;</span> Information density that respects the user's time</li>
+                    <li><span class="o">&#x2713;</span> The ancestor of every chat interface you use today</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                The command line never died.<br>
+                It became every Cmd+K palette.<br>
+                Every terminal emulator.<br>
+                Every AI chat you type into.
+            </p>
+            <p class="manifesto-sub">
+                $ echo "The prompt is the most enduring interface ever designed."<br>
+                &gt; The prompt is the most enduring interface ever designed.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* ── Terminal Responses ── */
+    const responses = {
+        help: [
+            'Available commands:',
+            '',
+            '  help      Show this help message',
+            '  ls        List files in current directory',
+            '  whoami    Display current user',
+            '  date      Show current date and time',
+            '  uptime    Show system uptime',
+            '  clear     Clear the terminal',
+        ],
+        ls: [
+            'drwxr-xr-x  src/',
+            'drwxr-xr-x  dist/',
+            '-rw-r--r--  package.json     1.2K',
+            '-rw-r--r--  tsconfig.json    0.8K',
+            '-rw-r--r--  README.md        4.5K',
+            '-rw-r--r--  index.html      12.7K',
+        ],
+        whoami: [
+            'guest@design-system',
+            '',
+            'Role: Observer',
+            'Shell: /bin/design-shell',
+            'Home: ~/projects/design-system',
+        ],
+        date: function () {
+            var now = new Date();
+            var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            return [
+                days[now.getDay()] + ' ' + months[now.getMonth()] + ' ' +
+                String(now.getDate()).padStart(2, ' ') + ' ' +
+                String(now.getHours()).padStart(2, '0') + ':' +
+                String(now.getMinutes()).padStart(2, '0') + ':' +
+                String(now.getSeconds()).padStart(2, '0') + ' UTC ' +
+                now.getFullYear()
+            ];
+        },
+        uptime: function () {
+            var hrs = Math.floor(Math.random() * 200) + 50;
+            var mins = Math.floor(Math.random() * 60);
+            return [
+                ' ' + String(new Date().getHours()).padStart(2, '0') + ':' +
+                String(new Date().getMinutes()).padStart(2, '0') + ':' +
+                String(new Date().getSeconds()).padStart(2, '0') +
+                ' up ' + hrs + ' days, ' + mins + ' min,  1 user,  load average: 0.42, 0.38, 0.35'
+            ];
+        }
+    };
+
+    var termBody = document.getElementById('terminal-body');
+
+    function addTermLine(text, cls) {
+        var line = document.createElement('div');
+        line.className = 'terminal-line';
+        var span = document.createElement('span');
+        span.className = cls || 'terminal-output';
+        span.textContent = text;
+        line.appendChild(span);
+        var inputArea = termBody.querySelector('.terminal-input-area');
+        termBody.insertBefore(line, inputArea);
+    }
+
+    function runCommand(cmd) {
+        /* Show the command */
+        var cmdLine = document.createElement('div');
+        cmdLine.className = 'terminal-line';
+        cmdLine.innerHTML = '<span class="terminal-prompt">$ </span><span class="terminal-cmd">' + cmd + '</span>';
+        var inputArea = termBody.querySelector('.terminal-input-area');
+        termBody.insertBefore(cmdLine, inputArea);
+
+        if (cmd === 'clear') {
+            var lines = termBody.querySelectorAll('.terminal-line');
+            lines.forEach(function (l) { l.remove(); });
+            addTermLine('Terminal cleared.', 'terminal-output');
+            return;
+        }
+
+        var result = responses[cmd];
+        if (!result) {
+            addTermLine('Command not found: ' + cmd + '. Type "help" for available commands.', 'terminal-output');
+            return;
+        }
+
+        var output = typeof result === 'function' ? result() : result;
+
+        output.forEach(function (line, i) {
+            setTimeout(function () {
+                addTermLine(line, 'terminal-output');
+                termBody.scrollTop = termBody.scrollHeight;
+            }, i * 40);
+        });
+    }
+
+    document.querySelectorAll('.cmd-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            runCommand(btn.dataset.cmd);
+        });
+    });
+
+
+    /* ── System Monitor Dashboard ── */
+    function renderMonitor() {
+        var cpu = (Math.random() * 30 + 10).toFixed(1);
+        var mem = (Math.random() * 20 + 40).toFixed(1);
+        var disk = (Math.random() * 10 + 65).toFixed(1);
+        var net = Math.floor(Math.random() * 500 + 100);
+        var temp = Math.floor(Math.random() * 15 + 45);
+        var procs = Math.floor(Math.random() * 50 + 180);
+
+        function bar(pct, width) {
+            var w = width || 20;
+            var filled = Math.round(pct / 100 * w);
+            var empty = w - filled;
+            var color = pct > 80 ? 'dash-crit' : pct > 60 ? 'dash-warn' : 'dash-bar-on';
+            return '<span class="' + color + '">' + '\u2588'.repeat(filled) + '</span>' +
+                   '<span class="dash-bar-off">' + '\u2591'.repeat(empty) + '</span>';
+        }
+
+        var now = new Date();
+        var timeStr = String(now.getHours()).padStart(2, '0') + ':' +
+                      String(now.getMinutes()).padStart(2, '0') + ':' +
+                      String(now.getSeconds()).padStart(2, '0');
+
+        var out = '';
+        out += '<span class="box-char">\u250C\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510</span>\n';
+        out += '<span class="box-char">\u2502</span> <span class="dash-title">SYSTEM MONITOR</span>           <span class="dash-val">' + timeStr + '</span> <span class="box-char">\u2502</span>\n';
+        out += '<span class="box-char">\u251C\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524</span>\n';
+        out += '<span class="box-char">\u2502</span> <span class="dash-label">CPU</span>   ' + bar(parseFloat(cpu), 10) + ' <span class="dash-val">' + String(cpu).padStart(5) + '%</span><span class="box-char">\u2502</span> <span class="dash-label">TEMP</span>        <span class="dash-val">' + String(temp).padStart(3) + '\u00B0C</span>   <span class="box-char">\u2502</span>\n';
+        out += '<span class="box-char">\u2502</span> <span class="dash-label">MEM</span>   ' + bar(parseFloat(mem), 10) + ' <span class="dash-val">' + String(mem).padStart(5) + '%</span><span class="box-char">\u2502</span> <span class="dash-label">PROCS</span>       <span class="dash-val">' + String(procs).padStart(3) + '</span>    <span class="box-char">\u2502</span>\n';
+        out += '<span class="box-char">\u2502</span> <span class="dash-label">DISK</span>  ' + bar(parseFloat(disk), 10) + ' <span class="dash-val">' + String(disk).padStart(5) + '%</span><span class="box-char">\u2502</span> <span class="dash-label">NET I/O</span>  <span class="dash-val">' + String(net).padStart(4) + ' KB/s</span> <span class="box-char">\u2502</span>\n';
+        out += '<span class="box-char">\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518</span>';
+
+        document.getElementById('sys-monitor-pre').innerHTML = out;
+    }
+
+    renderMonitor();
+    setInterval(renderMonitor, 2000);
+
+
+    /* ── Progress Bars ── */
+    var progState = [0, 0, 0];
+    var progSpeeds = [1.8, 1.2, 0.7];
+
+    function updateProgress() {
+        for (var i = 0; i < 3; i++) {
+            if (progState[i] < 100) {
+                progState[i] = Math.min(100, progState[i] + progSpeeds[i] + Math.random() * 2);
+            } else if (progState[i] >= 100) {
+                /* Hold at 100 briefly then restart */
+                progState[i] = progState[i] + 1;
+                if (progState[i] > 130) progState[i] = 0;
+            }
+
+            var pct = Math.min(100, Math.floor(progState[i]));
+            var filled = Math.round(pct / 100 * 20);
+            var empty = 20 - filled;
+            var barStr = '[' + '\u2588'.repeat(filled) + ' '.repeat(empty) + ']';
+
+            document.getElementById('bar-' + (i + 1)).textContent = barStr;
+            document.getElementById('pct-' + (i + 1)).textContent = String(pct).padStart(3) + '%';
+        }
+    }
+
+    setInterval(updateProgress, 100);
+
+
+    /* ── File Manager Interaction ── */
+    var fmRows = document.querySelectorAll('.fm-row');
+    var fmSelected = document.getElementById('fm-selected');
+
+    fmRows.forEach(function (row) {
+        row.addEventListener('click', function () {
+            /* Toggle selection */
+            var wasSelected = row.classList.contains('selected');
+            fmRows.forEach(function (r) { r.classList.remove('selected'); });
+
+            if (!wasSelected) {
+                row.classList.add('selected');
+                var type = row.dataset.type;
+                var name = row.dataset.name;
+                fmSelected.textContent = (type === 'dir' ? 'DIR: ' : 'FILE: ') + name;
+            } else {
+                fmSelected.textContent = 'No selection';
+            }
+        });
+    });
+</script>

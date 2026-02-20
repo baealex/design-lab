@@ -1,0 +1,1316 @@
+<!-- layout: base.html -->
+<!-- title: Material Design 2 (2018) -->
+<!-- description: Finally, your app didn't have to look like Gmail -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
+
+    :root {
+        --primary: #1A73E8;
+        --primary-dark: #1765CC;
+        --primary-light: #D2E3FC;
+        --primary-bg: #E8F0FE;
+        --on-primary: #fff;
+        --surface: #FFFFFF;
+        --background: #F8F9FA;
+        --on-surface: #202124;
+        --on-surface-secondary: #5F6368;
+        --on-surface-hint: #9AA0A6;
+        --divider: #DADCE0;
+        --outline: #DADCE0;
+        --success: #1E8E3E;
+        --danger: #D93025;
+        --shape-sm: 4px;
+        --shape-md: 8px;
+        --shape-lg: 16px;
+        --shadow-1: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px rgba(60,64,67,0.15);
+        --shadow-2: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px rgba(60,64,67,0.15);
+        --shadow-4: 0 2px 6px rgba(60,64,67,0.3), 0 8px 16px rgba(60,64,67,0.15);
+    }
+
+    body {
+        font-family: 'Roboto', -apple-system, sans-serif;
+        background: var(--background);
+        color: var(--on-surface);
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* =========================================
+       HERO
+       ========================================= */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding: 6px 18px;
+        border-radius: 20px;
+        background: var(--primary-bg);
+        color: var(--primary);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-family: 'Google Sans', sans-serif;
+        font-size: 3.5rem;
+        font-weight: 400;
+        color: var(--on-surface);
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--on-surface-secondary);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 400;
+    }
+
+    /* =========================================
+       CARD
+       ========================================= */
+    .card {
+        background: var(--surface);
+        border-radius: var(--shape-md);
+        border: 1px solid var(--outline);
+        overflow: hidden;
+    }
+
+    .card-elevated {
+        border: none;
+        box-shadow: var(--shadow-1);
+    }
+
+    /* =========================================
+       SECTION
+       ========================================= */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--primary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-family: 'Google Sans', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 12px;
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--on-surface-secondary);
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+
+    .section-desc em {
+        color: var(--on-surface);
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .section-desc code {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.82em;
+        background: var(--background);
+        padding: 2px 8px;
+        border-radius: var(--shape-sm);
+        color: var(--primary);
+    }
+
+    /* =========================================
+       DIVIDER
+       ========================================= */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: var(--divider);
+    }
+
+    /* =========================================
+       INTRO
+       ========================================= */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 400;
+        color: var(--on-surface-secondary);
+    }
+
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--on-surface);
+    }
+
+    /* =========================================
+       SHAPE THEMING DEMO
+       ========================================= */
+    .shape-demo {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+
+    .shape-card {
+        background: var(--surface);
+        padding: 28px 16px;
+        text-align: center;
+        border: 1px solid var(--outline);
+        transition: box-shadow 0.2s;
+    }
+
+    .shape-card:hover {
+        box-shadow: var(--shadow-1);
+    }
+
+    .shape-card.sm { border-radius: var(--shape-sm); }
+    .shape-card.md { border-radius: var(--shape-md); }
+    .shape-card.lg { border-radius: var(--shape-lg); }
+
+    .shape-card-radius {
+        font-family: 'Google Sans', sans-serif;
+        font-size: 2rem;
+        font-weight: 400;
+        color: var(--on-surface);
+        margin-bottom: 4px;
+    }
+
+    .shape-card-label {
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .shape-card-sub {
+        font-size: 0.68rem;
+        color: var(--on-surface-hint);
+        margin-top: 4px;
+    }
+
+    /* =========================================
+       WHITE SPACE COMPARE
+       ========================================= */
+    .white-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .white-panel {
+        padding: 24px;
+        text-align: center;
+        border-radius: var(--shape-md);
+    }
+
+    .white-panel.dense {
+        background: #F1F3F4;
+        border: 1px solid var(--outline);
+    }
+
+    .white-panel.dense .white-label { color: var(--on-surface-hint); }
+
+    .white-panel.airy {
+        background: var(--surface);
+        box-shadow: var(--shadow-1);
+    }
+
+    .white-panel.airy .white-label { color: var(--primary); }
+
+    .white-label {
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+
+    .white-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .white-panel.dense .white-list li {
+        font-size: 0.78rem;
+        padding: 4px 0;
+        color: var(--on-surface-secondary);
+        border-bottom: 1px solid var(--divider);
+    }
+
+    .white-panel.airy .white-list li {
+        font-size: 0.82rem;
+        padding: 10px 0;
+        color: var(--on-surface);
+    }
+
+    .white-list li:last-child { border-bottom: none; }
+
+    /* =========================================
+       BOTTOM NAV DEMO
+       ========================================= */
+    .nav-demo {
+        border-radius: var(--shape-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-1);
+        background: var(--surface);
+    }
+
+    .nav-demo-body {
+        padding: 32px 24px;
+        text-align: center;
+        background: var(--background);
+    }
+
+    .nav-demo-body-text {
+        font-size: 0.82rem;
+        color: var(--on-surface-hint);
+    }
+
+    .bottom-nav {
+        display: flex;
+        background: var(--surface);
+        border-top: 1px solid var(--divider);
+    }
+
+    .bottom-nav-item {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+        position: relative;
+    }
+
+    .bottom-nav-item:hover {
+        background: rgba(26, 115, 232, 0.04);
+    }
+
+    .bottom-nav-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2px;
+        color: var(--on-surface-hint);
+    }
+
+    .bottom-nav-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .bottom-nav-label {
+        font-size: 0.62rem;
+        font-weight: 500;
+        color: var(--on-surface-hint);
+    }
+
+    .bottom-nav-item.active .bottom-nav-icon { color: var(--primary); }
+    .bottom-nav-item.active .bottom-nav-label { color: var(--primary); }
+
+    /* =========================================
+       BUTTONS — M2 style
+       ========================================= */
+    .btn-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-contained {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 24px;
+        height: 36px;
+        border-radius: var(--shape-sm);
+        border: none;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        box-shadow: var(--shadow-1);
+        transition: box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-contained:hover { box-shadow: var(--shadow-2); }
+
+    .btn-outlined-m2 {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 24px;
+        height: 36px;
+        border-radius: var(--shape-sm);
+        border: 1px solid var(--outline);
+        background: none;
+        color: var(--primary);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        transition: background 0.15s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-outlined-m2:hover {
+        background: rgba(26, 115, 232, 0.04);
+    }
+
+    .btn-text-m2 {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 16px;
+        height: 36px;
+        border-radius: var(--shape-sm);
+        border: none;
+        background: none;
+        color: var(--primary);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        transition: background 0.15s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-text-m2:hover {
+        background: rgba(26, 115, 232, 0.04);
+    }
+
+    .btn-contained:disabled,
+    .btn-outlined-m2:disabled,
+    .btn-text-m2:disabled {
+        opacity: 0.38;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .fab-extended {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 20px;
+        height: 48px;
+        border-radius: 24px;
+        border: none;
+        background: var(--surface);
+        color: var(--on-surface);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: var(--shadow-2);
+        transition: box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fab-extended:hover { box-shadow: var(--shadow-4); }
+
+    .fab-extended > svg {
+        color: var(--primary);
+        pointer-events: none;
+    }
+
+    .fab-extended > span:not(.ripple-surface) {
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Ripple */
+    .ripple-surface {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        border-radius: inherit;
+        pointer-events: none;
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        width: 1px;
+        height: 1px;
+        pointer-events: none;
+    }
+
+    .ripple.dark { background: rgba(0,0,0,0.12); }
+    .ripple.light { background: rgba(255,255,255,0.32); }
+
+    .ripple.animate {
+        animation: ripple-expand 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes ripple-expand {
+        from { transform: scale(0); opacity: 1; }
+        to { transform: scale(var(--ripple-scale, 4)); opacity: 0; }
+    }
+
+    /* =========================================
+       OUTLINED TEXT FIELD
+       ========================================= */
+    .field-row {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .text-field {
+        position: relative;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .text-field input {
+        width: 100%;
+        padding: 14px 14px 14px;
+        border: 1px solid var(--outline);
+        border-radius: var(--shape-sm);
+        background: var(--surface);
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.88rem;
+        color: var(--on-surface);
+        outline: none;
+        transition: border-color 0.15s;
+        box-sizing: border-box;
+    }
+
+    .text-field input:focus {
+        border-color: var(--primary);
+        border-width: 2px;
+        padding: 13px 13px 13px;
+    }
+
+    .text-field input::placeholder {
+        color: var(--on-surface-hint);
+    }
+
+    .text-field-label {
+        position: absolute;
+        top: -8px;
+        left: 10px;
+        font-size: 0.68rem;
+        font-weight: 400;
+        color: var(--on-surface-secondary);
+        background: var(--surface);
+        padding: 0 4px;
+    }
+
+    .text-field input:focus + .text-field-label {
+        color: var(--primary);
+    }
+
+    /* =========================================
+       FONT COMPARE
+       ========================================= */
+    .font-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .font-card {
+        padding: 24px 20px;
+        border-radius: var(--shape-md);
+        text-align: center;
+    }
+
+    .font-card.roboto-card {
+        background: var(--background);
+        border: 1px solid var(--outline);
+    }
+
+    .font-card.gsans-card {
+        background: var(--surface);
+        box-shadow: var(--shadow-1);
+    }
+
+    .font-card-label {
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .font-card.roboto-card .font-card-label { color: var(--on-surface-hint); }
+    .font-card.gsans-card .font-card-label { color: var(--primary); }
+
+    .font-card-sample {
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: var(--on-surface);
+        margin-bottom: 4px;
+    }
+
+    .font-card.roboto-card .font-card-sample { font-family: 'Roboto', sans-serif; }
+    .font-card.gsans-card .font-card-sample { font-family: 'Google Sans', sans-serif; }
+
+    .font-card-sub {
+        font-size: 0.72rem;
+        color: var(--on-surface-secondary);
+    }
+
+    /* =========================================
+       COMBINED — M2 app mockup
+       ========================================= */
+    .app-frame {
+        border-radius: var(--shape-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-2);
+        background: var(--background);
+        position: relative;
+    }
+
+    .frame-toolbar {
+        background: var(--surface);
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border-bottom: 1px solid var(--divider);
+    }
+
+    .frame-toolbar-title {
+        font-family: 'Google Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: var(--on-surface);
+        flex: 1;
+    }
+
+    .frame-toolbar-icon {
+        color: var(--on-surface-secondary);
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .frame-toolbar-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .frame-tabs {
+        display: flex;
+        background: var(--surface);
+        border-bottom: 1px solid var(--divider);
+    }
+
+    .frame-tab {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 0.76rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--on-surface-secondary);
+        cursor: pointer;
+        position: relative;
+    }
+
+    .frame-tab.active {
+        color: var(--primary);
+    }
+
+    .frame-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 20%;
+        right: 20%;
+        height: 2px;
+        background: var(--primary);
+        border-radius: 1px 1px 0 0;
+    }
+
+    .frame-content {
+        padding: 16px;
+    }
+
+    .frame-card {
+        background: var(--surface);
+        border-radius: var(--shape-md);
+        border: 1px solid var(--outline);
+        overflow: hidden;
+        margin-bottom: 12px;
+        cursor: pointer;
+        position: relative;
+        transition: box-shadow 0.2s;
+    }
+
+    .frame-card:hover {
+        box-shadow: var(--shadow-1);
+    }
+
+    .frame-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+
+    .frame-card-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 0.82rem;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+
+    .frame-card-info {
+        flex: 1;
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .frame-card-name {
+        font-size: 0.82rem;
+        font-weight: 500;
+    }
+
+    .frame-card-time {
+        font-size: 0.68rem;
+        color: var(--on-surface-hint);
+        margin-top: 1px;
+    }
+
+    .frame-card-img {
+        width: 100%;
+        height: 140px;
+    }
+
+    .frame-card-body {
+        padding: 12px 16px;
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .frame-card-title {
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 500;
+    }
+
+    .frame-card-desc {
+        font-size: 0.76rem;
+        color: var(--on-surface-secondary);
+        margin-top: 4px;
+        line-height: 1.5;
+    }
+
+    .frame-card-actions {
+        padding: 8px 16px 12px;
+        display: flex;
+        gap: 8px;
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .frame-bottom-nav {
+        display: flex;
+        background: var(--surface);
+        border-top: 1px solid var(--divider);
+    }
+
+    .frame-bottom-nav-item {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0 6px;
+    }
+
+    .frame-bottom-nav-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--on-surface-hint);
+    }
+
+    .frame-bottom-nav-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .frame-bottom-nav-label {
+        font-size: 0.58rem;
+        font-weight: 500;
+        color: var(--on-surface-hint);
+    }
+
+    .frame-bottom-nav-item.active .frame-bottom-nav-icon,
+    .frame-bottom-nav-item.active .frame-bottom-nav-label {
+        color: var(--primary);
+    }
+
+    .frame-efab {
+        position: absolute;
+        bottom: 60px;
+        right: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 16px;
+        height: 48px;
+        border-radius: 24px;
+        border: none;
+        background: var(--surface);
+        color: var(--on-surface);
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        box-shadow: var(--shadow-2);
+        cursor: pointer;
+        overflow: hidden;
+        z-index: 3;
+        transition: box-shadow 0.2s;
+    }
+
+    .frame-efab:hover { box-shadow: var(--shadow-4); }
+
+    .frame-efab > svg {
+        color: var(--primary);
+        pointer-events: none;
+    }
+
+    .frame-efab > span:not(.ripple-surface) {
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* =========================================
+       CODE BLOCK
+       ========================================= */
+    .code-block {
+        background: #202124;
+        border-radius: var(--shape-md);
+        padding: 16px 20px;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 16px;
+    }
+
+    .code-block .kw { color: #8AB4F8; }
+    .code-block .val { color: #A8DB8F; }
+    .code-block .fn { color: #F28B82; }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.3); }
+
+    /* =========================================
+       ANTI-PATTERNS
+       ========================================= */
+    .anti-card {
+        padding: 24px 28px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.84rem;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--divider);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 400;
+        color: var(--on-surface-secondary);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 700; flex-shrink: 0; }
+    .anti-list .o { color: var(--success); font-weight: 700; flex-shrink: 0; }
+
+    /* =========================================
+       MANIFESTO
+       ========================================= */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-family: 'Google Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        line-height: 1.7;
+        color: var(--on-surface);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--on-surface-hint);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    /* =========================================
+       RESPONSIVE
+       ========================================= */
+    @media screen and (max-width: 600px) {
+        .hero-title { font-size: 2.5rem; }
+
+        .shape-demo { grid-template-columns: 1fr; }
+        .white-compare { grid-template-columns: 1fr; }
+        .font-compare { grid-template-columns: 1fr; }
+
+        .btn-row { gap: 8px; }
+        .field-row { flex-direction: column; }
+
+        .intro-card,
+        .anti-card { padding: 20px 24px; }
+    }
+</style>
+
+<body>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Android Pie</div>
+            <h1 class="hero-title">Material 2</h1>
+            <p class="hero-tagline">
+                Google learned that a system needs room to breathe.<br>
+                We keep the openness. Make sure it's not just emptiness.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="card card-elevated intro-card">
+            <p class="intro-text">
+                Material Design 1 was a brilliant cage. Every app looked like Google.
+                In 2018, Google I/O introduced Material Design 2 — the system
+                that finally said <strong>"make it yours."</strong>
+                <br><br>
+                Shape theming. Google Sans for personality. Outlined inputs
+                instead of underlined ones. White space as the primary surface.
+                Bottom navigation replacing the hamburger menu.
+                The era of <strong>"Google White"</strong> began.
+                <br><br>
+                The strength was breathing room — apps felt open, light, modern.
+                The weakness was identity — when everything is white and airy,
+                everything looks the same in a different way.
+                <br><br>
+                <strong>We keep the flexibility and the space.
+                We make sure "clean" doesn't mean "empty."</strong>
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Shape Theming -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Shape Theming</h2>
+            <p class="section-desc">
+                M2 introduced the idea that corners are a design decision.
+                Not just one radius for everything — a <em>system</em> of shapes.
+                Small components (<code>4dp</code>) for buttons and text fields.
+                Medium (<code>8dp</code>) for cards and dialogs.
+                Large (<code>16dp</code>) for bottom sheets and navigation drawers.
+                For the first time, you could tune the personality of an entire
+                app by adjusting three numbers. We keep this: shape as brand expression.
+            </p>
+            <div class="shape-demo">
+                <div class="shape-card sm">
+                    <div class="shape-card-radius">4</div>
+                    <div class="shape-card-label">Small</div>
+                    <div class="shape-card-sub">Buttons, chips, fields</div>
+                </div>
+                <div class="shape-card md">
+                    <div class="shape-card-radius">8</div>
+                    <div class="shape-card-label">Medium</div>
+                    <div class="shape-card-sub">Cards, dialogs</div>
+                </div>
+                <div class="shape-card lg">
+                    <div class="shape-card-radius">16</div>
+                    <div class="shape-card-label">Large</div>
+                    <div class="shape-card-sub">Sheets, drawers</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Shape theming — three radii, one personality */</span><br>
+                <span class="kw">--shape-sm</span>: <span class="val">4px</span>; <span class="cmt">/* buttons, chips, fields */</span><br>
+                <span class="kw">--shape-md</span>: <span class="val">8px</span>; <span class="cmt">/* cards, dialogs */</span><br>
+                <span class="kw">--shape-lg</span>: <span class="val">16px</span>; <span class="cmt">/* sheets, drawers */</span><br>
+                <span class="cmt">/* Change three numbers, change the whole brand. */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: White Space -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">White Space as Surface</h2>
+            <p class="section-desc">
+                M1 used heavy shadows to separate content.
+                M2 realized you could use <em>white space</em> instead.
+                Cards got thinner borders. Backgrounds became lighter.
+                The primary surface became <code>#FFFFFF</code> on <code>#F8F9FA</code> —
+                almost nothing, but enough. Content breathes.
+                We adopt this restraint: let space do the work shadows used to do.
+            </p>
+            <div class="white-compare">
+                <div class="white-panel dense">
+                    <div class="white-label">Dense (M1)</div>
+                    <ul class="white-list">
+                        <li>Inbox</li>
+                        <li>Starred</li>
+                        <li>Sent</li>
+                        <li>Drafts</li>
+                    </ul>
+                </div>
+                <div class="white-panel airy">
+                    <div class="white-label">Airy (M2)</div>
+                    <ul class="white-list">
+                        <li>Inbox</li>
+                        <li>Starred</li>
+                        <li>Sent</li>
+                        <li>Drafts</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: Bottom Navigation -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Bottom Navigation</h2>
+            <p class="section-desc">
+                The hamburger menu was M1's biggest UX failure.
+                Three lines in the corner, hiding the entire navigation
+                behind a swipe nobody remembered to do.
+                M2 moved primary destinations to the <em>bottom of the screen</em> —
+                visible, reachable, always there. One thumb, all sections.
+                We embrace this: put navigation where thumbs already are.
+            </p>
+            <div class="nav-demo">
+                <div class="nav-demo-body">
+                    <div class="nav-demo-body-text">Content lives here — navigation lives below</div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="bottom-nav-item active">
+                        <div class="bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        </div>
+                        <div class="bottom-nav-label">Home</div>
+                    </div>
+                    <div class="bottom-nav-item">
+                        <div class="bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </div>
+                        <div class="bottom-nav-label">Favorites</div>
+                    </div>
+                    <div class="bottom-nav-item">
+                        <div class="bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                        </div>
+                        <div class="bottom-nav-label">Search</div>
+                    </div>
+                    <div class="bottom-nav-item">
+                        <div class="bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1112 8.4a3.6 3.6 0 010 7.2z"/></svg>
+                        </div>
+                        <div class="bottom-nav-label">Settings</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Google Sans -->
+        <section class="section">
+            <div class="section-label">Visual Shift</div>
+            <h2 class="section-title">Google Sans</h2>
+            <p class="section-desc">
+                Roboto was M1's workhorse — neutral, functional, everywhere.
+                M2 introduced <em>Google Sans</em> for headlines and display text —
+                rounder, friendlier, with just enough personality to feel
+                like a brand without screaming it. Roboto stayed for body text.
+                The pairing gave Google's products a warmth they never had.
+                We borrow this: a personality font for headlines,
+                a readable font for everything else.
+            </p>
+            <div class="font-compare">
+                <div class="font-card roboto-card">
+                    <div class="font-card-label">Roboto (Body)</div>
+                    <div class="font-card-sample">Aa Bb Cc</div>
+                    <div class="font-card-sub">Neutral, functional</div>
+                </div>
+                <div class="font-card gsans-card">
+                    <div class="font-card-label">Google Sans (Display)</div>
+                    <div class="font-card-sample">Aa Bb Cc</div>
+                    <div class="font-card-sub">Round, friendly</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons & Inputs -->
+        <section class="section">
+            <div class="section-label">Components</div>
+            <h2 class="section-title">Contained, Outlined, Text</h2>
+            <p class="section-desc">
+                M2 softened the button hierarchy. <em>Contained</em> buttons
+                with shadow for primary actions — same as M1's raised, but with
+                Google Sans and configurable shape. <em>Outlined</em> for secondary.
+                <em>Text</em> buttons for the lowest emphasis.
+                The Extended FAB was new — a pill with an icon and a label,
+                finally giving the FAB a voice instead of just a plus sign.
+            </p>
+            <div class="btn-row" style="margin-bottom: 16px;">
+                <button class="btn-contained" id="btn-contained">Contained</button>
+                <button class="btn-outlined-m2" id="btn-outlined">Outlined</button>
+                <button class="btn-text-m2" id="btn-text">Text</button>
+                <button class="btn-contained" disabled>Disabled</button>
+            </div>
+            <div class="btn-row" style="margin-bottom: 16px;">
+                <button class="fab-extended" id="fab-extended">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Compose</span>
+                </button>
+            </div>
+            <div class="field-row">
+                <div class="text-field">
+                    <input type="text" placeholder="Email" readonly>
+                    <div class="text-field-label">Email</div>
+                </div>
+                <div class="text-field">
+                    <input type="text" placeholder="Password" readonly>
+                    <div class="text-field-label">Password</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Google White App</h2>
+            <p class="section-desc">
+                White surfaces. Thin borders. Google Sans headlines.
+                Tabs with a primary indicator. Cards with outlined borders.
+                Bottom navigation visible at all times. An Extended FAB
+                floating in the corner with a label. This is the app
+                that lived in every pocket from 2018 to 2021 —
+                clean, open, and unmistakably Google.
+            </p>
+            <div class="app-frame">
+                <div class="frame-toolbar">
+                    <div class="frame-toolbar-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </div>
+                    <div class="frame-toolbar-title">Discover</div>
+                    <div class="frame-toolbar-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                    </div>
+                </div>
+                <div class="frame-tabs">
+                    <div class="frame-tab active">For You</div>
+                    <div class="frame-tab">Following</div>
+                    <div class="frame-tab">Trending</div>
+                </div>
+                <div class="frame-content">
+                    <div class="frame-card" id="fcard-1">
+                        <div class="frame-card-header">
+                            <div class="frame-card-avatar" style="background: #1A73E8;">D</div>
+                            <div class="frame-card-info">
+                                <div class="frame-card-name">Design Weekly</div>
+                                <div class="frame-card-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="frame-card-img" style="background: linear-gradient(135deg, #D2E3FC, #E8F0FE);"></div>
+                        <div class="frame-card-body">
+                            <div class="frame-card-title">The white space revolution</div>
+                            <div class="frame-card-desc">How Google taught a billion apps to breathe.</div>
+                        </div>
+                        <div class="frame-card-actions">
+                            <button class="btn-text-m2" style="font-size:0.72rem; height:28px; padding:0 12px;">Share</button>
+                            <button class="btn-text-m2" style="font-size:0.72rem; height:28px; padding:0 12px;">Save</button>
+                        </div>
+                    </div>
+                    <div class="frame-card" id="fcard-2">
+                        <div class="frame-card-header">
+                            <div class="frame-card-avatar" style="background: #34A853;">A</div>
+                            <div class="frame-card-info">
+                                <div class="frame-card-name">Android Blog</div>
+                                <div class="frame-card-time">5 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="frame-card-body">
+                            <div class="frame-card-title">Bottom nav vs. hamburger: the data</div>
+                            <div class="frame-card-desc">Why we moved navigation to the thumb zone.</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="frame-efab" id="frame-efab">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>New post</span>
+                </button>
+                <div class="frame-bottom-nav">
+                    <div class="frame-bottom-nav-item active">
+                        <div class="frame-bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        </div>
+                        <div class="frame-bottom-nav-label">Home</div>
+                    </div>
+                    <div class="frame-bottom-nav-item">
+                        <div class="frame-bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                        </div>
+                        <div class="frame-bottom-nav-label">Saved</div>
+                    </div>
+                    <div class="frame-bottom-nav-item">
+                        <div class="frame-bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                        </div>
+                        <div class="frame-bottom-nav-label">Explore</div>
+                    </div>
+                    <div class="frame-bottom-nav-item">
+                        <div class="frame-bottom-nav-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1112 8.4a3.6 3.6 0 010 7.2z"/></svg>
+                        </div>
+                        <div class="frame-bottom-nav-label">Settings</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="card card-elevated anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> White on white on white — space needs contrast to work</li>
+                    <li><span class="x">&#x2717;</span> Material 1 with rounded corners — this is a different system</li>
+                    <li><span class="x">&#x2717;</span> "Google Sans on everything" — it's for headlines only</li>
+                    <li><span class="x">&#x2717;</span> Bottom nav with 7 items — three to five, no more</li>
+                    <li><span class="o">&#x2713;</span> Shape theming as brand expression — three radii, one personality</li>
+                    <li><span class="o">&#x2713;</span> White space as hierarchy — let content breathe</li>
+                    <li><span class="o">&#x2713;</span> Bottom navigation — put destinations where thumbs are</li>
+                    <li><span class="o">&#x2713;</span> Extended FAB — the floating action finally got a label</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                The best system is the one<br>
+                that doesn't look like a system.<br>
+                It just looks like your app.
+            </p>
+            <p class="manifesto-sub">
+                Material 2 gave designers permission to breathe.<br>
+                We breathe — but we fill the lungs with something worth saying.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Ripple — span container isolates overflow from <button> quirks */
+    function createRipple(el, e, cls) {
+        var rect = el.getBoundingClientRect();
+        var surface = el.querySelector('.ripple-surface');
+        if (!surface) {
+            surface = document.createElement('span');
+            surface.className = 'ripple-surface';
+            el.appendChild(surface);
+        }
+        var r = document.createElement('span');
+        r.classList.add('ripple', cls || 'dark');
+        var scale = Math.ceil(Math.sqrt(rect.width * rect.width + rect.height * rect.height) * 2.5);
+        r.style.left = (e.clientX - rect.left) + 'px';
+        r.style.top = (e.clientY - rect.top) + 'px';
+        r.style.setProperty('--ripple-scale', scale);
+        surface.appendChild(r);
+        requestAnimationFrame(function() { r.classList.add('animate'); });
+        setTimeout(function() { r.remove(); }, 500);
+    }
+
+    /* Ripple on buttons */
+    document.querySelectorAll('.btn-contained:not(:disabled)').forEach(function(btn) {
+        btn.addEventListener('click', function(e) { createRipple(this, e, 'light'); });
+    });
+
+    document.querySelectorAll('.btn-outlined-m2:not(:disabled), .btn-text-m2:not(:disabled)').forEach(function(btn) {
+        btn.addEventListener('click', function(e) { createRipple(this, e, 'dark'); });
+    });
+
+    document.querySelectorAll('.fab-extended, .frame-efab').forEach(function(btn) {
+        btn.addEventListener('click', function(e) { createRipple(this, e, 'dark'); });
+    });
+
+    /* Ripple on frame cards */
+    document.querySelectorAll('.frame-card').forEach(function(card) {
+        card.addEventListener('click', function(e) { createRipple(this, e, 'dark'); });
+    });
+
+    /* Bottom nav active toggle */
+    document.querySelectorAll('.bottom-nav-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            this.parentElement.querySelectorAll('.bottom-nav-item').forEach(function(i) {
+                i.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+    });
+</script>

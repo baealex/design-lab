@@ -1,0 +1,878 @@
+<!-- layout: base.html -->
+<!-- title: Neubrutalism (2022) -->
+<!-- description: Thick borders, loud colors, zero apologies -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+    :root {
+        --bg: #fafaf5;
+        --surface: #ffffff;
+        --border: #1a1a1a;
+        --border-w: 3px;
+        --shadow-offset: 5px;
+        --text: #1a1a1a;
+        --text-muted: #555555;
+        --text-dim: #888888;
+        --yellow: #f9f54b;
+        --pink: #ff6b9d;
+        --blue: #5271ff;
+        --green: #4ecdc4;
+        --orange: #ff8a5c;
+        --red: #ff4040;
+        --purple: #b388ff;
+    }
+
+    body {
+        font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    *:focus-visible {
+        outline: 3px solid var(--blue);
+        outline-offset: 2px;
+    }
+
+    /* Neubrutalist surface — hard border, solid shadow */
+    .panel {
+        background: var(--surface);
+        border: var(--border-w) solid var(--border);
+        border-radius: 6px;
+        box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border);
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 6px 18px;
+        border-radius: 4px;
+        background: var(--yellow);
+        border: var(--border-w) solid var(--border);
+        box-shadow: 3px 3px 0px var(--border);
+        color: var(--text);
+        margin-bottom: 28px;
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+        font-weight: 700;
+        line-height: 1;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        color: var(--text);
+    }
+
+    .hero-title-highlight {
+        display: inline-block;
+        background: var(--pink);
+        padding: 0 12px;
+        transform: rotate(-1.5deg);
+        border: var(--border-w) solid var(--border);
+        box-shadow: 4px 4px 0px var(--border);
+    }
+
+    .hero-tagline {
+        font-size: 1.05rem;
+        color: var(--text-muted);
+        margin-top: 24px;
+        line-height: 1.7;
+        font-weight: 400;
+    }
+
+    .hero-tagline strong {
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* Intro card */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+        background: var(--yellow);
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.9;
+        font-weight: 400;
+        color: var(--text);
+    }
+
+    .intro-text strong {
+        font-weight: 700;
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        display: inline-block;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--surface);
+        background: var(--text);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 2px;
+        margin-bottom: 10px;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--text);
+        font-style: normal;
+        font-weight: 700;
+        background: var(--yellow);
+        padding: 0 4px;
+    }
+
+    .section-desc code {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.82em;
+        background: var(--bg);
+        padding: 2px 8px;
+        border-radius: 2px;
+        border: 2px solid var(--border);
+    }
+
+    /* Divider */
+    .divider {
+        margin: 48px 0;
+        height: 3px;
+        background: var(--border);
+    }
+
+    /* Shadow demo cards */
+    .shadow-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+    }
+
+    .shadow-card {
+        padding: 28px 16px;
+        text-align: center;
+        border: var(--border-w) solid var(--border);
+        border-radius: 6px;
+        box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border);
+        transition: transform 0.15s, box-shadow 0.15s;
+        cursor: default;
+    }
+
+    .shadow-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0px var(--border);
+    }
+
+    .shadow-card.yellow { background: var(--yellow); }
+    .shadow-card.pink { background: var(--pink); }
+    .shadow-card.blue { background: var(--blue); color: #fff; }
+
+    .shadow-card-icon {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+
+    .shadow-card-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .shadow-card-sub {
+        font-size: 0.68rem;
+        margin-top: 6px;
+        opacity: 0.7;
+    }
+
+    /* Code block */
+    .code-block {
+        background: var(--text);
+        border-radius: 6px;
+        padding: 18px 22px;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 20px;
+        border: var(--border-w) solid var(--border);
+    }
+
+    .code-block .kw { color: var(--green); }
+    .code-block .val { color: var(--yellow); }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.3); }
+
+    /* Palette section */
+    .palette-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .palette-swatch {
+        flex: 1;
+        text-align: center;
+    }
+
+    .swatch-box {
+        height: 56px;
+        border: var(--border-w) solid var(--border);
+        border-radius: 4px;
+        box-shadow: 3px 3px 0px var(--border);
+    }
+
+    .swatch-label {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+        display: block;
+    }
+
+    /* Buttons */
+    .nb-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        border: var(--border-w) solid var(--border);
+        border-radius: 4px;
+        box-shadow: 3px 3px 0px var(--border);
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .nb-btn:active {
+        transform: translate(3px, 3px);
+        box-shadow: 0px 0px 0px var(--border);
+    }
+
+    .nb-btn.yellow { background: var(--yellow); color: var(--text); }
+    .nb-btn.pink { background: var(--pink); color: var(--text); }
+    .nb-btn.blue { background: var(--blue); color: #fff; }
+    .nb-btn.green { background: var(--green); color: var(--text); }
+    .nb-btn.orange { background: var(--orange); color: var(--text); }
+    .nb-btn.white { background: var(--surface); color: var(--text); }
+    .nb-btn.black { background: var(--text); color: var(--surface); }
+
+    /* Quiet button — border only, no shadow */
+    .nb-btn.quiet {
+        background: var(--surface);
+        color: var(--text-muted);
+        box-shadow: none;
+    }
+
+    .nb-btn.quiet:active {
+        transform: none;
+        background: var(--bg);
+    }
+
+    /* Comparison grid */
+    .compare-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    .compare-side {
+        padding: 24px;
+        border: var(--border-w) solid var(--border);
+        border-radius: 6px;
+        background: var(--surface);
+    }
+
+    .compare-label {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 16px;
+    }
+
+    .compare-label.bad { color: var(--red); }
+    .compare-label.good { color: var(--text); background: var(--green); display: inline-block; padding: 2px 8px; border-radius: 2px; }
+
+    .compare-btns {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .compare-note {
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        margin-top: 14px;
+        line-height: 1.5;
+    }
+
+    /* Volume levels demo */
+    .volume-demo {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .volume-level {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .volume-tag {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        width: 80px;
+        flex-shrink: 0;
+        text-align: right;
+    }
+
+    .volume-sample {
+        flex: 1;
+        padding: 16px 20px;
+        border: var(--border-w) solid var(--border);
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 600;
+    }
+
+    .volume-sample.loud {
+        background: var(--yellow);
+        box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border);
+    }
+
+    .volume-sample.medium {
+        background: var(--surface);
+        box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border);
+        color: var(--text);
+    }
+
+    .volume-sample.quiet {
+        background: var(--surface);
+        color: var(--text-muted);
+    }
+
+    .volume-desc {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        margin-top: 2px;
+        font-weight: 400;
+    }
+
+    /* Dashboard demo */
+    .dash-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .dash-card {
+        padding: 24px;
+        border: var(--border-w) solid var(--border);
+        border-radius: 6px;
+    }
+
+    .dash-card.loud {
+        box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border);
+    }
+
+    .dash-card.medium {
+        box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border);
+    }
+
+    .dash-card.quiet {
+        /* no shadow */
+    }
+
+    .dash-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .dash-card-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .dash-card-stat {
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .dash-card-sub {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+    }
+
+    .nb-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border: 2px solid var(--border);
+        border-radius: 2px;
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .nb-badge.red { background: var(--red); color: #fff; }
+    .nb-badge.green { background: var(--green); }
+    .nb-badge.yellow { background: var(--yellow); }
+
+    .dash-full {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .dash-full-text {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+    }
+
+    /* Anti-pattern list */
+    .anti-card {
+        padding: 28px 32px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 10px 0;
+        border-bottom: 2px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 400;
+        color: var(--text-muted);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+
+    .anti-list .x {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 2px;
+        border: 2px solid var(--border);
+        background: var(--red);
+        color: #fff;
+        font-weight: 900;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .anti-list .o {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 2px;
+        border: 2px solid var(--border);
+        background: var(--green);
+        color: var(--text);
+        font-weight: 900;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 64px;
+    }
+
+    .manifesto-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.8;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+        color: var(--text);
+    }
+
+    .manifesto-highlight {
+        display: inline;
+        background: var(--yellow);
+        padding: 0 6px;
+        border-bottom: 3px solid var(--border);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 400;
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title { font-size: 2.8rem; }
+
+        .shadow-demo,
+        .compare-grid,
+        .dash-grid { grid-template-columns: 1fr; }
+
+        .compare-btns { flex-direction: column; }
+
+        .palette-row { flex-wrap: wrap; }
+        .palette-swatch {
+            flex: 0 0 calc(33.33% - 6px);
+            margin-bottom: 12px;
+        }
+
+        .intro-card,
+        .anti-card { padding: 24px 24px; }
+
+        .volume-level { flex-direction: column; align-items: stretch; gap: 4px; }
+        .volume-tag { text-align: left; width: auto; }
+
+        .dash-full { flex-direction: column; gap: 12px; align-items: stretch; }
+    }
+</style>
+
+<body>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Neubrutalism</div>
+            <h1 class="hero-title">
+                NEU<span class="hero-title-highlight">BRUTAL</span>ISM
+            </h1>
+            <p class="hero-tagline">
+                Hard shadows and loud colors that refuse to whisper.<br>
+                <strong>The problem isn't the volume. It's the lack of a volume knob.</strong>
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="panel intro-card">
+            <p class="intro-text">
+                Neubrutalism was a rebellion against polished sameness.
+                Thick borders, solid shadows, clashing colors — every element
+                <strong>stamped onto the page with zero apology</strong>.
+                <br><br>
+                The strength is obvious affordance — every button screams
+                <strong>"click me."</strong> Hard edges and loud contrast make
+                interactive elements impossible to miss. The risk is visual fatigue.
+                When everything shouts at the same volume, the user's eyes have
+                nowhere to rest — and no way to tell what matters.
+                <br><br>
+                <strong>We keep the boldness. We add a volume knob.</strong>
+                Three levels of loudness — loud, medium, quiet — same border system,
+                same personality, but now the interface can whisper too.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Hard Shadows -->
+        <section class="section">
+            <div class="section-label">Technique</div>
+            <h2 class="section-title">Hard Shadows</h2>
+            <p class="section-desc">
+                The signature move. A solid offset shadow with <em>zero blur</em>.
+                Combined with a thick black <code>border</code>, every element looks like
+                it's been stamped onto the page. No subtlety, no softness.
+                The shadow doesn't simulate depth — it <em>declares</em> it.
+                Move your cursor over the cards below and watch them lift.
+            </p>
+            <div class="shadow-demo">
+                <div class="shadow-card yellow">
+                    <div class="shadow-card-icon">&#9733;</div>
+                    <div class="shadow-card-label">Favorite</div>
+                    <div class="shadow-card-sub">Bright yellow</div>
+                </div>
+                <div class="shadow-card pink">
+                    <div class="shadow-card-icon">&#9829;</div>
+                    <div class="shadow-card-label">Popular</div>
+                    <div class="shadow-card-sub">Bold pink</div>
+                </div>
+                <div class="shadow-card blue">
+                    <div class="shadow-card-icon">&#9889;</div>
+                    <div class="shadow-card-label">Featured</div>
+                    <div class="shadow-card-sub">Electric blue</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* The neubrutalist signature — hard shadow, no blur */</span><br>
+                <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
+                <span class="kw">box-shadow</span>: <span class="val">5px 5px 0px #000</span>;<br>
+                <span class="kw">border-radius</span>: <span class="val">6px</span>;&nbsp;&nbsp;&nbsp;<span class="cmt">/* small or zero */</span><br>
+                <span class="kw">background</span>: <span class="val">#f9f54b</span>;&nbsp;&nbsp;<span class="cmt">/* loud color */</span>
+            </div>
+        </section>
+
+        <!-- The Palette -->
+        <section class="section">
+            <div class="section-label">Palette</div>
+            <h2 class="section-title">Clashing Colors</h2>
+            <p class="section-desc">
+                Forget color harmony. Neubrutalism puts <em>yellow next to pink</em>,
+                <em>blue next to orange</em>, and dares you to look away.
+                Every element is its own announcement. The colors don't blend —
+                they collide. And the black borders hold the whole thing together
+                like a frame around chaos.
+            </p>
+            <div class="palette-row">
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--yellow);"></div>
+                    <span class="swatch-label">#f9f54b</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--pink);"></div>
+                    <span class="swatch-label">#ff6b9d</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--blue);"></div>
+                    <span class="swatch-label">#5271ff</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--green);"></div>
+                    <span class="swatch-label">#4ecdc4</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--orange);"></div>
+                    <span class="swatch-label">#ff8a5c</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- The Problem -->
+        <section class="section">
+            <div class="section-label">The Problem</div>
+            <h2 class="section-title">When Everything Shouts</h2>
+            <p class="section-desc">
+                Five buttons. Five colors. Five shadows.
+                Which one is the primary action? Which one matters?
+                When every element is at maximum volume, the user hears noise —
+                not a message. This is neubrutalism's fatal flaw: <em>loudness
+                without hierarchy is just chaos</em>.
+            </p>
+            <div class="compare-grid">
+                <div class="compare-side">
+                    <div class="compare-label bad">No hierarchy</div>
+                    <div class="compare-btns">
+                        <button class="nb-btn yellow">Subscribe</button>
+                        <button class="nb-btn pink">New Post</button>
+                        <button class="nb-btn blue">Download</button>
+                        <button class="nb-btn green">Confirm</button>
+                    </div>
+                    <div class="compare-note">Four buttons, all screaming. The user freezes.</div>
+                </div>
+                <div class="compare-side">
+                    <div class="compare-label good">Volume control</div>
+                    <div class="compare-btns">
+                        <button class="nb-btn yellow">Subscribe</button>
+                        <button class="nb-btn white">New Post</button>
+                        <button class="nb-btn quiet">Cancel</button>
+                    </div>
+                    <div class="compare-note">One shouts. One speaks. One whispers. The user knows.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Fix -->
+        <section class="section">
+            <div class="section-label">The Fix</div>
+            <h2 class="section-title">Volume Control</h2>
+            <p class="section-desc">
+                The border is the constant — every element gets the thick black stroke.
+                That's what makes it neubrutalist. But <em>shadow</em> and <em>color</em>
+                are volume knobs. Turn them up for primary actions, down for support.
+                Three levels, one system.
+            </p>
+            <div class="volume-demo">
+                <div class="volume-level">
+                    <div class="volume-tag">Loud</div>
+                    <div class="volume-sample loud">
+                        Deploy to Production
+                        <div class="volume-desc">Color fill + border + shadow — primary actions, alerts</div>
+                    </div>
+                </div>
+                <div class="volume-level">
+                    <div class="volume-tag">Medium</div>
+                    <div class="volume-sample medium">
+                        Save as Draft
+                        <div class="volume-desc">White fill + border + shadow — secondary content, info cards</div>
+                    </div>
+                </div>
+                <div class="volume-level">
+                    <div class="volume-tag">Quiet</div>
+                    <div class="volume-sample quiet">
+                        Cancel
+                        <div class="volume-desc">White fill + border, no shadow — tertiary, supporting</div>
+                    </div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Loud — color + border + shadow */</span><br>
+                <span class="kw">background</span>: <span class="val">#f9f54b</span>;<br>
+                <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
+                <span class="kw">box-shadow</span>: <span class="val">5px 5px 0px #000</span>;<br><br>
+                <span class="cmt">/* Medium — white + border + shadow */</span><br>
+                <span class="kw">background</span>: <span class="val">#fff</span>;<br>
+                <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
+                <span class="kw">box-shadow</span>: <span class="val">5px 5px 0px #000</span>;<br><br>
+                <span class="cmt">/* Quiet — white + border, no shadow */</span><br>
+                <span class="kw">background</span>: <span class="val">#fff</span>;<br>
+                <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
+                <span class="kw">box-shadow</span>: <span class="val">none</span>;
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Volume in Action</h2>
+            <p class="section-desc">
+                A dashboard where loudness serves the user.
+                The alert screams — it should. The stats speak clearly.
+                The metadata whispers. Same border system, same personality,
+                but now the interface has dynamics, not just volume.
+            </p>
+            <div class="dash-grid">
+                <div class="dash-card loud" style="grid-column: 1 / -1; background: var(--red); color: #fff;">
+                    <div class="dash-card-header">
+                        <div class="dash-card-title" style="color: #fff;">&#x26A0; Deploy Failed</div>
+                        <span class="nb-badge yellow">Critical</span>
+                    </div>
+                    <div class="dash-card-stat">Build #847</div>
+                    <div class="dash-card-sub" style="color: rgba(255,255,255,0.8);">main branch — 2 minutes ago</div>
+                </div>
+                <div class="dash-card medium" style="background: var(--surface);">
+                    <div class="dash-card-title">Visitors</div>
+                    <div class="dash-card-stat">12,847</div>
+                    <div class="dash-card-sub">This month</div>
+                </div>
+                <div class="dash-card medium" style="background: var(--surface);">
+                    <div class="dash-card-title">Revenue</div>
+                    <div class="dash-card-stat">$8.4k</div>
+                    <div class="dash-card-sub">Last 30 days</div>
+                </div>
+                <div class="dash-card quiet dash-full" style="background: var(--surface);">
+                    <div class="dash-full-text">Last updated: 2 minutes ago &middot; All other systems operational</div>
+                    <button class="nb-btn yellow">Retry Deploy</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Rules -->
+        <section class="section">
+            <h2 class="section-title">The Rules</h2>
+            <div class="panel anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Every element at max volume — loudness without hierarchy is noise</li>
+                    <li><span class="x">&#x2717;</span> Gradients, blurs, or soft shadows — that's another language entirely</li>
+                    <li><span class="x">&#x2717;</span> Half-committed brutalism — if it's clean and polished, it's not this</li>
+                    <li><span class="x">&#x2717;</span> Color as decoration — each color should signal a meaning, not just "loud"</li>
+                    <li><span class="o">&#x2713;</span> The black border is the constant — that's what makes it neubrutalist</li>
+                    <li><span class="o">&#x2713;</span> Shadow and color are volume knobs — turn up for primary, down for support</li>
+                    <li><span class="o">&#x2713;</span> Three levels: loud (color + shadow), medium (white + shadow), quiet (border only)</li>
+                    <li><span class="o">&#x2713;</span> One loud element per view — if everything's loud, nothing is</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Design doesn't have to<br>
+                <span class="manifesto-highlight">whisper</span>.<br>
+                But it does need to know<br>
+                <span class="manifesto-highlight">when to</span>.
+            </p>
+            <p class="manifesto-sub">
+                Black borders. Solid shadows. Colors that fight each other.<br>
+                That's the whole system. The fix is knowing which element deserves the spotlight.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Button press effect */
+    document.querySelectorAll('.nb-btn:not(.quiet)').forEach(btn => {
+        btn.addEventListener('mousedown', () => {
+            btn.style.transform = 'translate(3px, 3px)';
+            btn.style.boxShadow = '0px 0px 0px var(--border)';
+        });
+        btn.addEventListener('mouseup', () => {
+            btn.style.transform = '';
+            btn.style.boxShadow = '';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = '';
+            btn.style.boxShadow = '';
+        });
+    });
+</script>

@@ -1,0 +1,1427 @@
+<!-- layout: base.html -->
+<!-- title: Aqua (2000) -->
+<!-- description: That made you want to lick your screen -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+        --aqua-blue: #2F80ED;
+        --aqua-blue-light: #56CCF2;
+        --aqua-gradient: linear-gradient(180deg, #56CCF2 0%, #2F80ED 100%);
+        --graphite: #6B7B8D;
+        --graphite-dark: #4A5568;
+        --red: #FF5F57;
+        --yellow: #FFBD2E;
+        --green: #27C93F;
+        --bg: #E8EDF2;
+        --bg-warm: #EAEEF3;
+        --surface: #F5F7FA;
+        --surface-border: rgba(0, 0, 0, 0.12);
+        --text: #1a1a2e;
+        --text-muted: #5a6070;
+        --text-dim: #8a8fa0;
+        --accent: #2F80ED;
+        --accent-glow: rgba(47, 128, 237, 0.3);
+        --success: #27C93F;
+        --danger: #FF5F57;
+        --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
+        --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.16);
+        --pinstripe: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 1px,
+            rgba(0, 0, 0, 0.03) 1px,
+            rgba(0, 0, 0, 0.03) 2px
+        );
+        --brushed-metal: linear-gradient(
+            180deg,
+            #d4d8dc 0%, #c8ccd2 4%, #d0d4d8 8%, #c4c8ce 12%,
+            #ccd0d6 16%, #c0c4ca 20%, #c8ccd2 24%, #bcc0c6 28%,
+            #d0d4d8 32%, #c4c8ce 36%, #c8ccd2 40%, #c0c4ca 44%,
+            #ccd0d6 48%, #bcc0c6 52%, #d0d4d8 56%, #c4c8ce 60%,
+            #c8ccd2 64%, #c0c4ca 68%, #ccd0d6 72%, #bcc0c6 76%,
+            #d4d8dc 80%, #c8ccd2 84%, #d0d4d8 88%, #c4c8ce 92%,
+            #ccd0d6 96%, #d0d4d8 100%
+        );
+    }
+
+    body {
+        font-family: 'Nunito', 'Lucida Grande', 'Helvetica Neue', sans-serif;
+        background: var(--bg);
+        background-image:
+            var(--pinstripe),
+            linear-gradient(180deg, #E8EDF2 0%, #DEE4EB 100%);
+        background-attachment: fixed;
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: linear-gradient(180deg, rgba(47, 128, 237, 0.12) 0%, rgba(86, 204, 242, 0.08) 100%);
+        border: 1px solid rgba(47, 128, 237, 0.25);
+        color: var(--aqua-blue);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        background: linear-gradient(180deg, #56CCF2 0%, #2F80ED 60%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 2px 4px rgba(47, 128, 237, 0.2));
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    /* Intro card */
+    .intro-card {
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        border-radius: 10px;
+        box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        padding: 28px 32px;
+        margin-bottom: 48px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .intro-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.85;
+        font-weight: 400;
+    }
+
+    .intro-text strong {
+        font-weight: 700;
+        color: var(--aqua-blue);
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--aqua-blue);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.85;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: rgba(47, 128, 237, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--aqua-blue);
+    }
+
+    /* Divider */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(47, 128, 237, 0.2), transparent);
+    }
+
+    /* Gel Button base */
+    .gel-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 28px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    /* Glossy highlight overlay */
+    .gel-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.55) 0%,
+            rgba(255, 255, 255, 0.25) 40%,
+            rgba(255, 255, 255, 0.05) 100%
+        );
+        border-radius: 20px 20px 0 0;
+        pointer-events: none;
+        transition: opacity 0.12s;
+    }
+
+    .gel-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .gel-btn:active {
+        transform: translateY(1px) scale(0.98);
+    }
+
+    .gel-btn:active::before {
+        opacity: 0.5;
+    }
+
+    /* Aqua Blue */
+    .gel-btn.aqua {
+        background: linear-gradient(180deg, #6EC6F5 0%, #2F80ED 50%, #1A6AD4 100%);
+        box-shadow:
+            0 4px 12px rgba(47, 128, 237, 0.4),
+            0 1px 2px rgba(0, 0, 0, 0.1),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.aqua:hover {
+        box-shadow:
+            0 6px 16px rgba(47, 128, 237, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.12),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.aqua:active {
+        background: linear-gradient(180deg, #4AA0E0 0%, #2060C0 50%, #1555B0 100%);
+        box-shadow:
+            0 2px 6px rgba(47, 128, 237, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Graphite */
+    .gel-btn.graphite {
+        background: linear-gradient(180deg, #A0AAB6 0%, #6B7B8D 50%, #4A5568 100%);
+        box-shadow:
+            0 4px 12px rgba(74, 85, 104, 0.4),
+            0 1px 2px rgba(0, 0, 0, 0.1),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.graphite:hover {
+        box-shadow:
+            0 6px 16px rgba(74, 85, 104, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.12),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.graphite:active {
+        background: linear-gradient(180deg, #8A94A0 0%, #556070 50%, #3A4858 100%);
+        box-shadow:
+            0 2px 6px rgba(74, 85, 104, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Red */
+    .gel-btn.red {
+        background: linear-gradient(180deg, #FF9A95 0%, #FF5F57 50%, #E04040 100%);
+        box-shadow:
+            0 4px 12px rgba(255, 95, 87, 0.4),
+            0 1px 2px rgba(0, 0, 0, 0.1),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.red:hover {
+        box-shadow:
+            0 6px 16px rgba(255, 95, 87, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.12),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.red:active {
+        background: linear-gradient(180deg, #E88078 0%, #D84040 50%, #C03030 100%);
+        box-shadow:
+            0 2px 6px rgba(255, 95, 87, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Green */
+    .gel-btn.green {
+        background: linear-gradient(180deg, #6EE880 0%, #27C93F 50%, #1DA832 100%);
+        box-shadow:
+            0 4px 12px rgba(39, 201, 63, 0.4),
+            0 1px 2px rgba(0, 0, 0, 0.1),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.green:hover {
+        box-shadow:
+            0 6px 16px rgba(39, 201, 63, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.12),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .gel-btn.green:active {
+        background: linear-gradient(180deg, #50D068 0%, #20A835 50%, #188828 100%);
+        box-shadow:
+            0 2px 6px rgba(39, 201, 63, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Button demo grid */
+    .btn-demo {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    /* Code block */
+    .code-block {
+        background: linear-gradient(180deg, #1e2a3a, #162030);
+        border-radius: 8px;
+        padding: 16px 20px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(200, 215, 235, 0.75);
+        overflow-x: auto;
+        margin-top: 16px;
+        border: 1px solid rgba(47, 128, 237, 0.15);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .code-block .kw { color: #7ec8f0; }
+    .code-block .val { color: #a8e6a0; }
+    .code-block .cmt { color: rgba(200, 215, 235, 0.3); }
+
+    /* Texture demo panels */
+    .texture-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .texture-panel {
+        border-radius: 10px;
+        padding: 32px 20px;
+        text-align: center;
+        border: 1px solid var(--surface-border);
+        box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: default;
+    }
+
+    .texture-panel:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .texture-panel.pinstripe-tex {
+        background:
+            var(--pinstripe),
+            linear-gradient(180deg, #F5F7FA, #EEF0F5);
+    }
+
+    .texture-panel.metal-tex {
+        background: var(--brushed-metal);
+        border-color: rgba(0, 0, 0, 0.18);
+    }
+
+    .texture-label {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text);
+        position: relative;
+        z-index: 1;
+    }
+
+    .texture-sublabel {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .texture-meta {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        margin-top: 12px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Traffic light controls */
+    .traffic-lights {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .traffic-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.15s;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .traffic-dot::before {
+        content: '';
+        position: absolute;
+        top: 1px;
+        left: 2px;
+        right: 2px;
+        height: 40%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, transparent 100%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .traffic-dot::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        font-weight: 800;
+        line-height: 12px;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.15s;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .traffic-dot.close {
+        background: linear-gradient(180deg, #FF8A80 0%, #FF5F57 50%, #E04040 100%);
+        box-shadow: 0 1px 3px rgba(255, 95, 87, 0.4);
+    }
+
+    .traffic-dot.close::after {
+        content: '\00d7';
+        font-size: 11px;
+    }
+
+    .traffic-dot.minimize {
+        background: linear-gradient(180deg, #FFDA6B 0%, #FFBD2E 50%, #E0A020 100%);
+        box-shadow: 0 1px 3px rgba(255, 189, 46, 0.4);
+    }
+
+    .traffic-dot.minimize::after {
+        content: '\2013';
+        font-size: 10px;
+    }
+
+    .traffic-dot.zoom {
+        background: linear-gradient(180deg, #5AE06E 0%, #27C93F 50%, #1DA832 100%);
+        box-shadow: 0 1px 3px rgba(39, 201, 63, 0.4);
+    }
+
+    .traffic-dot.zoom::after {
+        content: '+';
+        font-size: 10px;
+    }
+
+    .traffic-dot:hover {
+        transform: scale(1.15);
+    }
+
+    .traffic-lights:hover .traffic-dot::after {
+        opacity: 1;
+    }
+
+    /* Window demo */
+    .window-demo {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow-heavy), 0 0 0 1px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .window-titlebar {
+        display: flex;
+        align-items: center;
+        padding: 10px 14px;
+        gap: 12px;
+        background: var(--brushed-metal);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+        position: relative;
+    }
+
+    .window-titlebar::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.4);
+        top: 0;
+    }
+
+    .window-title {
+        flex: 1;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text);
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .window-title-spacer {
+        width: 52px;
+    }
+
+    .window-body {
+        background: var(--surface);
+        background-image: var(--pinstripe);
+    }
+
+    /* Aqua scrollbar on window body */
+    .window-body::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .window-body::-webkit-scrollbar-track {
+        background: #e0e4e8;
+    }
+
+    .window-body::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #8ab8e8, #5090d0);
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    /* Traffic light demo grid */
+    .tl-demo-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .tl-demo-panel {
+        border-radius: 10px;
+        padding: 28px 20px;
+        text-align: center;
+        border: 1px solid var(--surface-border);
+        box-shadow: var(--shadow-soft);
+        background: var(--surface);
+    }
+
+    .tl-demo-label {
+        font-size: 0.82rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .tl-demo-sublabel {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+    }
+
+    .tl-large {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .tl-large .traffic-dot {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tl-large .traffic-dot.close::after { font-size: 16px; line-height: 20px; }
+    .tl-large .traffic-dot.minimize::after { font-size: 14px; line-height: 20px; }
+    .tl-large .traffic-dot.zoom::after { font-size: 14px; line-height: 20px; }
+
+    .tl-inactive .traffic-dot {
+        background: linear-gradient(180deg, #D8D8D8 0%, #C0C0C0 50%, #A8A8A8 100%) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Tabs (for preferences panel) */
+    .aqua-tabs {
+        display: flex;
+        gap: 2px;
+        padding: 8px 12px 0;
+        background: var(--brushed-metal);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .aqua-tab {
+        padding: 8px 20px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 6px 6px 0 0;
+        border: 1px solid transparent;
+        border-bottom: none;
+        transition: all 0.15s;
+        background: transparent;
+        position: relative;
+        top: 1px;
+        user-select: none;
+        -webkit-user-select: none;
+        font-family: 'Nunito', sans-serif;
+    }
+
+    .aqua-tab:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .aqua-tab.active {
+        background: var(--surface);
+        background-image: var(--pinstripe);
+        color: var(--text);
+        border-color: rgba(0, 0, 0, 0.12);
+        box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Tab content */
+    .tab-content {
+        padding: 24px;
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .tab-content-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .tab-content-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        box-shadow: var(--shadow-soft);
+    }
+
+    /* Preferences row */
+    .pref-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        font-size: 0.82rem;
+    }
+
+    .pref-row:last-child {
+        border-bottom: none;
+    }
+
+    .pref-label {
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    /* Aqua checkbox */
+    .aqua-checkbox {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, #fff 0%, #e8ecf0 100%);
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: var(--aqua-blue);
+        font-weight: 800;
+        transition: all 0.15s;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .aqua-checkbox.checked {
+        background: linear-gradient(180deg, #6EC6F5 0%, #2F80ED 50%, #1A6AD4 100%);
+        border-color: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    /* Aqua dropdown */
+    .aqua-dropdown {
+        padding: 5px 28px 5px 10px;
+        border-radius: 6px;
+        background: linear-gradient(180deg, #fff 0%, #e8ecf0 100%);
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.08);
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--text);
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%234A5568' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+    }
+
+    /* Aqua progress bar */
+    .aqua-progress {
+        height: 16px;
+        border-radius: 8px;
+        background: linear-gradient(180deg, #d0d4da 0%, #e0e4e8 100%);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.12), inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .aqua-progress-fill {
+        height: 100%;
+        border-radius: 7px;
+        background: linear-gradient(180deg, #6EC6F5 0%, #2F80ED 50%, #1A6AD4 100%);
+        position: relative;
+        transition: width 0.6s ease;
+    }
+
+    .aqua-progress-fill::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border-radius: 7px 7px 0 0;
+    }
+
+    .aqua-progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 6px,
+            rgba(255, 255, 255, 0.1) 6px,
+            rgba(255, 255, 255, 0.1) 12px
+        );
+        animation: barberpole 0.8s linear infinite;
+    }
+
+    @keyframes barberpole {
+        0% { background-position: 0 0; }
+        100% { background-position: 17px 0; }
+    }
+
+    /* Anti-patterns */
+    .anti-card {
+        background: var(--surface);
+        border-radius: 10px;
+        padding: 24px 28px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--surface-border);
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.85rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        color: var(--danger);
+        font-weight: 800;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .anti-list .o {
+        color: var(--success);
+        font-weight: 800;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.35rem;
+        font-weight: 700;
+        line-height: 1.7;
+        color: var(--text);
+    }
+
+    .manifesto-sub {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    /* Small Aqua-styled bounce animation */
+    @keyframes aqua-bounce {
+        0%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-6px); }
+        50% { transform: translateY(-2px); }
+        70% { transform: translateY(-4px); }
+    }
+
+    .bounce-in {
+        animation: aqua-bounce 0.5s ease;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .btn-demo {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .texture-row,
+        .tl-demo-row {
+            grid-template-columns: 1fr;
+        }
+
+        .aqua-tabs {
+            overflow-x: auto;
+        }
+
+        .aqua-tab {
+            padding: 8px 14px;
+            font-size: 0.72rem;
+            white-space: nowrap;
+        }
+
+        .intro-card,
+        .anti-card {
+            padding: 20px 24px;
+        }
+
+        .pref-row {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .window-title {
+            font-size: 0.72rem;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Apple Aqua</div>
+            <h1 class="hero-title">Apple Aqua</h1>
+            <p class="hero-tagline">
+                Jobs said you'd want to lick it.<br>
+                We prove that beauty and usability aren't opposites.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="intro-card">
+            <p class="intro-text">
+                Aqua proved that software could be <strong>beautiful</strong>. When Jobs
+                unveiled those wet, translucent buttons at Macworld 2000, he demonstrated
+                that an interface could provoke a physical, emotional response &mdash; delight,
+                desire, trust. People wanted to press those buttons because they looked
+                <strong>delicious</strong>. That was the strength: emotional impact as a
+                design tool.
+                <br><br>
+                The weakness? The textures fought the content. Pinstripes competed with text.
+                Brushed metal clashed with brushed metal. Every surface screamed for attention
+                and nothing felt quiet. This page keeps the <strong>emotional conviction</strong>
+                &mdash; the gel highlights, the traffic lights, the tactile depth &mdash; and
+                strips away the visual noise. The result is an interface that still makes you
+                want to lick it, but also lets you <strong>get your work done</strong>.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: The Gel Button -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">The Gel Button</h2>
+            <p class="section-desc">
+                The signature move. A rounded pill shape with a three-stop vertical gradient
+                and a white-to-transparent highlight on the top half. That highlight is the whole trick
+                — it simulates light hitting a convex, glossy surface. Like a gumdrop. Like a jellybean.
+                Like something your brain says "this is pressable" before your hand moves.
+                Click them. They want to be clicked.
+            </p>
+            <div class="btn-demo">
+                <button class="gel-btn aqua" id="btn-aqua">Aqua Blue</button>
+                <button class="gel-btn graphite" id="btn-graphite">Graphite</button>
+                <button class="gel-btn red" id="btn-red">Cancel</button>
+                <button class="gel-btn green" id="btn-green">Apply</button>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* The Aqua gel button — the lickable gradient */</span><br>
+                <span class="kw">border-radius</span>: <span class="val">20px</span>;<br>
+                <span class="kw">background</span>: <span class="val">linear-gradient</span>(180deg,<br>
+                &nbsp;&nbsp;<span class="val">#6EC6F5</span> 0%,&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* light top — sky reflection */</span><br>
+                &nbsp;&nbsp;<span class="val">#2F80ED</span> 50%,&nbsp;&nbsp;&nbsp;<span class="cmt">/* body color — the candy */</span><br>
+                &nbsp;&nbsp;<span class="val">#1A6AD4</span> 100%&nbsp;&nbsp;&nbsp;<span class="cmt">/* dark bottom — shadow */</span><br>
+                );<br>
+                <br>
+                <span class="cmt">/* The glossy highlight — ::before pseudo on top half */</span><br>
+                <span class="kw">background</span>: <span class="val">linear-gradient</span>(180deg,<br>
+                &nbsp;&nbsp;rgba(255,255,255,<span class="val">0.55</span>) 0%,&nbsp;&nbsp;<span class="cmt">/* bright top */</span><br>
+                &nbsp;&nbsp;rgba(255,255,255,<span class="val">0.25</span>) 40%,&nbsp;<span class="cmt">/* fade */</span><br>
+                &nbsp;&nbsp;rgba(255,255,255,<span class="val">0.05</span>) 100%&nbsp;<span class="cmt">/* nearly gone */</span><br>
+                );
+            </div>
+        </section>
+
+        <!-- Principle 02: Brushed Metal & Pinstripes -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Brushed Metal & Pinstripes</h2>
+            <p class="section-desc">
+                Two textures that defined a decade. <strong>Pinstripes</strong> — subtle vertical lines
+                at 2px intervals — covered every window background in early OS X. They whispered
+                "this is a content area." Then came <strong>brushed metal</strong> for the "pro" apps:
+                iTunes, QuickTime, Finder. Horizontal noise bands that said "this is chrome, this is
+                the frame." Both built with nothing but <code>repeating-linear-gradient</code>.
+            </p>
+            <div class="texture-row">
+                <div class="texture-panel pinstripe-tex">
+                    <div class="texture-label">Pinstripes</div>
+                    <div class="texture-sublabel">Content areas, window backgrounds</div>
+                    <div class="texture-meta">repeating-linear-gradient @ 2px</div>
+                </div>
+                <div class="texture-panel metal-tex">
+                    <div class="texture-label">Brushed Metal</div>
+                    <div class="texture-sublabel">Toolbars, chrome, pro apps</div>
+                    <div class="texture-meta">linear-gradient, 26 color stops</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Pinstripes — the Aqua wallpaper */</span><br>
+                <span class="kw">background</span>: <span class="val">repeating-linear-gradient</span>(<br>
+                &nbsp;&nbsp;0deg,<br>
+                &nbsp;&nbsp;transparent, transparent <span class="val">1px</span>,<br>
+                &nbsp;&nbsp;rgba(0,0,0,<span class="val">0.03</span>) <span class="val">1px</span>,<br>
+                &nbsp;&nbsp;rgba(0,0,0,<span class="val">0.03</span>) <span class="val">2px</span><br>
+                );<br>
+                <br>
+                <span class="cmt">/* Brushed metal — horizontal banding via many stops */</span><br>
+                <span class="kw">background</span>: <span class="val">linear-gradient</span>(180deg,<br>
+                &nbsp;&nbsp;<span class="val">#d4d8dc</span> 0%, <span class="val">#c8ccd2</span> 4%, <span class="val">#d0d4d8</span> 8%,<br>
+                &nbsp;&nbsp;<span class="val">#c4c8ce</span> 12%, <span class="val">#ccd0d6</span> 16% ...<br>
+                ); <span class="cmt">/* 26 stops = convincing noise */</span>
+            </div>
+        </section>
+
+        <!-- Principle 03: Traffic Light Controls -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">The Traffic Light Controls</h2>
+            <p class="section-desc">
+                Red, yellow, green. Close, minimize, zoom. The most recognizable UI element
+                in computing history. Three 12-pixel circles with gel gradients and a tiny
+                white reflection dot. On hover, they reveal their purpose:
+                <strong>&times;</strong>, <strong>&ndash;</strong>, <strong>+</strong>.
+                Apple nailed the principle: consistent, discoverable, and instantly memorable.
+                Twenty-five years later, they haven't changed the metaphor. They refined the rendering.
+            </p>
+            <div class="tl-demo-row">
+                <div class="tl-demo-panel">
+                    <div class="tl-demo-label">Active</div>
+                    <div class="tl-large" id="tl-active">
+                        <div class="traffic-dot close"></div>
+                        <div class="traffic-dot minimize"></div>
+                        <div class="traffic-dot zoom"></div>
+                    </div>
+                    <div class="tl-demo-sublabel">Hover to reveal icons</div>
+                </div>
+                <div class="tl-demo-panel tl-inactive">
+                    <div class="tl-demo-label">Inactive</div>
+                    <div class="tl-large">
+                        <div class="traffic-dot close"></div>
+                        <div class="traffic-dot minimize"></div>
+                        <div class="traffic-dot zoom"></div>
+                    </div>
+                    <div class="tl-demo-sublabel">Window out of focus</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Put It Together</h2>
+            <p class="section-desc">
+                Gel buttons, brushed metal toolbar, pinstripe content area, traffic light controls.
+                An Aqua-era System Preferences panel, rebuilt in CSS. Every surface has a purpose:
+                metal for chrome, pinstripes for content, gel for actions.
+                It looks like 2003. It runs like 2026. Click the tabs.
+            </p>
+            <div class="window-demo" id="prefs-window">
+                <div class="window-titlebar">
+                    <div class="traffic-lights">
+                        <div class="traffic-dot close" id="pref-close"></div>
+                        <div class="traffic-dot minimize" id="pref-min"></div>
+                        <div class="traffic-dot zoom" id="pref-zoom"></div>
+                    </div>
+                    <div class="window-title">System Preferences</div>
+                    <div class="window-title-spacer"></div>
+                </div>
+                <div class="aqua-tabs" id="pref-tabs">
+                    <div class="aqua-tab active" data-tab="general">General</div>
+                    <div class="aqua-tab" data-tab="appearance">Appearance</div>
+                    <div class="aqua-tab" data-tab="sound">Sound</div>
+                </div>
+                <div class="window-body">
+                    <!-- General Tab -->
+                    <div class="tab-content active" id="tab-general">
+                        <div class="tab-content-title">
+                            <div class="tab-content-icon" style="background: linear-gradient(180deg, #a0a8b8, #808890);">
+                                <span style="filter: grayscale(0); font-size: 0.9rem;">&#9881;</span>
+                            </div>
+                            General Settings
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Show scroll bars</span>
+                            <select class="aqua-dropdown">
+                                <option>Automatically</option>
+                                <option>Always</option>
+                                <option>When scrolling</option>
+                            </select>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Click in the scroll bar to</span>
+                            <select class="aqua-dropdown">
+                                <option>Jump to next page</option>
+                                <option>Jump to the spot</option>
+                            </select>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Close windows when quitting</span>
+                            <div class="aqua-checkbox checked" data-checked="true">&#10003;</div>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Ask to keep changes</span>
+                            <div class="aqua-checkbox" data-checked="false"></div>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Tab -->
+                    <div class="tab-content" id="tab-appearance">
+                        <div class="tab-content-title">
+                            <div class="tab-content-icon" style="background: linear-gradient(180deg, #7ec0f0, #3a8ae0);">
+                                <span style="font-size: 0.9rem;">&#9733;</span>
+                            </div>
+                            Appearance
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Appearance</span>
+                            <select class="aqua-dropdown" id="theme-select">
+                                <option value="aqua">Blue (Aqua)</option>
+                                <option value="graphite">Graphite</option>
+                            </select>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Highlight color</span>
+                            <select class="aqua-dropdown">
+                                <option>Blue</option>
+                                <option>Purple</option>
+                                <option>Pink</option>
+                                <option>Orange</option>
+                                <option>Green</option>
+                                <option>Graphite</option>
+                            </select>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Use smooth scrolling</span>
+                            <div class="aqua-checkbox checked" data-checked="true">&#10003;</div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">
+                                Downloading update...
+                            </div>
+                            <div class="aqua-progress">
+                                <div class="aqua-progress-fill" id="progress-bar" style="width: 0%"></div>
+                            </div>
+                            <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 6px;" id="progress-label">
+                                Waiting...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sound Tab -->
+                    <div class="tab-content" id="tab-sound">
+                        <div class="tab-content-title">
+                            <div class="tab-content-icon" style="background: linear-gradient(180deg, #f0a0a0, #e06060);">
+                                <span style="font-size: 0.9rem;">&#9835;</span>
+                            </div>
+                            Sound
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Alert sound</span>
+                            <select class="aqua-dropdown" id="alert-sound">
+                                <option>Sosumi</option>
+                                <option>Basso</option>
+                                <option>Blow</option>
+                                <option>Bottle</option>
+                                <option>Frog</option>
+                                <option>Funk</option>
+                                <option>Glass</option>
+                                <option>Ping</option>
+                            </select>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Alert volume</span>
+                            <div style="flex: 0 0 120px;">
+                                <div class="aqua-progress" style="height: 10px; cursor: pointer;" id="volume-track">
+                                    <div class="aqua-progress-fill" id="volume-fill" style="width: 70%; animation: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Play UI sound effects</span>
+                            <div class="aqua-checkbox checked" data-checked="true">&#10003;</div>
+                        </div>
+                        <div class="pref-row">
+                            <span class="pref-label">Play feedback when volume changes</span>
+                            <div class="aqua-checkbox checked" data-checked="true">&#10003;</div>
+                        </div>
+                        <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 8px;">
+                            <button class="gel-btn graphite" style="padding: 7px 20px; font-size: 0.78rem;" id="btn-test-sound">Test Alert</button>
+                            <button class="gel-btn aqua" style="padding: 7px 20px; font-size: 0.78rem;" id="btn-apply-sound">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Gratuitous glossiness on every surface</li>
+                    <li><span class="x">&#x2717;</span> Textures that slow down rendering</li>
+                    <li><span class="x">&#x2717;</span> Mixing Aqua and Brushed Metal without purpose (Apple's own mistake)</li>
+                    <li><span class="x">&#x2717;</span> Photorealistic UI elements that fight the content</li>
+                    <li><span class="o">&#x2713;</span> Gel highlights as clear affordance — "this is pressable"</li>
+                    <li><span class="o">&#x2713;</span> Texture to distinguish surface types (chrome vs content)</li>
+                    <li><span class="o">&#x2713;</span> Traffic light pattern — consistent, memorable window controls</li>
+                    <li><span class="o">&#x2713;</span> The radical idea that software should be beautiful</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                "You'd want to lick it."<br>
+                That was the point.
+            </p>
+            <p class="manifesto-sub">
+                Beauty isn't separate from function. It is function.<br>
+                An interface that provokes a physical response — delight, desire, trust —<br>
+                isn't decoration. It's the reason people reach for the mouse.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Gel button press feedback with bounce */
+    (function() {
+        var gelBtns = document.querySelectorAll('.gel-btn');
+        gelBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                btn.classList.remove('bounce-in');
+                void btn.offsetWidth;
+                btn.classList.add('bounce-in');
+            });
+        });
+    })();
+
+    /* Traffic light hover on the active demo — the dots already use CSS hover,
+       but we add a click bounce for fun */
+    (function() {
+        var dots = document.querySelectorAll('#tl-active .traffic-dot');
+        dots.forEach(function(dot) {
+            dot.addEventListener('click', function() {
+                dot.style.transition = 'transform 0.1s';
+                dot.style.transform = 'scale(0.8)';
+                setTimeout(function() {
+                    dot.style.transform = 'scale(1.15)';
+                    setTimeout(function() {
+                        dot.style.transform = '';
+                    }, 100);
+                }, 100);
+            });
+        });
+    })();
+
+    /* Preferences tabs */
+    (function() {
+        var tabs = document.querySelectorAll('#pref-tabs .aqua-tab');
+        var contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                contents.forEach(function(c) { c.classList.remove('active'); });
+
+                tab.classList.add('active');
+                var targetId = 'tab-' + tab.dataset.tab;
+                var target = document.getElementById(targetId);
+                if (target) {
+                    target.classList.add('active');
+                }
+
+                /* Start progress animation when switching to appearance tab */
+                if (tab.dataset.tab === 'appearance') {
+                    startProgress();
+                }
+            });
+        });
+    })();
+
+    /* Aqua checkboxes */
+    (function() {
+        var checkboxes = document.querySelectorAll('.aqua-checkbox');
+        checkboxes.forEach(function(cb) {
+            cb.addEventListener('click', function() {
+                var checked = cb.dataset.checked === 'true';
+                cb.dataset.checked = checked ? 'false' : 'true';
+                if (checked) {
+                    cb.classList.remove('checked');
+                    cb.textContent = '';
+                } else {
+                    cb.classList.add('checked');
+                    cb.textContent = '\u2713';
+                }
+            });
+        });
+    })();
+
+    /* Progress bar animation (simulated download) */
+    var progressInterval = null;
+    function startProgress() {
+        var bar = document.getElementById('progress-bar');
+        var label = document.getElementById('progress-label');
+        if (!bar || !label) return;
+
+        /* Reset */
+        clearInterval(progressInterval);
+        bar.style.width = '0%';
+        label.textContent = 'Starting download...';
+        var pct = 0;
+
+        progressInterval = setInterval(function() {
+            pct += Math.random() * 8 + 1;
+            if (pct >= 100) {
+                pct = 100;
+                clearInterval(progressInterval);
+                label.textContent = 'Download complete.';
+                bar.querySelector('::after') && (bar.style.animationPlayState = 'paused');
+            } else {
+                var mb = (pct * 0.42).toFixed(1);
+                label.textContent = mb + ' MB of 42.0 MB (' + Math.round(pct) + '%)';
+            }
+            bar.style.width = pct + '%';
+        }, 400);
+    }
+
+    /* Volume slider on the Sound tab */
+    (function() {
+        var track = document.getElementById('volume-track');
+        var fill = document.getElementById('volume-fill');
+        if (!track || !fill) return;
+
+        track.addEventListener('click', function(e) {
+            var rect = track.getBoundingClientRect();
+            var pct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+            fill.style.width = pct + '%';
+        });
+    })();
+
+    /* Window close/minimize/zoom buttons in the prefs panel */
+    (function() {
+        var win = document.getElementById('prefs-window');
+        var closeBtn = document.getElementById('pref-close');
+        var minBtn = document.getElementById('pref-min');
+        var zoomBtn = document.getElementById('pref-zoom');
+        var body = win.querySelector('.window-body');
+        var tabs = win.querySelector('.aqua-tabs');
+
+        closeBtn.addEventListener('click', function() {
+            win.style.transition = 'opacity 0.3s, transform 0.3s';
+            win.style.opacity = '0';
+            win.style.transform = 'scale(0.95)';
+            setTimeout(function() {
+                win.style.opacity = '1';
+                win.style.transform = '';
+            }, 1200);
+        });
+
+        minBtn.addEventListener('click', function() {
+            if (body.style.display === 'none') {
+                body.style.display = '';
+                tabs.style.display = '';
+                win.style.transition = 'transform 0.3s';
+                win.style.transform = '';
+            } else {
+                win.style.transition = 'transform 0.3s';
+                body.style.display = 'none';
+                tabs.style.display = 'none';
+            }
+        });
+
+        zoomBtn.addEventListener('click', function() {
+            if (win.style.maxWidth === '100%') {
+                win.style.maxWidth = '';
+                win.style.transition = 'max-width 0.3s';
+            } else {
+                win.style.maxWidth = '100%';
+                win.style.transition = 'max-width 0.3s';
+            }
+        });
+    })();
+
+    /* Sound tab — test alert button */
+    (function() {
+        var btn = document.getElementById('btn-test-sound');
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            btn.textContent = 'Sosumi!';
+            btn.classList.remove('bounce-in');
+            void btn.offsetWidth;
+            btn.classList.add('bounce-in');
+            setTimeout(function() {
+                btn.textContent = 'Test Alert';
+            }, 1000);
+        });
+    })();
+
+    /* Sound tab — apply button */
+    (function() {
+        var btn = document.getElementById('btn-apply-sound');
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            var orig = btn.textContent;
+            btn.textContent = 'Applied!';
+            btn.classList.remove('bounce-in');
+            void btn.offsetWidth;
+            btn.classList.add('bounce-in');
+            setTimeout(function() {
+                btn.textContent = orig;
+            }, 1000);
+        });
+    })();
+</script>
