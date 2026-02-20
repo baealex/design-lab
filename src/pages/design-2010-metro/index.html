@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
-<!-- title: Metro -->
-<!-- description: Inspired by Microsoft Metro UI — bold typography, living tiles, and chromeless content -->
+<!-- title: Metro (2010) -->
+<!-- description: Stripped all decoration, then users got lost -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700;900&display=swap');
@@ -184,7 +184,12 @@
         flex-direction: column;
         position: relative;
         overflow: hidden;
-        cursor: default;
+        cursor: pointer;
+        transition: filter 0.15s ease;
+    }
+
+    .tile:hover {
+        filter: brightness(1.18);
     }
 
     .tile-sm   { grid-column: span 1; grid-row: span 1; }
@@ -277,8 +282,8 @@
     /* Chromeless demo */
     .chrome-compare {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
     }
 
     .chrome-panel {
@@ -310,6 +315,26 @@
 
     .chrome-label.good {
         color: var(--success);
+    }
+
+    .chrome-panel.our-take {
+        background: transparent;
+    }
+
+    .chrome-panel.our-take .chrome-nav-item {
+        border-left: 2px solid transparent;
+        padding-left: 8px;
+        transition: border-color 0.15s ease, color 0.15s ease;
+        cursor: pointer;
+    }
+
+    .chrome-panel.our-take .chrome-nav-item:hover {
+        border-left-color: var(--accent);
+        color: var(--text);
+    }
+
+    .chrome-panel.our-take .chrome-nav-item.active {
+        border-left-color: var(--accent);
     }
 
     .chrome-nav {
@@ -346,6 +371,12 @@
         flex-direction: column;
         position: relative;
         overflow: hidden;
+        cursor: pointer;
+        transition: filter 0.15s ease;
+    }
+
+    .dash-tile:hover {
+        filter: brightness(1.18);
     }
 
     .dash-sm   { grid-column: span 1; grid-row: span 1; }
@@ -543,27 +574,31 @@
     <div class="layout">
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Inspired by Microsoft Metro UI</div>
+            <div class="hero-badge">Inspired by Windows 8</div>
             <h1 class="hero-title">Metro</h1>
             <p class="hero-tagline">
-                Microsoft killed the glass, burned the shadows,<br>
-                and bet everything on Helvetica.
+                Metro killed the chrome.<br>
+                We keep the content-first purity. Restore the discoverability.
             </p>
         </header>
 
         <!-- Intro -->
         <div class="intro-card">
             <p class="intro-text">
-                Aero was beautiful. It was also a GPU-melting lie about physicality.
-                In 2010, Microsoft looked at all that translucent excess and said: <strong>enough</strong>.
-                They reached back past the desktop, past Windows itself, to the
-                <strong>Swiss International Typographic Style</strong> — the Bauhaus idea that
-                type and grid alone can carry an entire visual language.
+                Metro stripped everything down to typography and color.
+                Beautiful on Windows Phone, disastrous on desktop.
+                Windows 8 hid the Start menu, forced touch on mouse users,
+                and made flatness so extreme that people couldn't tell
+                what was clickable. Radical minimalism became hostile minimalism.
                 <br><br>
-                The Zune HD was the quiet prototype. Windows Phone 7 was the manifesto.
-                Windows 8 was the overreach. But the core insight was brilliant:
+                But the core insight was brilliant:
                 <strong>content is the interface</strong>. No chrome. No decoration.
                 Just words and color, doing all the work.
+                <br><br>
+                We preserve the <strong>radical content-first philosophy</strong>
+                while making sure users can actually find things.
+                Every tile on this page is glanceable, every section is discoverable,
+                and the typography does the navigation for you.
             </p>
         </div>
 
@@ -667,13 +702,13 @@
                 Remove the border. Remove the shadow. Remove the rounded corner.
                 Now remove the background. What's left? The content.
                 That's Metro's gambit: <strong>content is the chrome</strong>.
-                Regions are defined by typography scale, not by boxes.
-                Navigation is a giant word, not a pill-shaped button.
-                It's ruthless minimalism, and when it works, nothing looks cleaner.
+                But Metro went too far — removing all affordance made users guess.
+                Our take: keep the chromeless purity, but let the interface
+                <strong>respond to attention</strong>. Hover the right column below.
             </p>
             <div class="chrome-compare">
                 <div class="chrome-panel with-chrome">
-                    <div class="chrome-label muted">WITH CHROME</div>
+                    <div class="chrome-label muted">TRADITIONAL</div>
                     <div class="chrome-nav">
                         <div class="chrome-nav-item" style="padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-bottom: 4px;">Dashboard</div>
                         <div class="chrome-nav-item" style="padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-bottom: 4px;">Messages</div>
@@ -682,7 +717,16 @@
                     </div>
                 </div>
                 <div class="chrome-panel no-chrome">
-                    <div class="chrome-label good">CHROMELESS</div>
+                    <div class="chrome-label muted">METRO</div>
+                    <div class="chrome-nav">
+                        <div class="chrome-nav-item active">dashboard</div>
+                        <div class="chrome-nav-item">messages</div>
+                        <div class="chrome-nav-item">settings</div>
+                        <div class="chrome-nav-item">profile</div>
+                    </div>
+                </div>
+                <div class="chrome-panel our-take">
+                    <div class="chrome-label good">OUR TAKE</div>
                     <div class="chrome-nav">
                         <div class="chrome-nav-item active">dashboard</div>
                         <div class="chrome-nav-item">messages</div>
@@ -697,13 +741,13 @@
 
         <!-- Put It Together -->
         <section class="section">
-            <div class="section-label">All Together</div>
-            <h2 class="section-title">Put It Together</h2>
+            <div class="section-label">Our Take</div>
+            <h2 class="section-title">Metro, Reinterpreted</h2>
             <p class="section-desc">
-                Typography hierarchy + living tiles + zero chrome.
-                Three principles, one dashboard. No gradients, no shadows,
-                no rounded corners. Just flat color, bold type, and content
-                that speaks for itself.
+                Same three principles — but every tile responds to your attention.
+                Hover any tile: it brightens, acknowledging you without adding chrome.
+                This is what Metro missed: <strong>minimalism doesn't mean silence</strong>.
+                The interface stays flat, stays content-first, but it breathes.
             </p>
             <div class="dash-grid">
                 <!-- Clock — large -->

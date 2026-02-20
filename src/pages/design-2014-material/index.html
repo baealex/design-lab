@@ -1,0 +1,1108 @@
+<!-- layout: base.html -->
+<!-- title: Material Design (2014) -->
+<!-- description: Giving paper gravity changed everything -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+    :root {
+        --primary: #009688;
+        --primary-dark: #00796B;
+        --primary-light: #B2DFDB;
+        --accent: #FF5722;
+        --accent-dark: #E64A19;
+        --text-primary: rgba(0, 0, 0, 0.87);
+        --text-secondary: rgba(0, 0, 0, 0.54);
+        --text-hint: rgba(0, 0, 0, 0.38);
+        --text-white: #fff;
+        --divider: rgba(0, 0, 0, 0.12);
+        --bg: #FAFAFA;
+        --card: #FFFFFF;
+        --success: #4CAF50;
+        --danger: #F44336;
+
+        --shadow-1dp: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        --shadow-2dp: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        --shadow-4dp: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        --shadow-6dp: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        --shadow-8dp: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: var(--bg);
+        color: var(--text-primary);
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* =========================================
+       HERO
+       ========================================= */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        padding: 6px 16px;
+        border-radius: 2px;
+        background: var(--primary-light);
+        color: var(--primary-dark);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 300;
+        letter-spacing: 2px;
+        color: var(--text-primary);
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* =========================================
+       CARD
+       ========================================= */
+    .card {
+        background: var(--card);
+        border-radius: 2px;
+        box-shadow: var(--shadow-1dp);
+        overflow: hidden;
+    }
+
+    /* =========================================
+       SECTION
+       ========================================= */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--primary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        font-weight: 400;
+        margin-bottom: 20px;
+    }
+
+    .section-desc em {
+        color: var(--text-primary);
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .section-desc code {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.82em;
+        background: rgba(0, 0, 0, 0.05);
+        padding: 2px 6px;
+        border-radius: 2px;
+        color: var(--primary-dark);
+    }
+
+    /* =========================================
+       DIVIDER
+       ========================================= */
+    .divider {
+        margin: 40px 0;
+        height: 1px;
+        background: var(--divider);
+    }
+
+    /* =========================================
+       INTRO
+       ========================================= */
+    .intro-card {
+        padding: 24px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 400;
+        color: var(--text-secondary);
+    }
+
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    /* =========================================
+       ELEVATION DEMO
+       ========================================= */
+    .elevation-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .elevation-card {
+        background: var(--card);
+        border-radius: 2px;
+        padding: 20px 12px;
+        text-align: center;
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: default;
+    }
+
+    .elevation-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .elev-0 {
+        box-shadow: none;
+        border: 1px solid var(--divider);
+    }
+    .elev-0:hover { box-shadow: var(--shadow-1dp); }
+
+    .elev-2 { box-shadow: var(--shadow-1dp); }
+    .elev-2:hover { box-shadow: var(--shadow-2dp); }
+
+    .elev-6 { box-shadow: var(--shadow-2dp); }
+    .elev-6:hover { box-shadow: var(--shadow-4dp); }
+
+    .elev-24 { box-shadow: var(--shadow-4dp); }
+    .elev-24:hover { box-shadow: var(--shadow-6dp); }
+
+    .elev-dp {
+        font-size: 1.8rem;
+        font-weight: 300;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+
+    .elev-label {
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .elev-sub {
+        font-size: 0.68rem;
+        color: var(--text-hint);
+        margin-top: 4px;
+    }
+
+    /* =========================================
+       RIPPLE
+       ========================================= */
+    .ripple-area {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .ripple-target {
+        background: var(--card);
+        border-radius: 2px;
+        padding: 32px 20px;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        user-select: none;
+        -webkit-user-select: none;
+        box-shadow: var(--shadow-1dp);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .ripple-target:active {
+        box-shadow: var(--shadow-4dp);
+    }
+
+    .ripple-target.primary-bg {
+        background: var(--primary);
+    }
+
+    .ripple-target-label {
+        font-size: 0.88rem;
+        font-weight: 500;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .ripple-target.primary-bg .ripple-target-label {
+        color: var(--text-white);
+    }
+
+    .ripple-target-sub {
+        font-size: 0.72rem;
+        color: var(--text-hint);
+        margin-top: 4px;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .ripple-target.primary-bg .ripple-target-sub {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .ripple-surface {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        border-radius: inherit;
+        pointer-events: none;
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        width: 1px;
+        height: 1px;
+        pointer-events: none;
+    }
+
+    .ripple.dark { background: #000; }
+    .ripple.light { background: #fff; }
+
+    .ripple.animate {
+        animation: ripple-expand 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes ripple-expand {
+        from { transform: scale(0); opacity: 0.2; }
+        to { transform: scale(var(--ripple-scale, 4)); opacity: 0; }
+    }
+
+    /* =========================================
+       BUTTONS
+       ========================================= */
+    .btn-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-raised {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        height: 36px;
+        border-radius: 2px;
+        border: none;
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-shadow: var(--shadow-1dp);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-raised:hover { box-shadow: var(--shadow-2dp); }
+    .btn-raised:active { box-shadow: var(--shadow-4dp); }
+
+    .btn-raised.primary {
+        background: var(--primary);
+        color: var(--text-white);
+    }
+
+    .btn-raised.accent {
+        background: var(--accent);
+        color: var(--text-white);
+    }
+
+    .btn-flat {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        height: 36px;
+        border-radius: 2px;
+        border: none;
+        background: none;
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--primary);
+        cursor: pointer;
+        transition: background 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-flat:hover {
+        background: rgba(0, 150, 136, 0.08);
+    }
+
+    .btn-raised:disabled,
+    .btn-flat:disabled {
+        opacity: 0.38;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .fab-mini {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: var(--accent);
+        color: var(--text-white);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        cursor: pointer;
+        box-shadow: var(--shadow-2dp);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fab-mini:hover { box-shadow: var(--shadow-4dp); }
+
+    /* =========================================
+       MOTION DEMO
+       ========================================= */
+    .motion-stage {
+        background: var(--card);
+        border-radius: 2px;
+        box-shadow: var(--shadow-1dp);
+        padding: 24px;
+        position: relative;
+        min-height: 200px;
+        overflow: hidden;
+    }
+
+    .motion-items {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .motion-chip {
+        padding: 8px 16px;
+        border-radius: 2px;
+        background: var(--bg);
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-1dp);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .motion-chip:hover {
+        box-shadow: var(--shadow-2dp);
+        transform: translateY(-1px);
+    }
+
+    .motion-chip.expanded {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 8px;
+        background: var(--primary-light);
+        color: var(--primary-dark);
+        font-size: 1rem;
+        z-index: 2;
+        box-shadow: var(--shadow-4dp);
+    }
+
+    .motion-chip .tap-hint {
+        font-size: 0.68rem;
+        color: var(--text-hint);
+        display: none;
+    }
+
+    .motion-chip.expanded .tap-hint {
+        display: block;
+        color: var(--primary);
+    }
+
+    .motion-btn-row {
+        display: flex;
+        justify-content: center;
+        margin-top: 16px;
+    }
+
+    /* =========================================
+       COLOR PALETTE
+       ========================================= */
+    .palette-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px;
+    }
+
+    .palette-swatch {
+        padding: 20px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .palette-swatch-name {
+        font-size: 0.82rem;
+        font-weight: 500;
+    }
+
+    .palette-swatch-hex {
+        font-size: 0.72rem;
+        font-weight: 400;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    .palette-swatch.dark { color: var(--text-white); }
+    .palette-swatch.light { color: var(--text-primary); }
+
+    .palette-swatch.teal-500 { background: #009688; }
+    .palette-swatch.teal-700 { background: #00796B; }
+    .palette-swatch.indigo-500 { background: #3F51B5; }
+    .palette-swatch.indigo-700 { background: #303F9F; }
+    .palette-swatch.pink-500 { background: #E91E63; }
+    .palette-swatch.pink-a200 { background: #FF4081; }
+    .palette-swatch.deep-orange-500 { background: #FF5722; }
+    .palette-swatch.deep-orange-a200 { background: #FF6E40; }
+    .palette-swatch.teal-50 { background: #E0F2F1; }
+    .palette-swatch.grey-100 { background: #F5F5F5; }
+
+    /* =========================================
+       COMBINED — mini app frame
+       ========================================= */
+    .app-frame {
+        border-radius: 2px;
+        overflow: hidden;
+        box-shadow: var(--shadow-2dp);
+        position: relative;
+    }
+
+    .frame-status {
+        height: 24px;
+        background: var(--primary-dark);
+    }
+
+    .frame-bar {
+        background: var(--primary);
+        color: var(--text-white);
+        padding: 14px 16px;
+        font-size: 1.1rem;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .frame-body {
+        background: var(--bg);
+        padding: 16px;
+    }
+
+    .frame-list-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--divider);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .frame-list-item:last-child { border-bottom: none; }
+
+    .frame-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-white);
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .frame-item-text {
+        flex: 1;
+        min-width: 0;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .frame-item-title {
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .frame-item-sub {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        margin-top: 2px;
+    }
+
+    .frame-item-time {
+        font-size: 0.7rem;
+        color: var(--text-hint);
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .frame-fab {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: none;
+        background: var(--accent);
+        color: var(--text-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-4dp);
+        cursor: pointer;
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        z-index: 3;
+    }
+
+    .frame-fab:hover { box-shadow: var(--shadow-6dp); }
+    .frame-fab:active { box-shadow: var(--shadow-8dp); }
+
+    .frame-fab svg {
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* =========================================
+       CODE BLOCK
+       ========================================= */
+    .code-block {
+        background: #263238;
+        border-radius: 2px;
+        padding: 16px 20px;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 16px;
+    }
+
+    .code-block .kw { color: #89DDFF; }
+    .code-block .val { color: #C3E88D; }
+    .code-block .fn { color: #82AAFF; }
+    .code-block .cmt { color: #546E7A; }
+
+    /* =========================================
+       ANTI-PATTERNS
+       ========================================= */
+    .anti-card {
+        padding: 24px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.84rem;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--divider);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 400;
+        color: var(--text-secondary);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 700; flex-shrink: 0; }
+    .anti-list .o { color: var(--success); font-weight: 700; flex-shrink: 0; }
+
+    /* =========================================
+       MANIFESTO
+       ========================================= */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1.7;
+        color: var(--text-primary);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--text-hint);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    /* =========================================
+       RESPONSIVE
+       ========================================= */
+    @media screen and (max-width: 600px) {
+        .hero-title { font-size: 2.5rem; }
+
+        .elevation-row {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .ripple-area {
+            grid-template-columns: 1fr;
+        }
+
+        .palette-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-row { gap: 8px; }
+
+        .intro-card,
+        .anti-card { padding: 20px; }
+    }
+</style>
+
+<body>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Android Lollipop</div>
+            <h1 class="hero-title">Material</h1>
+            <p class="hero-tagline">
+                Paper, ink, and physics made a billion phones feel designed.<br>
+                We keep the spatial logic. Free it from the template.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="card intro-card">
+            <p class="intro-text">
+                Material Design gave motion meaning. The ripple tells you
+                "I heard you, right here." The shadow tells you "I'm above that."
+                The easing curve tells you "I came from there."
+                No design system before had treated <strong>physics as a language</strong>.
+                <br><br>
+                The problem was rigidity. Every app became a Google app.
+                The spec was so prescriptive — "cards at 2dp, dialogs at 24dp,
+                FAB at bottom-right" — that it became a template, not a toolkit.
+                <br><br>
+                <strong>We keep the physics. We drop the dogma.</strong>
+                Elevation as hierarchy, ripple as honest feedback,
+                bold color as identity — these are principles worth preserving.
+                The 300-page spec telling you exactly where to put the FAB is not.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Paper Elevation -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Paper Elevation</h2>
+            <p class="section-desc">
+                Every surface is a sheet of paper at a specific height.
+                The shadow isn't a style choice — it's a <em>z-coordinate</em>.
+                Google specified exact dp values for every component.
+                We don't follow the table religiously, but we keep the rule:
+                <em>higher means more important</em>. Hover these cards — they rise,
+                and their shadow tells you they did.
+            </p>
+            <div class="elevation-row">
+                <div class="elevation-card elev-0">
+                    <div class="elev-dp">0</div>
+                    <div class="elev-label">Flat</div>
+                    <div class="elev-sub">Background</div>
+                </div>
+                <div class="elevation-card elev-2">
+                    <div class="elev-dp">2</div>
+                    <div class="elev-label">Resting</div>
+                    <div class="elev-sub">Cards</div>
+                </div>
+                <div class="elevation-card elev-6">
+                    <div class="elev-dp">8</div>
+                    <div class="elev-label">Raised</div>
+                    <div class="elev-sub">Menus</div>
+                </div>
+                <div class="elevation-card elev-24">
+                    <div class="elev-dp">24</div>
+                    <div class="elev-label">Dialog</div>
+                    <div class="elev-sub">Modals</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Elevation = z-axis, not decoration */</span><br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">0 3px 6px</span> rgba(0,0,0,0.16),<br>
+                &nbsp;&nbsp;<span class="val">0 3px 6px</span> rgba(0,0,0,0.23);<br>
+                <span class="kw">border-radius</span>: <span class="val">2px</span>; <span class="cmt">/* sharp. this is paper. */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: Ink Ripple -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Ink Ripple</h2>
+            <p class="section-desc">
+                The most honest piece of touch feedback ever designed.
+                A ripple radiates from the <em>exact point of contact</em> —
+                not a generic highlight, not a color swap.
+                A physics-based wave that confirms "yes, here, I felt that."
+                On light surfaces the ink is dark. On colored surfaces it's light.
+                We keep this. Every interactive surface on this page ripples
+                from where you actually clicked.
+            </p>
+            <div class="ripple-area">
+                <div class="ripple-target" id="ripple-light">
+                    <div class="ripple-target-label">Light Surface</div>
+                    <div class="ripple-target-sub">Dark ink ripple</div>
+                </div>
+                <div class="ripple-target primary-bg" id="ripple-primary">
+                    <div class="ripple-target-label">Primary Surface</div>
+                    <div class="ripple-target-sub">Light ink ripple</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: Meaningful Motion -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Meaningful Motion</h2>
+            <p class="section-desc">
+                Nothing teleports. Elements <em>expand from their origin</em>,
+                <em>transform</em> into their destination.
+                The easing curve is <code>cubic-bezier(0.4, 0, 0.2, 1)</code> —
+                fast in, slow out. Google called it "standard easing."
+                It answers "where did this come from?" If the animation
+                can't answer that question, kill it.
+                Click a chip to see it expand from where it was.
+            </p>
+            <div class="motion-stage" id="motion-stage">
+                <div class="motion-items" id="motion-items">
+                    <div class="motion-chip" data-label="Inbox">Inbox</div>
+                    <div class="motion-chip" data-label="Sent">Sent</div>
+                    <div class="motion-chip" data-label="Drafts">Drafts</div>
+                    <div class="motion-chip" data-label="Starred">Starred</div>
+                    <div class="motion-chip" data-label="Trash">Trash</div>
+                </div>
+                <div class="motion-btn-row">
+                    <button class="btn-flat" id="motion-reset">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Bold Color -->
+        <section class="section">
+            <div class="section-label">Palette</div>
+            <h2 class="section-title">Bold Color</h2>
+            <p class="section-desc">
+                Material shipped a palette of named colors at fixed saturation stops —
+                <em>500</em> for primary, <em>700</em> for the status bar, <em>A200</em> for accents.
+                The color band at the top of every app was the app's identity.
+                We borrow the confidence: pick a bold primary, commit to it,
+                and let it carry the interface. No pastels. No hedging.
+            </p>
+            <div class="card">
+                <div class="palette-grid">
+                    <div class="palette-swatch teal-500 dark">
+                        <span class="palette-swatch-name">Teal 500</span>
+                        <span class="palette-swatch-hex">#009688</span>
+                    </div>
+                    <div class="palette-swatch teal-700 dark">
+                        <span class="palette-swatch-name">Teal 700</span>
+                        <span class="palette-swatch-hex">#00796B</span>
+                    </div>
+                    <div class="palette-swatch indigo-500 dark">
+                        <span class="palette-swatch-name">Indigo 500</span>
+                        <span class="palette-swatch-hex">#3F51B5</span>
+                    </div>
+                    <div class="palette-swatch indigo-700 dark">
+                        <span class="palette-swatch-name">Indigo 700</span>
+                        <span class="palette-swatch-hex">#303F9F</span>
+                    </div>
+                    <div class="palette-swatch pink-500 dark">
+                        <span class="palette-swatch-name">Pink 500</span>
+                        <span class="palette-swatch-hex">#E91E63</span>
+                    </div>
+                    <div class="palette-swatch pink-a200 dark">
+                        <span class="palette-swatch-name">Pink A200</span>
+                        <span class="palette-swatch-hex">#FF4081</span>
+                    </div>
+                    <div class="palette-swatch deep-orange-500 dark">
+                        <span class="palette-swatch-name">Deep Orange 500</span>
+                        <span class="palette-swatch-hex">#FF5722</span>
+                    </div>
+                    <div class="palette-swatch deep-orange-a200 dark">
+                        <span class="palette-swatch-name">Deep Orange A200</span>
+                        <span class="palette-swatch-hex">#FF6E40</span>
+                    </div>
+                    <div class="palette-swatch teal-50 light">
+                        <span class="palette-swatch-name">Teal 50</span>
+                        <span class="palette-swatch-hex">#E0F2F1</span>
+                    </div>
+                    <div class="palette-swatch grey-100 light">
+                        <span class="palette-swatch-name">Grey 100</span>
+                        <span class="palette-swatch-hex">#F5F5F5</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components -->
+        <section class="section">
+            <div class="section-label">Components</div>
+            <h2 class="section-title">Raised, Flat, FAB</h2>
+            <p class="section-desc">
+                Three button types, each with a clear role.
+                <em>Raised</em> buttons cast shadow — they're for primary actions
+                that need to stand out. <em>Flat</em> buttons sit flush — they're
+                for secondary actions inside cards or dialogs.
+                The <em>FAB</em> floats above everything — one per screen,
+                the single most important action. We keep this hierarchy.
+                The uppercase is Lollipop's voice. The ripple on click is its handshake.
+            </p>
+            <div class="btn-row">
+                <button class="btn-raised primary" id="btn-primary">Submit</button>
+                <button class="btn-raised accent" id="btn-accent">Delete</button>
+                <button class="btn-flat" id="btn-flat">Cancel</button>
+                <button class="btn-raised primary" disabled>Disabled</button>
+                <button class="fab-mini" id="fab-mini">+</button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Lollipop Inbox</h2>
+            <p class="section-desc">
+                Status bar at 700. App bar at 500. Cards with 2dp shadow.
+                A FAB hovering in the corner. Ripple on every touch.
+                The original Material formula — paper, ink, bold color, physics —
+                assembled into the app that defined an era.
+                Every Android app looked like this from 2014 to 2021.
+                We show it here to honor the system, not to copy it.
+            </p>
+            <div class="app-frame">
+                <div class="frame-status"></div>
+                <div class="frame-bar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    Inbox
+                </div>
+                <div class="frame-body">
+                    <div class="frame-list-item" id="list-1">
+                        <div class="frame-avatar" style="background: #009688;">A</div>
+                        <div class="frame-item-text">
+                            <div class="frame-item-title">Alex Kim</div>
+                            <div class="frame-item-sub">Build is green, shipping tonight</div>
+                        </div>
+                        <div class="frame-item-time">2m</div>
+                    </div>
+                    <div class="frame-list-item" id="list-2">
+                        <div class="frame-avatar" style="background: #3F51B5;">M</div>
+                        <div class="frame-item-text">
+                            <div class="frame-item-title">Maria Chen</div>
+                            <div class="frame-item-sub">Design review notes attached</div>
+                        </div>
+                        <div class="frame-item-time">15m</div>
+                    </div>
+                    <div class="frame-list-item" id="list-3">
+                        <div class="frame-avatar" style="background: #E91E63;">J</div>
+                        <div class="frame-item-text">
+                            <div class="frame-item-title">Jake Torres</div>
+                            <div class="frame-item-sub">Can we push the deadline?</div>
+                        </div>
+                        <div class="frame-item-time">1h</div>
+                    </div>
+                    <div class="frame-list-item" id="list-4">
+                        <div class="frame-avatar" style="background: #FF5722;">S</div>
+                        <div class="frame-item-text">
+                            <div class="frame-item-title">Sara Park</div>
+                            <div class="frame-item-sub">Lollipop update broke the layout</div>
+                        </div>
+                        <div class="frame-item-time">3h</div>
+                    </div>
+                </div>
+                <button class="frame-fab" id="frame-fab" aria-label="Compose">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="card anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> The 300-page spec — we take principles, not prescriptions</li>
+                    <li><span class="x">&#x2717;</span> Every app looking like Gmail — your app has its own identity</li>
+                    <li><span class="x">&#x2717;</span> FAB on every screen — not everything needs a primary action</li>
+                    <li><span class="x">&#x2717;</span> Ripple on static text — ink responds to interaction only</li>
+                    <li><span class="o">&#x2713;</span> Elevation as spatial hierarchy — higher means louder</li>
+                    <li><span class="o">&#x2713;</span> Ink ripple at the exact point of touch — honest feedback</li>
+                    <li><span class="o">&#x2713;</span> Bold primary color as identity — pick one, commit</li>
+                    <li><span class="o">&#x2713;</span> Motion that explains origin — no teleporting, no mystery</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Paper has depth.<br>
+                Ink has origin.<br>
+                Motion has reason.
+            </p>
+            <p class="manifesto-sub">
+                Material taught us that design is physics.<br>
+                We keep the physics. The 300 pages of where to put the FAB, we don't.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Ripple — span container isolates overflow from <button> quirks */
+    function createRipple(el, e, cls) {
+        var rect = el.getBoundingClientRect();
+        var surface = el.querySelector('.ripple-surface');
+        if (!surface) {
+            surface = document.createElement('span');
+            surface.className = 'ripple-surface';
+            el.appendChild(surface);
+        }
+        var r = document.createElement('span');
+        r.classList.add('ripple', cls);
+        var scale = Math.ceil(Math.sqrt(rect.width * rect.width + rect.height * rect.height) * 2.5);
+        r.style.left = (e.clientX - rect.left) + 'px';
+        r.style.top = (e.clientY - rect.top) + 'px';
+        r.style.setProperty('--ripple-scale', scale);
+        surface.appendChild(r);
+        requestAnimationFrame(function() { r.classList.add('animate'); });
+        setTimeout(function() { r.remove(); }, 550);
+    }
+
+    /* Ripple on demo panels */
+    document.getElementById('ripple-light').addEventListener('click', function(e) {
+        createRipple(this, e, 'dark');
+    });
+    document.getElementById('ripple-primary').addEventListener('click', function(e) {
+        createRipple(this, e, 'light');
+    });
+
+    /* Ripple on buttons */
+    document.querySelectorAll('.btn-raised:not(:disabled), .btn-flat:not(:disabled), .fab-mini').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            var cls = this.classList.contains('primary') || this.classList.contains('accent') || this.classList.contains('fab-mini') ? 'light' : 'dark';
+            if (this.classList.contains('btn-flat')) cls = 'dark';
+            createRipple(this, e, cls);
+        });
+    });
+
+    /* Ripple on list items */
+    document.querySelectorAll('.frame-list-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+            createRipple(this, e, 'dark');
+        });
+    });
+
+    /* Ripple on FAB */
+    document.getElementById('frame-fab').addEventListener('click', function(e) {
+        createRipple(this, e, 'light');
+    });
+
+    /* Motion demo */
+    document.querySelectorAll('.motion-chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+            if (this.classList.contains('expanded')) {
+                this.classList.remove('expanded');
+                this.innerHTML = this.dataset.label;
+                return;
+            }
+            document.querySelectorAll('.motion-chip.expanded').forEach(function(c) {
+                c.classList.remove('expanded');
+                c.innerHTML = c.dataset.label;
+            });
+            this.classList.add('expanded');
+            this.innerHTML = '<span>' + this.dataset.label + '</span><span class="tap-hint">Tap to collapse</span>';
+        });
+    });
+
+    document.getElementById('motion-reset').addEventListener('click', function() {
+        document.querySelectorAll('.motion-chip.expanded').forEach(function(c) {
+            c.classList.remove('expanded');
+            c.innerHTML = c.dataset.label;
+        });
+    });
+</script>

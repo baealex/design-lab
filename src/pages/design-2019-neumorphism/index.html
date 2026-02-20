@@ -1,0 +1,1207 @@
+<!-- layout: base.html -->
+<!-- title: Neumorphism (2019) -->
+<!-- description: Everyone loved it until they couldn't find the buttons -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg: #e0e5ec;
+        --shadow-dark: #a3b1c6;
+        --shadow-light: #ffffff;
+        --text: #2d3440;
+        --text-muted: #566573;
+        --text-dim: #7a8696;
+        --accent: #4a7fbd;
+        --danger: #c44d53;
+        --success: #4a8f5f;
+    }
+
+    body {
+        font-family: 'Noto Sans', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* Focus visible */
+    *:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+    }
+
+    /* Neumorphic surfaces — soft pillow effect
+       Low offset + high blur = surface "grows" from the page
+       instead of casting a visible shadow */
+    .neu {
+        background: var(--bg);
+        border-radius: 20px;
+        box-shadow:
+            8px 8px 28px rgba(163, 177, 198, 0.7),
+            -8px -8px 28px rgba(255, 255, 255, 0.9);
+    }
+
+    .neu-inset {
+        background: var(--bg);
+        border-radius: 20px;
+        box-shadow:
+            inset 6px 6px 16px rgba(163, 177, 198, 0.5),
+            inset -6px -6px 16px rgba(255, 255, 255, 0.7);
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 56px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: var(--bg);
+        box-shadow:
+            4px 4px 12px rgba(163, 177, 198, 0.6),
+            -4px -4px 12px rgba(255, 255, 255, 0.8);
+        color: var(--text-muted);
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 300;
+        letter-spacing: 4px;
+        color: var(--text);
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 16px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    /* Intro card */
+    .intro-card {
+        padding: 0;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.8;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .intro-text strong {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    /* Divider */
+    .divider {
+        margin: 48px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--shadow-dark), transparent);
+    }
+
+    /* Section — generous vertical rhythm */
+    .section {
+        margin-bottom: 56px;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: var(--bg);
+        padding: 2px 8px;
+        border-radius: 6px;
+        box-shadow:
+            inset 2px 2px 5px rgba(163, 177, 198, 0.45),
+            inset -2px -2px 5px rgba(255, 255, 255, 0.65);
+    }
+
+    /* Demo grid — generous gaps so shadows never overlap */
+    .demo-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+    }
+
+    .demo-row-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+    }
+
+    .demo-panel {
+        padding: 32px 24px;
+        text-align: center;
+        background: var(--bg);
+        border-radius: 16px;
+    }
+
+    .demo-panel.raised {
+        box-shadow:
+            6px 6px 20px rgba(163, 177, 198, 0.65),
+            -6px -6px 20px rgba(255, 255, 255, 0.85);
+    }
+
+    .demo-panel.pressed {
+        box-shadow:
+            inset 5px 5px 12px rgba(163, 177, 198, 0.5),
+            inset -5px -5px 12px rgba(255, 255, 255, 0.7);
+    }
+
+    .demo-panel.flat {
+        box-shadow: none;
+        border: 1px dashed var(--shadow-dark);
+    }
+
+    .demo-panel.interactive {
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+    }
+
+    .demo-panel-value {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 8px;
+        color: var(--text);
+    }
+
+    .demo-panel-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .demo-panel-sub {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+    }
+
+    /* Shadow property display */
+    .shadow-viz {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+    }
+
+    .shadow-chip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    .shadow-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    .shadow-dot.dark {
+        background: var(--shadow-dark);
+        box-shadow: 2px 2px 4px var(--shadow-dark);
+    }
+
+    .shadow-dot.light {
+        background: var(--shadow-light);
+        box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Toggle */
+    .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .neu-toggle {
+        width: 60px;
+        height: 32px;
+        border-radius: 16px;
+        background: var(--bg);
+        box-shadow:
+            inset 3px 3px 8px rgba(163, 177, 198, 0.5),
+            inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+    }
+
+    .neu-toggle::after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            3px 3px 10px rgba(163, 177, 198, 0.5),
+            -3px -3px 10px rgba(255, 255, 255, 0.8);
+        transition: all 0.3s;
+    }
+
+    .neu-toggle.on {
+        background: var(--accent);
+        box-shadow:
+            inset 3px 3px 6px rgba(0, 0, 0, 0.2),
+            inset -3px -3px 6px rgba(255, 255, 255, 0.15);
+    }
+
+    .neu-toggle.on::after {
+        transform: translateX(28px);
+        background: #fff;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    .toggle-label {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    /* Plain toggle — bad example, no color indicator */
+    .neu-toggle-plain {
+        width: 60px;
+        height: 32px;
+        border-radius: 16px;
+        background: var(--bg);
+        box-shadow:
+            inset 3px 3px 8px rgba(163, 177, 198, 0.5),
+            inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+        position: relative;
+        display: inline-block;
+    }
+
+    .neu-toggle-plain::after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            3px 3px 10px rgba(163, 177, 198, 0.5),
+            -3px -3px 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .neu-toggle-plain.on::after {
+        left: auto;
+        right: 4px;
+    }
+
+    /* Buttons */
+    .neu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 28px;
+        border-radius: 12px;
+        background: var(--bg);
+        border: none;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        font-family: 'Noto Sans', sans-serif;
+        box-shadow:
+            5px 5px 16px rgba(163, 177, 198, 0.6),
+            -5px -5px 16px rgba(255, 255, 255, 0.85);
+        transition: all 0.15s;
+    }
+
+    .neu-btn:hover {
+        color: var(--text);
+        box-shadow:
+            3px 3px 10px rgba(163, 177, 198, 0.5),
+            -3px -3px 10px rgba(255, 255, 255, 0.75);
+    }
+
+    .neu-btn:active {
+        box-shadow:
+            inset 4px 4px 10px rgba(163, 177, 198, 0.5),
+            inset -4px -4px 10px rgba(255, 255, 255, 0.7);
+    }
+
+    .neu-btn.primary {
+        background: var(--accent);
+        color: #fff;
+        box-shadow:
+            5px 5px 16px rgba(163, 177, 198, 0.6),
+            -5px -5px 16px rgba(255, 255, 255, 0.85);
+    }
+
+    .neu-btn.primary:hover {
+        background: #3e6fa8;
+    }
+
+    .neu-btn.primary:active {
+        box-shadow:
+            inset 4px 4px 10px rgba(0, 0, 0, 0.2),
+            inset -4px -4px 10px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Bad button — intentionally low contrast for comparison */
+    .neu-btn-bad {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        border-radius: 12px;
+        background: var(--bg);
+        border: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #9aa5b4;
+        font-family: 'Noto Sans', sans-serif;
+        box-shadow:
+            5px 5px 16px rgba(163, 177, 198, 0.6),
+            -5px -5px 16px rgba(255, 255, 255, 0.85);
+    }
+
+    /* Comparison grid — extra gap for shadow breathing room */
+    .fix-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        margin-bottom: 28px;
+    }
+
+    .fix-side {
+        padding: 32px 24px;
+        border-radius: 16px;
+        text-align: center;
+        background: var(--bg);
+    }
+
+    .fix-side.before {
+        box-shadow:
+            inset 5px 5px 14px rgba(163, 177, 198, 0.45),
+            inset -5px -5px 14px rgba(255, 255, 255, 0.65);
+    }
+
+    .fix-side.after {
+        box-shadow:
+            8px 8px 24px rgba(163, 177, 198, 0.6),
+            -8px -8px 24px rgba(255, 255, 255, 0.85);
+    }
+
+    .fix-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+    }
+
+    .fix-side.before .fix-label { color: var(--danger); }
+    .fix-side.after .fix-label { color: var(--success); }
+
+    .fix-note {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 16px;
+        font-weight: 300;
+        line-height: 1.5;
+    }
+
+    .fix-btns {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .fix-toggles {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .fix-toggle-pair {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .fix-toggle-state {
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        font-weight: 500;
+    }
+
+    .fix-subtitle {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 16px;
+    }
+
+    .fix-subtitle.top-gap {
+        margin-top: 32px;
+    }
+
+    /* Palette demo */
+    .palette-demo {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .palette-swatch {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .swatch-box {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+    }
+
+    .swatch-label {
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    /* Code block */
+    .code-block {
+        background: #2d3748;
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.7);
+        overflow-x: auto;
+        margin-top: 16px;
+    }
+
+    .code-block .kw { color: #c792ea; }
+    .code-block .val { color: #c3e88d; }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.3); }
+
+    /* Input demo */
+    .input-demo {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .neu-input-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .neu-input {
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: none;
+        background: var(--bg);
+        box-shadow:
+            inset 3px 3px 8px rgba(163, 177, 198, 0.5),
+            inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+        font-family: 'Noto Sans', sans-serif;
+        font-size: 0.88rem;
+        color: var(--text);
+        transition: box-shadow 0.2s;
+    }
+
+    .neu-input::placeholder {
+        color: var(--text-dim);
+    }
+
+    .neu-input:focus {
+        outline: none;
+        box-shadow:
+            inset 3px 3px 8px rgba(163, 177, 198, 0.5),
+            inset -3px -3px 8px rgba(255, 255, 255, 0.7),
+            0 0 0 2px var(--accent);
+    }
+
+    /* Mini player */
+    .mini-player {
+        padding: 40px 36px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .mini-album {
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            8px 8px 28px rgba(163, 177, 198, 0.65),
+            -8px -8px 28px rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mini-album-inner {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            inset 5px 5px 14px rgba(163, 177, 198, 0.5),
+            inset -5px -5px 14px rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mini-album-core {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow:
+            2px 2px 8px rgba(163, 177, 198, 0.5),
+            -2px -2px 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .mini-controls {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .mini-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--bg);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+            4px 4px 14px rgba(163, 177, 198, 0.6),
+            -4px -4px 14px rgba(255, 255, 255, 0.85);
+        transition: all 0.15s;
+    }
+
+    .mini-btn:active {
+        box-shadow:
+            inset 3px 3px 8px rgba(163, 177, 198, 0.5),
+            inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+    }
+
+    .mini-btn svg {
+        width: 14px;
+        height: 14px;
+        fill: var(--text-muted);
+    }
+
+    .mini-btn-play {
+        width: 56px;
+        height: 56px;
+        background: var(--accent);
+        box-shadow:
+            6px 6px 20px rgba(163, 177, 198, 0.6),
+            -6px -6px 20px rgba(255, 255, 255, 0.85);
+    }
+
+    .mini-btn-play svg {
+        width: 18px;
+        height: 18px;
+        fill: #fff;
+    }
+
+    .mini-btn-play:active {
+        box-shadow:
+            inset 4px 4px 8px rgba(0, 0, 0, 0.2),
+            inset -4px -4px 8px rgba(255, 255, 255, 0.1);
+    }
+
+    .mini-progress {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--bg);
+        box-shadow:
+            inset 2px 2px 6px rgba(163, 177, 198, 0.5),
+            inset -2px -2px 6px rgba(255, 255, 255, 0.7);
+        position: relative;
+    }
+
+    .mini-progress-fill {
+        width: 35%;
+        height: 100%;
+        border-radius: 3px;
+        background: var(--accent);
+        opacity: 0.6;
+        position: relative;
+    }
+
+    .mini-progress-handle {
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow:
+            2px 2px 8px rgba(163, 177, 198, 0.5),
+            -2px -2px 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .mini-info {
+        text-align: center;
+    }
+
+    .mini-title {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .mini-artist {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 2px;
+    }
+
+    /* Rules list */
+    .rules-card {
+        padding: 0;
+    }
+
+    .rules-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .rules-list li {
+        font-size: 0.85rem;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(163, 177, 198, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .rules-list li:last-child {
+        border-bottom: none;
+    }
+
+    .rules-list .x {
+        color: var(--danger);
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .rules-list .o {
+        color: var(--success);
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 56px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 1.7;
+        color: var(--text);
+    }
+
+    .manifesto-sub {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 12px;
+        line-height: 1.6;
+        font-weight: 300;
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .demo-row,
+        .demo-row-3,
+        .fix-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .intro-card,
+        .rules-card {
+            padding: 24px;
+        }
+
+        .mini-player {
+            padding: 28px 20px;
+        }
+
+        .shadow-viz {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mini-controls {
+            gap: 16px;
+        }
+
+        .fix-btns {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Inspired by Neumorphism</div>
+            <h1 class="hero-title">Neumorphism</h1>
+            <p class="hero-tagline">
+                Dribbble dreamed it. Production rejected it.<br>
+                We keep the soft extrusion. We fix everything else.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="intro-card">
+            <p class="intro-text">
+                Neumorphism was gorgeous on Dribbble and unusable in production.
+                The double-shadow technique is genuinely clever —
+                <strong>surfaces that push out of the page, not float above it.</strong>
+                <br><br>
+                The fatal flaw was zero contrast. Every element melted into its
+                background, and users couldn't tell a button from a panel.
+                WCAG? Not a chance.
+                <br><br>
+                <strong>Here's our proposal: keep the extrusion, add the affordance.</strong>
+                Every component on this page proves that neumorphism can work
+                in production — if you respect the user's ability to see and operate it.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: The Double Shadow -->
+        <section class="section">
+            <div class="section-label">Technique</div>
+            <h2 class="section-title">The Double Shadow</h2>
+            <p class="section-desc">
+                One dark shadow cast to the bottom-right. One light shadow cast to the top-left.
+                That's the entire trick. The dark shadow mimics an absence of light.
+                The light shadow mimics a reflection.
+                Together: <code>box-shadow</code> creates the illusion of physical extrusion.
+                It's the only CSS technique that makes a surface look like it's pushing
+                out of the page — not floating above it, but growing from it.
+            </p>
+            <div class="demo-row">
+                <div class="demo-panel raised">
+                    <div class="demo-panel-value">Raised</div>
+                    <div class="demo-panel-label">Extruded surface</div>
+                    <div class="demo-panel-sub">Dark bottom-right, light top-left</div>
+                </div>
+                <div class="demo-panel flat">
+                    <div class="demo-panel-value">Flat</div>
+                    <div class="demo-panel-label">No shadows</div>
+                    <div class="demo-panel-sub">Same color — invisible</div>
+                </div>
+            </div>
+            <div class="shadow-viz">
+                <div class="shadow-chip">
+                    <span class="shadow-dot dark"></span>
+                    <span>#a3b1c6 bottom-right</span>
+                </div>
+                <div class="shadow-chip">
+                    <span class="shadow-dot light"></span>
+                    <span>#ffffff top-left</span>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* The neumorphic double shadow */</span><br>
+                <span class="kw">background</span>: <span class="val">#e0e5ec</span>;<br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">8px 8px 16px #a3b1c6</span>,&nbsp;&nbsp;&nbsp;<span class="cmt">/* dark — bottom-right */</span><br>
+                &nbsp;&nbsp;<span class="val">-8px -8px 16px #ffffff</span>;&nbsp;<span class="cmt">/* light — top-left */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: Pressed vs Raised -->
+        <section class="section">
+            <div class="section-label">Interaction</div>
+            <h2 class="section-title">Pressed vs Raised</h2>
+            <p class="section-desc">
+                Invert the shadows with <code>inset</code> and the surface flips from
+                extruded to pressed. Two states from one technique. Click or press Enter
+                on the panels below — raised becomes inset, extruded becomes carved.
+            </p>
+            <div class="demo-row-3">
+                <div class="demo-panel raised interactive" id="toggle-1" tabindex="0" role="button" aria-pressed="false">
+                    <div class="demo-panel-label">Toggle me</div>
+                    <div class="demo-panel-sub" id="toggle-1-label">Raised</div>
+                </div>
+                <div class="demo-panel raised interactive" id="toggle-2" tabindex="0" role="button" aria-pressed="false">
+                    <div class="demo-panel-label">Toggle me</div>
+                    <div class="demo-panel-sub" id="toggle-2-label">Raised</div>
+                </div>
+                <div class="demo-panel pressed interactive" id="toggle-3" tabindex="0" role="button" aria-pressed="true">
+                    <div class="demo-panel-label">Toggle me</div>
+                    <div class="demo-panel-sub" id="toggle-3-label">Pressed</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Raised — pushes out */</span><br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">8px 8px 16px #a3b1c6</span>,<br>
+                &nbsp;&nbsp;<span class="val">-8px -8px 16px #ffffff</span>;<br><br>
+                <span class="cmt">/* Pressed — pushes in (just add inset) */</span><br>
+                <span class="kw">box-shadow</span>:<br>
+                &nbsp;&nbsp;<span class="val">inset</span> <span class="val">4px 4px 8px #a3b1c6</span>,<br>
+                &nbsp;&nbsp;<span class="val">inset</span> <span class="val">-4px -4px 8px #ffffff</span>;
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- The Beauty: Monochrome Discipline -->
+        <section class="section">
+            <div class="section-label">The Beauty</div>
+            <h2 class="section-title">Monochrome Discipline</h2>
+            <p class="section-desc">
+                Here's what makes neumorphism neumorphism: everything is the same
+                base color. Background, foreground, buttons, cards — all <code>#e0e5ec</code>.
+                Shadows do all the work. No borders. No gradients.
+                The discipline is beautiful. One background, one dark shadow, one light
+                shadow — three values, and the visual complexity comes entirely from
+                how light interacts with depth. This is what we love about it.
+            </p>
+            <div class="palette-demo">
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--shadow-dark); border-radius: 12px;"></div>
+                    <span class="swatch-label">Shadow</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--bg); border-radius: 12px; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);"></div>
+                    <span class="swatch-label">Base</span>
+                </div>
+                <div class="palette-swatch">
+                    <div class="swatch-box" style="background: var(--shadow-light); border-radius: 12px;"></div>
+                    <span class="swatch-label">Highlight</span>
+                </div>
+                <div class="palette-swatch" style="margin-left: 20px; opacity: 0.9;">
+                    <div class="swatch-box" style="background: var(--accent); border-radius: 12px; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);"></div>
+                    <span class="swatch-label">+ Accent</span>
+                </div>
+            </div>
+            <p class="section-desc" style="margin-bottom: 0;">
+                This monochrome foundation is sacred. We don't abandon it.
+                The fix is surgical: add <strong>one accent color</strong>,
+                only where the user needs to know "this is interactive."
+                Everything else stays monochrome.
+            </p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Principle 03: The Fix -->
+        <section class="section">
+            <div class="section-label">The Fix</div>
+            <h2 class="section-title">Adding Affordance</h2>
+            <p class="section-desc">
+                Shadows alone cannot carry affordance — when everything is the same
+                color, nothing says "click me." But we don't need to abandon the
+                aesthetic. One accent color, applied only to interactive elements,
+                solves the problem without breaking the monochrome spell.
+            </p>
+
+            <!-- Fix 1: Buttons -->
+            <h3 class="fix-subtitle">Buttons: accent signals action</h3>
+            <div class="fix-grid">
+                <div class="fix-side before">
+                    <div class="fix-label">Classic Neumorphism</div>
+                    <div class="fix-btns">
+                        <div class="neu-btn-bad">Submit</div>
+                        <div class="neu-btn-bad">Cancel</div>
+                    </div>
+                    <div class="fix-note">Same color. Same shadow. Which is primary?</div>
+                </div>
+                <div class="fix-side after">
+                    <div class="fix-label">Accessible</div>
+                    <div class="fix-btns">
+                        <button class="neu-btn primary">Submit</button>
+                        <button class="neu-btn">Cancel</button>
+                    </div>
+                    <div class="fix-note">Accent fills the primary action. Shadow keeps the depth.</div>
+                </div>
+            </div>
+
+            <!-- Fix 2: Toggle -->
+            <h3 class="fix-subtitle top-gap">Toggle: color confirms state</h3>
+            <div class="fix-grid">
+                <div class="fix-side before">
+                    <div class="fix-label">Classic Neumorphism</div>
+                    <div class="fix-toggles">
+                        <div class="fix-toggle-pair">
+                            <div class="neu-toggle-plain on"></div>
+                            <span class="fix-toggle-state">ON</span>
+                        </div>
+                        <div class="fix-toggle-pair">
+                            <div class="neu-toggle-plain"></div>
+                            <span class="fix-toggle-state">OFF</span>
+                        </div>
+                    </div>
+                    <div class="fix-note">Position is the only clue. Low vision users can't tell.</div>
+                </div>
+                <div class="fix-side after">
+                    <div class="fix-label">Accessible</div>
+                    <div class="fix-toggles">
+                        <div class="fix-toggle-pair">
+                            <button class="neu-toggle on" role="switch" aria-checked="true" aria-label="Toggle on" tabindex="0"></button>
+                            <span class="fix-toggle-state">ON</span>
+                        </div>
+                        <div class="fix-toggle-pair">
+                            <button class="neu-toggle" role="switch" aria-checked="false" aria-label="Toggle off" tabindex="0"></button>
+                            <span class="fix-toggle-state">OFF</span>
+                        </div>
+                    </div>
+                    <div class="fix-note">Accent color = on. Neutral = off. Still neumorphic.</div>
+                </div>
+            </div>
+
+            <!-- Fix 3: Input -->
+            <h3 class="fix-subtitle top-gap">Input: focus ring marks the boundary</h3>
+            <div class="input-demo">
+                <label class="neu-input-label" for="demo-input">Email address</label>
+                <input class="neu-input" type="email" id="demo-input" placeholder="you@example.com">
+            </div>
+            <p class="section-desc" style="margin-top: 16px; margin-bottom: 0; text-align: center;">
+                The inset shadow creates the "pressed" input feel. On focus, an accent
+                ring appears — keyboard users always know where they are.
+            </p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Accessible Neumorphic Player</h2>
+            <p class="section-desc">
+                Double shadows + accent affordance + focus rings.
+                The play button uses accent color because it's the primary action.
+                The progress bar uses accent to show position.
+                Everything still looks extruded from the surface.
+            </p>
+            <div class="neu-inset mini-player">
+                <div class="mini-album" role="img" aria-label="Album artwork">
+                    <div class="mini-album-inner">
+                        <div class="mini-album-core"></div>
+                    </div>
+                </div>
+                <div class="mini-info">
+                    <div class="mini-title">Soft Extrusion</div>
+                    <div class="mini-artist">The Neumorphists</div>
+                </div>
+                <div class="mini-progress" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" aria-label="Playback progress">
+                    <div class="mini-progress-fill" id="mini-fill">
+                        <div class="mini-progress-handle"></div>
+                    </div>
+                </div>
+                <div class="mini-controls">
+                    <button class="mini-btn" id="mini-prev" aria-label="Previous track">
+                        <svg viewBox="0 0 512 512"><path d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z"/></svg>
+                    </button>
+                    <button class="mini-btn mini-btn-play" id="mini-play" aria-label="Play">
+                        <svg viewBox="0 0 384 512"><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+                    </button>
+                    <button class="mini-btn" id="mini-next" aria-label="Next track">
+                        <svg viewBox="0 0 512 512"><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Rules -->
+        <section class="section">
+            <h2 class="section-title">The Rules</h2>
+            <div class="rules-card">
+                <ul class="rules-list">
+                    <li><span class="x">&#x2717;</span> All-monochrome interactive elements — shadows can't carry affordance alone</li>
+                    <li><span class="x">&#x2717;</span> Text below WCAG AA contrast (4.5:1 normal, 3:1 large)</li>
+                    <li><span class="x">&#x2717;</span> State changes communicated only by shadow direction</li>
+                    <li><span class="x">&#x2717;</span> "Looks good on Dribbble" as a design rationale</li>
+                    <li><span class="x">&#x2717;</span> Raised shadows on large elements — they stop looking extruded and start looking floaty</li>
+                    <li><span class="x">&#x2717;</span> Inset on non-interactive containers — inset is for inputs and control trays, not reading areas</li>
+                    <li><span class="x">&#x2717;</span> Elements packed too tight — overlapping shadows kill the extrusion illusion</li>
+                    <li><span class="o">&#x2713;</span> Accent color for primary actions — shadows keep the depth</li>
+                    <li><span class="o">&#x2713;</span> Color change on toggle/checkbox states — not just position</li>
+                    <li><span class="o">&#x2713;</span> Focus rings styled to match the aesthetic</li>
+                    <li><span class="o">&#x2713;</span> Double shadows for decorative depth on containers</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Shadows are depth,<br>
+                not affordance.
+            </p>
+            <p class="manifesto-sub">
+                The extrusion is beautiful. Keep it.<br>
+                But if a user can't tell a button from its background,<br>
+                you haven't designed a button — you've designed a Dribbble shot.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Interactive toggle panels — keyboard accessible */
+    function togglePanel(el) {
+        const isRaised = el.classList.contains('raised');
+        el.classList.toggle('raised', !isRaised);
+        el.classList.toggle('pressed', isRaised);
+        el.setAttribute('aria-pressed', isRaised ? 'true' : 'false');
+        const label = el.querySelector('[id$="-label"]');
+        if (label) label.textContent = isRaised ? 'Pressed' : 'Raised';
+    }
+
+    document.querySelectorAll('.interactive').forEach(el => {
+        el.addEventListener('click', () => togglePanel(el));
+        el.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                togglePanel(el);
+            }
+        });
+    });
+
+    /* Fix section toggles — interactive demos */
+    document.querySelectorAll('.fix-toggles .neu-toggle').forEach(el => {
+        function flip() {
+            el.classList.toggle('on');
+            const isOn = el.classList.contains('on');
+            el.setAttribute('aria-checked', String(isOn));
+            const stateLabel = el.parentElement.querySelector('.fix-toggle-state');
+            if (stateLabel) stateLabel.textContent = isOn ? 'ON' : 'OFF';
+        }
+        el.addEventListener('click', flip);
+        el.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                flip();
+            }
+        });
+    });
+
+    /* Mini player play/pause */
+    const PLAY_PATH = 'M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z';
+    const PAUSE_PATH = 'M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z';
+
+    let miniPlaying = false;
+    let miniProgress = 35;
+    let miniInterval = null;
+
+    const miniPlay = document.getElementById('mini-play');
+    const miniPath = miniPlay.querySelector('path');
+    const miniSvg = miniPlay.querySelector('svg');
+    const miniFill = document.getElementById('mini-fill');
+    const progressBar = miniFill.parentElement;
+
+    function toggleMiniPlay() {
+        miniPlaying = !miniPlaying;
+        miniPath.setAttribute('d', miniPlaying ? PAUSE_PATH : PLAY_PATH);
+        miniSvg.setAttribute('viewBox', miniPlaying ? '0 0 320 512' : '0 0 384 512');
+        miniPlay.setAttribute('aria-label', miniPlaying ? 'Pause' : 'Play');
+
+        if (miniPlaying) {
+            miniPlay.style.boxShadow = 'inset 4px 4px 8px rgba(0,0,0,0.2), inset -4px -4px 8px rgba(255,255,255,0.1)';
+            miniInterval = setInterval(() => {
+                miniProgress = (miniProgress + 0.5) % 100;
+                miniFill.style.width = miniProgress + '%';
+                progressBar.setAttribute('aria-valuenow', Math.round(miniProgress));
+            }, 200);
+        } else {
+            miniPlay.style.boxShadow = '';
+            clearInterval(miniInterval);
+        }
+    }
+
+    miniPlay.addEventListener('click', toggleMiniPlay);
+</script>

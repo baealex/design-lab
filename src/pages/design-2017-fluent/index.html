@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
-<!-- title: Fluent -->
-<!-- description: Inspired by Microsoft Fluent — light, material, and motion as interface language -->
+<!-- title: Fluent (2017) -->
+<!-- description: Microsoft tried glass again -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
@@ -25,7 +25,7 @@
         --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
         --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
         --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-        --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+        --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
     }
 
     body {
@@ -369,15 +369,101 @@
         color: var(--text-tertiary);
     }
 
-    /* Combined demo */
-    .combined-demo {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
+
+    /* Fluent buttons */
+    .btn-demo {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
     }
 
-    .combined-card {
-        padding: 24px;
+    .fluent-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 6px 16px;
+        min-height: 32px;
+        border-radius: 4px;
+        border: 1px solid var(--border-strong);
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 400;
+        font-family: 'Noto Sans', 'Segoe UI', sans-serif;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.7);
+        transition: background 0.1s, border-color 0.15s, box-shadow 0.15s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fluent-btn:hover {
+        background: rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.16);
+    }
+
+    .fluent-btn:active {
+        background: rgba(0, 0, 0, 0.06);
+        color: var(--text-secondary);
+        transform: scale(0.98);
+    }
+
+    .fluent-btn.accent {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+        box-shadow: 0 1px 2px rgba(0, 120, 212, 0.2);
+    }
+
+    .fluent-btn.accent:hover {
+        background: #106ebe;
+        border-color: #106ebe;
+    }
+
+    .fluent-btn.accent:active {
+        background: #005a9e;
+        border-color: #005a9e;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .fluent-btn.subtle {
+        border-color: transparent;
+        background: transparent;
+    }
+
+    .fluent-btn.subtle:hover {
+        background: rgba(0, 0, 0, 0.04);
+        border-color: transparent;
+    }
+
+    .fluent-btn.subtle:active {
+        background: rgba(0, 0, 0, 0.07);
+        border-color: transparent;
+    }
+
+    .fluent-btn.outline {
+        background: transparent;
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .fluent-btn.outline:hover {
+        background: rgba(0, 120, 212, 0.06);
+    }
+
+    .fluent-btn.outline:active {
+        background: rgba(0, 120, 212, 0.1);
+    }
+
+    .fluent-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Action Center */
+    .action-center {
         background:
             var(--noise),
             var(--acrylic);
@@ -385,70 +471,156 @@
         backdrop-filter: var(--acrylic-blur);
         -webkit-backdrop-filter: var(--acrylic-blur);
         border: 1px solid var(--border);
-        border-radius: var(--radius);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+    }
+
+    .action-header {
+        padding: 16px 20px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .action-title {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .action-tiles {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 0 16px;
+    }
+
+    .action-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 14px 8px 10px;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, box-shadow 0.2s;
         position: relative;
         overflow: hidden;
-        cursor: pointer;
-        transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.2s;
     }
 
-    .combined-card .reveal-border {
+    .action-tile .reveal-border {
         position: absolute;
         inset: -1px;
-        border-radius: var(--radius);
+        border-radius: 6px;
         opacity: 0;
         transition: opacity 0.3s;
         pointer-events: none;
     }
 
-    .combined-card .reveal-bg {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        transition: opacity 0.3s;
-        pointer-events: none;
+    .action-tile:hover .reveal-border { opacity: 1; }
+
+    .action-tile:hover {
+        background: rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     }
 
-    .combined-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-md);
+    .action-tile:active {
+        transform: scale(0.97);
     }
 
-    .combined-card:hover .reveal-border { opacity: 1; }
-    .combined-card:hover .reveal-bg { opacity: 1; }
+    .action-tile.active {
+        background: var(--accent);
+        border-color: var(--accent);
+    }
 
-    .combined-label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
+    .action-tile.active .action-tile-icon,
+    .action-tile.active .action-tile-label {
+        color: #fff;
+    }
+
+    .action-tile-icon {
+        font-size: 1.1rem;
+        line-height: 1;
+    }
+
+    .action-tile-label {
+        font-size: 0.62rem;
+        font-weight: 500;
         color: var(--text-secondary);
+        text-align: center;
+        line-height: 1.2;
     }
 
-    .combined-value {
-        font-size: 2rem;
-        font-weight: 300;
-        margin-top: 8px;
+    .action-sliders {
+        padding: 16px 20px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        border-top: 1px solid var(--border);
+        margin-top: 12px;
     }
 
-    .combined-sub {
-        font-size: 0.78rem;
-        color: var(--text-secondary);
-        margin-top: 4px;
+    .action-slider-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 
-    .combined-bar {
+    .action-slider-icon {
+        font-size: 0.9rem;
+        width: 20px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .action-slider-track {
+        flex: 1;
         height: 4px;
-        background: rgba(0, 0, 0, 0.06);
+        background: rgba(0, 0, 0, 0.08);
         border-radius: 2px;
-        margin-top: 16px;
-        overflow: hidden;
+        position: relative;
+        cursor: pointer;
     }
 
-    .combined-bar-fill {
+    .action-slider-fill {
         height: 100%;
         border-radius: 2px;
-        background: linear-gradient(90deg, var(--accent), #5c6bc0);
-        transition: width 0.8s ease;
+        background: var(--accent);
+        transition: width 0.15s;
+    }
+
+    .action-slider-thumb {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 2px solid #fff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        cursor: grab;
+        transition: box-shadow 0.15s;
+    }
+
+    .action-slider-thumb:hover {
+        box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
+    }
+
+    .action-slider-thumb:active {
+        cursor: grabbing;
+        box-shadow: 0 0 0 4px rgba(0, 120, 212, 0.15);
+    }
+
+    .action-slider-value {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        width: 28px;
+        text-align: right;
+        flex-shrink: 0;
     }
 
     /* Anti-pattern list */
@@ -516,9 +688,16 @@
         }
 
         .acrylic-demo,
-        .reveal-grid,
-        .combined-demo {
+        .reveal-grid {
             grid-template-columns: 1fr;
+        }
+
+        .action-tiles {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .btn-demo {
+            flex-direction: column;
         }
 
         .intro-card,
@@ -532,30 +711,25 @@
     <div class="layout">
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Inspired by Microsoft Fluent Design System</div>
+            <div class="hero-badge">Inspired by Windows 10</div>
             <h1 class="hero-title">Fluent</h1>
             <p class="hero-tagline">
-                Metro stripped everything away.<br>
-                Fluent figured out what to bring back.
+                Microsoft learned from Metro's mistakes.<br>
+                We take Acrylic and Reveal and make them consistent.
             </p>
         </header>
 
         <!-- Intro -->
         <div class="intro-card">
             <p class="intro-text">
-                After Windows 8 went full flat, Microsoft had a problem.
-                Users missed depth. They missed the feeling that UI elements existed
-                in space, not just on a colored rectangle.
-                But going back to Aero's glossy excess? That wasn't an option either.
+                Fluent was Metro's redemption.
+                It brought back depth (<strong>Acrylic</strong>),
+                added discoverability (<strong>Reveal</strong>),
+                and planned for 3D.
                 <br><br>
-                So they built <strong>Fluent</strong>. Five pillars:
-                <strong>Light, Depth, Motion, Material, Scale</strong>.
-                The pitch was ambitious — a design system that would work from
-                a phone screen to a HoloLens.
-                The reality? Most of Windows still doesn't use all five.
-                But the ideas that did ship? They're genuinely brilliant.
-                A radial gradient following your cursor says more about hierarchy
-                than a drop shadow ever could.
+                The problem was <strong>inconsistency</strong> —
+                half of Windows used Fluent, half didn't.
+                We apply the principles uniformly.
             </p>
         </div>
 
@@ -636,6 +810,21 @@
                 </div>
             </div>
             <p class="reveal-hint">Move your cursor across the cards above.</p>
+
+            <p class="section-desc" style="margin-top: 28px;">
+                Reveal lives most naturally on <strong>buttons</strong>.
+                Fluent buttons are almost invisible at rest &mdash; barely a border, barely a fill.
+                On hover, the boundary appears. On press, it darkens.
+                The button whispers until you need it, then speaks clearly.
+                Four variants: Standard, Accent, Subtle, Outline.
+            </p>
+            <div class="btn-demo">
+                <button class="fluent-btn">Standard</button>
+                <button class="fluent-btn accent">Accent</button>
+                <button class="fluent-btn subtle">Subtle</button>
+                <button class="fluent-btn outline">Outline</button>
+                <button class="fluent-btn" disabled>Disabled</button>
+            </div>
         </section>
 
         <!-- Principle 03: Depth System -->
@@ -675,29 +864,68 @@
         <!-- Put It Together -->
         <section class="section">
             <div class="section-label">All Together</div>
-            <h2 class="section-title">Put It Together</h2>
+            <h2 class="section-title">Quick Settings</h2>
             <p class="section-desc">
-                Acrylic material + Reveal Highlight + depth layering.
-                Three principles, one interface. The surface is frosted.
-                The light follows you. The shadows know their place.
-                It looks like something Microsoft dreamed up in 2017 but shipped in fragments.
-                We're shipping it whole.
+                Acrylic backdrop + Reveal-lit tiles + depth layering.
+                Three principles, one panel. This is the interface that Fluent was designed for
+                &mdash; system controls floating over your content, translucent enough to know
+                what's behind, opaque enough to focus on what's ahead.
+                Click the tiles. Drag the sliders. Feel the material.
             </p>
-            <div class="combined-demo" id="combined-demo">
-                <div class="combined-card">
-                    <div class="reveal-border"></div>
-                    <div class="reveal-bg"></div>
-                    <div class="combined-label">System</div>
-                    <div class="combined-value" id="clock-time"></div>
-                    <div class="combined-sub" id="clock-date"></div>
+            <div class="action-center" id="action-center">
+                <div class="action-header">
+                    <span class="action-title">Quick Settings</span>
+                    <button class="fluent-btn subtle" style="padding: 4px 10px; font-size: 0.7rem; min-height: 24px;">&#x270E; Edit</button>
                 </div>
-                <div class="combined-card">
-                    <div class="reveal-border"></div>
-                    <div class="reveal-bg"></div>
-                    <div class="combined-label">Memory</div>
-                    <div class="combined-value" id="mem-value">4.2 GB</div>
-                    <div class="combined-bar"><div class="combined-bar-fill" id="mem-bar" style="width: 52%"></div></div>
-                    <div class="combined-sub" id="mem-sub">4.2 of 8 GB used</div>
+                <div class="action-tiles" id="action-tiles">
+                    <div class="action-tile active" data-tile="wifi">
+                        <div class="reveal-border"></div>
+                        <div class="action-tile-icon">&#x1F4F6;</div>
+                        <div class="action-tile-label">Wi-Fi</div>
+                    </div>
+                    <div class="action-tile active" data-tile="bluetooth">
+                        <div class="reveal-border"></div>
+                        <div class="action-tile-icon">&#x1F4F1;</div>
+                        <div class="action-tile-label">Bluetooth</div>
+                    </div>
+                    <div class="action-tile" data-tile="airplane">
+                        <div class="reveal-border"></div>
+                        <div class="action-tile-icon">&#x2708;&#xFE0F;</div>
+                        <div class="action-tile-label">Airplane</div>
+                    </div>
+                    <div class="action-tile" data-tile="nightlight">
+                        <div class="reveal-border"></div>
+                        <div class="action-tile-icon">&#x1F319;</div>
+                        <div class="action-tile-label">Night light</div>
+                    </div>
+                    <div class="action-tile active" data-tile="focus">
+                        <div class="reveal-border"></div>
+                        <div class="action-tile-icon">&#x1F515;</div>
+                        <div class="action-tile-label">Focus</div>
+                    </div>
+                    <div class="action-tile" data-tile="nearby">
+                        <div class="reveal-border"></div>
+                        <div class="action-tile-icon">&#x1F4E1;</div>
+                        <div class="action-tile-label">Nearby</div>
+                    </div>
+                </div>
+                <div class="action-sliders">
+                    <div class="action-slider-row">
+                        <span class="action-slider-icon">&#x2600;&#xFE0F;</span>
+                        <div class="action-slider-track" data-slider="brightness">
+                            <div class="action-slider-fill" style="width: 72%"></div>
+                            <div class="action-slider-thumb" style="left: 72%"></div>
+                        </div>
+                        <span class="action-slider-value">72</span>
+                    </div>
+                    <div class="action-slider-row">
+                        <span class="action-slider-icon">&#x1F50A;</span>
+                        <div class="action-slider-track" data-slider="volume">
+                            <div class="action-slider-fill" style="width: 45%"></div>
+                            <div class="action-slider-thumb" style="left: 45%"></div>
+                        </div>
+                        <span class="action-slider-value">45</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -738,49 +966,57 @@
 <script>
     /* -- Reveal Highlight -- cursor-tracking light effect -- */
     function applyReveal(e) {
-        const cards = document.querySelectorAll('.reveal-card, .combined-card');
+        const cards = document.querySelectorAll('.reveal-card, .action-tile');
         cards.forEach(card => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            /* Border reveal — light ring on edges */
+            /* Border reveal — accent light ring on edges */
             const $border = card.querySelector('.reveal-border');
             if ($border) {
-                $border.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,0,0,0.08) 0%, transparent 100%)`;
+                $border.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,120,212,0.35) 0%, transparent 100%)`;
             }
 
-            /* Background reveal — subtle spotlight */
+            /* Background reveal — subtle accent spotlight */
             const $bg = card.querySelector('.reveal-bg');
             if ($bg) {
-                $bg.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,0,0,0.03) 0%, transparent 100%)`;
+                $bg.style.background = `radial-gradient(circle var(--reveal-size) at ${x}px ${y}px, rgba(0,120,212,0.05) 0%, transparent 100%)`;
             }
         });
     }
 
     document.addEventListener('mousemove', applyReveal);
 
-    /* -- Clock -- */
-    function updateClock() {
-        const now = new Date();
-        const h = String(now.getHours()).padStart(2, '0');
-        const m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    /* -- Action Center: tile toggles -- */
+    document.querySelectorAll('.action-tile[data-tile]').forEach(tile => {
+        tile.addEventListener('click', () => {
+            tile.classList.toggle('active');
+        });
+    });
 
-        document.getElementById('clock-time').textContent = `${h}:${m}:${s}`;
-        document.getElementById('clock-date').textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
+    /* -- Action Center: sliders -- */
+    document.querySelectorAll('.action-slider-track[data-slider]').forEach(track => {
+        const fill = track.querySelector('.action-slider-fill');
+        const thumb = track.querySelector('.action-slider-thumb');
+        const valueEl = track.parentElement.querySelector('.action-slider-value');
+        let dragging = false;
 
-    /* -- Fake memory fluctuation -- */
-    setInterval(() => {
-        const val = (3.8 + Math.random() * 1.2).toFixed(1);
-        const pct = Math.round((val / 8) * 100);
-        document.getElementById('mem-value').textContent = val + ' GB';
-        document.getElementById('mem-bar').style.width = pct + '%';
-        document.getElementById('mem-sub').textContent = val + ' of 8 GB used';
-    }, 3000);
+        function update(e) {
+            const rect = track.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+            fill.style.width = pct + '%';
+            thumb.style.left = pct + '%';
+            valueEl.textContent = Math.round(pct);
+        }
+
+        thumb.addEventListener('mousedown', e => { dragging = true; e.preventDefault(); });
+        thumb.addEventListener('touchstart', () => { dragging = true; }, { passive: true });
+        document.addEventListener('mousemove', e => { if (dragging) update(e); });
+        document.addEventListener('touchmove', e => { if (dragging) update(e); }, { passive: true });
+        document.addEventListener('mouseup', () => { dragging = false; });
+        document.addEventListener('touchend', () => { dragging = false; });
+        track.addEventListener('click', update);
+    });
 </script>
