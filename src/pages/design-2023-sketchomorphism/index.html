@@ -379,6 +379,50 @@
         line-height: 1.6;
     }
 
+    /* Tape decoration */
+    .sketch-tape {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-2deg);
+        width: 72px;
+        height: 26px;
+        background: rgba(252, 235, 175, 0.85);
+        border: 1.5px solid rgba(200, 180, 120, 0.35);
+        border-radius: 2px;
+        z-index: 2;
+    }
+
+    .sketch-tape::before,
+    .sketch-tape::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent 2px,
+            rgba(200, 180, 120, 0.3) 2px,
+            rgba(200, 180, 120, 0.3) 4px
+        );
+    }
+
+    .sketch-tape::before { left: 4px; }
+    .sketch-tape::after { right: 4px; }
+
+    .sketch-tape--right {
+        left: auto;
+        right: 16px;
+        transform: rotate(3deg);
+    }
+
+    .sketch-tape--left {
+        left: 16px;
+        transform: rotate(-3deg);
+    }
+
     /* Responsive */
     @media screen and (max-width: 520px) {
         .demo-grid,
@@ -414,6 +458,7 @@
 
         <!-- Intro -->
         <div class="sketch-card" data-alive>
+            <div class="sketch-tape"></div>
             <svg class="sketch-border" aria-hidden="true"></svg>
             <p style="font-size: 1.2rem; line-height: 1.7; margin: 0;">
                 By 2023, AI could generate flawless images, pixel-perfect layouts,
@@ -497,6 +542,8 @@
 
             <!-- Diary -->
             <div class="sketch-card ruled" data-alive>
+                <div class="sketch-tape--left sketch-tape"></div>
+                <div class="sketch-tape--right sketch-tape"></div>
                 <svg class="sketch-border" aria-hidden="true"></svg>
                 <div class="ruled-text">Dear diary,
 Today I made the borders wobble
@@ -514,6 +561,7 @@ the ones that feel human.</div>
         <section class="section">
             <h2 class="section-title">What This Is Not</h2>
             <div class="sketch-card" data-alive>
+                <div class="sketch-tape"></div>
                 <svg class="sketch-border" aria-hidden="true"></svg>
                 <ul class="anti-list">
                     <li><span class="x">&#x2717;</span> Wobbly lines with no intent — imperfection without purpose</li>
