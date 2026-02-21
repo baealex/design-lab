@@ -1,0 +1,986 @@
+<!-- layout: base.html -->
+<!-- title: Glowmorphism (2022) -->
+<!-- description: UI that emits light from within -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg: #08050f;
+        --surface: rgba(140, 80, 255, 0.04);
+        --surface-border: rgba(160, 100, 255, 0.1);
+        --text: rgba(255, 255, 255, 0.9);
+        --text-muted: rgba(255, 255, 255, 0.55);
+        --text-dim: rgba(255, 255, 255, 0.22);
+        --glow: #8c50ff;
+        --glow-light: #c8a0ff;
+        --glow-bright: #dcc0ff;
+        --glow-deep: #6030c0;
+        --glow-shadow: rgba(140, 80, 255, 0.4);
+        --glow-ambient: rgba(140, 80, 255, 0.06);
+        --glow-line: rgba(140, 80, 255, 0.3);
+        --danger: #ff5c5c;
+        --success: #5cffaa;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .bg-noise {
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.035;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+    }
+
+    .bg-gradient {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(ellipse at 15% 50%, rgba(140, 40, 180, 0.12) 0%, transparent 55%),
+            radial-gradient(ellipse at 85% 25%, rgba(160, 60, 190, 0.06) 0%, transparent 45%),
+            radial-gradient(ellipse at 50% 90%, rgba(120, 30, 160, 0.08) 0%, transparent 45%);
+    }
+
+    .bg-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+        pointer-events: none;
+    }
+
+    .bg-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+    }
+
+    .bg-orb--1 {
+        width: 600px;
+        height: 600px;
+        background: rgba(140, 50, 180, 0.1);
+        top: -150px;
+        left: -150px;
+        animation: orb-pulse-1 6s ease-in-out infinite;
+    }
+
+    .bg-orb--2 {
+        width: 500px;
+        height: 500px;
+        background: rgba(160, 70, 200, 0.08);
+        bottom: -120px;
+        right: -120px;
+        animation: orb-pulse-2 8s ease-in-out infinite;
+    }
+
+    .bg-orb--3 {
+        width: 300px;
+        height: 300px;
+        background: rgba(180, 80, 210, 0.06);
+        top: 45%;
+        left: 55%;
+        animation: orb-pulse-3 10s ease-in-out infinite;
+    }
+
+    @keyframes orb-pulse-1 {
+        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+        50% { transform: translate(50px, 30px) scale(1.2); opacity: 0.8; }
+    }
+
+    @keyframes orb-pulse-2 {
+        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+        50% { transform: translate(-40px, -25px) scale(1.15); opacity: 0.7; }
+    }
+
+    @keyframes orb-pulse-3 {
+        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+        33% { transform: translate(-25px, 20px) scale(1.1); opacity: 0.5; }
+        66% { transform: translate(20px, -15px) scale(0.9); opacity: 0.4; }
+    }
+
+    .bg-particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(180, 120, 255, 0.6);
+        box-shadow: 0 0 6px rgba(180, 120, 255, 0.4);
+        pointer-events: none;
+        left: var(--x);
+        top: var(--y);
+        width: var(--size);
+        height: var(--size);
+        animation: particle-float var(--dur) ease-in-out infinite;
+        animation-delay: var(--delay);
+    }
+
+    @keyframes particle-float {
+        0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+        25% { transform: translate(10px, -15px); opacity: 0.7; }
+        50% { transform: translate(-5px, -25px); opacity: 0.5; }
+        75% { transform: translate(8px, -10px); opacity: 0.8; }
+    }
+
+    .bg-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(140, 80, 255, 0.3) 20%, rgba(200, 120, 255, 0.5) 50%, rgba(140, 80, 255, 0.3) 80%, transparent);
+        box-shadow: 0 0 20px rgba(140, 80, 255, 0.2);
+        opacity: 0.4;
+        animation: line-pulse 4s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes line-pulse {
+        0%, 100% { opacity: 0.15; }
+        50% { opacity: 0.4; }
+    }
+
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    .panel {
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 30px rgba(140, 80, 255, 0.04), 0 0 60px rgba(140, 80, 255, 0.02);
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 64px 0 56px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        padding: 6px 18px;
+        border-radius: 20px;
+        background: var(--glow-ambient);
+        border: 1px solid rgba(140, 80, 255, 0.15);
+        color: var(--glow-light);
+        margin-bottom: 24px;
+    }
+
+    .hero-title {
+        font-size: 5.5rem;
+        font-weight: 700;
+        letter-spacing: 16px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #fff 0%, #c8a0ff 50%, #8040e0 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 30px rgba(140, 80, 255, 0.5));
+        position: relative;
+        animation: hero-breathe 3s ease-in-out infinite;
+    }
+
+    @keyframes hero-breathe {
+        0%, 100% { filter: drop-shadow(0 0 30px rgba(140, 80, 255, 0.4)); }
+        50% { filter: drop-shadow(0 0 50px rgba(140, 80, 255, 0.7)); }
+    }
+
+    .hero-title::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 120%;
+        height: 200px;
+        transform: translateX(-50%);
+        background: radial-gradient(ellipse at center, rgba(140, 80, 255, 0.35) 0%, rgba(140, 80, 255, 0.1) 40%, transparent 70%);
+        filter: blur(12px);
+        pointer-events: none;
+    }
+
+    .hero-reflection {
+        font-size: 5.5rem;
+        font-weight: 700;
+        letter-spacing: 16px;
+        text-transform: uppercase;
+        color: var(--glow-light);
+        text-shadow:
+            0 0 10px var(--glow-shadow),
+            0 0 40px var(--glow-shadow);
+        transform: scaleY(-1);
+        filter: blur(14px);
+        opacity: 0.4;
+        pointer-events: none;
+        margin-top: -12px;
+        margin-bottom: 80px;
+        line-height: 1;
+    }
+
+    .flicker {
+        animation: glow-flicker 4s infinite;
+    }
+
+    @keyframes glow-flicker {
+        0%, 100% { opacity: 1; }
+        4% { opacity: 0.2; }
+        6% { opacity: 1; }
+        8% { opacity: 0.4; }
+        9% { opacity: 1; }
+        50% { opacity: 1; }
+        52% { opacity: 0.3; }
+        53% { opacity: 1; }
+        54% { opacity: 0.6; }
+        55% { opacity: 1; }
+        78% { opacity: 1; }
+        80% { opacity: 0.15; }
+        81% { opacity: 0.8; }
+        82% { opacity: 0.1; }
+        83.5% { opacity: 1; }
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-top: 20px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    /* Intro */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.9;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    /* Section */
+    .section { margin-bottom: 48px; }
+
+    .section-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--glow-light);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--glow-bright);
+        font-style: normal;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: rgba(140, 80, 255, 0.08);
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: var(--glow-light);
+    }
+
+    /* Divider */
+    .divider {
+        margin: 48px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--glow-line), rgba(180, 120, 255, 0.4), var(--glow-line), transparent);
+        box-shadow: 0 0 8px rgba(140, 80, 255, 0.12);
+    }
+
+    /* Glow intensity demo */
+    .glow-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+    }
+
+    .glow-card {
+        padding: 32px 16px;
+        text-align: center;
+        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        transition: box-shadow 0.5s ease, border-color 0.5s ease;
+    }
+
+    .glow-card.dim:hover {
+        border-color: rgba(140, 80, 255, 0.2);
+        box-shadow: 0 0 20px rgba(140, 80, 255, 0.06);
+    }
+
+    .glow-card.mid:hover {
+        border-color: rgba(140, 80, 255, 0.35);
+        box-shadow: 0 0 30px rgba(140, 80, 255, 0.12), 0 0 60px rgba(140, 80, 255, 0.06);
+    }
+
+    .glow-card.bright {
+        border-color: rgba(160, 100, 255, 0.2);
+        box-shadow: 0 0 20px rgba(140, 80, 255, 0.08);
+    }
+
+    .glow-card.bright:hover {
+        border-color: rgba(180, 120, 255, 0.4);
+        box-shadow: 0 0 40px rgba(140, 80, 255, 0.2), 0 0 80px rgba(140, 80, 255, 0.08);
+    }
+
+    .glow-card-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        color: var(--glow-light);
+    }
+
+    .glow-card-text {
+        font-size: 2.2rem;
+        font-weight: 700;
+    }
+
+    .glow-card-sub {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        margin-top: 16px;
+    }
+
+    .glow-line {
+        height: 2px;
+        border-radius: 1px;
+        margin-top: 18px;
+    }
+
+    .glow-card.dim .glow-card-text {
+        color: rgba(160, 100, 255, 0.4);
+        text-shadow: 0 0 4px rgba(140, 80, 255, 0.15);
+    }
+    .glow-card.dim .glow-line {
+        background: rgba(140, 80, 255, 0.2);
+    }
+
+    .glow-card.mid .glow-card-text {
+        color: var(--glow-light);
+        text-shadow: 0 0 8px var(--glow-shadow), 0 0 28px var(--glow-shadow);
+    }
+    .glow-card.mid .glow-line {
+        background: var(--glow);
+        box-shadow: 0 0 6px var(--glow-shadow), 0 0 14px var(--glow-shadow);
+    }
+
+    .glow-card.bright .glow-card-text {
+        color: #fff;
+        text-shadow: 0 0 12px rgba(200, 160, 255, 0.8), 0 0 40px var(--glow-shadow), 0 0 80px rgba(140, 80, 255, 0.25);
+        animation: text-breathe 2s ease-in-out infinite;
+    }
+
+    @keyframes text-breathe {
+        0%, 100% { text-shadow: 0 0 12px rgba(200, 160, 255, 0.6), 0 0 40px var(--glow-shadow); }
+        50% { text-shadow: 0 0 16px rgba(200, 160, 255, 1), 0 0 50px rgba(140, 80, 255, 0.6), 0 0 100px rgba(140, 80, 255, 0.2); }
+    }
+
+    .glow-card.bright .glow-line {
+        background: var(--glow-bright);
+        box-shadow: 0 0 8px rgba(200, 160, 255, 0.6), 0 0 24px var(--glow-shadow);
+        animation: line-breathe 2s ease-in-out infinite;
+    }
+
+    @keyframes line-breathe {
+        0%, 100% { box-shadow: 0 0 8px rgba(200, 160, 255, 0.5), 0 0 20px var(--glow-shadow); }
+        50% { box-shadow: 0 0 12px rgba(200, 160, 255, 0.8), 0 0 30px rgba(140, 80, 255, 0.5); }
+    }
+
+    /* Code block */
+    .code-block {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        padding: 18px 22px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: rgba(255, 255, 255, 0.5);
+        overflow-x: auto;
+        margin-top: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .code-block .kw { color: var(--glow); }
+    .code-block .val { color: var(--glow-bright); }
+    .code-block .cmt { color: rgba(255, 255, 255, 0.2); }
+
+    /* Compare panels */
+    .compare-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .compare-panel {
+        padding: 36px 24px;
+        text-align: center;
+        border-radius: 14px;
+    }
+
+    .compare-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .compare-label.good { color: var(--glow-light); }
+    .compare-label.muted { color: var(--text-dim); }
+
+    .compare-text {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 6px;
+    }
+
+    .compare-sub {
+        font-size: 0.7rem;
+        margin-top: 12px;
+    }
+
+    .compare-panel.dark {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(140, 80, 255, 0.1);
+    }
+
+    .compare-panel.dark .compare-text {
+        color: var(--glow-light);
+        text-shadow: 0 0 10px var(--glow-shadow), 0 0 36px var(--glow-shadow), 0 0 72px rgba(140, 80, 255, 0.15);
+        animation: glow-text-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes glow-text-pulse {
+        0%, 100% { text-shadow: 0 0 10px var(--glow-shadow), 0 0 36px var(--glow-shadow); }
+        50% { text-shadow: 0 0 14px rgba(180, 120, 255, 0.8), 0 0 44px rgba(140, 80, 255, 0.6), 0 0 80px rgba(140, 80, 255, 0.2); }
+    }
+
+    .compare-panel.dark .compare-sub { color: var(--text-dim); }
+
+    .compare-panel.flat {
+        background: rgba(225, 222, 230, 0.92);
+        border: 1px solid rgba(200, 198, 210, 0.5);
+    }
+
+    .compare-panel.flat .compare-text { color: #6030a0; }
+    .compare-panel.flat .compare-sub { color: #9a96a8; }
+
+    /* Button demo */
+    .btn-demo {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .glow-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 26px;
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.06em;
+        color: var(--glow-light);
+        border: 1px solid rgba(140, 80, 255, 0.3);
+        box-shadow: 0 0 10px rgba(140, 80, 255, 0.1), inset 0 0 10px rgba(140, 80, 255, 0.04);
+    }
+
+    .glow-btn:hover {
+        background: rgba(140, 80, 255, 0.08);
+        border-color: var(--glow);
+        box-shadow: 0 0 20px rgba(140, 80, 255, 0.2), 0 0 40px rgba(140, 80, 255, 0.08), inset 0 0 16px rgba(140, 80, 255, 0.06);
+        transform: translateY(-1px);
+    }
+
+    .glow-btn.primary {
+        background: rgba(140, 80, 255, 0.2);
+        color: #fff;
+        border: 1px solid rgba(180, 120, 255, 0.5);
+        box-shadow: 0 0 16px rgba(140, 80, 255, 0.3), 0 0 40px rgba(140, 80, 255, 0.12), inset 0 0 12px rgba(140, 80, 255, 0.08);
+    }
+
+    .glow-btn.primary:hover {
+        background: rgba(140, 80, 255, 0.28);
+        border-color: rgba(200, 160, 255, 0.6);
+        box-shadow: 0 0 24px rgba(140, 80, 255, 0.45), 0 0 60px rgba(140, 80, 255, 0.18), inset 0 0 16px rgba(140, 80, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .glow-btn:disabled {
+        opacity: 0.2;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    /* Dashboard */
+    .dash-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .dash-card { padding: 28px; }
+
+    .dash-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-dim);
+        font-weight: 500;
+    }
+
+    .dash-value {
+        font-size: 2.4rem;
+        font-weight: 700;
+        margin-top: 10px;
+        color: var(--glow-light);
+        text-shadow: 0 0 16px rgba(140, 80, 255, 0.3), 0 0 40px rgba(140, 80, 255, 0.1);
+    }
+
+    .dash-card {
+        transition: box-shadow 0.5s ease, border-color 0.5s ease;
+    }
+
+    .dash-card:hover {
+        border-color: rgba(160, 100, 255, 0.2);
+        box-shadow: 0 0 30px rgba(140, 80, 255, 0.08), 0 0 60px rgba(140, 80, 255, 0.04);
+    }
+
+    .dash-sub {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        margin-top: 6px;
+    }
+
+    .dash-trend {
+        font-size: 0.7rem;
+        margin-top: 6px;
+        font-weight: 600;
+        color: var(--success);
+    }
+
+    .dash-bar {
+        height: 2px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 1px;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .dash-bar-fill {
+        height: 100%;
+        border-radius: 1px;
+        background: linear-gradient(90deg, var(--glow-deep), var(--glow), var(--glow-light));
+        box-shadow: 0 0 8px var(--glow-shadow), 0 0 16px rgba(140, 80, 255, 0.15);
+        transition: width 0.8s ease;
+        animation: bar-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes bar-glow {
+        0%, 100% { box-shadow: 0 0 6px var(--glow-shadow); }
+        50% { box-shadow: 0 0 10px var(--glow-shadow), 0 0 20px rgba(140, 80, 255, 0.2); }
+    }
+
+    /* In The Wild */
+    .wild-card {
+        padding: 28px 32px;
+        border-color: rgba(140, 80, 255, 0.15);
+        box-shadow: 0 0 40px rgba(140, 80, 255, 0.06), 0 0 80px rgba(140, 80, 255, 0.03);
+        transition: box-shadow 0.5s ease, border-color 0.5s ease;
+    }
+
+    .wild-card:hover {
+        border-color: rgba(160, 100, 255, 0.25);
+        box-shadow: 0 0 50px rgba(140, 80, 255, 0.1), 0 0 100px rgba(140, 80, 255, 0.05);
+    }
+
+    .wild-badge {
+        display: inline-block;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        padding: 4px 12px;
+        border-radius: 12px;
+        background: rgba(140, 80, 255, 0.08);
+        border: 1px solid rgba(140, 80, 255, 0.15);
+        color: var(--glow-light);
+        margin-bottom: 14px;
+    }
+
+    .wild-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .wild-desc {
+        font-size: 0.84rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-weight: 300;
+    }
+
+    .wild-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .wild-feature {
+        font-size: 0.68rem;
+        font-weight: 500;
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: rgba(140, 80, 255, 0.06);
+        border: 1px solid rgba(140, 80, 255, 0.12);
+        color: var(--text-muted);
+    }
+
+    /* Anti-pattern list */
+    .anti-card { padding: 28px 32px; }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.84rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 300;
+        color: var(--text-muted);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 700; font-size: 0.85rem; }
+    .anti-list .o { color: var(--success); font-weight: 700; font-size: 0.85rem; }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 64px;
+    }
+
+    .manifesto-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.8;
+        background: linear-gradient(135deg, #fff, #c8a0ff);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 20px rgba(140, 80, 255, 0.4));
+    }
+
+    .manifesto-sub {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bg-orb, .bg-particle, .bg-line,
+        .glow-card.bright .glow-card-text,
+        .glow-card.bright .glow-line,
+        .compare-panel.dark .compare-text,
+        .dash-bar-fill,
+        .hero-title,
+        .flicker { animation: none !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title,
+        .hero-reflection { font-size: 3rem; letter-spacing: 8px; }
+
+        .glow-demo,
+        .compare-row,
+        .dash-grid { grid-template-columns: 1fr; }
+
+        .btn-demo { flex-direction: column; }
+
+        .intro-card,
+        .anti-card,
+        .wild-card { padding: 24px 24px; }
+    }
+</style>
+
+<body>
+    <div class="bg">
+        <div class="bg-noise"></div>
+        <div class="bg-gradient"></div>
+        <div class="bg-orb bg-orb--1"></div>
+        <div class="bg-orb bg-orb--2"></div>
+        <div class="bg-orb bg-orb--3"></div>
+        <div class="bg-vignette"></div>
+        <div class="bg-particle" style="--x: 12%; --y: 18%; --size: 3px; --dur: 8s; --delay: 0s"></div>
+        <div class="bg-particle" style="--x: 88%; --y: 32%; --size: 2px; --dur: 12s; --delay: 1s"></div>
+        <div class="bg-particle" style="--x: 72%; --y: 72%; --size: 4px; --dur: 10s; --delay: 2s"></div>
+        <div class="bg-particle" style="--x: 22%; --y: 62%; --size: 2px; --dur: 9s; --delay: 0.5s"></div>
+        <div class="bg-particle" style="--x: 48%; --y: 12%; --size: 3px; --dur: 11s; --delay: 3s"></div>
+        <div class="bg-particle" style="--x: 92%; --y: 52%; --size: 2px; --dur: 7s; --delay: 1.5s"></div>
+        <div class="bg-line"></div>
+    </div>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Light-Emitting UI</div>
+            <h1 class="hero-title">Gl<span class="flicker">o</span>w</h1>
+            <div class="hero-reflection" aria-hidden="true">Gl<span class="flicker">o</span>w</div>
+            <p class="hero-tagline">
+                Not colored. Not highlighted.<br>
+                Lit from within.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="panel intro-card">
+            <p class="intro-text">
+                Glowmorphism treats UI elements as <strong>light sources</strong>, not surfaces.
+                Where neumorphism extruded plastic and glassmorphism frosted glass,
+                glowmorphism makes elements glow like neon tubes in a dark room.
+                <br><br>
+                One color family. One darkness.
+                The glow itself carries all the hierarchy you need &mdash;
+                <strong>dim for rest, bright for action, blinding for urgency.</strong>
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01 -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Glow Intensity Is Hierarchy</h2>
+            <p class="section-desc">
+                The same purple at three brightness levels tells three different stories.
+                <em>Dim</em> is background, <em>lit</em> is interactive, <em>bright</em> is urgent.
+                No second color needed.
+            </p>
+            <div class="glow-demo">
+                <div class="glow-card dim">
+                    <div class="glow-card-label">Dim</div>
+                    <div class="glow-card-text">Rest</div>
+                    <div class="glow-line"></div>
+                    <div class="glow-card-sub">Background &middot; Passive</div>
+                </div>
+                <div class="glow-card mid">
+                    <div class="glow-card-label">Lit</div>
+                    <div class="glow-card-text">Live</div>
+                    <div class="glow-line"></div>
+                    <div class="glow-card-sub">Interactive &middot; Active</div>
+                </div>
+                <div class="glow-card bright">
+                    <div class="glow-card-label">Bright</div>
+                    <div class="glow-card-text">Now</div>
+                    <div class="glow-line"></div>
+                    <div class="glow-card-sub">Urgent &middot; Primary</div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Glowmorphism &mdash; same hue, layered shadows */</span><br>
+                <span class="kw">color</span>: <span class="val">#c8a0ff</span>;<br>
+                <span class="kw">text-shadow</span>:<br>
+                &nbsp;&nbsp;0 0 <span class="val">8px</span> rgba(140,80,255,0.4),&nbsp;&nbsp;<span class="cmt">/* core */</span><br>
+                &nbsp;&nbsp;0 0 <span class="val">28px</span> rgba(140,80,255,0.4); <span class="cmt">/* halo */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02 -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Darkness Is the Canvas</h2>
+            <p class="section-desc">
+                Glow on a white background is just colored text.
+                Glow on darkness is a <em>light source</em>.
+                Same element, completely different physics.
+                The darkness isn't absence &mdash; it's what makes the glow real.
+            </p>
+            <div class="compare-row">
+                <div class="compare-panel dark">
+                    <div class="compare-label good">On Darkness</div>
+                    <div class="compare-text">OPEN</div>
+                    <div class="compare-sub">The glow bleeds. It lives.</div>
+                </div>
+                <div class="compare-panel flat">
+                    <div class="compare-label muted">On Light</div>
+                    <div class="compare-text">OPEN</div>
+                    <div class="compare-sub">Just purple text. Dead.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03 -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">One Color. All the Hierarchy.</h2>
+            <p class="section-desc">
+                The temptation is to add pink for warm, blue for cool, green for success.
+                Resist. A single color family at different intensities
+                creates a more cohesive, more <em>atmospheric</em> system than any rainbow.
+            </p>
+            <div class="btn-demo">
+                <button class="glow-btn primary">Primary</button>
+                <button class="glow-btn">Secondary</button>
+                <button class="glow-btn" disabled>Disabled</button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Night Dashboard</h2>
+            <p class="section-desc">
+                Glow as a system, not a gimmick.
+                The intensity carries the role &mdash; bright for pulse, dim for context.
+                Every element is the same color. The darkness is the grid.
+            </p>
+            <div class="dash-grid">
+                <div class="panel dash-card">
+                    <div class="dash-label">Revenue</div>
+                    <div class="dash-value" id="dash-revenue">$48.2k</div>
+                    <div class="dash-trend" id="dash-trend">&#9650; 12.3%</div>
+                    <div class="dash-bar"><div class="dash-bar-fill" style="width: 72%"></div></div>
+                </div>
+                <div class="panel dash-card">
+                    <div class="dash-label">Uptime</div>
+                    <div class="dash-value">99.97%</div>
+                    <div class="dash-sub">Last 30 days</div>
+                    <div class="dash-bar"><div class="dash-bar-fill" style="width: 99%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- In The Wild -->
+        <section class="section">
+            <div class="section-label">In The Wild</div>
+            <h2 class="section-title">Where It Lives</h2>
+            <p class="section-desc">
+                Glowmorphism isn't a hypothetical.
+                It's the design language behind a real product.
+            </p>
+            <div class="panel wild-card">
+                <div class="wild-badge">Production</div>
+                <div class="wild-title">Beato &mdash; Personal Music Streaming</div>
+                <p class="wild-desc">
+                    Beato's entire UI is built on this system.
+                    Purple glow on pitch darkness. Pulsing background orbs.
+                    Floating particles. Equalizer bars.
+                    Every visual element shares the same violet family &mdash;
+                    intensity is the only dial.
+                </p>
+                <div class="wild-features">
+                    <span class="wild-feature">Purple-only palette</span>
+                    <span class="wild-feature">Pulsing glow orbs</span>
+                    <span class="wild-feature">Floating particles</span>
+                    <span class="wild-feature">Vinyl ring animations</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="panel anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> text-shadow: 0 0 99px on everything</li>
+                    <li><span class="x">&#x2717;</span> Rainbow RGB on every surface &mdash; one color family only</li>
+                    <li><span class="x">&#x2717;</span> Glow without darkness to justify it</li>
+                    <li><span class="x">&#x2717;</span> Cheap cyberpunk cosplay &mdash; all grime, no system</li>
+                    <li><span class="o">&#x2713;</span> Glow that simulates actual light emission</li>
+                    <li><span class="o">&#x2713;</span> Intensity as the only hierarchy dial</li>
+                    <li><span class="o">&#x2713;</span> Pitch darkness as a deliberate design surface</li>
+                    <li><span class="o">&#x2713;</span> One color &mdash; the constraint is the power</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                A city at night doesn't glow<br>
+                because every light is on.<br>
+                It glows because the right ones are.
+            </p>
+            <p class="manifesto-sub">
+                One color. One darkness. That's the whole trick.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    setInterval(function() {
+        var val = (42 + Math.random() * 12).toFixed(1);
+        document.getElementById('dash-revenue').textContent = '$' + val + 'k';
+        var trend = (8 + Math.random() * 10).toFixed(1);
+        document.getElementById('dash-trend').textContent = '\u25B2 ' + trend + '%';
+    }, 4000);
+</script>

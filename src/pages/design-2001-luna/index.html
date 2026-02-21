@@ -32,12 +32,42 @@
         font-size: 11px;
         background: linear-gradient(
             180deg,
-            #0054E3 0%,
-            #2E8AEF 50%,
-            #21A121 80%,
-            #188218 100%
+            #0855C5 0%,
+            #1A6FE0 15%,
+            #3A95F0 30%,
+            #68B8F8 42%,
+            #89CFF8 48%,
+            #A0D8F0 52%,
+            #78C870 56%,
+            #5BB848 62%,
+            #44A832 70%,
+            #3C9828 80%,
+            #358822 90%,
+            #2D7818 100%
         );
         background-attachment: fixed;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background:
+            /* wispy clouds */
+            radial-gradient(ellipse 400px 80px at 15% 22%, rgba(255,255,255,0.35) 0%, transparent 70%),
+            radial-gradient(ellipse 300px 50px at 60% 18%, rgba(255,255,255,0.25) 0%, transparent 70%),
+            radial-gradient(ellipse 250px 60px at 80% 28%, rgba(255,255,255,0.2) 0%, transparent 70%),
+            radial-gradient(ellipse 180px 40px at 35% 32%, rgba(255,255,255,0.15) 0%, transparent 70%),
+            /* rolling hills - foreground */
+            radial-gradient(ellipse 120% 200px at 30% 58%, #5CBB45 0%, transparent 60%),
+            radial-gradient(ellipse 100% 180px at 75% 60%, #4EAD38 0%, transparent 55%),
+            radial-gradient(ellipse 140% 160px at 50% 56%, #62C04A 0%, transparent 50%),
+            /* sunlit glow on hills */
+            radial-gradient(ellipse 300px 200px at 40% 55%, rgba(140, 220, 80, 0.3) 0%, transparent 60%);
     }
 
     .layout {

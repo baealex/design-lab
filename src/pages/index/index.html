@@ -519,7 +519,11 @@
     };
 
     var designPages = pages
-        .filter(function(p) { return p.year !== null; })
+        .filter(function(p) { return p.category === 'design' && p.year !== null; })
+        .sort(function(a, b) { return a.year - b.year; });
+
+    var conceptPages = pages
+        .filter(function(p) { return p.category === 'concept' && p.year !== null; })
         .sort(function(a, b) { return a.year - b.year; });
 
     var effectPages = pages.filter(function(p) { return p.category === 'effect'; });
@@ -559,6 +563,30 @@
             });
             frag.appendChild(btn);
         });
+
+        // Concepts label
+        if (conceptPages.length > 0) {
+            var conceptLabel = document.createElement('div');
+            conceptLabel.className = 'section-divider';
+            conceptLabel.textContent = 'Concepts';
+            frag.appendChild(conceptLabel);
+
+            conceptPages.forEach(function(page) {
+                var btn = document.createElement('button');
+                btn.className = 'card';
+                btn.dataset.name = page.name;
+                btn.innerHTML =
+                    '<span class="card-year">' + page.year + '</span>' +
+                    '<div class="card-body">' +
+                        '<div class="card-title">' + page.title + '</div>' +
+                        '<div class="card-desc">' + page.description + '</div>' +
+                    '</div>';
+                btn.addEventListener('click', function() {
+                    selectPage(page);
+                });
+                frag.appendChild(btn);
+            });
+        }
 
         // Effects label
         if (effectPages.length > 0) {
@@ -634,12 +662,13 @@
     // Find page by name
     function findPage(name) {
         return designPages.find(function(p) { return p.name === name; })
+            || conceptPages.find(function(p) { return p.name === name; })
             || effectPages.find(function(p) { return p.name === name; });
     }
 
     // Get all pages in display order
     function getAllPages() {
-        return designPages.concat(effectPages);
+        return designPages.concat(conceptPages, effectPages);
     }
 
     // Navigate to next/prev page

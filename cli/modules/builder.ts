@@ -58,7 +58,7 @@ export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
                         name: page,
                         title: metadata.title,
                         description: metadata.description,
-                        year: page.match(/^design-(\d{4})/)?.[1] ? parseInt(page.match(/^design-(\d{4})/)![1], 10) : null,
+                        year: page.match(/^(?:design|concept)-(\d{4})/)?.[1] ? parseInt(page.match(/^(?:design|concept)-(\d{4})/)![1], 10) : null,
                         category: page.split('-')[0] || '',
                     });
                 } catch {
