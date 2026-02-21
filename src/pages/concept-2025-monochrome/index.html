@@ -1,0 +1,977 @@
+<!-- layout: base.html -->
+<!-- title: Monochrome (2025) -->
+<!-- description: Content is the only color -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg: #fbfbfd;
+        --gray-50: #fbfbfd;
+        --gray-100: #f5f5f7;
+        --gray-200: #e5e5e7;
+        --gray-300: #d1d1d6;
+        --gray-400: #aeaeb2;
+        --gray-500: #86868b;
+        --gray-600: #6e6e73;
+        --gray-700: #48484a;
+        --gray-800: #1d1d1f;
+        --gray-900: #0a0a0a;
+        --white: #ffffff;
+        --surface: rgba(255, 255, 255, 0.72);
+        --surface-border: rgba(0, 0, 0, 0.06);
+        --shadow-sm: rgba(0, 0, 0, 0.04);
+        --shadow-md: rgba(0, 0, 0, 0.08);
+        --shadow-lg: rgba(0, 0, 0, 0.12);
+        --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--gray-800);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Background */
+    .bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .bg-dots {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+        background-size: 32px 32px;
+        mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 20%, transparent 70%);
+        -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 20%, transparent 70%);
+    }
+
+    .bg-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        pointer-events: none;
+        opacity: 0.4;
+    }
+
+    .bg-orb--1 {
+        width: 500px;
+        height: 500px;
+        background: rgba(0, 0, 0, 0.03);
+        top: -100px;
+        right: -100px;
+        animation: orb-drift-1 12s ease-in-out infinite;
+    }
+
+    .bg-orb--2 {
+        width: 400px;
+        height: 400px;
+        background: rgba(0, 0, 0, 0.025);
+        bottom: -80px;
+        left: -80px;
+        animation: orb-drift-2 15s ease-in-out infinite;
+    }
+
+    .bg-orb--3 {
+        width: 300px;
+        height: 300px;
+        background: rgba(0, 0, 0, 0.02);
+        top: 40%;
+        left: 30%;
+        animation: orb-drift-3 18s ease-in-out infinite;
+    }
+
+    @keyframes orb-drift-1 {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(-30px, 20px); }
+    }
+
+    @keyframes orb-drift-2 {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(25px, -15px); }
+    }
+
+    @keyframes orb-drift-3 {
+        0%, 100% { transform: translate(0, 0); }
+        33% { transform: translate(15px, -10px); }
+        66% { transform: translate(-10px, 8px); }
+    }
+
+    /* Layout */
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 64px 0 56px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        padding: 6px 18px;
+        border-radius: 20px;
+        background: var(--gray-100);
+        border: 1px solid var(--surface-border);
+        color: var(--gray-600);
+        margin-bottom: 24px;
+    }
+
+    .hero-title {
+        font-size: 5.5rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--gray-800);
+        line-height: 1;
+        margin-bottom: 0;
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--gray-500);
+        margin-top: 20px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    .hero-used {
+        font-size: 0.75rem;
+        color: var(--gray-400);
+        margin-top: 16px;
+    }
+
+    .mono-link {
+        color: var(--gray-600);
+        text-decoration: none;
+        border-bottom: 1px solid var(--gray-300);
+        transition: color 150ms var(--ease), border-color 150ms var(--ease);
+    }
+
+    .mono-link:hover {
+        color: var(--gray-800);
+        border-color: var(--gray-600);
+    }
+
+    /* Panel (glass surface) */
+    .panel {
+        background: var(--surface);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        box-shadow: 0 1px 3px var(--shadow-sm), 0 4px 12px var(--shadow-sm);
+    }
+
+    /* Intro */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.9;
+        font-weight: 300;
+        color: var(--gray-600);
+        margin: 0;
+    }
+
+    .intro-text strong {
+        font-weight: 500;
+        color: var(--gray-800);
+    }
+
+    /* Divider */
+    .divider {
+        margin: 48px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gray-200), transparent);
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--gray-400);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--gray-800);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--gray-500);
+        font-weight: 300;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--gray-800);
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: var(--gray-100);
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: var(--gray-700);
+    }
+
+    /* Principle 01: Radius demos */
+    .radius-demo {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+    }
+
+    .radius-card {
+        background: var(--white);
+        border: 1px solid var(--surface-border);
+        padding: 24px 14px;
+        text-align: center;
+        transition: box-shadow 150ms var(--ease), transform 150ms var(--ease);
+    }
+
+    .radius-card:hover {
+        box-shadow: 0 2px 8px var(--shadow-md);
+        transform: translateY(-1px);
+    }
+
+    .radius-card--16 { border-radius: 16px; }
+    .radius-card--12 { border-radius: 12px; }
+    .radius-card--8 { border-radius: 8px; }
+    .radius-card--pill { border-radius: 9999px; }
+
+    .radius-value {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--gray-800);
+        margin-bottom: 6px;
+    }
+
+    .radius-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--gray-400);
+        margin-bottom: 4px;
+    }
+
+    .radius-desc {
+        font-size: 0.68rem;
+        color: var(--gray-500);
+        line-height: 1.5;
+    }
+
+    /* Principle 02: Gray swatches */
+    .swatch-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+    }
+
+    .swatch {
+        border-radius: 12px;
+        padding: 20px 10px 14px;
+        text-align: center;
+        border: 1px solid var(--surface-border);
+        transition: transform 150ms var(--ease);
+    }
+
+    .swatch:hover {
+        transform: scale(1.04);
+    }
+
+    .swatch-color {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        margin: 0 auto 10px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .swatch-name {
+        font-size: 0.6rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        letter-spacing: 0.04em;
+        margin-bottom: 2px;
+    }
+
+    .swatch-hex {
+        font-size: 0.58rem;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        color: var(--gray-400);
+    }
+
+    /* Principle 03: Buttons */
+    .btn-demo {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .mono-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 11px 26px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 150ms var(--ease);
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.02em;
+        border: none;
+        user-select: none;
+    }
+
+    .mono-btn:active {
+        transform: scale(0.98);
+    }
+
+    .mono-btn.primary {
+        background: var(--gray-800);
+        color: var(--white);
+        box-shadow: 0 1px 3px var(--shadow-sm);
+    }
+
+    .mono-btn.primary:hover {
+        box-shadow: 0 4px 16px var(--shadow-lg);
+    }
+
+    .mono-btn.secondary {
+        background: var(--white);
+        color: var(--gray-800);
+        border: 1px solid var(--gray-200);
+    }
+
+    .mono-btn.secondary:hover {
+        background: var(--gray-100);
+    }
+
+    .mono-btn.ghost {
+        background: transparent;
+        color: var(--gray-600);
+    }
+
+    .mono-btn.ghost:hover {
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    /* Code block */
+    .code-block {
+        background: var(--gray-100);
+        border-radius: 10px;
+        padding: 18px 22px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: var(--gray-500);
+        overflow-x: auto;
+        border: 1px solid var(--surface-border);
+    }
+
+    .code-block .kw { color: var(--gray-800); font-weight: 500; }
+    .code-block .val { color: var(--gray-600); }
+    .code-block .cmt { color: var(--gray-400); }
+
+    /* Principle 04: Glass demo */
+    .glass-demo {
+        position: relative;
+        background: var(--gray-200);
+        border-radius: 16px;
+        overflow: hidden;
+        height: 280px;
+    }
+
+    .glass-demo-content {
+        padding: 56px 24px 24px;
+        font-size: 0.8rem;
+        line-height: 2;
+        color: var(--gray-600);
+    }
+
+    .glass-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--surface-border);
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .glass-header-dots {
+        display: flex;
+        gap: 5px;
+    }
+
+    .glass-header-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--gray-300);
+    }
+
+    .glass-fab {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 9999px;
+        padding: 10px 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: box-shadow 150ms var(--ease), transform 150ms var(--ease);
+    }
+
+    .glass-fab:hover {
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16);
+        transform: scale(1.05);
+    }
+
+    .glass-fab:active {
+        transform: scale(0.98);
+    }
+
+    .glass-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .glass-compare-item {
+        padding: 16px;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    .glass-compare-label {
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .glass-compare-value {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.68rem;
+        color: var(--gray-500);
+    }
+
+    .glass-compare-item.floating {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 4px 16px var(--shadow-sm);
+    }
+
+    .glass-compare-item.floating .glass-compare-label {
+        color: var(--gray-800);
+    }
+
+    .glass-compare-item.grounded {
+        background: var(--white);
+        border: 1px solid var(--surface-border);
+    }
+
+    .glass-compare-item.grounded .glass-compare-label {
+        color: var(--gray-400);
+    }
+
+    /* All Together: mini card */
+    .demo-posts-card {
+        padding: 24px 28px;
+    }
+
+    .demo-posts-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--surface-border);
+    }
+
+    .demo-post-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        transition: background 150ms var(--ease);
+        cursor: default;
+    }
+
+    .demo-post-item:last-child {
+        border-bottom: none;
+    }
+
+    .demo-post-item:hover {
+        background: rgba(0, 0, 0, 0.01);
+    }
+
+    .demo-post-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gray-300);
+        margin-right: 14px;
+        flex-shrink: 0;
+    }
+
+    .demo-post-text {
+        font-size: 0.82rem;
+        color: var(--gray-600);
+        font-weight: 400;
+        flex: 1;
+    }
+
+    .demo-post-date {
+        font-size: 0.68rem;
+        color: var(--gray-400);
+        font-weight: 300;
+        margin-left: 12px;
+        flex-shrink: 0;
+    }
+
+    /* Anti-pattern list */
+    .anti-card {
+        padding: 28px 32px;
+    }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.84rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-weight: 300;
+        color: var(--gray-600);
+        line-height: 1.5;
+    }
+
+    .anti-list li:last-child {
+        border-bottom: none;
+    }
+
+    .anti-list .x {
+        color: var(--gray-800);
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .anti-list .o {
+        color: var(--gray-500);
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .anti-list li em {
+        color: var(--gray-800);
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 64px;
+    }
+
+    .manifesto-quote {
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 1.8;
+        color: var(--gray-800);
+        letter-spacing: -0.01em;
+    }
+
+    .manifesto-attr {
+        font-size: 0.78rem;
+        color: var(--gray-400);
+        margin-top: 12px;
+        font-weight: 300;
+    }
+
+    .manifesto-sub {
+        font-size: 0.88rem;
+        color: var(--gray-500);
+        margin-top: 24px;
+        font-weight: 400;
+        letter-spacing: -0.01em;
+    }
+
+    /* Responsive */
+    @media (prefers-reduced-motion: reduce) {
+        .bg-orb { animation: none !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title {
+            font-size: 3.2rem;
+        }
+
+        .radius-demo {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .swatch-grid {
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+
+        .swatch {
+            padding: 14px 6px 10px;
+        }
+
+        .swatch-color {
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn-demo {
+            flex-direction: column;
+        }
+
+        .intro-card,
+        .anti-card {
+            padding: 24px 24px;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .swatch-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>
+
+<body>
+    <div class="bg">
+        <div class="bg-dots"></div>
+        <div class="bg-orb bg-orb--1"></div>
+        <div class="bg-orb bg-orb--2"></div>
+        <div class="bg-orb bg-orb--3"></div>
+    </div>
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Invisible Interface</div>
+            <h1 class="hero-title">Mono</h1>
+            <p class="hero-tagline">
+                Content is the only color.<br>
+                Everything else whispers.
+            </p>
+            <p class="hero-used">
+                Used in <a href="https://github.com/baealex/BLEX" target="_blank" rel="noopener" class="mono-link">BLEX</a>
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="panel intro-card">
+            <p class="intro-text">
+                Monochrome strips the interface down to <strong>black, white, and gray</strong>.
+                No accent colors. No brand tints.
+                Content &mdash; text, images, code &mdash; provides all the color the UI needs.
+                <br><br>
+                The chrome disappears, leaving only what matters.
+                Where other systems add color to create hierarchy,
+                Monochrome uses <strong>weight, spacing, and shades of gray</strong>
+                to make the interface invisible and the content vivid.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: Radius as Intent -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Radius as Intent</h2>
+            <p class="section-desc">
+                Border radius isn't decoration &mdash; it's a <em>semantic signal</em>.
+                Larger radii hold more content. Smaller radii demand faster action.
+                The radius tells you what the element does before you read a word.
+            </p>
+            <div class="radius-demo">
+                <div class="radius-card radius-card--16">
+                    <div class="radius-value">16</div>
+                    <div class="radius-label">Card</div>
+                    <div class="radius-desc">High density, needs substance</div>
+                </div>
+                <div class="radius-card radius-card--12">
+                    <div class="radius-value">12</div>
+                    <div class="radius-label">Dropdown</div>
+                    <div class="radius-desc">Focused context</div>
+                </div>
+                <div class="radius-card radius-card--8">
+                    <div class="radius-value">8</div>
+                    <div class="radius-label">Button</div>
+                    <div class="radius-desc">Instant action, crisp</div>
+                </div>
+                <div class="radius-card radius-card--pill">
+                    <div class="radius-value">&infin;</div>
+                    <div class="radius-label">Tag</div>
+                    <div class="radius-desc">Low priority, playful</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 02: Gray Is Not One Color -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Gray Is Not One Color</h2>
+            <p class="section-desc">
+                People say gray is boring. They're thinking of <em>one</em> gray. We use ten.
+                Each shade has a role &mdash; from <em>background whisper</em> to <em>foreground authority</em>.
+                The system breathes through contrast, not through hue.
+            </p>
+            <div class="swatch-grid">
+                <div class="swatch" style="background: var(--gray-50);">
+                    <div class="swatch-color" style="background: var(--gray-50);"></div>
+                    <div class="swatch-name">50</div>
+                    <div class="swatch-hex">#fbfbfd</div>
+                </div>
+                <div class="swatch" style="background: var(--gray-100);">
+                    <div class="swatch-color" style="background: var(--gray-100);"></div>
+                    <div class="swatch-name">100</div>
+                    <div class="swatch-hex">#f5f5f7</div>
+                </div>
+                <div class="swatch" style="background: var(--gray-200);">
+                    <div class="swatch-color" style="background: var(--gray-200);"></div>
+                    <div class="swatch-name">200</div>
+                    <div class="swatch-hex">#e5e5e7</div>
+                </div>
+                <div class="swatch" style="background: var(--white);">
+                    <div class="swatch-color" style="background: var(--gray-300);"></div>
+                    <div class="swatch-name">300</div>
+                    <div class="swatch-hex">#d1d1d6</div>
+                </div>
+                <div class="swatch" style="background: var(--white);">
+                    <div class="swatch-color" style="background: var(--gray-400);"></div>
+                    <div class="swatch-name">400</div>
+                    <div class="swatch-hex">#aeaeb2</div>
+                </div>
+                <div class="swatch" style="background: var(--white);">
+                    <div class="swatch-color" style="background: var(--gray-500);"></div>
+                    <div class="swatch-name">500</div>
+                    <div class="swatch-hex">#86868b</div>
+                </div>
+                <div class="swatch" style="background: var(--white);">
+                    <div class="swatch-color" style="background: var(--gray-600);"></div>
+                    <div class="swatch-name">600</div>
+                    <div class="swatch-hex">#6e6e73</div>
+                </div>
+                <div class="swatch" style="background: var(--white);">
+                    <div class="swatch-color" style="background: var(--gray-700);"></div>
+                    <div class="swatch-name">700</div>
+                    <div class="swatch-hex">#48484a</div>
+                </div>
+                <div class="swatch" style="background: var(--white);">
+                    <div class="swatch-color" style="background: var(--gray-800);"></div>
+                    <div class="swatch-name">800</div>
+                    <div class="swatch-hex">#1d1d1f</div>
+                </div>
+                <div class="swatch" style="background: var(--white);">
+                    <div class="swatch-color" style="background: var(--gray-900);"></div>
+                    <div class="swatch-name">900</div>
+                    <div class="swatch-hex">#0a0a0a</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle 03: Motion Is Meaning -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Motion Is Meaning</h2>
+            <p class="section-desc">
+                Every transition exists for a reason.
+                <em>150ms</em> for interactions &mdash; fast enough to feel instant,
+                slow enough to register. <em>500ms</em> for entrance &mdash;
+                just enough time to orient. Apple's easing curve for everything.
+            </p>
+            <div class="btn-demo">
+                <button class="mono-btn primary">Primary</button>
+                <button class="mono-btn secondary">Secondary</button>
+                <button class="mono-btn ghost">Ghost</button>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Monochrome &mdash; motion specs */</span><br>
+                <span class="kw">--duration-interaction</span>: <span class="val">150ms</span>;<br>
+                <span class="kw">--duration-entrance</span>: <span class="val">500ms</span>;<br>
+                <span class="kw">--easing</span>: <span class="val">cubic-bezier(0.25, 0.1, 0.25, 1)</span>;<br>
+                <br>
+                <span class="cmt">/* Touch feedback */</span><br>
+                <span class="kw">active</span>: <span class="val">scale(0.98)</span>;<br>
+                <br>
+                <span class="cmt">/* Shadow hierarchy */</span><br>
+                <span class="kw">--shadow-sm</span>: <span class="val">0 1px 3px rgba(0,0,0,0.04)</span>;<br>
+                <span class="kw">--shadow-md</span>: <span class="val">0 4px 12px rgba(0,0,0,0.08)</span>;<br>
+                <span class="kw">--shadow-lg</span>: <span class="val">0 8px 24px rgba(0,0,0,0.12)</span>;
+            </div>
+        </section>
+
+        <!-- Principle 04: Glass for What Floats -->
+        <section class="section">
+            <div class="section-label">Principle 04</div>
+            <h2 class="section-title">Glass for What Floats</h2>
+            <p class="section-desc">
+                Elements that live <em>inside</em> content are solid white.
+                Elements that float <em>above</em> content are glass &mdash;
+                <code>backdrop-blur</code> with semi-transparent white.
+                The blur tells you it's hovering. The transparency keeps you grounded.
+            </p>
+            <div class="glass-demo">
+                <div class="glass-header">
+                    <div class="glass-header-dots">
+                        <div class="glass-header-dot"></div>
+                        <div class="glass-header-dot"></div>
+                        <div class="glass-header-dot"></div>
+                    </div>
+                    <span>white/80 &middot; blur(12px)</span>
+                </div>
+                <div class="glass-demo-content">
+                    Content sits behind the glass. The header blurs it gently,
+                    just enough to separate layers without hiding anything.
+                    The floating action bar does the same &mdash; pill-shaped,
+                    translucent, casting a soft shadow. Glass for what floats.
+                    Solid for what sits. That's the rule.
+                </div>
+                <div class="glass-fab">
+                    &#x270E; Edit &middot; blur(20px)
+                </div>
+            </div>
+            <div class="glass-compare">
+                <div class="glass-compare-item floating">
+                    <div class="glass-compare-label">Floating</div>
+                    <div class="glass-compare-value">white/80 + blur</div>
+                </div>
+                <div class="glass-compare-item grounded">
+                    <div class="glass-compare-label">Grounded</div>
+                    <div class="glass-compare-value">white + border</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">White Surface, Gray System</h2>
+            <p class="section-desc">
+                A card that needs no color to communicate.
+                Title weight pulls the eye. Gray text steps back. Subtle borders contain.
+                The content &mdash; whatever it may be &mdash; is the only thing that gets to be vivid.
+            </p>
+            <div class="panel demo-posts-card">
+                <div class="demo-posts-title">Recent Posts</div>
+                <div class="demo-post-item">
+                    <div class="demo-post-dot"></div>
+                    <div class="demo-post-text">Why monochrome interfaces feel faster than colorful ones</div>
+                    <div class="demo-post-date">Feb 14</div>
+                </div>
+                <div class="demo-post-item">
+                    <div class="demo-post-dot"></div>
+                    <div class="demo-post-text">The semantic weight of border-radius in component systems</div>
+                    <div class="demo-post-date">Feb 9</div>
+                </div>
+                <div class="demo-post-item">
+                    <div class="demo-post-dot"></div>
+                    <div class="demo-post-text">Content-first design: letting images and code be the palette</div>
+                    <div class="demo-post-date">Jan 28</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="panel anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Gray because you're lazy &mdash; <em>this gray has a system</em></li>
+                    <li><span class="x">&#x2717;</span> "Dark mode" with inverted colors &mdash; <em>Monochrome is light by nature</em></li>
+                    <li><span class="x">&#x2717;</span> Adding "just a little blue" for links &mdash; <em>resist</em></li>
+                    <li><span class="x">&#x2717;</span> Flat design &mdash; <em>we have shadows, just subtle ones</em></li>
+                    <li><span class="o">&#x2713;</span> Content provides all the color</li>
+                    <li><span class="o">&#x2713;</span> Every gray has a semantic role</li>
+                    <li><span class="o">&#x2713;</span> Invisible chrome, visible content</li>
+                    <li><span class="o">&#x2713;</span> Glass for overlays, solid for content</li>
+                    <li><span class="o">&#x2713;</span> Radius and weight carry the hierarchy</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-quote">
+                &ldquo;Good design is actually harder to notice<br>
+                than poor design.&rdquo;
+            </p>
+            <p class="manifesto-attr">&mdash; Donald Norman</p>
+            <p class="manifesto-sub">We took that literally.</p>
+        </footer>
+    </div>
+</body>

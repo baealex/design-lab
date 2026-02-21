@@ -1,0 +1,1184 @@
+<!-- layout: base.html -->
+<!-- title: Blue Soap (2025) -->
+<!-- description: Clean like a bar of blue soap -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg: #f0f8ff;
+        --primary: #1194ff;
+        --primary-soft: #e6f7ff;
+        --accent: #00a5fe;
+        --text: #1d1d1f;
+        --text-secondary: #6e6e73;
+        --text-hint: #aeaeb2;
+        --surface: rgba(255, 255, 255, 0.92);
+        --surface-border: rgba(17, 148, 255, 0.12);
+        --shadow-blue: rgba(17, 148, 255, 0.15);
+        --shadow-blue-lg: rgba(17, 148, 255, 0.25);
+        --success: #198754;
+        --danger: #ff4d4f;
+        --radius: 24px;
+        --radius-pill: 9999px;
+        --radius-sm: 12px;
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        margin: 0;
+    }
+
+    .bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(165deg, #e6f7ff 0%, #f4fbff 40%, #ffffff 100%);
+        pointer-events: none;
+    }
+
+    .bg-bubbles {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .bubble {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(17, 148, 255, 0.06);
+        border: 1px solid rgba(17, 148, 255, 0.06);
+        bottom: -120px;
+        animation: bubble-rise var(--dur) ease-in infinite;
+        animation-delay: var(--delay);
+    }
+
+    @keyframes bubble-rise {
+        0% {
+            transform: translateX(0) scale(1);
+            opacity: 0;
+        }
+        10% { opacity: 1; }
+        90% { opacity: 0.6; }
+        100% {
+            transform: translateX(var(--drift)) scale(0.6);
+            opacity: 0;
+            bottom: 110%;
+        }
+    }
+
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    .panel {
+        background: var(--surface);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius);
+        box-shadow: 0 4px 20px var(--shadow-blue);
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 64px 0 56px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        padding: 6px 18px;
+        border-radius: var(--radius-pill);
+        background: var(--primary-soft);
+        border: 1px solid var(--surface-border);
+        color: var(--primary);
+        margin-bottom: 24px;
+    }
+
+    .hero-title {
+        font-size: 5.5rem;
+        font-weight: 700;
+        letter-spacing: 4px;
+        background: linear-gradient(135deg, #1194ff 0%, #00a5fe 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.1;
+        margin: 0;
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-top: 20px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    /* Intro */
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        font-size: 0.92rem;
+        line-height: 1.9;
+        font-weight: 300;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .intro-text strong {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    /* Divider */
+    .divider {
+        margin: 48px 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(17, 148, 255, 0.15), transparent);
+    }
+
+    /* Section */
+    .section { margin-bottom: 48px; }
+
+    .section-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--primary);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text);
+    }
+
+    .section-desc {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        font-weight: 300;
+        margin-bottom: 24px;
+    }
+
+    .section-desc em {
+        color: var(--primary);
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .section-desc code {
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.82em;
+        background: var(--primary-soft);
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: var(--primary);
+    }
+
+    /* Code block */
+    .code-block {
+        background: rgba(17, 148, 255, 0.03);
+        border-radius: 16px;
+        padding: 18px 22px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: var(--text-secondary);
+        overflow-x: auto;
+        margin-top: 20px;
+        border: 1px solid var(--surface-border);
+    }
+
+    .code-block .kw { color: var(--primary); }
+    .code-block .val { color: var(--accent); }
+    .code-block .cmt { color: var(--text-hint); }
+
+    /* ─── Principle 01: One Hue ─── */
+    .shadow-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .shadow-card {
+        padding: 32px 24px;
+        text-align: center;
+        border-radius: var(--radius);
+        background: #ffffff;
+    }
+
+    .shadow-card.blue-shadow {
+        box-shadow: 0 8px 30px rgba(17, 148, 255, 0.2);
+        border: 1px solid rgba(17, 148, 255, 0.08);
+    }
+
+    .shadow-card.black-shadow {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .shadow-card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .shadow-card.blue-shadow .shadow-card-title { color: var(--primary); }
+    .shadow-card.black-shadow .shadow-card-title { color: var(--text); }
+
+    .shadow-card-sub {
+        font-size: 0.72rem;
+        color: var(--text-hint);
+    }
+
+    .shadow-card-btn {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 10px 24px;
+        border-radius: var(--radius-pill);
+        border: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+    }
+
+    .shadow-card.blue-shadow .shadow-card-btn {
+        background: linear-gradient(135deg, #1194ff, #00a5fe);
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(17, 148, 255, 0.3);
+    }
+
+    .shadow-card.blue-shadow .shadow-card-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(17, 148, 255, 0.4);
+    }
+
+    .shadow-card.black-shadow .shadow-card-btn {
+        background: #1d1d1f;
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .shadow-card.black-shadow .shadow-card-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    }
+
+    .hue-strip {
+        display: flex;
+        gap: 2px;
+        margin-top: 24px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .hue-cell {
+        flex: 1;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 0.58rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        transition: flex 400ms var(--ease);
+        cursor: default;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .hue-cell:hover {
+        flex: 2;
+    }
+
+    .hue-cell-role {
+        font-size: 0.52rem;
+        font-weight: 400;
+        opacity: 0;
+        transition: opacity 300ms var(--ease);
+    }
+
+    .hue-cell:hover .hue-cell-role {
+        opacity: 1;
+    }
+
+    /* ─── Principle 02: Soap Film ─── */
+    .film-stack {
+        position: relative;
+        height: 260px;
+    }
+
+    .film-layer {
+        position: absolute;
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.78rem;
+        font-weight: 600;
+        transition: transform 500ms var(--ease), box-shadow 500ms var(--ease);
+    }
+
+    .film-layer-bg {
+        width: 80%;
+        height: 200px;
+        left: 10%;
+        top: 0;
+        background: linear-gradient(135deg, rgba(17, 148, 255, 0.08), rgba(17, 148, 255, 0.03));
+        border: 1px solid rgba(17, 148, 255, 0.06);
+        color: var(--text-hint);
+    }
+
+    .film-layer-mid {
+        width: 70%;
+        height: 160px;
+        left: 15%;
+        top: 20px;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 20px rgba(17, 148, 255, 0.1);
+        color: var(--text-secondary);
+    }
+
+    .film-layer-top {
+        width: 60%;
+        height: 120px;
+        left: 20%;
+        top: 40px;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(17, 148, 255, 0.12);
+        box-shadow: 0 8px 30px rgba(17, 148, 255, 0.15);
+        color: var(--text);
+    }
+
+    .film-stack:hover .film-layer-bg {
+        transform: translateY(-10px);
+    }
+
+    .film-stack:hover .film-layer-mid {
+        transform: translateY(0px);
+        box-shadow: 0 8px 30px rgba(17, 148, 255, 0.15);
+    }
+
+    .film-stack:hover .film-layer-top {
+        transform: translateY(10px);
+        box-shadow: 0 12px 40px rgba(17, 148, 255, 0.2);
+    }
+
+    .film-label {
+        font-size: 0.68rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .film-label span {
+        font-size: 0.56rem;
+        font-weight: 400;
+        color: var(--text-hint);
+    }
+
+    .film-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .film-demo {
+        padding: 24px;
+        border-radius: var(--radius);
+        text-align: center;
+    }
+
+    .film-demo.soap {
+        background: var(--surface);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--surface-border);
+        box-shadow: 0 4px 20px var(--shadow-blue);
+    }
+
+    .film-demo.solid {
+        background: #ffffff;
+        border: 1px solid #e5e5ea;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .film-demo-label {
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .film-demo.soap .film-demo-label { color: var(--primary); }
+    .film-demo.solid .film-demo-label { color: var(--text-hint); }
+
+    .film-demo-text {
+        font-size: 0.82rem;
+        font-weight: 300;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* ─── Principle 03: Everything Floats ─── */
+    .float-pool {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+    }
+
+    .float-item {
+        padding: 28px 16px;
+        text-align: center;
+        border-radius: var(--radius);
+        background: var(--surface);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--surface-border);
+        box-shadow: 0 4px 20px var(--shadow-blue);
+        cursor: pointer;
+        transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+    }
+
+    .float-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 36px var(--shadow-blue-lg);
+    }
+
+    .float-item:active {
+        transform: translateY(-2px) scale(0.98);
+    }
+
+    .float-item-icon {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+
+    .float-item-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px;
+    }
+
+    .float-item-sub {
+        font-size: 0.65rem;
+        color: var(--text-hint);
+    }
+
+    .pill-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pill-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 28px;
+        border-radius: var(--radius-pill);
+        font-size: 0.82rem;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: box-shadow 250ms var(--ease), transform 250ms var(--ease);
+        border: none;
+        letter-spacing: 0.02em;
+    }
+
+    .pill-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .pill-btn:active {
+        transform: scale(0.98);
+    }
+
+    .pill-btn.primary {
+        background: linear-gradient(135deg, #1194ff, #00a5fe);
+        color: #ffffff;
+        box-shadow: 0 4px 16px var(--shadow-blue);
+    }
+
+    .pill-btn.primary:hover {
+        box-shadow: 0 8px 28px var(--shadow-blue-lg);
+    }
+
+    .pill-btn.outline {
+        background: #ffffff;
+        color: var(--primary);
+        border: 1px solid var(--surface-border);
+        box-shadow: 0 2px 8px rgba(17, 148, 255, 0.06);
+    }
+
+    .pill-btn.outline:hover {
+        box-shadow: 0 4px 16px var(--shadow-blue);
+    }
+
+    .pill-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+
+    .tag-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 12px;
+    }
+
+    .tag {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: var(--radius-sm);
+        font-size: 0.72rem;
+        font-weight: 500;
+        background: var(--primary-soft);
+        color: var(--primary);
+        border: 1px solid var(--surface-border);
+    }
+
+    /* ─── All Together: Wash ─── */
+    .wash-demo {
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .wash-header {
+        padding: 16px 24px;
+        background: rgba(17, 148, 255, 0.03);
+        border-bottom: 1px solid var(--surface-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .wash-header-title {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .wash-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: var(--radius-pill);
+        font-size: 0.68rem;
+        font-weight: 600;
+        background: rgba(17, 148, 255, 0.1);
+        color: var(--primary);
+    }
+
+    .wash-body {
+        padding: 24px;
+    }
+
+    .wash-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .wash-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .soap-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .soap-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .soap-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid rgba(17, 148, 255, 0.2);
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.88rem;
+        color: var(--text);
+        background: #ffffff;
+        box-shadow: 0 2px 4px rgba(17, 148, 255, 0.08);
+        transition: all 250ms var(--ease);
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .soap-input::placeholder {
+        color: rgba(17, 148, 255, 0.4);
+    }
+
+    .soap-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(0, 165, 254, 0.1), 0 2px 8px rgba(17, 148, 255, 0.15);
+    }
+
+    .soap-switch-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .soap-switch {
+        width: 44px;
+        height: 24px;
+        border-radius: 12px;
+        background: rgba(17, 148, 255, 0.15);
+        position: relative;
+        cursor: pointer;
+        transition: background 250ms var(--ease);
+        border: none;
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .soap-switch.on {
+        background: var(--primary);
+    }
+
+    .soap-switch-knob {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        transition: left 250ms var(--ease);
+        pointer-events: none;
+    }
+
+    .soap-switch.on .soap-switch-knob {
+        left: 22px;
+    }
+
+    .soap-switch-label {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+    }
+
+    .wash-alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        border-left: 4px solid var(--success);
+        background: rgba(25, 135, 84, 0.08);
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--success);
+        margin-top: 4px;
+        display: none;
+    }
+
+    .wash-alert.show {
+        display: block;
+        animation: alert-in 300ms var(--ease);
+    }
+
+    @keyframes alert-in {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .wash-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--surface-border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .wash-footer .pill-btn {
+        padding: 10px 24px;
+        font-size: 0.78rem;
+    }
+
+    /* Terminal */
+    .mini-terminal {
+        background: rgba(17, 148, 255, 0.03);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        padding: 16px 22px;
+        font-family: 'SF Mono', 'Fira Code', monospace;
+        font-size: 0.72rem;
+        line-height: 1.9;
+        color: var(--text);
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    .mini-terminal-dots {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    .mini-terminal-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .mini-terminal-dot:nth-child(1) { background: rgba(17, 148, 255, 0.2); }
+    .mini-terminal-dot:nth-child(2) { background: rgba(17, 148, 255, 0.15); }
+    .mini-terminal-dot:nth-child(3) { background: rgba(17, 148, 255, 0.1); }
+
+    .mini-prompt { color: var(--primary); user-select: none; }
+    .mini-cmd { color: var(--text-secondary); }
+    .mini-result { color: var(--text-hint); }
+    .mini-cursor {
+        display: inline-block;
+        animation: cursor-blink 1s step-end infinite;
+    }
+
+    @keyframes cursor-blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    /* Anti-pattern list */
+    .anti-card { padding: 28px 32px; }
+
+    .anti-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .anti-list li {
+        font-size: 0.84rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(17, 148, 255, 0.06);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 300;
+        color: var(--text-secondary);
+    }
+
+    .anti-list li:last-child { border-bottom: none; }
+    .anti-list .x { color: var(--danger); font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+    .anti-list .o { color: var(--primary); font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+
+    /* Manifesto */
+    .manifesto {
+        text-align: center;
+        margin-top: 64px;
+    }
+
+    .manifesto-text {
+        font-size: 1.3rem;
+        font-weight: 600;
+        line-height: 1.8;
+        color: var(--text);
+    }
+
+    .manifesto-sub {
+        font-size: 0.78rem;
+        color: var(--text-hint);
+        margin-top: 16px;
+        line-height: 1.7;
+        font-weight: 300;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bubble { animation: none !important; display: none; }
+        .float-item, .shadow-card-btn, .pill-btn { transition: none !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-title { font-size: 3.2rem; letter-spacing: 2px; }
+
+        .shadow-compare,
+        .film-compare,
+        .wash-row { grid-template-columns: 1fr; }
+
+        .float-pool { grid-template-columns: 1fr 1fr; }
+
+        .pill-row { flex-direction: column; align-items: center; }
+
+        .intro-card,
+        .anti-card { padding: 24px; }
+
+        .wash-body { padding: 20px; }
+        .wash-footer { padding: 16px 20px; }
+
+        .hue-strip { flex-wrap: wrap; border-radius: 8px; }
+        .hue-cell { flex: 0 0 calc(33.33% - 2px); padding: 14px 0; }
+        .hue-cell:hover { flex: 0 0 calc(33.33% - 2px); }
+
+        .film-stack { height: 220px; }
+        .film-layer-bg { height: 160px; }
+        .film-layer-mid { height: 130px; }
+        .film-layer-top { height: 100px; }
+    }
+</style>
+
+<body>
+    <div class="bg"></div>
+    <div class="bg-bubbles">
+        <div class="bubble" style="width: 20px; height: 20px; left: 8%; --dur: 10s; --delay: 0s; --drift: 15px"></div>
+        <div class="bubble" style="width: 14px; height: 14px; left: 22%; --dur: 12s; --delay: 2s; --drift: -10px"></div>
+        <div class="bubble" style="width: 24px; height: 24px; left: 38%; --dur: 14s; --delay: 1s; --drift: 20px"></div>
+        <div class="bubble" style="width: 10px; height: 10px; left: 52%; --dur: 9s; --delay: 4s; --drift: -8px"></div>
+        <div class="bubble" style="width: 18px; height: 18px; left: 65%; --dur: 11s; --delay: 3s; --drift: 12px"></div>
+        <div class="bubble" style="width: 12px; height: 12px; left: 78%; --dur: 13s; --delay: 0.5s; --drift: -15px"></div>
+        <div class="bubble" style="width: 22px; height: 22px; left: 88%; --dur: 15s; --delay: 5s; --drift: 10px"></div>
+        <div class="bubble" style="width: 16px; height: 16px; left: 45%; --dur: 10s; --delay: 6s; --drift: -12px"></div>
+        <div class="bubble" style="width: 8px; height: 8px; left: 15%; --dur: 8s; --delay: 3.5s; --drift: 6px"></div>
+        <div class="bubble" style="width: 26px; height: 26px; left: 72%; --dur: 16s; --delay: 7s; --drift: -18px"></div>
+    </div>
+
+    <div class="layout">
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">Clean Interface</div>
+            <h1 class="hero-title">Soap</h1>
+            <p class="hero-tagline">
+                Clean as blue soap. Soft as a bubble.<br>
+                Light as foam.
+            </p>
+        </header>
+
+        <!-- Intro -->
+        <div class="panel intro-card">
+            <p class="intro-text">
+                Most design systems need a dozen colors.
+                Blue Soap asks: <strong>what if you only had one?</strong>
+                <br><br>
+                One hue &mdash; <strong>#1194ff</strong> &mdash; scaled by opacity.
+                Buttons at 100%. Shadows at 15%. Borders at 12%.
+                Background tint at 3%. The constraint forces every choice to be deliberate.
+                No color fights another because there's only one color to begin with.
+                <br><br>
+                The metaphor is a bar of blue soap.
+                The interface should feel like you just washed your hands &mdash;
+                <strong>refreshing, clean, done</strong>.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Principle 01: One Hue -->
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">One Hue, Every Layer</h2>
+            <p class="section-desc">
+                <code>rgba(17, 148, 255)</code> &mdash; this is the only color.
+                Buttons, shadows, borders, alerts, focus rings, background tint.
+                All the same RGB, just different opacity.
+                <em>Even shadows are blue</em>, not black.
+                That's what makes it feel cohesive instead of assembled.
+            </p>
+            <div class="shadow-compare">
+                <div class="shadow-card blue-shadow">
+                    <div class="shadow-card-title">Blue shadow</div>
+                    <div class="shadow-card-sub">rgba(17, 148, 255, 0.2)</div>
+                    <button class="shadow-card-btn">Same family</button>
+                </div>
+                <div class="shadow-card black-shadow">
+                    <div class="shadow-card-title">Black shadow</div>
+                    <div class="shadow-card-sub">rgba(0, 0, 0, 0.12)</div>
+                    <button class="shadow-card-btn">Feels foreign</button>
+                </div>
+            </div>
+            <div class="hue-strip">
+                <div class="hue-cell" style="background: #1194ff; color: #fff;">100%<span class="hue-cell-role">Buttons</span></div>
+                <div class="hue-cell" style="background: rgba(17,148,255,0.6); color: #fff;">60%<span class="hue-cell-role">Links</span></div>
+                <div class="hue-cell" style="background: rgba(17,148,255,0.25); color: var(--primary);">25%<span class="hue-cell-role">Borders</span></div>
+                <div class="hue-cell" style="background: rgba(17,148,255,0.15); color: var(--primary);">15%<span class="hue-cell-role">Shadows</span></div>
+                <div class="hue-cell" style="background: rgba(17,148,255,0.08); color: var(--primary);">8%<span class="hue-cell-role">Badges</span></div>
+                <div class="hue-cell" style="background: rgba(17,148,255,0.03); color: var(--text-hint);">3%<span class="hue-cell-role">Background</span></div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* One hue &mdash; all layers from the same RGB */</span><br>
+                <span class="kw">--primary</span>: <span class="val">#1194ff</span>; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* 100% */</span><br>
+                <span class="kw">--shadow</span>: rgba(17,148,255,<span class="val">0.15</span>); <span class="cmt">/* not black */</span><br>
+                <span class="kw">--border</span>: rgba(17,148,255,<span class="val">0.12</span>);<br>
+                <span class="kw">--badge-bg</span>: rgba(17,148,255,<span class="val">0.08</span>);<br>
+                <span class="kw">--tint</span>: rgba(17,148,255,<span class="val">0.03</span>);<br>
+                <span class="kw">--text</span>: <span class="val">#1d1d1f</span>; <span class="cmt">/* dark &mdash; never blue */</span>
+            </div>
+        </section>
+
+        <!-- Principle 02: Soap Film -->
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Soap Film Surface</h2>
+            <p class="section-desc">
+                A soap bubble isn't opaque. It's a thin film that lets light through
+                and bends what's behind it. That's <code>backdrop-filter: blur</code>
+                plus <code>rgba(255, 255, 255, 0.92)</code>.
+                The surface isn't solid white &mdash; it's <em>almost</em> white,
+                with a hint of whatever's underneath bleeding through.
+                It feels lighter than a solid card because it is.
+            </p>
+            <div class="film-stack">
+                <div class="film-layer film-layer-bg">
+                    <div class="film-label">Background<span>3% tint</span></div>
+                </div>
+                <div class="film-layer film-layer-mid">
+                    <div class="film-label">Mid layer<span>75% white + blur(8px)</span></div>
+                </div>
+                <div class="film-layer film-layer-top">
+                    <div class="film-label">Surface<span>92% white + blur(16px)</span></div>
+                </div>
+            </div>
+            <div class="film-compare">
+                <div class="film-demo soap">
+                    <div class="film-demo-label">Soap film</div>
+                    <div class="film-demo-text">
+                        Semi-transparent. Blurred backdrop.
+                        Light passes through. The card breathes.
+                    </div>
+                </div>
+                <div class="film-demo solid">
+                    <div class="film-demo-label">Solid white</div>
+                    <div class="film-demo-text">
+                        Opaque. Hard edge against the background.
+                        Heavier. It sits, it doesn't float.
+                    </div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Soap film &mdash; translucent, not opaque */</span><br>
+                <span class="kw">background</span>: rgba(255,255,255,<span class="val">0.92</span>);<br>
+                <span class="kw">backdrop-filter</span>: blur(<span class="val">12px</span>);<br>
+                <span class="kw">border</span>: 1px solid rgba(17,148,255,<span class="val">0.12</span>);<br>
+                <span class="kw">box-shadow</span>: 0 4px 20px rgba(17,148,255,<span class="val">0.15</span>);<br>
+                <br>
+                <span class="cmt">/* The border and shadow use the same blue.</span><br>
+                <span class="cmt">&nbsp;&nbsp;&nbsp;Card + shadow + border = one family. */</span>
+            </div>
+        </section>
+
+        <!-- Principle 03: Everything Floats -->
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Everything Floats</h2>
+            <p class="section-desc">
+                Soap floats. Bubbles float. So does everything in this system.
+                Hover lifts elements up and spreads their shadow.
+                <em>Nothing presses down.</em>
+                Corners are round because soap has no edges.
+                Buttons are pills because bubbles don't have corners.
+                The whole UI feels weightless &mdash; one tap and it might drift away.
+            </p>
+            <div class="float-pool">
+                <div class="float-item">
+                    <div class="float-item-icon">☁️</div>
+                    <div class="float-item-label">Cards</div>
+                    <div class="float-item-sub">Hover to lift</div>
+                </div>
+                <div class="float-item">
+                    <div class="float-item-icon">💊</div>
+                    <div class="float-item-label">Buttons</div>
+                    <div class="float-item-sub">Pill-shaped</div>
+                </div>
+                <div class="float-item">
+                    <div class="float-item-icon">🫧</div>
+                    <div class="float-item-label">Tags</div>
+                    <div class="float-item-sub">Soft corners</div>
+                </div>
+            </div>
+            <div class="pill-row">
+                <button class="pill-btn primary">Get Started</button>
+                <button class="pill-btn outline">Learn More</button>
+                <button class="pill-btn primary" disabled>Disabled</button>
+            </div>
+            <div class="tag-row">
+                <span class="tag">Tunnel</span>
+                <span class="tag">Secure</span>
+                <span class="tag">Fast</span>
+            </div>
+            <div class="code-block">
+                <span class="cmt">/* Float &mdash; hover lifts, never presses */</span><br>
+                <span class="kw">transition</span>: transform <span class="val">250ms</span> cubic-bezier(0.4,0,0.2,1),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow <span class="val">250ms</span> cubic-bezier(0.4,0,0.2,1);<br>
+                <br>
+                <span class="kw">:hover</span> {<br>
+                &nbsp;&nbsp;<span class="kw">transform</span>: translateY(<span class="val">-5px</span>);<br>
+                &nbsp;&nbsp;<span class="kw">box-shadow</span>: 0 12px 36px rgba(17,148,255,<span class="val">0.25</span>);<br>
+                }
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- All Together -->
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Put It Together</h2>
+            <p class="section-desc">
+                One hue for color. Soap film for surface. Float for interaction.
+                A settings panel that uses all three. Try the inputs, flip the toggles,
+                hit save.
+            </p>
+            <div class="panel wash-demo">
+                <div class="wash-header">
+                    <div class="wash-header-title">Account Settings</div>
+                    <span class="wash-badge">Pro Plan</span>
+                </div>
+                <div class="wash-body">
+                    <div class="wash-form">
+                        <div class="wash-row">
+                            <div class="soap-input-group">
+                                <label class="soap-label" for="app-name">Display Name</label>
+                                <input type="text" id="app-name" class="soap-input" value="Conor">
+                            </div>
+                            <div class="soap-input-group">
+                                <label class="soap-label" for="app-email">Email</label>
+                                <input type="email" id="app-email" class="soap-input" value="hello@example.com">
+                            </div>
+                        </div>
+                        <div class="soap-switch-row">
+                            <button class="soap-switch on" id="sw-notif" type="button" role="switch" aria-checked="true">
+                                <div class="soap-switch-knob"></div>
+                            </button>
+                            <span class="soap-switch-label">Email notifications</span>
+                        </div>
+                        <div class="wash-alert" id="save-alert">Settings saved successfully.</div>
+                    </div>
+                </div>
+                <div class="wash-footer">
+                    <button class="pill-btn outline" id="btn-cancel">Cancel</button>
+                    <button class="pill-btn primary" id="btn-save">Save Changes</button>
+                </div>
+            </div>
+            <div class="mini-terminal">
+                <div class="mini-terminal-dots">
+                    <div class="mini-terminal-dot"></div>
+                    <div class="mini-terminal-dot"></div>
+                    <div class="mini-terminal-dot"></div>
+                </div>
+                <span class="mini-prompt">$ </span><span class="mini-cmd">blue-soap --tokens</span><br>
+                <span class="mini-result">&nbsp;&nbsp;primary &nbsp;&nbsp;&nbsp;#1194ff</span><br>
+                <span class="mini-result">&nbsp;&nbsp;surface &nbsp;&nbsp;&nbsp;rgba(255,255,255,0.92)</span><br>
+                <span class="mini-result">&nbsp;&nbsp;shadow &nbsp;&nbsp;&nbsp;&nbsp;rgba(17,148,255,0.15)</span><br>
+                <span class="mini-result">&nbsp;&nbsp;blur &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12px</span><br>
+                <span class="mini-result">&nbsp;&nbsp;radius &nbsp;&nbsp;&nbsp;&nbsp;24 / 9999 / 12</span><br>
+                <span class="mini-prompt">$ </span><span class="mini-cursor">_</span>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What This Is Not -->
+        <section class="section">
+            <h2 class="section-title">What This Is Not</h2>
+            <div class="panel anti-card">
+                <ul class="anti-list">
+                    <li><span class="x">&#x2717;</span> Blue text on everything &mdash; body text stays dark, blue is accent only</li>
+                    <li><span class="x">&#x2717;</span> Black shadows on a blue palette &mdash; shadows match the hue</li>
+                    <li><span class="x">&#x2717;</span> Opaque cards on a tinted background &mdash; surfaces are translucent film</li>
+                    <li><span class="x">&#x2717;</span> Hover effects on static elements &mdash; only interactive things float</li>
+                    <li><span class="o">&#x2713;</span> One hue at varying opacities builds every layer</li>
+                    <li><span class="o">&#x2713;</span> Translucent surfaces with backdrop blur</li>
+                    <li><span class="o">&#x2713;</span> Float-up hover &mdash; nothing presses down</li>
+                    <li><span class="o">&#x2713;</span> Blue-tinted shadows that belong to the palette</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Manifesto -->
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Not every tool needs to look<br>
+                like a tool. Some can feel<br>
+                like a fresh start.
+            </p>
+            <p class="manifesto-sub">
+                One hue. Soap film. Everything floats.<br>
+                That's the whole system.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    /* Toggle switches */
+    document.querySelectorAll('.soap-switch').forEach(function(sw) {
+        sw.addEventListener('click', function() {
+            var isOn = sw.classList.toggle('on');
+            sw.setAttribute('aria-checked', isOn ? 'true' : 'false');
+        });
+    });
+
+    /* Save button */
+    (function() {
+        var btn = document.getElementById('btn-save');
+        var alert = document.getElementById('save-alert');
+        if (!btn || !alert) return;
+        var original = btn.textContent;
+
+        btn.addEventListener('click', function() {
+            btn.textContent = 'Saved!';
+            btn.style.background = 'linear-gradient(135deg, #198754, #157347)';
+            alert.classList.add('show');
+            setTimeout(function() {
+                btn.textContent = original;
+                btn.style.background = '';
+                alert.classList.remove('show');
+            }, 2000);
+        });
+    })();
+
+    /* Cancel button */
+    (function() {
+        var btn = document.getElementById('btn-cancel');
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            document.getElementById('app-name').value = 'Conor';
+            document.getElementById('app-email').value = 'hello@example.com';
+        });
+    })();
+</script>
