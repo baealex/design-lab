@@ -634,62 +634,6 @@
         50% { box-shadow: 0 0 10px var(--glow-shadow), 0 0 20px rgba(140, 80, 255, 0.2); }
     }
 
-    /* In The Wild */
-    .wild-card {
-        padding: 28px 32px;
-        border-color: rgba(140, 80, 255, 0.15);
-        box-shadow: 0 0 40px rgba(140, 80, 255, 0.06), 0 0 80px rgba(140, 80, 255, 0.03);
-        transition: box-shadow 0.5s ease, border-color 0.5s ease;
-    }
-
-    .wild-card:hover {
-        border-color: rgba(160, 100, 255, 0.25);
-        box-shadow: 0 0 50px rgba(140, 80, 255, 0.1), 0 0 100px rgba(140, 80, 255, 0.05);
-    }
-
-    .wild-badge {
-        display: inline-block;
-        font-size: 0.62rem;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        padding: 4px 12px;
-        border-radius: 12px;
-        background: rgba(140, 80, 255, 0.08);
-        border: 1px solid rgba(140, 80, 255, 0.15);
-        color: var(--glow-light);
-        margin-bottom: 14px;
-    }
-
-    .wild-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-
-    .wild-desc {
-        font-size: 0.84rem;
-        line-height: 1.8;
-        color: var(--text-muted);
-        font-weight: 300;
-    }
-
-    .wild-features {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 16px;
-    }
-
-    .wild-feature {
-        font-size: 0.68rem;
-        font-weight: 500;
-        padding: 5px 14px;
-        border-radius: 20px;
-        background: rgba(140, 80, 255, 0.06);
-        border: 1px solid rgba(140, 80, 255, 0.12);
-        color: var(--text-muted);
-    }
-
     /* Anti-pattern list */
     .anti-card { padding: 28px 32px; }
 
@@ -739,6 +683,23 @@
         font-weight: 300;
     }
 
+    .manifesto-used {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 20px;
+    }
+
+    .glow-link {
+        color: var(--glow-light);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(140, 80, 255, 0.3);
+        transition: border-color 0.2s;
+    }
+
+    .glow-link:hover {
+        border-color: var(--glow-light);
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .bg-orb, .bg-particle, .bg-line,
         .glow-card.bright .glow-card-text,
@@ -760,8 +721,7 @@
         .btn-demo { flex-direction: column; }
 
         .intro-card,
-        .anti-card,
-        .wild-card { padding: 24px 24px; }
+        .anti-card { padding: 24px 24px; }
     }
 </style>
 
@@ -785,12 +745,15 @@
 
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Light-Emitting UI</div>
+            <div class="hero-badge">Inspired by City Neon</div>
             <h1 class="hero-title">Gl<span class="flicker">o</span>w</h1>
             <div class="hero-reflection" aria-hidden="true">Gl<span class="flicker">o</span>w</div>
             <p class="hero-tagline">
                 Not colored. Not highlighted.<br>
                 Lit from within.
+            </p>
+            <p class="manifesto-used">
+                Used in <a href="https://github.com/baealex/beato" target="_blank" rel="noopener" class="glow-link">Beato</a>
             </p>
         </header>
 
@@ -910,35 +873,6 @@
                     <div class="dash-value">99.97%</div>
                     <div class="dash-sub">Last 30 days</div>
                     <div class="dash-bar"><div class="dash-bar-fill" style="width: 99%"></div></div>
-                </div>
-            </div>
-        </section>
-
-        <div class="divider"></div>
-
-        <!-- In The Wild -->
-        <section class="section">
-            <div class="section-label">In The Wild</div>
-            <h2 class="section-title">Where It Lives</h2>
-            <p class="section-desc">
-                Glowmorphism isn't a hypothetical.
-                It's the design language behind a real product.
-            </p>
-            <div class="panel wild-card">
-                <div class="wild-badge">Production</div>
-                <div class="wild-title">Beato &mdash; Personal Music Streaming</div>
-                <p class="wild-desc">
-                    Beato's entire UI is built on this system.
-                    Purple glow on pitch darkness. Pulsing background orbs.
-                    Floating particles. Equalizer bars.
-                    Every visual element shares the same violet family &mdash;
-                    intensity is the only dial.
-                </p>
-                <div class="wild-features">
-                    <span class="wild-feature">Purple-only palette</span>
-                    <span class="wild-feature">Pulsing glow orbs</span>
-                    <span class="wild-feature">Floating particles</span>
-                    <span class="wild-feature">Vinyl ring animations</span>
                 </div>
             </div>
         </section>
