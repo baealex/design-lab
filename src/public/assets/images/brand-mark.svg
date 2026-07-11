@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">BaeJino Design</title>
+  <desc id="desc">The BaeJino monogram with a color-wheel period for the design archive.</desc>
+  <rect x="6" y="6" width="52" height="52" rx="17" fill="#EEF2F7"/>
+  <rect x="7" y="7" width="50" height="50" rx="16" stroke="#FFFFFF" stroke-opacity="0.82" stroke-width="2"/>
+  <path d="M40.847 41.341Q40.847 46.137 37.543 48.856Q34.238 51.574 28.269 51.574H9.669V14H27.683Q33.439 14 36.717 16.558Q39.994 19.116 39.994 23.753Q39.994 27.058 38.262 29.269Q36.53 31.481 33.652 32.281Q36.957 33.027 38.902 35.558Q40.847 38.09 40.847 41.341ZM20.115 28.923H25.391Q29.335 28.923 29.335 25.672Q29.335 22.314 25.391 22.314H20.115ZM30.135 39.849Q30.135 38.143 29.095 37.237Q28.056 36.331 26.137 36.331H20.115V43.153H26.191Q30.135 43.153 30.135 39.849Z" fill="#2D3440"/>
+  <g aria-hidden="true">
+    <path d="M48.255 46.617V40.517A6.1 6.1 0 0 1 53.538 49.667Z" fill="#6E57E0"/>
+    <path d="M48.255 46.617 53.538 49.667A6.1 6.1 0 0 1 42.972 49.667Z" fill="#FF6B4A"/>
+    <path d="M48.255 46.617 42.972 49.667A6.1 6.1 0 0 1 48.255 40.517Z" fill="#22B8CF"/>
+    <circle cx="48.255" cy="46.617" r="1.45" fill="#EEF2F7"/>
+  </g>
+</svg>
