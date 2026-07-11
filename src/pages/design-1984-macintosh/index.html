@@ -1,0 +1,1441 @@
+<!-- layout: base.html -->
+<!-- title: Macintosh (1984) -->
+<!-- description: When pointing made computers personal -->
+
+<style>
+    :root {
+        --paper: #f4f1e8;
+        --paper-deep: #d8d2c3;
+        --screen: #f7f7f2;
+        --screen-soft: #e9e9df;
+        --ink: #111;
+        --ink-muted: #414141;
+        --ink-dim: #666;
+        --line: #111;
+        --line-soft: #b9b9ad;
+        --selection: #111;
+        --selection-text: #fff;
+        --shadow: rgba(17, 17, 17, 0.28);
+    }
+
+    body {
+        font-family: Chicago, Geneva, 'Lucida Grande', 'Courier New', monospace;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+            radial-gradient(circle at 1px 1px, rgba(17, 17, 17, 0.12) 1px, transparent 0) 0 0 / 6px 6px,
+            linear-gradient(180deg, #f6f2e8 0%, #d6d0c2 100%);
+        background-attachment: fixed;
+        background-repeat: repeat, no-repeat;
+        background-size: 6px 6px, 100vw 100vh;
+        background-color: #d6d0c2;
+        overflow-x: hidden;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    button {
+        font: inherit;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    .pixel-border {
+        border: 2px solid var(--line);
+        box-shadow: 6px 6px 0 var(--shadow);
+    }
+
+    .hero {
+        text-align: center;
+        padding: 48px 0 44px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        margin-bottom: 18px;
+        padding: 5px 12px;
+        color: var(--selection-text);
+        background: var(--selection);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .hero-title {
+        margin: 0;
+        font-size: 3.8rem;
+        font-weight: 700;
+        line-height: 0.95;
+        letter-spacing: -0.08em;
+    }
+
+    .hero-title span {
+        display: inline-block;
+        padding: 0 8px 6px;
+        color: var(--selection-text);
+        background: var(--ink);
+        letter-spacing: -0.06em;
+    }
+
+    .hero-tagline {
+        margin-top: 18px;
+        color: var(--ink-muted);
+        font-size: 0.92rem;
+        line-height: 1.7;
+    }
+
+    .mac-machine {
+        width: min(420px, 100%);
+        margin: 34px auto 0;
+        padding: 24px 24px 18px;
+        border: 3px solid var(--line);
+        border-radius: 26px 26px 18px 18px;
+        background:
+            linear-gradient(90deg, rgba(255, 255, 255, 0.4), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.08)),
+            var(--paper);
+        box-shadow: 0 18px 0 rgba(0, 0, 0, 0.14);
+        position: relative;
+    }
+
+    .mac-machine::after {
+        content: '';
+        display: block;
+        width: 52%;
+        height: 8px;
+        margin: 18px auto 0;
+        border: 2px solid var(--line);
+        background: var(--paper-deep);
+    }
+
+    .mac-screen {
+        background: var(--screen);
+        border: 3px solid var(--line);
+        padding: 8px;
+        min-height: 220px;
+        box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px var(--line-soft);
+    }
+
+    .screen-stage {
+        min-height: 198px;
+        background:
+            linear-gradient(90deg, rgba(17,17,17,0.04) 1px, transparent 1px) 0 0 / 4px 4px,
+            linear-gradient(0deg, rgba(17,17,17,0.04) 1px, transparent 1px) 0 0 / 4px 4px,
+            var(--screen);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .mac-menubar {
+        height: 21px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0 5px;
+        background: var(--screen);
+        border-bottom: 2px solid var(--line);
+        font-size: 0.74rem;
+        line-height: 1;
+        user-select: none;
+    }
+
+    .apple-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 15px;
+        margin-right: 2px;
+        line-height: 1;
+        position: relative;
+        flex: 0 0 18px;
+    }
+
+    .apple-mark::before {
+        content: '';
+        width: 11px;
+        height: 10px;
+        margin-top: 3px;
+        border-radius: 48% 48% 44% 44% / 52% 52% 48% 48%;
+        background: var(--ink);
+        transform: rotate(-5deg);
+    }
+
+    .apple-mark::after {
+        content: '';
+        width: 5px;
+        height: 3px;
+        position: absolute;
+        top: 0;
+        left: 10px;
+        border-radius: 100% 0 100% 0;
+        background: var(--ink);
+        transform: rotate(-24deg);
+    }
+
+    .apple-menu-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 1px;
+    }
+
+    .menu-word {
+        position: relative;
+        padding: 3px 6px;
+        color: var(--ink);
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+    }
+
+    .menu-word:hover,
+    .menu-word.open {
+        color: var(--selection-text);
+        background: var(--selection);
+    }
+
+    .menu-clock {
+        margin-left: auto;
+        color: var(--ink-muted);
+        font-size: 0.68rem;
+    }
+
+    .menu-popover {
+        display: none;
+        position: absolute;
+        top: 21px;
+        left: 28px;
+        width: 134px;
+        padding: 5px 0;
+        z-index: 5;
+        background: var(--screen);
+        border: 2px solid var(--line);
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.24);
+        text-align: left;
+        font-size: 0.72rem;
+    }
+
+    .menu-popover.open {
+        display: block;
+    }
+
+    .menu-popover[data-panel="apple"] { left: 2px; }
+    .menu-popover[data-panel="edit"] { left: 80px; }
+    .menu-popover[data-panel="view"] { left: 126px; }
+    .menu-popover[data-panel="special"] { left: 176px; width: 148px; }
+
+    .menu-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        padding: 3px 10px;
+        color: var(--ink);
+        background: transparent;
+        border: 0;
+        font: inherit;
+        cursor: pointer;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .menu-item:hover,
+    .menu-item:focus-visible {
+        color: var(--selection-text);
+        background: var(--selection);
+        outline: 0;
+    }
+
+    .menu-line {
+        height: 1px;
+        margin: 4px 0;
+        background: var(--line);
+    }
+
+    .mini-window {
+        position: absolute;
+        left: 28px;
+        right: 28px;
+        top: 46px;
+        background: var(--screen);
+        border: 2px solid var(--line);
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.22);
+    }
+
+    .window-titlebar {
+        display: flex;
+        align-items: center;
+        height: 22px;
+        border-bottom: 2px solid var(--line);
+        background:
+            repeating-linear-gradient(0deg, transparent 0 2px, rgba(17, 17, 17, 0.35) 2px 3px),
+            var(--screen);
+    }
+
+    .title-box {
+        margin: 0 auto;
+        padding: 0 9px;
+        background: var(--screen);
+        font-size: 0.72rem;
+        font-weight: 700;
+        line-height: 18px;
+    }
+
+    .close-box {
+        width: 12px;
+        height: 12px;
+        margin-left: 5px;
+        border: 2px solid var(--line);
+        background: var(--screen);
+    }
+
+    .hero-finder {
+        padding: 18px 18px 14px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .hero-icon {
+        min-height: 58px;
+        padding: 4px;
+        display: grid;
+        justify-items: center;
+        gap: 4px;
+        color: var(--ink);
+        font-size: 0.62rem;
+    }
+
+    .divider {
+        height: 2px;
+        margin: 44px 0;
+        background: var(--line);
+        box-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .intro-card,
+    .panel {
+        background: var(--screen);
+        border: 2px solid var(--line);
+        box-shadow: 6px 6px 0 var(--shadow);
+    }
+
+    .intro-card {
+        margin-bottom: 44px;
+    }
+
+    .intro-titlebar {
+        display: flex;
+        align-items: center;
+        height: 26px;
+        border-bottom: 2px solid var(--line);
+        background:
+            repeating-linear-gradient(0deg, transparent 0 2px, rgba(17, 17, 17, 0.28) 2px 3px),
+            var(--screen);
+    }
+
+    .intro-titlebar .title-box {
+        font-size: 0.76rem;
+    }
+
+    .intro-body {
+        padding: 26px 28px;
+    }
+
+    .intro-text {
+        color: var(--ink-muted);
+        font-size: 0.9rem;
+        line-height: 1.85;
+    }
+
+    .intro-text strong {
+        color: var(--ink);
+        background: linear-gradient(transparent 58%, rgba(17, 17, 17, 0.14) 58%);
+        font-weight: 700;
+    }
+
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        margin-bottom: 5px;
+        color: var(--ink-dim);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .section-title {
+        margin-bottom: 12px;
+        font-size: 1.48rem;
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.04em;
+    }
+
+    .section-desc {
+        margin-bottom: 20px;
+        color: var(--ink-muted);
+        font-size: 0.92rem;
+        line-height: 1.8;
+    }
+
+    .section-desc code {
+        padding: 1px 5px;
+        color: var(--selection-text);
+        background: var(--selection);
+        font-size: 0.8em;
+    }
+
+    .bitmap-demo {
+        padding: 18px;
+        display: grid;
+        grid-template-columns: 1fr 168px;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .dither-card {
+        min-height: 210px;
+        border: 2px solid var(--line);
+        background: var(--screen);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dither-canvas {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at 1px 1px, #111 1px, transparent 1px) 0 0 / 8px 8px,
+            var(--screen);
+        transition: background-size 0.2s ease;
+    }
+
+    .dither-card[data-pattern="mesh"] .dither-canvas {
+        background:
+            repeating-linear-gradient(45deg, #111 0 1px, transparent 1px 6px),
+            repeating-linear-gradient(-45deg, rgba(17, 17, 17, 0.42) 0 1px, transparent 1px 6px),
+            var(--screen);
+    }
+
+    .dither-card[data-pattern="bars"] .dither-canvas {
+        background:
+            repeating-linear-gradient(90deg, #111 0 2px, transparent 2px 7px),
+            var(--screen);
+    }
+
+    .dither-card[data-pattern="checker"] .dither-canvas {
+        background:
+            linear-gradient(45deg, #111 25%, transparent 25% 75%, #111 75%),
+            linear-gradient(45deg, #111 25%, transparent 25% 75%, #111 75%),
+            var(--screen);
+        background-position: 0 0, 4px 4px;
+        background-size: 8px 8px;
+    }
+
+    .dither-overlay {
+        position: relative;
+        z-index: 1;
+        margin: 22px;
+        padding: 18px;
+        background: var(--screen);
+        border: 2px solid var(--line);
+        box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.22);
+    }
+
+    .dither-overlay-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+    }
+
+    .dither-overlay-copy {
+        margin-top: 8px;
+        color: var(--ink-muted);
+        font-size: 0.78rem;
+        line-height: 1.65;
+    }
+
+    .pattern-controls {
+        display: grid;
+        gap: 8px;
+        align-content: start;
+    }
+
+    .pattern-label {
+        color: var(--ink-muted);
+        font-size: 0.74rem;
+        line-height: 1.5;
+    }
+
+    .pattern-btn,
+    .mac-button {
+        min-height: 40px;
+        padding: 8px 12px;
+        color: var(--ink);
+        background: var(--screen);
+        border: 2px solid var(--line);
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.24);
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .pattern-btn:hover,
+    .pattern-btn.active,
+    .mac-button:hover,
+    .mac-button:focus-visible {
+        color: var(--selection-text);
+        background: var(--selection);
+    }
+
+    .pattern-btn:active,
+    .mac-button:active {
+        transform: translate(2px, 2px);
+        box-shadow: none;
+    }
+
+    .mac-button.default {
+        margin: 4px;
+        box-shadow:
+            0 0 0 2px var(--screen),
+            0 0 0 4px var(--line),
+            3px 3px 0 4px rgba(0, 0, 0, 0.2);
+        font-weight: 700;
+    }
+
+    .mac-button.default:active {
+        box-shadow: 0 0 0 2px var(--screen), 0 0 0 4px var(--line);
+    }
+
+    .pattern-readout {
+        margin-top: 4px;
+        color: var(--ink-dim);
+        font-size: 0.72rem;
+        line-height: 1.5;
+    }
+
+    .finder-demo {
+        position: relative;
+        min-height: 438px;
+        background: var(--screen-soft);
+        overflow: hidden;
+    }
+
+    .finder-menubar {
+        position: relative;
+        z-index: 3;
+    }
+
+    .finder-window {
+        margin: 22px 86px 82px 22px;
+        background: var(--screen);
+        border: 2px solid var(--line);
+        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.22);
+    }
+
+    .finder-body {
+        display: grid;
+        grid-template-columns: 1fr 190px;
+        min-height: 246px;
+    }
+
+    .desktop-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(70px, 1fr));
+        gap: 14px;
+        padding: 22px 18px;
+        border-right: 2px solid var(--line);
+        background:
+            radial-gradient(circle at 1px 1px, rgba(17,17,17,0.11) 1px, transparent 1px) 0 0 / 10px 10px,
+            var(--screen);
+    }
+
+    .mac-icon-button {
+        min-height: 88px;
+        padding: 6px 4px;
+        display: grid;
+        justify-items: center;
+        align-content: center;
+        gap: 5px;
+        color: var(--ink);
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+    }
+
+    .mac-icon-button:hover .icon-label,
+    .mac-icon-button.active .icon-label,
+    .mac-icon-button:focus-visible .icon-label {
+        color: var(--selection-text);
+        background: var(--selection);
+    }
+
+    .mac-icon-button:focus-visible {
+        outline: 2px solid var(--line);
+        outline-offset: 2px;
+    }
+
+    .icon-label {
+        padding: 1px 4px;
+        font-size: 0.8rem;
+        line-height: 1.15;
+        text-align: center;
+    }
+
+    .desktop-trash {
+        width: 74px;
+        min-height: 74px;
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        z-index: 2;
+    }
+
+    .kare-icon {
+        width: 42px;
+        height: 42px;
+        position: relative;
+        image-rendering: pixelated;
+    }
+
+    .icon-folder::before {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 13px;
+        width: 32px;
+        height: 22px;
+        border: 2px solid var(--line);
+        background: var(--screen);
+        box-shadow: inset 0 5px 0 rgba(17, 17, 17, 0.08);
+    }
+
+    .icon-folder::after {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 8px;
+        width: 14px;
+        height: 8px;
+        border: 2px solid var(--line);
+        border-bottom: 0;
+        background: var(--screen);
+    }
+
+    .icon-doc::before {
+        content: '';
+        position: absolute;
+        left: 9px;
+        top: 4px;
+        width: 24px;
+        height: 34px;
+        border: 2px solid var(--line);
+        background:
+            linear-gradient(135deg, transparent 0 10px, var(--line) 10px 12px, transparent 12px),
+            repeating-linear-gradient(0deg, transparent 0 6px, rgba(17,17,17,0.42) 6px 8px, transparent 8px 12px),
+            var(--screen);
+    }
+
+    .icon-mac::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        top: 5px;
+        width: 26px;
+        height: 28px;
+        border: 2px solid var(--line);
+        border-radius: 3px;
+        background: var(--screen);
+    }
+
+    .icon-mac::after {
+        content: '';
+        position: absolute;
+        left: 13px;
+        top: 11px;
+        width: 16px;
+        height: 12px;
+        border: 2px solid var(--line);
+        background: radial-gradient(circle at 50% 54%, var(--line) 1px, transparent 2px) var(--screen);
+        box-shadow: 3px 23px 0 -1px var(--line), 9px 23px 0 -1px var(--line);
+    }
+
+    .icon-paint::before {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 12px;
+        width: 32px;
+        height: 22px;
+        border: 2px solid var(--line);
+        background:
+            radial-gradient(circle at 9px 8px, var(--line) 0 2px, transparent 3px),
+            radial-gradient(circle at 18px 14px, var(--line) 0 2px, transparent 3px),
+            radial-gradient(circle at 24px 7px, var(--line) 0 2px, transparent 3px),
+            var(--screen);
+        transform: rotate(-3deg);
+    }
+
+    .icon-trash::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 13px;
+        width: 24px;
+        height: 24px;
+        border: 2px solid var(--line);
+        background: repeating-linear-gradient(90deg, transparent 0 4px, rgba(17,17,17,0.42) 4px 6px);
+    }
+
+    .icon-trash::after {
+        content: '';
+        position: absolute;
+        left: 8px;
+        top: 7px;
+        width: 28px;
+        height: 6px;
+        border: 2px solid var(--line);
+        background: var(--screen);
+    }
+
+    .icon-clock::before {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 5px;
+        width: 28px;
+        height: 28px;
+        border: 2px solid var(--line);
+        border-radius: 50%;
+        background: var(--screen);
+    }
+
+    .icon-clock::after {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 13px;
+        width: 10px;
+        height: 12px;
+        border-left: 2px solid var(--line);
+        border-bottom: 2px solid var(--line);
+    }
+
+    .finder-inspector {
+        padding: 18px;
+        background: var(--screen);
+    }
+
+    .inspector-kicker {
+        margin-bottom: 6px;
+        color: var(--ink-dim);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .inspector-title {
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.15;
+    }
+
+    .inspector-copy {
+        color: var(--ink-muted);
+        font-size: 0.78rem;
+        line-height: 1.65;
+    }
+
+    .inspector-status {
+        margin-top: 16px;
+        padding: 6px 8px;
+        color: var(--selection-text);
+        background: var(--selection);
+        font-size: 0.68rem;
+        line-height: 1.4;
+    }
+
+    .dialog-demo {
+        padding: 22px;
+        display: grid;
+        grid-template-columns: 86px 1fr;
+        gap: 18px;
+        align-items: center;
+        background: var(--screen);
+    }
+
+    .dialog-face {
+        width: 70px;
+        height: 70px;
+        border: 2px solid var(--line);
+        border-radius: 12px;
+        background:
+            radial-gradient(circle at 22px 28px, var(--line) 0 3px, transparent 4px),
+            radial-gradient(circle at 48px 28px, var(--line) 0 3px, transparent 4px),
+            linear-gradient(0deg, transparent 52px, var(--line) 52px 54px, transparent 54px),
+            var(--screen);
+        box-shadow: 5px 5px 0 rgba(0,0,0,0.18);
+    }
+
+    .dialog-title {
+        margin-bottom: 7px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+    }
+
+    .dialog-copy {
+        margin-bottom: 14px;
+        color: var(--ink-muted);
+        font-size: 0.82rem;
+        line-height: 1.7;
+    }
+
+    .dialog-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .system-note {
+        color: var(--ink-dim);
+        font-size: 0.8rem;
+    }
+
+    .synthesis-demo {
+        overflow: hidden;
+    }
+
+    .synthesis-toolbar {
+        min-height: 48px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid var(--line);
+        background:
+            radial-gradient(circle at 1px 1px, rgba(17, 17, 17, 0.16) 1px, transparent 1px) 0 0 / 8px 8px,
+            var(--screen);
+    }
+
+    .synthesis-location {
+        min-width: 0;
+        padding: 5px 8px;
+        flex: 1;
+        overflow: hidden;
+        border: 2px solid var(--line);
+        background: var(--screen);
+        font-size: 0.8rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .synthesis-tool {
+        min-height: 32px;
+        padding: 5px 10px;
+        color: var(--selection-text);
+        background: var(--selection);
+        border: 2px solid var(--line);
+        font: inherit;
+    }
+
+    .synthesis-files {
+        padding: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        background: var(--screen);
+    }
+
+    .synthesis-file {
+        min-height: 112px;
+        padding: 12px 8px;
+        display: grid;
+        justify-items: center;
+        align-content: center;
+        gap: 8px;
+        color: var(--ink);
+        background: var(--screen);
+        border: 2px solid transparent;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    .synthesis-file:hover,
+    .synthesis-file:focus-visible,
+    .synthesis-file.selected {
+        border-color: var(--line);
+        outline: 0;
+    }
+
+    .synthesis-file.selected .synthesis-file-name {
+        color: var(--selection-text);
+        background: var(--selection);
+    }
+
+    .synthesis-file-name {
+        padding: 2px 5px;
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    .synthesis-file-meta {
+        color: var(--ink-dim);
+        font-size: 0.72rem;
+    }
+
+    .synthesis-footer {
+        min-height: 64px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-top: 2px solid var(--line);
+        background: var(--screen-soft);
+    }
+
+    .synthesis-status {
+        margin-right: auto;
+        color: var(--ink-muted);
+        font-size: 0.8rem;
+    }
+
+    .reflection-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .reflection-card {
+        padding: 22px;
+    }
+
+    .reflection-title {
+        display: inline-block;
+        margin-bottom: 14px;
+        padding: 3px 7px;
+        color: var(--selection-text);
+        background: var(--selection);
+        font-size: 0.84rem;
+        font-weight: 700;
+    }
+
+    .reflection-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .reflection-list li {
+        padding-left: 16px;
+        position: relative;
+        color: var(--ink-muted);
+        font-size: 0.86rem;
+        line-height: 1.6;
+    }
+
+    .reflection-list li::before {
+        content: '■';
+        position: absolute;
+        left: 0;
+        top: 0.18em;
+        color: var(--ink);
+        font-size: 0.58rem;
+    }
+
+    .code-block {
+        margin-top: 16px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        color: var(--screen);
+        background: var(--ink);
+        border: 2px solid var(--line);
+        box-shadow: 4px 4px 0 var(--shadow);
+        font-family: Monaco, 'Courier New', monospace;
+        font-size: 0.74rem;
+        line-height: 1.7;
+    }
+
+    .code-block .cmt { color: #bdbdbd; }
+    .code-block .kw { color: #fff; font-weight: 700; }
+    .code-block .val { color: #d8d8d8; }
+
+    @media (max-width: 640px) {
+        .layout { padding-inline: 16px; }
+        .hero { padding-top: 34px; }
+        .hero-title { font-size: 2.8rem; }
+        .mac-machine { padding: 18px 16px 14px; }
+        .bitmap-demo,
+        .finder-body,
+        .dialog-demo,
+        .reflection-grid {
+            grid-template-columns: 1fr;
+        }
+        .finder-demo { min-height: 665px; }
+        .finder-window { margin: 22px 22px 92px; }
+        .desktop-grid {
+            grid-template-columns: 1fr 1fr;
+            border-right: 0;
+            border-bottom: 2px solid var(--line);
+        }
+        .synthesis-files { grid-template-columns: 1fr; }
+        .synthesis-file {
+            min-height: 82px;
+            grid-template-columns: 48px 1fr;
+            justify-items: start;
+            text-align: left;
+        }
+        .synthesis-file .kare-icon { grid-row: 1 / span 2; }
+        .synthesis-footer { flex-wrap: wrap; }
+        .synthesis-status { width: 100%; }
+        .menu-clock { display: none; }
+        .menu-popover { left: 14px; }
+        .menu-popover[data-panel="edit"],
+        .menu-popover[data-panel="view"],
+        .menu-popover[data-panel="special"] { left: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            transition-duration: 0.001ms !important;
+            animation-duration: 0.001ms !important;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+        <header class="hero">
+            <div class="hero-badge">Inspired by Macintosh System Software</div>
+            <h1 class="hero-title"><span>Mac</span>intosh</h1>
+            <p class="hero-tagline">
+                One-bit pixels, direct manipulation, and a menu bar that made<br>
+                the computer feel less like a machine and more like a desk.
+            </p>
+
+            <div class="mac-machine" aria-label="Classic Macintosh interface specimen">
+                <div class="mac-screen">
+                    <div class="screen-stage">
+                        <div class="mac-menubar">
+                            <span class="apple-mark" aria-label="Apple menu"></span>
+                            <span>File</span>
+                            <span>Edit</span>
+                            <span>View</span>
+                            <span>Special</span>
+                        </div>
+                        <div class="mini-window">
+                            <div class="window-titlebar">
+                                <span class="close-box" aria-hidden="true"></span>
+                                <span class="title-box">Desktop</span>
+                            </div>
+                            <div class="hero-finder">
+                                <div class="hero-icon"><span class="kare-icon icon-mac"></span><span>System</span></div>
+                                <div class="hero-icon"><span class="kare-icon icon-folder"></span><span>Work</span></div>
+                                <div class="hero-icon"><span class="kare-icon icon-trash"></span><span>Trash</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="intro-card">
+            <div class="intro-titlebar">
+                <span class="close-box" aria-hidden="true"></span>
+                <span class="title-box">About the Macintosh</span>
+            </div>
+            <div class="intro-body">
+                <p class="intro-text">
+                    In 1984, Macintosh brought the graphical interface to a much wider public.
+                    It did not invent windows, icons, menus, or the mouse, but it packaged them
+                    into a language ordinary people could read. <strong>Black pixels became affordance</strong>:
+                    a folder meant open me, a trash can meant remove me, a menu meant there are
+                    more choices here.
+                    <br><br>
+                    Inside the screen, the palette stays nearly monochrome. Shape, bitmap texture,
+                    spacing, and immediate feedback do the work. The warm paper and hard shadows
+                    belong to the exhibit around it. The charm is the constraint.
+                </p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">One-bit pixels, many shades</h2>
+            <p class="section-desc">
+                The original Macintosh screen was black and white. No gray. The trick was
+                <code>dithering</code>: arranging black pixels so the eye reads texture, depth,
+                and tone. Try the pattern buttons. Same two colors, different material feeling.
+            </p>
+
+            <div class="panel bitmap-demo">
+                <div class="dither-card" id="dither-card" data-pattern="dots">
+                    <div class="dither-canvas" aria-hidden="true"></div>
+                    <div class="dither-overlay">
+                        <div class="dither-overlay-title" id="pattern-title">Fine Dots</div>
+                        <p class="dither-overlay-copy" id="pattern-copy">
+                            The quiet all-purpose shade. It reads as light gray without ever drawing a gray pixel.
+                        </p>
+                    </div>
+                </div>
+                <div class="pattern-controls" aria-label="Dither pattern controls">
+                    <p class="pattern-label">Choose a bitmap texture. The canvas never gets a third color.</p>
+                    <button class="pattern-btn active" data-pattern="dots" aria-pressed="true">Fine dots</button>
+                    <button class="pattern-btn" data-pattern="mesh" aria-pressed="false">Mesh</button>
+                    <button class="pattern-btn" data-pattern="bars" aria-pressed="false">Bars</button>
+                    <button class="pattern-btn" data-pattern="checker" aria-pressed="false">Checker</button>
+                    <p class="pattern-readout" id="pattern-readout">Pattern: 1-bit fine dots</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <span class="cmt">/* No gray paint. Just black pixels spaced apart. */</span><br>
+                <span class="kw">background</span>: <span class="val">radial-gradient(circle at 1px 1px, #111 1px, transparent 1px)</span>;<br>
+                <span class="kw">background-size</span>: <span class="val">8px 8px</span>;<br>
+                <span class="kw">image-rendering</span>: <span class="val">pixelated</span>;
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Menus made the invisible visible</h2>
+            <p class="section-desc">
+                A command line asks you to remember. A menu lets you recognize. Macintosh put the
+                command surface in one fixed place, then made it respond with high-contrast inversion.
+                Click the menu words below: the whole system is only a few black rectangles.
+            </p>
+
+            <div class="panel finder-demo">
+                <div class="mac-menubar finder-menubar">
+                    <button class="menu-word apple-menu-button" data-menu="apple" aria-expanded="false" aria-controls="apple-menu" aria-label="Apple menu">
+                        <span class="apple-mark" aria-hidden="true"></span>
+                    </button>
+                    <button class="menu-word" data-menu="file" aria-expanded="false" aria-controls="file-menu">File</button>
+                    <button class="menu-word" data-menu="edit" aria-expanded="false" aria-controls="edit-menu">Edit</button>
+                    <button class="menu-word" data-menu="view" aria-expanded="false" aria-controls="view-menu">View</button>
+                    <button class="menu-word" data-menu="special" aria-expanded="false" aria-controls="special-menu">Special</button>
+                    <span class="menu-clock">Finder</span>
+                </div>
+                <div class="menu-popover" id="apple-menu" data-panel="apple" aria-label="Apple menu">
+                    <button class="menu-item" data-message="About the Finder opened"><span>About the Finder</span><span></span></button>
+                    <div class="menu-line"></div>
+                    <button class="menu-item" data-message="Alarm Clock opened"><span>Alarm Clock</span><span></span></button>
+                    <button class="menu-item" data-message="Calculator opened"><span>Calculator</span><span></span></button>
+                    <button class="menu-item" data-message="Control Panel opened"><span>Control Panel</span><span></span></button>
+                </div>
+                <div class="menu-popover" id="file-menu" data-panel="file" aria-label="File menu">
+                    <button class="menu-item" data-message="Open command chosen"><span>Open</span><span>&#8984;O</span></button>
+                    <button class="menu-item" data-message="Close command chosen"><span>Close</span><span>&#8984;W</span></button>
+                    <div class="menu-line"></div>
+                    <button class="menu-item" data-message="Disk ejected safely"><span>Eject</span><span>&#8984;E</span></button>
+                </div>
+                <div class="menu-popover" id="edit-menu" data-panel="edit" aria-label="Edit menu">
+                    <button class="menu-item" data-message="Cut command chosen"><span>Cut</span><span>&#8984;X</span></button>
+                    <button class="menu-item" data-message="Copy command chosen"><span>Copy</span><span>&#8984;C</span></button>
+                    <button class="menu-item" data-message="Paste command chosen"><span>Paste</span><span>&#8984;V</span></button>
+                </div>
+                <div class="menu-popover" id="view-menu" data-panel="view" aria-label="View menu">
+                    <button class="menu-item" data-message="Viewing items by icon"><span>by Icon</span><span>&#10003;</span></button>
+                    <button class="menu-item" data-message="Viewing items by name"><span>by Name</span><span></span></button>
+                    <button class="menu-item" data-message="Viewing items by date"><span>by Date</span><span></span></button>
+                </div>
+                <div class="menu-popover" id="special-menu" data-panel="special" aria-label="Special menu">
+                    <button class="menu-item" data-message="Desktop cleaned up"><span>Clean Up</span><span></span></button>
+                    <button class="menu-item" data-message="Trash is now empty"><span>Empty Trash</span><span></span></button>
+                    <div class="menu-line"></div>
+                    <button class="menu-item" data-message="Erase Disk was not run in this exhibit"><span>Erase Disk</span><span></span></button>
+                </div>
+
+                <div class="finder-window">
+                    <div class="window-titlebar">
+                        <span class="close-box" aria-hidden="true"></span>
+                        <span class="title-box">Disk</span>
+                    </div>
+                    <div class="finder-body">
+                        <div class="desktop-grid" aria-label="Selectable desktop icons">
+                            <button class="mac-icon-button active" data-title="System Folder" data-copy="The system is no longer a hidden place. It is a folder you can point at, open, and understand." data-status="System Folder selected">
+                                <span class="kare-icon icon-mac" aria-hidden="true"></span>
+                                <span class="icon-label">System</span>
+                            </button>
+                            <button class="mac-icon-button" data-title="Empty Folder" data-copy="In the original Finder, renaming Empty Folder created another one. The folder was useful even before the file system was truly hierarchical." data-status="Empty Folder selected">
+                                <span class="kare-icon icon-folder" aria-hidden="true"></span>
+                                <span class="icon-label">Empty Folder</span>
+                            </button>
+                            <button class="mac-icon-button" data-title="Read Me" data-copy="Documents became objects. Opening one felt like picking up a sheet of paper." data-status="Read Me selected">
+                                <span class="kare-icon icon-doc" aria-hidden="true"></span>
+                                <span class="icon-label">Read Me</span>
+                            </button>
+                            <button class="mac-icon-button" data-title="MacPaint" data-copy="The paint app proved that creative tools could live behind simple icons and direct gestures." data-status="MacPaint selected">
+                                <span class="kare-icon icon-paint" aria-hidden="true"></span>
+                                <span class="icon-label">MacPaint</span>
+                            </button>
+                            <button class="mac-icon-button" data-title="Scrapbook" data-copy="Scrapbook kept reusable text and pictures close at hand. Small tools lived behind plain, memorable names." data-status="Scrapbook selected">
+                                <span class="kare-icon icon-doc" aria-hidden="true"></span>
+                                <span class="icon-label">Scrapbook</span>
+                            </button>
+                        </div>
+                        <aside class="finder-inspector" aria-live="polite">
+                            <div class="inspector-kicker">Selected Icon</div>
+                            <h3 class="inspector-title" id="icon-title">System Folder</h3>
+                            <p class="inspector-copy" id="icon-copy">
+                                The system is no longer a hidden place. It is a folder you can point at, open, and understand.
+                            </p>
+                            <div class="inspector-status" id="icon-status">System Folder selected</div>
+                        </aside>
+                    </div>
+                </div>
+                <button class="mac-icon-button desktop-trash" data-title="Trash" data-copy="Deletion became visible and spatial. Modern interfaces should keep that clarity, then add durable recovery." data-status="Trash selected">
+                    <span class="kare-icon icon-trash" aria-hidden="true"></span>
+                    <span class="icon-label">Trash</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">The button is a promise</h2>
+            <p class="section-desc">
+                Early Mac controls were blunt because they had to be. A default button got a heavy
+                outline. A dialog used one icon, one question, and a small set of choices. The UI
+                did not need to be photorealistic. It needed to be dependable.
+            </p>
+
+            <div class="panel dialog-demo">
+                <div class="dialog-face" aria-hidden="true"></div>
+                <div>
+                    <h3 class="dialog-title">Save changes to “Exhibit”?</h3>
+                    <p class="dialog-copy">
+                        A monochrome dialog can still create hierarchy: icon, question, explanation, action.
+                        The default action is heavier so your hand knows where to go.
+                    </p>
+                    <div class="dialog-actions">
+                        <button class="mac-button default" id="save-button">Save</button>
+                        <button class="mac-button">Cancel</button>
+                        <span class="system-note" id="save-note" role="status" aria-live="polite">Waiting for a click.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Old grammar, modern manners</h2>
+            <p class="section-desc">
+                The useful part was never the tiny type or the one-button mouse. It was a system
+                that made objects visible, kept actions nearby, and answered every gesture. This
+                file picker keeps the one-bit grammar, then adds larger targets, plain status text,
+                keyboard focus, and a clearly marked default action.
+            </p>
+
+            <div class="panel synthesis-demo">
+                <div class="window-titlebar">
+                    <span class="close-box" aria-hidden="true"></span>
+                    <span class="title-box">Project Archive</span>
+                </div>
+                <div class="synthesis-toolbar">
+                    <button class="synthesis-tool" aria-pressed="true">Icons</button>
+                    <div class="synthesis-location" aria-label="Current location">Disk / Work</div>
+                </div>
+                <div class="synthesis-files" aria-label="Project files">
+                    <button class="synthesis-file selected" data-file="Exhibit" aria-pressed="true">
+                        <span class="kare-icon icon-folder" aria-hidden="true"></span>
+                        <span class="synthesis-file-name">Exhibit</span>
+                        <span class="synthesis-file-meta">6 items</span>
+                    </button>
+                    <button class="synthesis-file" data-file="Notes" aria-pressed="false">
+                        <span class="kare-icon icon-doc" aria-hidden="true"></span>
+                        <span class="synthesis-file-name">Notes</span>
+                        <span class="synthesis-file-meta">Text document</span>
+                    </button>
+                    <button class="synthesis-file" data-file="Sketches" aria-pressed="false">
+                        <span class="kare-icon icon-paint" aria-hidden="true"></span>
+                        <span class="synthesis-file-name">Sketches</span>
+                        <span class="synthesis-file-meta">4 pictures</span>
+                    </button>
+                </div>
+                <div class="synthesis-footer">
+                    <span class="synthesis-status" id="synthesis-status" role="status" aria-live="polite">Exhibit selected</span>
+                    <button class="mac-button">Cancel</button>
+                    <button class="mac-button default" id="open-selected">Open</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">After the Exhibit</div>
+            <h2 class="section-title">What we keep. What we improve.</h2>
+            <p class="section-desc">
+                Nostalgia is useful only when it turns into judgment. The Macintosh gave interface
+                design a durable visual language. A modern product should keep its clarity without
+                asking people to inherit its hardware limits.
+            </p>
+            <div class="reflection-grid">
+                <article class="panel reflection-card">
+                    <h3 class="reflection-title">KEEP</h3>
+                    <ul class="reflection-list">
+                        <li>Recognition before memorization</li>
+                        <li>Objects that respond immediately</li>
+                        <li>Commands in predictable places</li>
+                        <li>Labels beside memorable symbols</li>
+                    </ul>
+                </article>
+                <article class="panel reflection-card">
+                    <h3 class="reflection-title">IMPROVE</h3>
+                    <ul class="reflection-list">
+                        <li>Larger targets and readable type</li>
+                        <li>Keyboard and assistive-tech support</li>
+                        <li>Status beyond color or icon alone</li>
+                        <li>Deletion with durable recovery</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script>
+    var patternNotes = {
+        dots: {
+            title: 'Fine Dots',
+            copy: 'The quiet all-purpose shade. It reads as light gray without ever drawing a gray pixel.',
+            readout: 'Pattern: 1-bit fine dots'
+        },
+        mesh: {
+            title: 'Mesh',
+            copy: 'Crossed lines create a heavier fabric, useful for disabled areas and inactive panels.',
+            readout: 'Pattern: diagonal mesh'
+        },
+        bars: {
+            title: 'Bars',
+            copy: 'Vertical rhythm feels mechanical and firm. The eye reads it as a darker surface.',
+            readout: 'Pattern: vertical bars'
+        },
+        checker: {
+            title: 'Checker',
+            copy: 'The loudest texture. It works best as a warning, a mask, or a tiny accent.',
+            readout: 'Pattern: checker shade'
+        }
+    };
+
+    var ditherCard = document.getElementById('dither-card');
+    var patternTitle = document.getElementById('pattern-title');
+    var patternCopy = document.getElementById('pattern-copy');
+    var patternReadout = document.getElementById('pattern-readout');
+    var patternButtons = document.querySelectorAll('.pattern-btn');
+
+    patternButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var key = button.getAttribute('data-pattern');
+            var note = patternNotes[key];
+            ditherCard.setAttribute('data-pattern', key);
+            patternTitle.textContent = note.title;
+            patternCopy.textContent = note.copy;
+            patternReadout.textContent = note.readout;
+            patternButtons.forEach(function(item) {
+                item.classList.remove('active');
+                item.setAttribute('aria-pressed', 'false');
+            });
+            button.classList.add('active');
+            button.setAttribute('aria-pressed', 'true');
+        });
+    });
+
+    var menuButtons = document.querySelectorAll('.menu-word');
+    var menuPanels = document.querySelectorAll('.menu-popover');
+
+    function closeMenus() {
+        menuButtons.forEach(function(button) {
+            button.classList.remove('open');
+            button.setAttribute('aria-expanded', 'false');
+        });
+        menuPanels.forEach(function(panel) { panel.classList.remove('open'); });
+    }
+
+    menuButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.stopPropagation();
+            var key = button.getAttribute('data-menu');
+            var panel = document.querySelector('.menu-popover[data-panel="' + key + '"]');
+            var wasOpen = button.classList.contains('open');
+            closeMenus();
+            if (!wasOpen && panel) {
+                button.classList.add('open');
+                button.setAttribute('aria-expanded', 'true');
+                panel.classList.add('open');
+            }
+        });
+    });
+
+    document.addEventListener('click', closeMenus);
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') closeMenus();
+    });
+
+    var iconButtons = document.querySelectorAll('.mac-icon-button');
+    var iconTitle = document.getElementById('icon-title');
+    var iconCopy = document.getElementById('icon-copy');
+    var iconStatus = document.getElementById('icon-status');
+    var menuItems = document.querySelectorAll('.menu-item');
+
+    menuItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            iconStatus.textContent = item.getAttribute('data-message');
+            closeMenus();
+        });
+    });
+
+    iconButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            iconButtons.forEach(function(item) { item.classList.remove('active'); });
+            button.classList.add('active');
+            iconTitle.textContent = button.getAttribute('data-title');
+            iconCopy.textContent = button.getAttribute('data-copy');
+            iconStatus.textContent = button.getAttribute('data-status');
+        });
+    });
+
+    var saveButton = document.getElementById('save-button');
+    var saveNote = document.getElementById('save-note');
+
+    saveButton.addEventListener('click', function() {
+        saveNote.textContent = 'Saved with two colors and one clear action.';
+    });
+
+    var synthesisFiles = document.querySelectorAll('.synthesis-file');
+    var synthesisStatus = document.getElementById('synthesis-status');
+    var openSelected = document.getElementById('open-selected');
+    var selectedFile = 'Exhibit';
+
+    synthesisFiles.forEach(function(file) {
+        file.addEventListener('click', function() {
+            selectedFile = file.getAttribute('data-file');
+            synthesisFiles.forEach(function(item) {
+                item.classList.remove('selected');
+                item.setAttribute('aria-pressed', 'false');
+            });
+            file.classList.add('selected');
+            file.setAttribute('aria-pressed', 'true');
+            synthesisStatus.textContent = selectedFile + ' selected';
+        });
+    });
+
+    openSelected.addEventListener('click', function() {
+        synthesisStatus.textContent = selectedFile + ' opened with a visible, reversible action.';
+    });
+</script>
