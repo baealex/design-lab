@@ -30,44 +30,7 @@
         overflow-x: hidden;
         color: var(--text);
         font-size: 11px;
-        background: linear-gradient(
-            180deg,
-            #0855C5 0%,
-            #1A6FE0 15%,
-            #3A95F0 30%,
-            #68B8F8 42%,
-            #89CFF8 48%,
-            #A0D8F0 52%,
-            #78C870 56%,
-            #5BB848 62%,
-            #44A832 70%,
-            #3C9828 80%,
-            #358822 90%,
-            #2D7818 100%
-        );
-        background-attachment: fixed;
-    }
-
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
-        background:
-            /* wispy clouds */
-            radial-gradient(ellipse 400px 80px at 15% 22%, rgba(255,255,255,0.35) 0%, transparent 70%),
-            radial-gradient(ellipse 300px 50px at 60% 18%, rgba(255,255,255,0.25) 0%, transparent 70%),
-            radial-gradient(ellipse 250px 60px at 80% 28%, rgba(255,255,255,0.2) 0%, transparent 70%),
-            radial-gradient(ellipse 180px 40px at 35% 32%, rgba(255,255,255,0.15) 0%, transparent 70%),
-            /* rolling hills - foreground */
-            radial-gradient(ellipse 120% 200px at 30% 58%, #5CBB45 0%, transparent 60%),
-            radial-gradient(ellipse 100% 180px at 75% 60%, #4EAD38 0%, transparent 55%),
-            radial-gradient(ellipse 140% 160px at 50% 56%, #62C04A 0%, transparent 50%),
-            /* sunlit glow on hills */
-            radial-gradient(ellipse 300px 200px at 40% 55%, rgba(140, 220, 80, 0.3) 0%, transparent 60%);
+        background: #DDE4D8;
     }
 
     .layout {
@@ -209,28 +172,27 @@
         font-size: 3.5rem;
         font-weight: 700;
         letter-spacing: 1px;
-        color: #fff;
-        text-shadow:
-            1px 2px 4px rgba(0, 20, 60, 0.4);
+        color: #1D4260;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
         line-height: 1.1;
     }
 
     .hero-title-sub {
         font-size: 1.2rem;
         font-weight: 400;
-        color: rgba(255, 255, 255, 0.9);
-        text-shadow: 1px 1px 2px rgba(0, 20, 60, 0.3);
+        color: #426077;
+        text-shadow: none;
         display: block;
         margin-top: 6px;
     }
 
     .hero-tagline {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.9);
+        color: #536B78;
         margin-top: 16px;
         line-height: 1.7;
         font-weight: 400;
-        text-shadow: 1px 1px 1px rgba(0, 20, 40, 0.2);
+        text-shadow: none;
     }
 
     /* === Intro text === */
@@ -254,32 +216,32 @@
     .section-label {
         font-size: 10px;
         font-weight: 700;
-        color: rgba(255, 255, 255, 0.8);
+        color: #47705A;
         letter-spacing: 0.1em;
         text-transform: uppercase;
         margin-bottom: 4px;
-        text-shadow: 1px 1px 2px rgba(0, 20, 60, 0.3);
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
     }
 
     .section-title {
         font-size: 1.5rem;
         font-weight: 700;
         margin-bottom: 12px;
-        color: #fff;
-        text-shadow: 1px 1px 3px rgba(0, 20, 60, 0.35);
+        color: #203D31;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
     }
 
     .section-desc {
         font-size: 12px;
         line-height: 1.8;
-        color: rgba(255, 255, 255, 0.88);
+        color: #40594D;
         font-weight: 400;
         margin-bottom: 20px;
-        text-shadow: 1px 1px 1px rgba(0, 20, 40, 0.2);
+        text-shadow: none;
     }
 
     .section-desc em {
-        color: #fff;
+        color: #174E7B;
         font-style: normal;
         font-weight: 700;
     }
@@ -287,17 +249,17 @@
     .section-desc code {
         font-family: 'Courier New', monospace;
         font-size: 11px;
-        background: rgba(255, 255, 255, 0.25);
+        background: rgba(23, 78, 123, 0.1);
         padding: 2px 6px;
         border-radius: 3px;
-        color: #fff;
+        color: #174E7B;
     }
 
     /* === Divider === */
     .divider {
         margin: 40px 0;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        background: linear-gradient(90deg, transparent, rgba(45, 78, 61, 0.24), transparent);
     }
 
     /* === XP Style Button — satin plastic, not gel === */
@@ -896,17 +858,17 @@
         font-size: 1.3rem;
         font-weight: 700;
         line-height: 1.7;
-        color: #fff;
-        text-shadow: 1px 2px 4px rgba(0, 20, 60, 0.35);
+        color: #203D31;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
     }
 
     .manifesto-sub {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.8);
+        color: #50665A;
         margin-top: 14px;
         line-height: 1.7;
         font-weight: 400;
-        text-shadow: 1px 1px 1px rgba(0, 20, 40, 0.2);
+        text-shadow: none;
     }
 
     /* === Tab control (for property sheet feel) === */
