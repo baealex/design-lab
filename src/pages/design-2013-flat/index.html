@@ -1,0 +1,1738 @@
+<!-- layout: base.html -->
+<!-- title: Flat Design (2013) -->
+<!-- description: When texture disappeared and interfaces relied on type, color, and motion -->
+
+<style>
+    :root {
+        --ink: #111827;
+        --ink-soft: rgba(17, 24, 39, 0.74);
+        --ink-muted: rgba(17, 24, 39, 0.52);
+        --ink-dim: rgba(17, 24, 39, 0.32);
+        --white: #fff;
+        --panel: rgba(255, 255, 255, 0.66);
+        --panel-strong: rgba(255, 255, 255, 0.82);
+        --panel-faint: rgba(255, 255, 255, 0.42);
+        --hairline: rgba(60, 60, 67, 0.16);
+        --hairline-strong: rgba(60, 60, 67, 0.28);
+        --blue: #007aff;
+        --blue-soft: rgba(0, 122, 255, 0.12);
+        --pink: #ff2d55;
+        --orange: #ff9500;
+        --yellow: #ffcc00;
+        --green: #34c759;
+        --mint: #00c7be;
+        --purple: #5856d6;
+        --shadow: rgba(39, 52, 89, 0.16);
+        --blur: blur(24px) saturate(170%);
+        --radius-xl: 34px;
+        --radius-lg: 24px;
+        --radius-md: 16px;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', sans-serif;
+        font-weight: 300;
+        line-height: 1.5;
+        background:
+            radial-gradient(circle at 18% 14%, rgba(255, 45, 85, 0.26), transparent 34%),
+            radial-gradient(circle at 82% 16%, rgba(0, 199, 190, 0.28), transparent 36%),
+            radial-gradient(circle at 18% 82%, rgba(255, 204, 0, 0.24), transparent 34%),
+            radial-gradient(circle at 78% 74%, rgba(0, 122, 255, 0.22), transparent 38%),
+            linear-gradient(180deg, #f9fbff 0%, #eef6ff 42%, #fff7fb 100%);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100vw 100vh;
+        background-color: #f9fbff;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: -80px;
+        z-index: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at 12% 28%, rgba(255, 45, 85, 0.22), transparent 18%),
+            radial-gradient(circle at 86% 24%, rgba(88, 86, 214, 0.18), transparent 20%),
+            radial-gradient(circle at 52% 88%, rgba(52, 199, 89, 0.18), transparent 22%);
+        filter: blur(34px);
+        opacity: 0.86;
+    }
+
+    button,
+    input {
+        font: inherit;
+    }
+
+    button {
+        color: inherit;
+    }
+
+    .layout {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    .hero {
+        padding: 56px 0 48px;
+        text-align: center;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+        padding: 7px 16px;
+        color: var(--ink-muted);
+        background: rgba(255, 255, 255, 0.52);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        font-size: 0.7rem;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.76);
+    }
+
+    .hero-title {
+        margin: 0;
+        color: rgba(17, 24, 39, 0.9);
+        font-size: clamp(4.1rem, 16vw, 8.2rem);
+        font-weight: 200;
+        letter-spacing: -0.055em;
+        line-height: 0.86;
+    }
+
+    .hero-title span {
+        display: block;
+        margin-top: 8px;
+        font-size: 0.32em;
+        font-weight: 200;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--blue);
+    }
+
+    .hero-tagline {
+        margin: 20px auto 0;
+        max-width: 560px;
+        color: var(--ink-soft);
+        font-size: 1rem;
+        font-weight: 300;
+        line-height: 1.75;
+    }
+
+    .device {
+        width: min(348px, 100%);
+        margin: 36px auto 0;
+        padding: 10px;
+        border: 1px solid rgba(255,255,255,0.82);
+        border-radius: 48px;
+        background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(255,255,255,0.42));
+        box-shadow:
+            0 26px 80px rgba(69, 92, 132, 0.24),
+            inset 0 1px 0 rgba(255,255,255,0.92),
+            inset 0 -1px 0 rgba(60,60,67,0.08);
+    }
+
+    .device-screen {
+        position: relative;
+        min-height: 560px;
+        overflow: hidden;
+        border-radius: 38px;
+        background:
+            radial-gradient(circle at 22% 18%, rgba(255, 204, 0, 0.72), transparent 24%),
+            radial-gradient(circle at 70% 22%, rgba(255, 45, 85, 0.66), transparent 30%),
+            radial-gradient(circle at 28% 72%, rgba(0, 199, 190, 0.72), transparent 30%),
+            radial-gradient(circle at 82% 80%, rgba(0, 122, 255, 0.58), transparent 34%),
+            linear-gradient(160deg, #fef7d8 0%, #ffdfeb 42%, #d8f4ff 100%);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.44);
+    }
+
+    .device-screen::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(180deg, rgba(255,255,255,0.26), transparent 44%, rgba(255,255,255,0.16));
+    }
+
+    .status-bar {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 22px 0;
+        color: rgba(255,255,255,0.92);
+        font-size: 0.76rem;
+        font-weight: 500;
+        text-shadow: 0 1px 8px rgba(35, 45, 70, 0.22);
+    }
+
+    .status-icons {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+
+    .signal {
+        display: grid;
+        grid-template-columns: repeat(5, 4px);
+        gap: 2px;
+        align-items: end;
+        height: 10px;
+    }
+
+    .signal span {
+        display: block;
+        width: 4px;
+        border-radius: 3px;
+        background: currentColor;
+    }
+
+    .signal span:nth-child(1) { height: 4px; }
+    .signal span:nth-child(2) { height: 5px; }
+    .signal span:nth-child(3) { height: 7px; }
+    .signal span:nth-child(4) { height: 8px; opacity: 0.55; }
+    .signal span:nth-child(5) { height: 10px; opacity: 0.35; }
+
+    .battery {
+        width: 22px;
+        height: 10px;
+        border: 1px solid currentColor;
+        border-radius: 3px;
+        position: relative;
+    }
+
+    .battery::before {
+        content: '';
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: currentColor;
+    }
+
+    .battery::after {
+        content: '';
+        position: absolute;
+        right: -4px;
+        top: 3px;
+        width: 2px;
+        height: 4px;
+        border-radius: 0 2px 2px 0;
+        background: currentColor;
+    }
+
+    .lock-copy {
+        position: relative;
+        z-index: 2;
+        padding: 42px 24px 0;
+        color: rgba(255,255,255,0.94);
+        text-shadow: 0 2px 16px rgba(41, 52, 82, 0.24);
+    }
+
+    .lock-time {
+        margin: 0;
+        font-size: 4.8rem;
+        font-weight: 100;
+        letter-spacing: -0.08em;
+        line-height: 0.9;
+    }
+
+    .lock-date {
+        margin-top: 8px;
+        font-size: 1.05rem;
+        font-weight: 300;
+    }
+
+    .notification-stack {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        gap: 10px;
+        margin: 38px 16px 0;
+    }
+
+    .notification {
+        padding: 13px 14px;
+        border: 1px solid rgba(255,255,255,0.36);
+        border-radius: 18px;
+        background: rgba(255,255,255,0.42);
+        backdrop-filter: blur(22px) saturate(170%);
+        -webkit-backdrop-filter: blur(22px) saturate(170%);
+        color: rgba(20, 24, 34, 0.86);
+        text-align: left;
+        box-shadow: 0 12px 34px rgba(31, 45, 77, 0.12), inset 0 1px 0 rgba(255,255,255,0.66);
+    }
+
+    .notification-kicker {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        color: rgba(20, 24, 34, 0.54);
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .notification-title {
+        margin: 0;
+        font-size: 0.92rem;
+        font-weight: 400;
+    }
+
+    .notification-body {
+        margin: 3px 0 0;
+        color: rgba(20, 24, 34, 0.62);
+        font-size: 0.76rem;
+        line-height: 1.5;
+    }
+
+    .dock {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        z-index: 2;
+        padding: 12px;
+        border: 1px solid rgba(255,255,255,0.34);
+        border-radius: 26px;
+        background: rgba(255,255,255,0.34);
+        backdrop-filter: blur(28px) saturate(170%);
+        -webkit-backdrop-filter: blur(28px) saturate(170%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.58);
+    }
+
+    .dock-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .app-icon {
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        margin: 0 auto;
+        border: 0;
+        border-radius: 15px;
+        color: #fff;
+        font-size: 1.55rem;
+        font-weight: 200;
+        line-height: 1;
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.35),
+            inset 0 -1px 0 rgba(0,0,0,0.08),
+            0 8px 18px rgba(31,45,77,0.14);
+    }
+
+    .icon-sprite {
+        width: 0;
+        height: 0;
+        position: absolute;
+        overflow: hidden;
+    }
+
+    .app-icon svg {
+        width: 27px;
+        height: 27px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .icon-mail { background: linear-gradient(180deg, #62c7ff, #007aff); }
+    .icon-photos { background: conic-gradient(from 20deg, #ff3b30, #ff9500, #ffcc00, #34c759, #00c7be, #007aff, #5856d6, #ff2d55, #ff3b30); }
+    .icon-weather { background: linear-gradient(180deg, #5ac8fa, #007aff); }
+    .icon-music { background: linear-gradient(180deg, #ff5e7a, #ff2d55); }
+    .icon-notes { background: linear-gradient(180deg, #fff7aa 0 28%, #fff 28% 100%); color: #6b5d2b; }
+    .icon-messages { background: linear-gradient(180deg, #6ce67e, #34c759); color: #fff; }
+    .icon-maps { background: linear-gradient(135deg, #b9f6ca 0 32%, #fff 32% 46%, #5ac8fa 46% 68%, #ffe66d 68%); color: #1f6feb; }
+    .icon-settings { background: linear-gradient(180deg, #d9e1ea, #8e98a7); }
+
+    .intro-card,
+    .panel,
+    .code-block,
+    .manifesto {
+        border: 1px solid var(--hairline);
+        border-radius: var(--radius-lg);
+        background: rgba(255,255,255,0.84);
+        box-shadow: 0 10px 30px rgba(39,52,89,0.1), inset 0 1px 0 rgba(255,255,255,0.82);
+    }
+
+    .intro-card {
+        padding: 28px 32px;
+        margin-bottom: 48px;
+    }
+
+    .intro-text {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.94rem;
+        line-height: 1.85;
+    }
+
+    .intro-text strong {
+        color: var(--ink);
+        font-weight: 500;
+    }
+
+    .divider {
+        height: 1px;
+        margin: 42px 0;
+        background: linear-gradient(90deg, transparent, rgba(60,60,67,0.22), transparent);
+    }
+
+    .section {
+        margin-bottom: 50px;
+    }
+
+    .section-label {
+        margin-bottom: 5px;
+        color: var(--blue);
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .section-title {
+        margin: 0 0 12px;
+        color: rgba(17, 24, 39, 0.92);
+        font-size: 2rem;
+        font-weight: 200;
+        letter-spacing: -0.06em;
+        line-height: 1.1;
+    }
+
+    .section-desc {
+        margin: 0 0 20px;
+        color: var(--ink-soft);
+        font-size: 0.9rem;
+        line-height: 1.8;
+    }
+
+    .section-desc em {
+        color: var(--ink);
+        font-style: normal;
+        font-weight: 400;
+    }
+
+    .section-desc code {
+        padding: 2px 6px;
+        border-radius: 7px;
+        background: rgba(255,255,255,0.7);
+        color: var(--blue);
+        font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+        font-size: 0.82em;
+        font-weight: 400;
+    }
+
+    .panel {
+        padding: 22px;
+    }
+
+    .blur-stage {
+        position: relative;
+        min-height: 276px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.52);
+        border-radius: 22px;
+        background:
+            radial-gradient(circle at 20% 22%, var(--pink), transparent 24%),
+            radial-gradient(circle at 72% 26%, var(--yellow), transparent 22%),
+            radial-gradient(circle at 30% 78%, var(--mint), transparent 27%),
+            radial-gradient(circle at 82% 80%, var(--blue), transparent 31%),
+            linear-gradient(135deg, #fff1f8, #e3f7ff);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.48);
+    }
+
+    .blur-stage::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(90deg, rgba(255,255,255,0.42) 1px, transparent 1px),
+            linear-gradient(0deg, rgba(255,255,255,0.42) 1px, transparent 1px);
+        background-size: 42px 42px;
+        opacity: 0.32;
+    }
+
+    .blur-sheet {
+        position: absolute;
+        left: 22px;
+        right: 22px;
+        top: 46px;
+        padding: 22px;
+        border: 1px solid rgba(255,255,255,0.46);
+        border-radius: 22px;
+        background: rgba(255,255,255,0.48);
+        backdrop-filter: blur(22px) saturate(170%);
+        -webkit-backdrop-filter: blur(22px) saturate(170%);
+        color: rgba(17,24,39,0.86);
+        box-shadow: 0 18px 42px rgba(31,45,77,0.14), inset 0 1px 0 rgba(255,255,255,0.68);
+        transition: background 0.25s ease, backdrop-filter 0.25s ease, transform 0.25s ease;
+    }
+
+    .blur-stage[data-blur="clear"] .blur-sheet {
+        background: rgba(255,255,255,0.28);
+        backdrop-filter: blur(8px) saturate(135%);
+        -webkit-backdrop-filter: blur(8px) saturate(135%);
+    }
+
+    .blur-stage[data-blur="deep"] .blur-sheet {
+        background: rgba(255,255,255,0.72);
+        backdrop-filter: blur(36px) saturate(190%);
+        -webkit-backdrop-filter: blur(36px) saturate(190%);
+    }
+
+    .blur-sheet-kicker {
+        margin-bottom: 10px;
+        color: var(--ink-muted);
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .blur-sheet-title {
+        margin: 0;
+        font-size: 1.45rem;
+        font-weight: 300;
+        letter-spacing: -0.04em;
+    }
+
+    .blur-sheet-copy {
+        margin: 9px 0 0;
+        color: var(--ink-soft);
+        font-size: 0.84rem;
+        line-height: 1.7;
+    }
+
+    .blur-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+        align-items: center;
+    }
+
+    .ios-pill,
+    .text-button,
+    .segment-button,
+    .toggle-button,
+    .icon-card {
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+        transition: transform 0.16s ease, background 0.16s ease, color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .ios-pill {
+        padding: 9px 16px;
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        background: rgba(255,255,255,0.5);
+        color: var(--blue);
+        font-size: 0.82rem;
+        font-weight: 400;
+    }
+
+    .ios-pill:hover,
+    .text-button:hover,
+    .segment-button:hover,
+    .icon-card:hover,
+    .toggle-button:hover {
+        transform: translateY(-1px);
+    }
+
+    .ios-pill.active,
+    .ios-pill[aria-pressed="true"] {
+        border-color: rgba(0,122,255,0.3);
+        background: var(--blue);
+        color: #fff;
+        box-shadow: 0 8px 22px rgba(0,122,255,0.22);
+    }
+
+    .blur-readout {
+        margin-left: auto;
+        color: var(--ink-muted);
+        font-size: 0.76rem;
+    }
+
+    .code-block {
+        margin-top: 16px;
+        padding: 18px 20px;
+        color: rgba(17,24,39,0.76);
+        font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+        font-size: 0.78rem;
+        line-height: 1.75;
+    }
+
+    .code-block .cmt { color: rgba(17,24,39,0.42); }
+    .code-block .kw { color: var(--pink); }
+    .code-block .val { color: var(--blue); }
+    .code-block .fn { color: var(--purple); }
+
+    .icon-exhibit {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .home-board {
+        padding: 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 24px;
+        background:
+            radial-gradient(circle at 12% 18%, rgba(255,45,85,0.22), transparent 24%),
+            radial-gradient(circle at 88% 22%, rgba(0,122,255,0.18), transparent 28%),
+            rgba(255,255,255,0.46);
+    }
+
+    .home-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px 12px;
+    }
+
+    .icon-card {
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        text-align: center;
+    }
+
+    .icon-card .app-icon {
+        width: 58px;
+        height: 58px;
+        font-size: 1.48rem;
+        transform-origin: center;
+    }
+
+    .icon-card.active .app-icon,
+    .icon-card[aria-pressed="true"] .app-icon {
+        outline: 2px solid rgba(255,255,255,0.9);
+        box-shadow:
+            0 0 0 4px rgba(0,122,255,0.22),
+            0 10px 24px rgba(31,45,77,0.18),
+            inset 0 1px 0 rgba(255,255,255,0.38);
+    }
+
+    .app-label {
+        display: block;
+        margin-top: 7px;
+        color: rgba(17,24,39,0.66);
+        font-size: 0.68rem;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+
+    .icon-inspector {
+        padding: 18px;
+        border: 1px solid var(--hairline);
+        border-radius: 24px;
+        background: rgba(255,255,255,0.56);
+        backdrop-filter: blur(18px) saturate(160%);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+    }
+
+    .inspector-kicker {
+        color: var(--ink-muted);
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .inspector-title {
+        margin: 9px 0 8px;
+        font-size: 1.55rem;
+        font-weight: 200;
+        letter-spacing: -0.05em;
+    }
+
+    .inspector-copy {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.84rem;
+        line-height: 1.7;
+    }
+
+    .inspector-rule {
+        height: 1px;
+        margin: 18px 0;
+        background: var(--hairline);
+    }
+
+    .inspector-note {
+        color: var(--ink-muted);
+        font-size: 0.76rem;
+        line-height: 1.6;
+    }
+
+    .controls-demo {
+        display: grid;
+        gap: 16px;
+    }
+
+    .settings-card {
+        overflow: hidden;
+        border: 1px solid var(--hairline);
+        border-radius: 24px;
+        background: rgba(255,255,255,0.7);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+    }
+
+    .settings-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+        align-items: center;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--hairline);
+    }
+
+    .settings-row:last-child {
+        border-bottom: 0;
+    }
+
+    .settings-title {
+        margin: 0;
+        font-size: 0.94rem;
+        font-weight: 400;
+    }
+
+    .settings-sub {
+        margin: 3px 0 0;
+        color: var(--ink-muted);
+        font-size: 0.76rem;
+        line-height: 1.5;
+    }
+
+    .toggle-button {
+        position: relative;
+        width: 52px;
+        height: 31px;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(120,120,128,0.28);
+    }
+
+    .toggle-button::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.22);
+        transition: transform 0.2s ease;
+    }
+
+    .toggle-button[aria-pressed="true"] {
+        background: var(--green);
+    }
+
+    .toggle-button[aria-pressed="true"]::before {
+        transform: translateX(21px);
+    }
+
+    .segment-control {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        overflow: hidden;
+        border: 1px solid rgba(0,122,255,0.42);
+        border-radius: 9px;
+    }
+
+    .segment-button {
+        min-width: 84px;
+        padding: 7px 12px;
+        border: 0;
+        border-right: 1px solid rgba(0,122,255,0.42);
+        background: transparent;
+        color: var(--blue);
+        font-size: 0.78rem;
+        font-weight: 400;
+    }
+
+    .segment-button:last-child {
+        border-right: 0;
+    }
+
+    .segment-button.active,
+    .segment-button[aria-pressed="true"] {
+        background: var(--blue);
+        color: #fff;
+    }
+
+    .text-button {
+        min-height: 38px;
+        padding: 8px 14px;
+        border: 1px solid rgba(0,122,255,0.3);
+        border-radius: 10px;
+        background: rgba(0,122,255,0.08);
+        color: var(--blue);
+        font-size: 0.92rem;
+        font-weight: 400;
+        cursor: pointer;
+    }
+
+    .text-button.primary {
+        color: #fff;
+        background: var(--blue);
+        border-color: var(--blue);
+    }
+
+    .text-button.destructive {
+        color: var(--pink);
+        background: rgba(255,45,85,0.07);
+        border-color: rgba(255,45,85,0.24);
+    }
+
+    .settings-row.actions {
+        display: block;
+    }
+
+    .settings-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .range-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 210px;
+    }
+
+    .range-icon {
+        color: var(--ink-muted);
+        font-size: 1rem;
+    }
+
+    .ios-range {
+        width: 150px;
+        accent-color: var(--blue);
+    }
+
+    .control-preview {
+        padding: 20px;
+        border: 1px solid var(--hairline);
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.42));
+        color: var(--ink-soft);
+        font-size: 0.84rem;
+        line-height: 1.7;
+    }
+
+    .control-preview strong {
+        color: var(--ink);
+        font-weight: 500;
+    }
+
+    .control-preview .preview-state {
+        display: inline-flex;
+        margin-top: 12px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: var(--blue);
+        font-size: 0.76rem;
+        font-weight: 400;
+    }
+
+    .composition {
+        display: grid;
+        grid-template-columns: 0.86fr 1.14fr;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .mini-phone {
+        position: relative;
+        min-height: 360px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.64);
+        border-radius: 34px;
+        background:
+            radial-gradient(circle at 30% 18%, rgba(255,149,0,0.74), transparent 24%),
+            radial-gradient(circle at 70% 34%, rgba(255,45,85,0.62), transparent 28%),
+            radial-gradient(circle at 22% 82%, rgba(52,199,89,0.62), transparent 30%),
+            radial-gradient(circle at 88% 78%, rgba(88,86,214,0.66), transparent 34%),
+            linear-gradient(160deg, #fff2bd, #ffd8e5 48%, #ccecff);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.38);
+    }
+
+    .mini-status {
+        display: flex;
+        justify-content: space-between;
+        padding: 14px 18px;
+        color: rgba(255,255,255,0.9);
+        font-size: 0.7rem;
+        font-weight: 500;
+        text-shadow: 0 1px 10px rgba(31,45,77,0.2);
+    }
+
+    .mini-icons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px 10px;
+        padding: 24px 18px;
+    }
+
+    .mini-icons .app-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+
+    .mini-icons .app-icon svg {
+        width: 23px;
+        height: 23px;
+    }
+
+    .control-center {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        padding: 14px;
+        border: 1px solid rgba(255,255,255,0.38);
+        border-radius: 24px;
+        background: rgba(255,255,255,0.42);
+        backdrop-filter: blur(26px) saturate(175%);
+        -webkit-backdrop-filter: blur(26px) saturate(175%);
+        box-shadow: 0 18px 42px rgba(31,45,77,0.14), inset 0 1px 0 rgba(255,255,255,0.62);
+    }
+
+    .quick-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .quick-dot {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        justify-self: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.48);
+        color: var(--blue);
+        font-size: 0.95rem;
+        font-weight: 400;
+    }
+
+    .quick-dot svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .quick-dot.active {
+        background: var(--blue);
+        color: #fff;
+    }
+
+    .brightness {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.52);
+    }
+
+    .brightness span {
+        display: block;
+        width: 68%;
+        height: 100%;
+        border-radius: inherit;
+        background: #fff;
+    }
+
+    .composition-notes {
+        padding: 22px;
+        border: 1px solid var(--hairline);
+        border-radius: 24px;
+        background: rgba(255,255,255,0.62);
+    }
+
+    .note-list {
+        display: grid;
+        gap: 14px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .note-list li {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 12px;
+        color: var(--ink-soft);
+        font-size: 0.84rem;
+        line-height: 1.65;
+    }
+
+    .note-list b {
+        display: block;
+        margin-bottom: 2px;
+        color: var(--ink);
+        font-weight: 500;
+    }
+
+    .note-mark {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(0,122,255,0.1);
+        color: var(--blue);
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .reflection-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .reflection-card {
+        padding: 24px;
+    }
+
+    .reflection-heading {
+        display: inline-block;
+        margin: 0 0 14px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        color: var(--blue);
+        background: var(--blue-soft);
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .reflection-card.improve .reflection-heading {
+        color: #c12f4b;
+        background: rgba(255,45,85,0.1);
+    }
+
+    .reflection-list {
+        display: grid;
+        gap: 11px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .reflection-list li {
+        padding-left: 17px;
+        position: relative;
+        color: var(--ink-soft);
+        font-size: 0.82rem;
+        line-height: 1.6;
+    }
+
+    .reflection-list li::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        position: absolute;
+        top: 0.52em;
+        left: 0;
+        border-radius: 50%;
+        background: var(--blue);
+    }
+
+    .reflection-card.improve .reflection-list li::before {
+        background: var(--pink);
+    }
+
+    .manifesto {
+        margin-top: 12px;
+        padding: 30px 32px;
+        text-align: center;
+    }
+
+    .manifesto-text {
+        margin: 0;
+        color: rgba(17,24,39,0.9);
+        font-size: 1.7rem;
+        font-weight: 100;
+        letter-spacing: -0.06em;
+        line-height: 1.25;
+    }
+
+    .manifesto-sub {
+        margin: 18px auto 0;
+        max-width: 520px;
+        color: var(--ink-muted);
+        font-size: 0.86rem;
+        line-height: 1.8;
+    }
+
+    @media (max-width: 700px) {
+        .layout {
+            padding-inline: 16px;
+        }
+
+        .hero {
+            padding-top: 42px;
+        }
+
+        .hero-tagline br {
+            display: none;
+        }
+
+        .device-screen {
+            min-height: 520px;
+        }
+
+        .icon-exhibit,
+        .composition,
+        .reflection-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .home-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px 8px;
+        }
+
+        .icon-card .app-icon {
+            width: 52px;
+            height: 52px;
+        }
+
+        .settings-row {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .segment-control,
+        .range-row {
+            width: 100%;
+        }
+
+        .segment-button {
+            min-width: 0;
+        }
+    }
+
+    @media (max-width: 430px) {
+        .layout {
+            padding-inline: 12px;
+        }
+
+        .intro-card,
+        .panel,
+        .manifesto {
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .lock-time {
+            font-size: 4.1rem;
+        }
+
+        .notification-stack {
+            margin-top: 28px;
+        }
+
+        .app-icon,
+        .icon-card .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+        }
+
+        .dock-grid,
+        .home-grid {
+            gap: 8px;
+        }
+
+        .blur-readout {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            transition-duration: 0.001ms !important;
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+        }
+    }
+</style>
+
+<body>
+    <svg class="icon-sprite" aria-hidden="true">
+        <symbol id="flat-icon-mail" viewBox="0 0 24 24">
+            <rect x="3.5" y="5.5" width="17" height="13" rx="2.5"></rect>
+            <path d="M4.5 7l7.5 5.7L19.5 7"></path>
+        </symbol>
+        <symbol id="flat-icon-photos" viewBox="0 0 24 24">
+            <rect x="3.5" y="4.5" width="17" height="15" rx="3"></rect>
+            <circle cx="8.5" cy="9" r="1.5"></circle>
+            <path d="M5.5 17l4.8-4.2 3.1 2.7 2.6-2.2 2.5 2.2"></path>
+        </symbol>
+        <symbol id="flat-icon-weather" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
+        </symbol>
+        <symbol id="flat-icon-music" viewBox="0 0 24 24">
+            <path d="M10 17V6.8L19 5v10"></path>
+            <path d="M10 9l9-1.8"></path>
+            <circle cx="7.5" cy="17.5" r="2.5"></circle>
+            <circle cx="16.5" cy="15.5" r="2.5"></circle>
+        </symbol>
+        <symbol id="flat-icon-notes" viewBox="0 0 24 24">
+            <rect x="4.5" y="3.5" width="15" height="17" rx="2.5"></rect>
+            <path d="M8 8h8M8 12h8M8 16h5"></path>
+        </symbol>
+        <symbol id="flat-icon-messages" viewBox="0 0 24 24">
+            <path d="M4 6.5A3.5 3.5 0 0 1 7.5 3h9A3.5 3.5 0 0 1 20 6.5v6a3.5 3.5 0 0 1-3.5 3.5H11l-4.5 4v-4A3.2 3.2 0 0 1 4 12.8z"></path>
+        </symbol>
+        <symbol id="flat-icon-maps" viewBox="0 0 24 24">
+            <path d="M3.5 5.5l5-2 7 2 5-2v15l-5 2-7-2-5 2zM8.5 3.5v15M15.5 5.5v15"></path>
+            <circle cx="12" cy="10" r="1.8"></circle>
+        </symbol>
+        <symbol id="flat-icon-settings" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3.2"></circle>
+            <circle cx="12" cy="12" r="7"></circle>
+            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
+        </symbol>
+        <symbol id="flat-icon-plane" viewBox="0 0 24 24">
+            <path d="M3 12l18-8-6.5 16-3-6-6 3zM11.5 14L21 4"></path>
+        </symbol>
+        <symbol id="flat-icon-wireless" viewBox="0 0 24 24">
+            <path d="M4.5 9.5a10.5 10.5 0 0 1 15 0M7.5 12.5a6.3 6.3 0 0 1 9 0M10.3 15.4a2.5 2.5 0 0 1 3.4 0"></path>
+            <circle cx="12" cy="18.2" r="0.8" fill="currentColor" stroke="none"></circle>
+        </symbol>
+        <symbol id="flat-icon-rotation" viewBox="0 0 24 24">
+            <path d="M18.2 8A7 7 0 1 0 19 14M18.2 8V3.5M18.2 8h-4.5"></path>
+            <rect x="9" y="8.5" width="6" height="7" rx="1.5"></rect>
+        </symbol>
+        <symbol id="flat-icon-moon" viewBox="0 0 24 24">
+            <path d="M18.5 15.8A8 8 0 0 1 8.2 5.5a8 8 0 1 0 10.3 10.3z"></path>
+        </symbol>
+    </svg>
+    <div class="layout">
+        <header class="hero">
+            <div class="hero-badge">When flat design became the default</div>
+            <h1 class="hero-title">Flat <span>Design</span></h1>
+            <p class="hero-tagline">
+                Texture disappeared. Type, color, spacing, and motion<br>
+                became the new vocabulary of mainstream interface design.
+            </p>
+
+            <div class="device" aria-label="2013 flat mobile interface specimen">
+                <div class="device-screen">
+                    <div class="status-bar">
+                        <span>Carrier</span>
+                        <span>9:41 AM</span>
+                        <span class="status-icons" aria-hidden="true">
+                            <span class="signal"><span></span><span></span><span></span><span></span><span></span></span>
+                            <span class="battery"></span>
+                        </span>
+                    </div>
+                    <div class="lock-copy">
+                        <p class="lock-time">9:41</p>
+                        <div class="lock-date">Tuesday, September 17</div>
+                    </div>
+                    <div class="notification-stack">
+                        <div class="notification">
+                            <div class="notification-kicker"><span>Design Notes</span><span>now</span></div>
+                            <h2 class="notification-title">Depth moved into the background.</h2>
+                            <p class="notification-body">The panel is flat. The world behind it is what gives it atmosphere.</p>
+                        </div>
+                        <div class="notification">
+                            <div class="notification-kicker"><span>Calendar</span><span>9:42</span></div>
+                            <h2 class="notification-title">Review hairlines, tint, and motion.</h2>
+                            <p class="notification-body">Everything gets lighter, but the interface still has to answer touch.</p>
+                        </div>
+                    </div>
+                    <div class="dock" aria-label="Flat app dock">
+                        <div class="dock-grid">
+                            <span class="app-icon icon-mail" aria-hidden="true"><svg><use href="#flat-icon-mail"></use></svg></span>
+                            <span class="app-icon icon-photos" aria-hidden="true"><svg><use href="#flat-icon-photos"></use></svg></span>
+                            <span class="app-icon icon-weather" aria-hidden="true"><svg><use href="#flat-icon-weather"></use></svg></span>
+                            <span class="app-icon icon-music" aria-hidden="true"><svg><use href="#flat-icon-music"></use></svg></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="intro-card">
+            <p class="intro-text">
+                Flat design existed before 2013. Metro had already shown how typography and
+                geometry could replace interface chrome. But when iOS 7 brought the same rejection
+                of leather, felt, bevels, and heavy shadows to a mass mobile audience, flatness became
+                the default expectation across apps and the web. The movement replaced surface
+                metaphors with <strong>typography, tint color, spacing, motion, and functional layers</strong>.
+                <br><br>
+                This exhibit treats iOS 7 as an influential case study, not the name of the trend.
+                It keeps the visual lightness while correcting the era's weakest habit: removing so
+                many boundaries that people could no longer tell what was interactive.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Remove texture, keep meaning</h2>
+            <p class="section-desc">
+                Flat design removed stitched leather, wood, chrome, and heavy bevels. But hierarchy
+                still needed a material language. Spacing, hairlines, and translucent blur could
+                separate layers without pretending the screen was made from a physical object.
+                Adjust the frost below and watch separation change without added ornament.
+            </p>
+
+            <div class="panel">
+                <div class="blur-stage" id="blur-stage" data-blur="soft" aria-label="Translucency blur demo">
+                    <div class="blur-sheet">
+                        <div class="blur-sheet-kicker">Case Study · iOS 7</div>
+                        <h3 class="blur-sheet-title" id="blur-title">Soft blur, clear hierarchy</h3>
+                        <p class="blur-sheet-copy" id="blur-copy">
+                            The panel does not need leather, linen, or chrome. It needs enough frost
+                            to separate foreground from background while preserving the feeling of place.
+                        </p>
+                    </div>
+                </div>
+                <div class="blur-controls" aria-label="Blur strength controls">
+                    <button class="ios-pill" data-blur="clear" aria-pressed="false">Clear</button>
+                    <button class="ios-pill active" data-blur="soft" aria-pressed="true">Soft</button>
+                    <button class="ios-pill" data-blur="deep" aria-pressed="false">Deep</button>
+                    <span class="blur-readout" id="blur-readout">Frost: balanced</span>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <span class="cmt">/* A flat layer can separate itself without borrowed texture. */</span><br>
+                <span class="kw">background</span>: <span class="val">rgba(255,255,255,.48)</span>;<br>
+                <span class="kw">backdrop-filter</span>: <span class="fn">blur</span>(<span class="val">22px</span>) <span class="fn">saturate</span>(<span class="val">170%</span>);<br>
+                <span class="kw">border</span>: <span class="val">1px solid rgba(255,255,255,.46)</span>;
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">Color became the control</h2>
+            <p class="section-desc">
+                Once texture and borders disappeared, color carried more responsibility. A tint could
+                mark an action, identify a product, or preserve warmth without rebuilding a miniature
+                physical object. The best icons used simple geometry and one dominant signal. Select
+                an example to see the rule behind it.
+            </p>
+
+            <div class="panel icon-exhibit">
+                <div class="home-board">
+                    <div class="home-grid" aria-label="Selectable flat design app icons">
+                        <button class="icon-card active" data-title="Mail" data-note="A single white symbol over blue. Tint becomes navigation, not decoration." data-rule="Rule: one glyph, one gradient" aria-pressed="true">
+                            <span class="app-icon icon-mail" aria-hidden="true"><svg><use href="#flat-icon-mail"></use></svg></span>
+                            <span class="app-label">Mail</span>
+                        </button>
+                        <button class="icon-card" data-title="Photos" data-note="The rainbow is a system landmark, but the shape stays abstract and light." data-rule="Rule: color can be memorable without texture" aria-pressed="false">
+                            <span class="app-icon icon-photos" aria-hidden="true"><svg><use href="#flat-icon-photos"></use></svg></span>
+                            <span class="app-label">Photos</span>
+                        </button>
+                        <button class="icon-card" data-title="Weather" data-note="Flat design still benefits from warmth. A sunny symbol keeps the utility human." data-rule="Rule: friendly, not cartoonish" aria-pressed="false">
+                            <span class="app-icon icon-weather" aria-hidden="true"><svg><use href="#flat-icon-weather"></use></svg></span>
+                            <span class="app-label">Weather</span>
+                        </button>
+                        <button class="icon-card" data-title="Music" data-note="The icon does not mimic an instrument. It simply owns a vivid signal color." data-rule="Rule: identity through tint" aria-pressed="false">
+                            <span class="app-icon icon-music" aria-hidden="true"><svg><use href="#flat-icon-music"></use></svg></span>
+                            <span class="app-label">Music</span>
+                        </button>
+                        <button class="icon-card" data-title="Notes" data-note="A trace of paper remains, but only as a quiet cue. No torn edges, no leather." data-rule="Rule: metaphor reduced to minimum" aria-pressed="false">
+                            <span class="app-icon icon-notes" aria-hidden="true"><svg><use href="#flat-icon-notes"></use></svg></span>
+                            <span class="app-label">Notes</span>
+                        </button>
+                        <button class="icon-card" data-title="Messages" data-note="A familiar speech bubble is reduced to one white glyph and one strong signal color." data-rule="Rule: simplify the metaphor, keep recognition" aria-pressed="false">
+                            <span class="app-icon icon-messages" aria-hidden="true"><svg><use href="#flat-icon-messages"></use></svg></span>
+                            <span class="app-label">Messages</span>
+                        </button>
+                        <button class="icon-card" data-title="Maps" data-note="The map becomes a simplified field of color, not a miniature paper map." data-rule="Rule: compress reality into orientation" aria-pressed="false">
+                            <span class="app-icon icon-maps" aria-hidden="true"><svg><use href="#flat-icon-maps"></use></svg></span>
+                            <span class="app-label">Maps</span>
+                        </button>
+                        <button class="icon-card" data-title="Settings" data-note="Even the most mechanical app is softened into a quiet, rounded square." data-rule="Rule: utility can still feel gentle" aria-pressed="false">
+                            <span class="app-icon icon-settings" aria-hidden="true"><svg><use href="#flat-icon-settings"></use></svg></span>
+                            <span class="app-label">Settings</span>
+                        </button>
+                    </div>
+                </div>
+
+                <aside class="icon-inspector" aria-live="polite">
+                    <div class="inspector-kicker">Selected Icon</div>
+                    <h3 class="inspector-title" id="icon-title">Mail</h3>
+                    <p class="inspector-copy" id="icon-copy">
+                        A single white symbol over blue. Tint becomes navigation, not decoration.
+                    </p>
+                    <div class="inspector-rule"></div>
+                    <p class="inspector-note" id="icon-rule">Rule: one glyph, one gradient</p>
+                </aside>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">Flat still needs affordance</h2>
+            <p class="section-desc">
+                The weakest flat interfaces confused visual simplicity with missing information.
+                Text links looked like labels and borderless controls disappeared into content.
+                A durable flat system keeps behavioral cues: consistent tint for action, obvious state,
+                visible selection, honest contrast, and touch targets large enough to find.
+            </p>
+
+            <div class="panel controls-demo">
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <div>
+                            <h3 class="settings-title">Translucent panels</h3>
+                            <p class="settings-sub">A light system can still show state clearly.</p>
+                        </div>
+                        <button class="toggle-button" data-toggle="panels" aria-label="Toggle translucent panels" aria-pressed="true"></button>
+                    </div>
+                    <div class="settings-row">
+                        <div>
+                            <h3 class="settings-title">Motion cues</h3>
+                            <p class="settings-sub">Animation should explain where a layer came from.</p>
+                        </div>
+                        <button class="toggle-button" data-toggle="motion" aria-label="Toggle motion cues" aria-pressed="true"></button>
+                    </div>
+                    <div class="settings-row">
+                        <div>
+                            <h3 class="settings-title">Tint role</h3>
+                            <p class="settings-sub">Choose how the system blue is allowed to speak.</p>
+                        </div>
+                        <div class="segment-control" aria-label="Tint role controls">
+                            <button class="segment-button" data-segment="Quiet" aria-pressed="false">Quiet</button>
+                            <button class="segment-button active" data-segment="Useful" aria-pressed="true">Useful</button>
+                            <button class="segment-button" data-segment="Loud" aria-pressed="false">Loud</button>
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div>
+                            <h3 class="settings-title">Legibility</h3>
+                            <p class="settings-sub">Thin type works only when contrast stays honest.</p>
+                        </div>
+                        <div class="range-row">
+                            <span class="range-icon" aria-hidden="true">A</span>
+                            <input class="ios-range" id="contrast-range" type="range" min="30" max="100" value="74" aria-label="Legibility contrast">
+                            <span class="range-icon" aria-hidden="true">A</span>
+                        </div>
+                    </div>
+                    <div class="settings-row actions">
+                        <div class="settings-actions">
+                            <button class="text-button destructive" id="preview-reset">Reset</button>
+                            <button class="text-button primary" id="preview-action">Done</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-preview" aria-live="polite">
+                    <strong id="preview-title">Useful tint, clear state.</strong>
+                    <br>
+                    <span id="preview-copy">
+                        The controls are visually quiet, but selected states remain visible. Flat does not mean uncertain.
+                    </span>
+                    <br>
+                    <span class="preview-state" id="preview-state">Panels on · Motion on · Contrast 74%</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">Depth moved into layers and motion</h2>
+            <p class="section-desc">
+                The enduring lesson of the great flattening is not that every interface should be thin.
+                It is that digital material can be native to the screen: color, blur, motion, spacing,
+                and hierarchy instead of borrowed leather or plastic.
+            </p>
+
+            <div class="panel composition">
+                <div class="mini-phone" aria-label="Composed flat mobile interface specimen">
+                    <div class="mini-status"><span>9:41</span><span>87%</span></div>
+                    <div class="mini-icons">
+                        <span class="app-icon icon-mail" aria-hidden="true"><svg><use href="#flat-icon-mail"></use></svg></span>
+                        <span class="app-icon icon-photos" aria-hidden="true"><svg><use href="#flat-icon-photos"></use></svg></span>
+                        <span class="app-icon icon-weather" aria-hidden="true"><svg><use href="#flat-icon-weather"></use></svg></span>
+                        <span class="app-icon icon-music" aria-hidden="true"><svg><use href="#flat-icon-music"></use></svg></span>
+                        <span class="app-icon icon-notes" aria-hidden="true"><svg><use href="#flat-icon-notes"></use></svg></span>
+                        <span class="app-icon icon-settings" aria-hidden="true"><svg><use href="#flat-icon-settings"></use></svg></span>
+                    </div>
+                    <div class="control-center">
+                        <div class="quick-grid">
+                            <span class="quick-dot active" aria-hidden="true"><svg><use href="#flat-icon-plane"></use></svg></span>
+                            <span class="quick-dot" aria-hidden="true"><svg><use href="#flat-icon-wireless"></use></svg></span>
+                            <span class="quick-dot active" aria-hidden="true"><svg><use href="#flat-icon-rotation"></use></svg></span>
+                            <span class="quick-dot" aria-hidden="true"><svg><use href="#flat-icon-moon"></use></svg></span>
+                        </div>
+                        <div class="brightness"><span></span></div>
+                    </div>
+                </div>
+
+                <div class="composition-notes">
+                    <ul class="note-list">
+                        <li>
+                            <span class="note-mark">1</span>
+                            <span><b>Foreground is quiet.</b> Panels use translucency and hairlines, not heavy bevels.</span>
+                        </li>
+                        <li>
+                            <span class="note-mark">2</span>
+                            <span><b>Background carries atmosphere.</b> The gradient is soft enough to support glass without stealing focus.</span>
+                        </li>
+                        <li>
+                            <span class="note-mark">3</span>
+                            <span><b>Tint means action.</b> Blue appears where the user can do something, not on every decorative detail.</span>
+                        </li>
+                        <li>
+                            <span class="note-mark">4</span>
+                            <span><b>Lightness needs discipline.</b> Thin type, low borders, and blur work only when hierarchy stays readable.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">After the Flattening</div>
+            <h2 class="section-title">What we keep. What we improve.</h2>
+            <p class="section-desc">
+                Flat design made interfaces cleaner, faster to scale, and more native to screens.
+                It also proved that removing decoration can remove useful cues. The mature version
+                keeps the clarity while restoring enough contrast, boundaries, and state.
+            </p>
+            <div class="reflection-grid">
+                <article class="panel reflection-card">
+                    <h3 class="reflection-heading">Keep</h3>
+                    <ul class="reflection-list">
+                        <li>Content before decorative interface chrome</li>
+                        <li>Type, spacing, and color with explicit roles</li>
+                        <li>Simple iconography that scales cleanly</li>
+                        <li>Motion and layers that explain spatial change</li>
+                    </ul>
+                </article>
+                <article class="panel reflection-card improve">
+                    <h3 class="reflection-heading">Improve</h3>
+                    <ul class="reflection-list">
+                        <li>Borderless controls that look like plain text</li>
+                        <li>Ultra-thin type and low-contrast hairlines</li>
+                        <li>Blur used as decoration instead of hierarchy</li>
+                        <li>Motion without reduced-motion alternatives</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <footer class="manifesto">
+            <p class="manifesto-text">
+                Keep the light.<br>
+                Keep the touch target.<br>
+                Let the glass stay useful.
+            </p>
+            <p class="manifesto-sub">
+                The great flattening was sometimes too airy, often beautiful, and deeply influential.
+                Its best idea was not flatness itself, but the belief that software could have its
+                own visual language instead of borrowing one from the desk.
+            </p>
+        </footer>
+    </div>
+</body>
+
+<script>
+    var blurNotes = {
+        clear: {
+            title: 'Clear blur, more background',
+            copy: 'A lighter frost keeps the color field alive, but it asks typography and spacing to work harder.',
+            readout: 'Frost: light'
+        },
+        soft: {
+            title: 'Soft blur, clear hierarchy',
+            copy: 'The panel does not need leather, linen, or chrome. It needs enough frost to separate foreground from background while preserving the feeling of place.',
+            readout: 'Frost: balanced'
+        },
+        deep: {
+            title: 'Deep blur, calmer reading',
+            copy: 'More blur makes the layer easier to read. The tradeoff is less connection to the scene underneath.',
+            readout: 'Frost: strong'
+        }
+    };
+
+    var blurStage = document.getElementById('blur-stage');
+    var blurTitle = document.getElementById('blur-title');
+    var blurCopy = document.getElementById('blur-copy');
+    var blurReadout = document.getElementById('blur-readout');
+    var blurButtons = document.querySelectorAll('.blur-controls [data-blur]');
+
+    blurButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var key = button.getAttribute('data-blur');
+            var note = blurNotes[key];
+
+            blurStage.setAttribute('data-blur', key);
+            blurTitle.textContent = note.title;
+            blurCopy.textContent = note.copy;
+            blurReadout.textContent = note.readout;
+
+            blurButtons.forEach(function(item) {
+                item.classList.remove('active');
+                item.setAttribute('aria-pressed', 'false');
+            });
+            button.classList.add('active');
+            button.setAttribute('aria-pressed', 'true');
+        });
+    });
+
+    var iconCards = document.querySelectorAll('.icon-card');
+    var iconTitle = document.getElementById('icon-title');
+    var iconCopy = document.getElementById('icon-copy');
+    var iconRule = document.getElementById('icon-rule');
+
+    iconCards.forEach(function(card) {
+        card.addEventListener('click', function() {
+            iconCards.forEach(function(item) {
+                item.classList.remove('active');
+                item.setAttribute('aria-pressed', 'false');
+            });
+
+            card.classList.add('active');
+            card.setAttribute('aria-pressed', 'true');
+            iconTitle.textContent = card.getAttribute('data-title');
+            iconCopy.textContent = card.getAttribute('data-note');
+            iconRule.textContent = card.getAttribute('data-rule');
+        });
+    });
+
+    var toggleButtons = document.querySelectorAll('[data-toggle]');
+    var segmentButtons = document.querySelectorAll('[data-segment]');
+    var contrastRange = document.getElementById('contrast-range');
+    var previewTitle = document.getElementById('preview-title');
+    var previewCopy = document.getElementById('preview-copy');
+    var previewState = document.getElementById('preview-state');
+    var previewAction = document.getElementById('preview-action');
+    var previewReset = document.getElementById('preview-reset');
+    var tintRole = 'Useful';
+
+    function getToggleState(name) {
+        var toggle = document.querySelector('[data-toggle="' + name + '"]');
+        return toggle && toggle.getAttribute('aria-pressed') === 'true';
+    }
+
+    function setToggleState(name, value) {
+        var toggle = document.querySelector('[data-toggle="' + name + '"]');
+        if (toggle) {
+            toggle.setAttribute('aria-pressed', value ? 'true' : 'false');
+        }
+    }
+
+    function updatePreview(message) {
+        var panels = getToggleState('panels');
+        var motion = getToggleState('motion');
+        var contrast = contrastRange.value;
+        var tintCopy = {
+            Quiet: 'Quiet tint reduces visual noise, but actions must still look reachable.',
+            Useful: 'The controls are visually quiet, but selected states remain visible. Flat does not mean uncertain.',
+            Loud: 'Loud tint makes action obvious, but it can quickly turn hierarchy into decoration.'
+        };
+
+        previewTitle.textContent = tintRole + ' tint, clear state.';
+        previewCopy.textContent = message || tintCopy[tintRole];
+        previewState.textContent = 'Panels ' + (panels ? 'on' : 'off') + ' · Motion ' + (motion ? 'on' : 'off') + ' · Contrast ' + contrast + '%';
+        previewCopy.style.color = 'rgba(17, 24, 39, ' + Math.max(0.42, contrast / 100) + ')';
+    }
+
+    toggleButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var pressed = button.getAttribute('aria-pressed') === 'true';
+            button.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+            updatePreview();
+        });
+    });
+
+    segmentButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            tintRole = button.getAttribute('data-segment');
+            segmentButtons.forEach(function(item) {
+                item.classList.remove('active');
+                item.setAttribute('aria-pressed', 'false');
+            });
+            button.classList.add('active');
+            button.setAttribute('aria-pressed', 'true');
+            updatePreview();
+        });
+    });
+
+    contrastRange.addEventListener('input', function() {
+        updatePreview();
+    });
+
+    previewAction.addEventListener('click', function() {
+        updatePreview('Done is just blue text, but its placement and color make the action legible.');
+    });
+
+    previewReset.addEventListener('click', function() {
+        setToggleState('panels', true);
+        setToggleState('motion', true);
+        contrastRange.value = 74;
+        tintRole = 'Useful';
+        segmentButtons.forEach(function(item) {
+            var active = item.getAttribute('data-segment') === 'Useful';
+            item.classList.toggle('active', active);
+            item.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        updatePreview('Reset to the balanced version: light controls, visible state, readable text.');
+    });
+</script>
