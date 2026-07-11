@@ -9,8 +9,6 @@
         --xp-blue-btn: #003C9A;
         --xp-green: #21A121;
         --xp-green-dark: #188218;
-        --xp-taskbar: #235ADD;
-        --xp-start-green: #388E3C;
         --xp-window-border: #0054E3;
         --xp-body-bg: #ECE9D8;
         --xp-field-bg: #ffffff;
@@ -25,7 +23,6 @@
         font-family: Tahoma, 'Segoe UI', sans-serif;
         margin: 0;
         padding: 0;
-        padding-bottom: 30px;
         min-height: 100vh;
         overflow-x: hidden;
         color: var(--text);
@@ -901,123 +898,6 @@
         font-weight: 700;
     }
 
-    /* === XP Taskbar === */
-    .xp-taskbar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 40px;
-        background: linear-gradient(180deg,
-                #3168D5 0%,
-                #2456C8 15%,
-                #1E4EBF 50%,
-                #1946B0 85%,
-                #2150C0 100%);
-        border-top: 1px solid #5C8AE0;
-        display: flex;
-        align-items: center;
-        padding: 0;
-        z-index: 100;
-        box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.15);
-    }
-
-    .xp-start-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        padding: 2px 22px 2px 14px;
-        height: 40px;
-        border-radius: 0 8px 8px 0;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        font-family: Tahoma, sans-serif;
-        color: #fff;
-        text-shadow: 1px 1px 1px rgba(0, 40, 0, 0.5);
-        background: linear-gradient(180deg,
-                #5DBB3F 0%,
-                #3EA828 20%,
-                #2D9418 50%,
-                #288A14 80%,
-                #34A020 100%);
-        border: 1px solid #1A6810;
-        box-shadow:
-            inset 0 1px 0 rgba(160, 230, 140, 0.35),
-            inset 0 -1px 0 rgba(0, 40, 0, 0.15);
-        letter-spacing: 0.02em;
-    }
-
-    .xp-start-btn:hover {
-        background: linear-gradient(180deg,
-                #6CCA4E 0%,
-                #4AB832 20%,
-                #38A024 50%,
-                #329618 80%,
-                #3EAA2C 100%);
-    }
-
-    .xp-start-btn:active {
-        background: linear-gradient(180deg,
-                #228010 0%,
-                #268814 30%,
-                #2A8C18 100%);
-    }
-
-    .xp-start-logo {
-        width: 16px;
-        height: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .xp-start-flag {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1px;
-        width: 12px;
-        height: 12px;
-    }
-
-    .xp-start-flag span {
-        border-radius: 1px;
-    }
-
-    .xp-start-flag .f-red { background: #FF4040; }
-    .xp-start-flag .f-green { background: #40C040; }
-    .xp-start-flag .f-blue { background: #4080FF; }
-    .xp-start-flag .f-yellow { background: #FFD040; }
-
-    .xp-taskbar-tray {
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 0 24px;
-        height: 40px;
-        background: linear-gradient(180deg,
-                #1C48A8 0%,
-                #183C94 50%,
-                #1C44A0 100%);
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 2px;
-        font-size: 16px;
-        color: #fff;
-        text-shadow: 1px 1px 0 rgba(0, 0, 40, 0.4);
-    }
-
-    .xp-taskbar-clock {
-        font-family: Tahoma, sans-serif;
-        font-size: 11px;
-        letter-spacing: 0.02em;
-    }
-
-    .xp-quick-icon:hover {
-        background: rgba(255, 255, 255, 0.12);
-    }
-
     /* === Responsive === */
     @media screen and (max-width: 600px) {
         .hero-title {
@@ -1058,13 +938,6 @@
             flex-direction: column;
         }
 
-        .xp-taskbar {
-            display: none;
-        }
-
-        body {
-            padding-bottom: 0;
-        }
     }
 </style>
 
@@ -1382,24 +1255,6 @@
             </p>
         </footer>
     </div>
-
-    <!-- XP Taskbar -->
-    <div class="xp-taskbar">
-        <button class="xp-start-btn" id="start-btn">
-            <div class="xp-start-logo">
-                <div class="xp-start-flag">
-                    <span class="f-red"></span>
-                    <span class="f-green"></span>
-                    <span class="f-blue"></span>
-                    <span class="f-yellow"></span>
-                </div>
-            </div>
-            start
-        </button>
-        <div class="xp-taskbar-tray">
-            <span class="xp-taskbar-clock" id="taskbar-clock">12:00 PM</span>
-        </div>
-    </div>
 </body>
 
 <script>
@@ -1437,20 +1292,6 @@
     }
 
     setInterval(updateWeather, 8000);
-
-    /* Taskbar clock */
-    function updateClock() {
-        var now = new Date();
-        var h = now.getHours();
-        var m = now.getMinutes();
-        var ampm = h >= 12 ? 'PM' : 'AM';
-        h = h % 12 || 12;
-        var mm = m < 10 ? '0' + m : m;
-        var el = document.getElementById('taskbar-clock');
-        if (el) el.textContent = h + ':' + mm + ' ' + ampm;
-    }
-    updateClock();
-    setInterval(updateClock, 30000);
 
     /* Forecast button interaction */
     var forecastBtn = document.getElementById('weather-details-btn');
