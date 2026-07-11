@@ -525,14 +525,6 @@
 <script>
     var pages = $DATA.pages;
 
-    var EFFECT_ICONS = {
-        'effect-confetti': '\u{1F38A}',
-        'effect-fireworks': '\u{1F386}',
-        'effect-magnetic': '\u{1F9F2}',
-        'effect-reveal': '\u{1F441}',
-        'effect-stack': '\u{1F0CF}',
-    };
-
     var designPages = pages
         .filter(function(p) { return p.category === 'design' && p.year !== null; })
         .sort(function(a, b) { return a.year - b.year; });
@@ -540,8 +532,6 @@
     var conceptPages = pages
         .filter(function(p) { return p.category === 'concept' && p.year !== null; })
         .sort(function(a, b) { return a.year - b.year; });
-
-    var effectPages = pages.filter(function(p) { return p.category === 'effect'; });
 
     var $iframe = document.getElementById('preview-iframe');
     var $previewTitle = document.getElementById('preview-title');
@@ -603,31 +593,6 @@
             });
         }
 
-        // Effects label
-        if (effectPages.length > 0) {
-            var effectLabel = document.createElement('div');
-            effectLabel.className = 'section-divider';
-            effectLabel.textContent = 'Effects';
-            frag.appendChild(effectLabel);
-
-            effectPages.forEach(function(page) {
-                var btn = document.createElement('button');
-                btn.className = 'card';
-                btn.dataset.name = page.name;
-                var icon = EFFECT_ICONS[page.name] || '\u2728';
-                btn.innerHTML =
-                    '<span class="card-icon">' + icon + '</span>' +
-                    '<div class="card-body">' +
-                        '<div class="card-title">' + page.title + '</div>' +
-                        '<div class="card-desc">' + page.description + '</div>' +
-                    '</div>';
-                btn.addEventListener('click', function() {
-                    selectPage(page);
-                });
-                frag.appendChild(btn);
-            });
-        }
-
         $sidebarScroll.appendChild(frag);
     }
 
@@ -677,13 +642,12 @@
     // Find page by name
     function findPage(name) {
         return designPages.find(function(p) { return p.name === name; })
-            || conceptPages.find(function(p) { return p.name === name; })
-            || effectPages.find(function(p) { return p.name === name; });
+            || conceptPages.find(function(p) { return p.name === name; });
     }
 
     // Get all pages in display order
     function getAllPages() {
-        return designPages.concat(conceptPages, effectPages);
+        return designPages.concat(conceptPages);
     }
 
     // Navigate to next/prev page
