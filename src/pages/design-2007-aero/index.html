@@ -3,37 +3,73 @@
 <!-- description: GPU had power to spare, so let's throw a glass party -->
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
-
     :root {
-        --glass: rgba(255, 255, 255, 0.18);
-        --glass-strong: rgba(255, 255, 255, 0.28);
-        --glass-border: rgba(255, 255, 255, 0.35);
-        --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-        --glass-blur: blur(16px) saturate(180%);
+        --glass: rgba(23, 72, 128, 0.38);
+        --glass-strong: rgba(71, 143, 218, 0.5);
+        --glass-border: rgba(221, 242, 255, 0.68);
+        --glass-shadow: 0 14px 34px rgba(2, 17, 42, 0.28);
+        --glass-blur: blur(18px) saturate(145%);
         --text: #fff;
-        --text-muted: rgba(255, 255, 255, 0.7);
-        --text-dim: rgba(255, 255, 255, 0.4);
+        --text-muted: rgba(236, 247, 255, 0.78);
+        --text-dim: rgba(225, 241, 255, 0.56);
         --glossy-btn: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.02) 51%, rgba(255,255,255,0.12) 100%);
         --glossy-btn-hover: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.08) 51%, rgba(255,255,255,0.2) 100%);
-        --accent: #5ba2f0;
-        --accent-glow: rgba(91, 162, 240, 0.4);
-        --danger: #ef4444;
-        --success: #34d399;
+        --accent: #85d9ff;
+        --accent-glow: rgba(76, 190, 255, 0.52);
+        --danger: #ff8c8c;
+        --success: #61efbd;
     }
 
     body {
-        font-family: 'Noto Sans', sans-serif;
-        background: linear-gradient(135deg, #0f1e3d 0%, #1a3a6a 25%, #2a5a9a 50%, #1a4a8a 75%, #0d1a35 100%);
+        font-family: 'Segoe UI', 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+        background:
+            radial-gradient(ellipse at 50% 12%, rgba(112, 206, 255, 0.55) 0%, rgba(40, 112, 190, 0.22) 30%, transparent 58%),
+            linear-gradient(145deg, #071b3c 0%, #174e87 30%, #246da9 50%, #123c72 72%, #06162f 100%);
         background-attachment: fixed;
         color: var(--text);
         min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .wallpaper {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .wallpaper::before,
+    .wallpaper::after {
+        content: '';
+        position: absolute;
+        width: 70vw;
+        height: 34vw;
+        border-radius: 50%;
+        filter: blur(8px);
+        opacity: 0.5;
+        transform: rotate(-18deg);
+    }
+
+    .wallpaper::before {
+        top: 20vh;
+        left: -24vw;
+        background: radial-gradient(ellipse, rgba(56, 224, 255, 0.28) 0%, rgba(45, 135, 244, 0.14) 38%, transparent 70%);
+        border-top: 2px solid rgba(176, 241, 255, 0.22);
+    }
+
+    .wallpaper::after {
+        right: -26vw;
+        top: 46vh;
+        background: radial-gradient(ellipse, rgba(125, 214, 85, 0.18) 0%, rgba(57, 179, 219, 0.1) 42%, transparent 70%);
+        border-top: 2px solid rgba(207, 255, 193, 0.16);
     }
 
     .layout {
-        max-width: 720px;
+        position: relative;
+        z-index: 1;
+        max-width: 820px;
         margin: 0 auto;
-        padding: 32px 20px 64px;
+        padding: 36px 24px 72px;
     }
 
     /* Glass panel base */
@@ -42,8 +78,11 @@
         backdrop-filter: var(--glass-blur);
         -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-radius: 9px;
+        box-shadow:
+            var(--glass-shadow),
+            0 0 0 1px rgba(5, 29, 61, 0.45),
+            inset 0 1px 0 rgba(255, 255, 255, 0.34);
         position: relative;
         overflow: hidden;
     }
@@ -55,15 +94,15 @@
         left: 0;
         right: 0;
         height: 50%;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.025) 82%, transparent 100%);
         pointer-events: none;
-        border-radius: 12px 12px 0 0;
+        border-radius: 8px 8px 0 0;
     }
 
     /* Hero */
     .hero {
         text-align: center;
-        padding: 56px 0 48px;
+        padding: 52px 0 34px;
     }
 
     .hero-badge {
@@ -73,17 +112,18 @@
         letter-spacing: 0.06em;
         padding: 6px 16px;
         border-radius: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: var(--text-muted);
-        margin-bottom: 20px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(30,74,124,0.2));
+        border: 1px solid rgba(218, 241, 255, 0.38);
+        color: rgba(242, 250, 255, 0.86);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 8px 24px rgba(0,0,0,0.12);
+        margin-bottom: 18px;
     }
 
     .hero-title {
-        font-size: 3.5rem;
+        font-size: 4rem;
         font-weight: 300;
-        letter-spacing: 4px;
-        text-shadow: 0 2px 16px rgba(91, 162, 240, 0.3);
+        letter-spacing: 0.08em;
+        text-shadow: 0 2px 14px rgba(137, 220, 255, 0.26), 0 2px 4px rgba(0,0,0,0.32);
     }
 
     .hero-tagline {
@@ -94,15 +134,160 @@
         font-weight: 300;
     }
 
+    .hero-window {
+        width: min(100%, 680px);
+        margin: 38px auto 0;
+        text-align: left;
+        border: 1px solid rgba(231, 248, 255, 0.82);
+        border-radius: 10px;
+        overflow: hidden;
+        background: rgba(30, 92, 158, 0.32);
+        backdrop-filter: blur(22px) saturate(155%);
+        -webkit-backdrop-filter: blur(22px) saturate(155%);
+        box-shadow:
+            0 20px 48px rgba(0, 12, 36, 0.36),
+            0 0 0 1px rgba(3, 27, 59, 0.7),
+            inset 0 1px 0 rgba(255,255,255,0.42);
+    }
+
+    .window-titlebar {
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 0 0 16px;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.06) 47%, rgba(2,32,72,0.2) 50%, rgba(6,41,82,0.4) 100%);
+        border-bottom: 1px solid rgba(2, 30, 67, 0.7);
+        box-shadow: inset 0 -1px 0 rgba(255,255,255,0.14);
+    }
+
+    .window-orb {
+        width: 22px;
+        height: 22px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle at 35% 30%, #fff 0%, rgba(255,255,255,0.72) 8%, transparent 20%),
+            conic-gradient(from 30deg, #5fc3ff, #51d477, #ffd84d, #f56d62, #a36de8, #5fc3ff);
+        border: 1px solid rgba(255,255,255,0.74);
+        box-shadow: 0 0 12px rgba(102,205,255,0.6), inset 0 -2px 3px rgba(0,0,0,0.28);
+    }
+
+    .window-name {
+        flex: 1;
+        min-width: 0;
+        color: rgba(255,255,255,0.92);
+        font-size: 0.78rem;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.65);
+    }
+
+    .window-controls {
+        display: flex;
+        align-self: stretch;
+        margin-top: -1px;
+    }
+
+    .window-control {
+        width: 40px;
+        display: grid;
+        place-items: center;
+        color: rgba(255,255,255,0.9);
+        font-size: 0.7rem;
+        line-height: 1;
+        border-left: 1px solid rgba(255,255,255,0.12);
+        background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(5,39,77,0.24));
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+
+    .window-control.close {
+        width: 46px;
+        background: linear-gradient(180deg, rgba(255,143,127,0.9) 0%, rgba(190,44,34,0.82) 49%, rgba(123,15,17,0.92) 51%, rgba(213,62,45,0.78) 100%);
+        box-shadow: 0 0 16px rgba(255, 92, 66, 0.24);
+    }
+
+    .window-content {
+        position: relative;
+        min-height: 190px;
+        display: grid;
+        grid-template-columns: 124px 1fr;
+        align-items: center;
+        gap: 28px;
+        padding: 30px 38px;
+        background:
+            linear-gradient(135deg, rgba(4,23,54,0.75), rgba(14,63,114,0.54)),
+            radial-gradient(circle at 76% 36%, rgba(86,203,255,0.3), transparent 44%);
+    }
+
+    .window-content::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(115deg, transparent 18%, rgba(255,255,255,0.08) 48%, transparent 70%);
+    }
+
+    .aero-mark {
+        width: 112px;
+        height: 112px;
+        position: relative;
+        z-index: 1;
+        border-radius: 50%;
+        transform: rotate(-4deg);
+        background:
+            radial-gradient(circle at 34% 25%, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.56) 7%, transparent 20%),
+            linear-gradient(145deg, rgba(135,230,255,0.98), rgba(22,122,220,0.9) 48%, rgba(34,231,188,0.78));
+        border: 1px solid rgba(235,251,255,0.92);
+        box-shadow: inset -10px -14px 24px rgba(1,42,105,0.38), inset 7px 8px 16px rgba(255,255,255,0.38), 0 10px 22px rgba(35,170,255,0.24);
+    }
+
+    .aero-mark::after {
+        content: '';
+        position: absolute;
+        inset: 23px 25px;
+        border: 5px solid rgba(255,255,255,0.82);
+        border-left-color: rgba(255,255,255,0.25);
+        border-radius: 50%;
+        transform: rotate(34deg);
+    }
+
+    .window-kicker {
+        position: relative;
+        z-index: 1;
+        color: var(--accent);
+        font-size: 0.66rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .window-message {
+        position: relative;
+        z-index: 1;
+        margin-top: 8px;
+        font-size: 1.42rem;
+        line-height: 1.36;
+        font-weight: 300;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.38);
+    }
+
+    .window-meta {
+        position: relative;
+        z-index: 1;
+        margin-top: 12px;
+        color: var(--text-muted);
+        font-size: 0.78rem;
+    }
+
     /* Intro card */
     .intro-card {
-        padding: 28px 32px;
-        margin-bottom: 48px;
+        padding: 24px 30px;
+        margin-bottom: 52px;
     }
 
     .intro-text {
-        font-size: 0.92rem;
-        line-height: 1.8;
+        font-size: 0.9rem;
+        line-height: 1.75;
         font-weight: 300;
         position: relative;
         z-index: 1;
@@ -115,7 +300,7 @@
 
     /* Section */
     .section {
-        margin-bottom: 48px;
+        margin-bottom: 60px;
     }
 
     .section-label {
@@ -131,7 +316,7 @@
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 12px;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.42);
     }
 
     .section-desc {
@@ -157,11 +342,55 @@
         gap: 12px;
     }
 
+    .blur-stage {
+        position: relative;
+        overflow: hidden;
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid rgba(219,242,255,0.32);
+        background:
+            radial-gradient(circle at 18% 34%, rgba(81, 220, 255, 0.62) 0 7%, transparent 8%),
+            radial-gradient(circle at 78% 68%, rgba(143, 235, 103, 0.48) 0 11%, transparent 12%),
+            linear-gradient(126deg, #073164 0%, #2379bd 48%, #093766 100%);
+        box-shadow: inset 0 0 44px rgba(1, 18, 47, 0.44), 0 16px 38px rgba(0, 14, 40, 0.2);
+    }
+
+    .blur-stage::before {
+        content: 'AERO  /  DEPTH  /  CONTEXT';
+        position: absolute;
+        inset: 20px auto auto 22px;
+        font-size: 2.1rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.18);
+        white-space: nowrap;
+        transform: rotate(-5deg);
+    }
+
+    .blur-stage::after {
+        content: '';
+        position: absolute;
+        width: 330px;
+        height: 56px;
+        right: -58px;
+        bottom: 12px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.12);
+        transform: rotate(-12deg);
+        box-shadow: 0 0 32px rgba(140,231,255,0.3);
+    }
+
+    .blur-stage .demo-row {
+        position: relative;
+        z-index: 1;
+    }
+
     .demo-panel {
         padding: 24px 16px;
         text-align: center;
         border: 1px solid var(--glass-border);
-        border-radius: 12px;
+        border-radius: 8px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 18px rgba(0,16,47,0.2);
     }
 
     .demo-panel-value {
@@ -183,19 +412,19 @@
     }
 
     .glass-light {
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(8, 45, 92, 0.18);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
     }
 
     .glass-medium {
-        background: rgba(255, 255, 255, 0.18);
+        background: rgba(26, 82, 140, 0.34);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
     }
 
     .glass-heavy {
-        background: rgba(255, 255, 255, 0.28);
+        background: rgba(109, 169, 221, 0.52);
         backdrop-filter: blur(24px) saturate(180%);
         -webkit-backdrop-filter: blur(24px) saturate(180%);
     }
@@ -212,7 +441,7 @@
         align-items: center;
         gap: 8px;
         padding: 10px 20px;
-        border-radius: 8px;
+        border-radius: 6px;
         background: var(--glossy-btn);
         border: 1px solid rgba(255, 255, 255, 0.2);
         cursor: pointer;
@@ -221,7 +450,8 @@
         font-size: 0.82rem;
         font-weight: 500;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        font-family: 'Noto Sans', sans-serif;
+        font-family: inherit;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 5px 14px rgba(1,22,54,0.2);
 
         &:hover {
             background: var(--glossy-btn-hover);
@@ -232,6 +462,11 @@
         &:active {
             background: rgba(255, 255, 255, 0.08);
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        &:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 3px;
         }
     }
 
@@ -252,16 +487,42 @@
 
     /* Code block */
     .code-block {
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        padding: 16px 20px;
+        background: rgba(2, 22, 49, 0.72);
+        border-radius: 0 0 8px 8px;
+        padding: 18px 20px;
         font-family: 'SF Mono', 'Fira Code', monospace;
         font-size: 0.72rem;
         line-height: 1.8;
         color: rgba(255, 255, 255, 0.7);
         overflow-x: auto;
-        margin-top: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: 0;
+        border: 1px solid rgba(191, 226, 255, 0.22);
+        border-top: 0;
+        box-shadow: 0 14px 30px rgba(1,16,41,0.22);
+    }
+
+    .code-titlebar {
+        margin-top: 18px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 0 12px;
+        border: 1px solid rgba(220, 242, 255, 0.44);
+        border-radius: 8px 8px 0 0;
+        color: rgba(238,248,255,0.72);
+        font-size: 0.68rem;
+        background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(9,49,91,0.52));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+
+    .code-titlebar::before {
+        content: '';
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #78d8ff;
+        box-shadow: 0 0 8px rgba(120,216,255,0.8);
     }
 
     .code-block .kw { color: #c792ea; }
@@ -275,13 +536,25 @@
         gap: 16px;
     }
 
+    .reflection-stage {
+        padding: 28px;
+        border-radius: 12px;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, transparent 0 47%, rgba(132,222,255,0.14) 48% 52%, transparent 53%),
+            radial-gradient(circle at 72% 24%, rgba(122,238,255,0.3), transparent 30%),
+            #082a57;
+        border: 1px solid rgba(211,239,255,0.3);
+        box-shadow: inset 0 0 32px rgba(0,0,0,0.24);
+    }
+
     .compare-panel {
         padding: 28px 24px;
         text-align: center;
         border: 1px solid var(--glass-border);
-        border-radius: 12px;
+        border-radius: 8px;
         box-shadow: var(--glass-shadow);
-        background: var(--glass);
+        background: rgba(51, 115, 180, 0.46);
         backdrop-filter: var(--glass-blur);
         -webkit-backdrop-filter: var(--glass-blur);
     }
@@ -298,9 +571,9 @@
         left: 0;
         right: 0;
         height: 50%;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255,255,255,0.04) 74%, transparent 100%);
         pointer-events: none;
-        border-radius: 12px 12px 0 0;
+        border-radius: 8px 8px 0 0;
     }
 
     .compare-label {
@@ -343,8 +616,46 @@
         gap: 16px;
     }
 
+    .dashboard-window {
+        overflow: hidden;
+        border: 1px solid rgba(225,244,255,0.64);
+        border-radius: 10px;
+        background: rgba(12,48,88,0.34);
+        box-shadow: var(--glass-shadow), 0 0 0 1px rgba(2,27,59,0.62);
+    }
+
+    .dashboard-titlebar {
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 14px;
+        color: rgba(244,250,255,0.84);
+        font-size: 0.72rem;
+        background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(9,52,96,0.52));
+        border-bottom: 1px solid rgba(0,25,58,0.66);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    }
+
+    .dashboard-close {
+        align-self: stretch;
+        width: 48px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, rgba(255,132,115,0.86), rgba(153,28,27,0.9));
+        border-left: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .dashboard-surface {
+        padding: 16px;
+        background:
+            radial-gradient(circle at 18% 10%, rgba(100,202,255,0.22), transparent 35%),
+            linear-gradient(145deg, rgba(2,25,59,0.82), rgba(22,76,130,0.56));
+    }
+
     .dash-card {
         padding: 24px;
+        background: rgba(69,137,202,0.3);
     }
 
     .dash-label {
@@ -395,7 +706,7 @@
     .divider {
         margin: 40px 0;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        background: linear-gradient(90deg, transparent, rgba(194, 230, 255, 0.3), transparent);
     }
 
     /* Anti-pattern list */
@@ -458,9 +769,71 @@
         font-weight: 300;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+        .dash-bar-fill {
+            transition: none;
+        }
+    }
+
     @media screen and (max-width: 600px) {
+        .layout {
+            padding: 22px 20px 56px;
+        }
+
+        .hero {
+            padding: 44px 0 28px;
+        }
+
         .hero-title {
             font-size: 2.5rem;
+        }
+
+        .hero-tagline br {
+            display: none;
+        }
+
+        .hero-window {
+            margin-top: 30px;
+        }
+
+        .window-titlebar {
+            min-height: 38px;
+            padding-left: 12px;
+        }
+
+        .window-control {
+            width: 34px;
+        }
+
+        .window-control.close {
+            width: 40px;
+        }
+
+        .window-content {
+            min-height: 0;
+            grid-template-columns: 72px 1fr;
+            gap: 18px;
+            padding: 24px 20px;
+        }
+
+        .aero-mark {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+        }
+
+        .aero-mark::after {
+            inset: 15px 16px;
+            border-width: 3px;
+        }
+
+        .window-message {
+            font-size: 1.02rem;
+        }
+
+        .window-meta {
+            margin-top: 8px;
+            font-size: 0.7rem;
         }
 
         .demo-row,
@@ -477,34 +850,91 @@
         .anti-card {
             padding: 20px 24px;
         }
+
+        .blur-stage,
+        .reflection-stage {
+            padding: 18px;
+        }
+
+        .blur-stage::before {
+            font-size: 1.35rem;
+            left: 14px;
+        }
+
+        .section {
+            margin-bottom: 52px;
+        }
+
+        .code-block {
+            padding: 16px;
+        }
+
+        .code-tag {
+            left: auto;
+            right: 12px;
+            bottom: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            transform: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.32);
+        }
+
+        .code-tag img {
+            display: none;
+        }
+
+        .code-tag::after {
+            content: '</>';
+            color: #fff;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
     }
 </style>
 
 <body>
+    <div class="wallpaper" aria-hidden="true"></div>
     <div class="layout">
         <!-- Hero -->
         <header class="hero">
             <div class="hero-badge">Inspired by Windows Vista</div>
             <h1 class="hero-title">Aero</h1>
             <p class="hero-tagline">
-                Vista's glass was expensive eye candy.<br>
-                We make glass architecture that earns its GPU cost.
+                Translucent chrome, precise highlights, real depth.<br>
+                A desktop interface shaped by light.
             </p>
+            <div class="hero-window" aria-label="Aero window specimen">
+                <div class="window-titlebar">
+                    <span class="window-orb" aria-hidden="true"></span>
+                    <span class="window-name">Aero Design Specimen</span>
+                    <div class="window-controls" aria-hidden="true">
+                        <span class="window-control">&#x2500;</span>
+                        <span class="window-control">&#x25A1;</span>
+                        <span class="window-control close">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <div class="aero-mark" aria-hidden="true"></div>
+                    <div>
+                        <div class="window-kicker">Windows Vista · 2007</div>
+                        <div class="window-message">The window itself<br>became part of the atmosphere.</div>
+                        <div class="window-meta">Glass chrome · luminous edges · desktop depth</div>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <!-- Intro -->
         <div class="glass intro-card">
             <p class="intro-text">
-                Aero was beautiful but heavy.
-                Translucent title bars, glossy buttons catching imaginary light,
-                shadows that cost actual rendering budget.
-                It melted GPUs and drained batteries, all for a taskbar you could
-                almost see through. The brilliance was real &mdash; so was the bloat.
+                Aero treated the desktop as a layered environment: translucent title bars
+                revealed context, hard highlights described curved surfaces, and shadows
+                separated active windows from the world behind them.
                 <br><br>
-                We keep the <strong>glass transparency and depth hierarchy</strong>.
-                We run it at <strong>60fps</strong>.
-                Every panel on this page uses CSS backdrop-filter, not DWM compositing.
-                Same beauty, a fraction of the cost.
+                This study keeps that <strong>glass hierarchy and light logic</strong>,
+                rebuilt with modern CSS rather than recreating Vista pixel for pixel.
             </p>
         </div>
 
@@ -520,21 +950,23 @@
                 We do it in CSS. The trick is knowing when to stop —
                 too little blur and it's noisy, too much and you've painted a wall.
             </p>
-            <div class="demo-row">
-                <div class="glass-light demo-panel">
-                    <div class="demo-panel-value">8px</div>
-                    <div class="demo-panel-label">Subtle</div>
-                    <div class="demo-panel-sub">Hint of depth</div>
-                </div>
-                <div class="glass-medium demo-panel">
-                    <div class="demo-panel-value">16px</div>
-                    <div class="demo-panel-label">Balanced</div>
-                    <div class="demo-panel-sub">The sweet spot</div>
-                </div>
-                <div class="glass-heavy demo-panel">
-                    <div class="demo-panel-value">24px</div>
-                    <div class="demo-panel-label">Dense</div>
-                    <div class="demo-panel-sub">Nearly opaque</div>
+            <div class="blur-stage">
+                <div class="demo-row">
+                    <div class="glass-light demo-panel">
+                        <div class="demo-panel-value">8px</div>
+                        <div class="demo-panel-label">Subtle</div>
+                        <div class="demo-panel-sub">Context stays visible</div>
+                    </div>
+                    <div class="glass-medium demo-panel">
+                        <div class="demo-panel-value">16px</div>
+                        <div class="demo-panel-label">Balanced</div>
+                        <div class="demo-panel-sub">Chrome sweet spot</div>
+                    </div>
+                    <div class="glass-heavy demo-panel">
+                        <div class="demo-panel-value">24px</div>
+                        <div class="demo-panel-label">Dense</div>
+                        <div class="demo-panel-sub">Content takes focus</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -555,6 +987,7 @@
                 <button class="aero-btn primary">Primary Action</button>
                 <button class="aero-btn" disabled>Disabled</button>
             </div>
+            <div class="code-titlebar">split-highlight.css</div>
             <div class="code-block">
                 <span class="cmt">/* The Aero glossy gradient — 4 stops, hard break at 50% */</span><br>
                 <span class="kw">background</span>: <span class="val">linear-gradient</span>(180deg,<br>
@@ -576,16 +1009,18 @@
                 Same trick photographers use — top-light makes things look three-dimensional.
                 Remove it and the panels look dead. We tested.
             </p>
-            <div class="compare-row">
-                <div class="compare-panel with-reflection">
-                    <div class="compare-label good">WITH REFLECTION</div>
-                    <div class="compare-value">Alive</div>
-                    <div class="compare-sub">::before gradient on top half</div>
-                </div>
-                <div class="compare-panel">
-                    <div class="compare-label muted">WITHOUT</div>
-                    <div class="compare-value">Flat</div>
-                    <div class="compare-sub">Same glass, no top-light</div>
+            <div class="reflection-stage">
+                <div class="compare-row">
+                    <div class="compare-panel with-reflection">
+                        <div class="compare-label good">WITH REFLECTION</div>
+                        <div class="compare-value">Alive</div>
+                        <div class="compare-sub">::before gradient on top half</div>
+                    </div>
+                    <div class="compare-panel">
+                        <div class="compare-label muted">WITHOUT</div>
+                        <div class="compare-value">Flat</div>
+                        <div class="compare-sub">Same glass, no top-light</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -600,17 +1035,25 @@
                 Glass panel + split highlight + top reflection.
                 Three principles, one dashboard. It looks like 2007 but runs like 2026.
             </p>
-            <div class="dashboard-demo">
-                <div class="glass dash-card">
-                    <div class="dash-label">Clock</div>
-                    <div class="dash-value" id="clock-time"></div>
-                    <div class="dash-sub" id="clock-date"></div>
+            <div class="dashboard-window">
+                <div class="dashboard-titlebar">
+                    <span>System Overview</span>
+                    <span class="dashboard-close" aria-hidden="true">&#x2715;</span>
                 </div>
-                <div class="glass dash-card">
-                    <div class="dash-label">Memory</div>
-                    <div class="dash-value" id="mem-value">4.2 GB</div>
-                    <div class="dash-bar"><div class="dash-bar-fill" id="mem-bar" style="width: 52%"></div></div>
-                    <div class="dash-sub" id="mem-sub">4.2 of 8 GB used</div>
+                <div class="dashboard-surface">
+                    <div class="dashboard-demo">
+                        <div class="glass dash-card">
+                            <div class="dash-label">Clock</div>
+                            <div class="dash-value" id="clock-time"></div>
+                            <div class="dash-sub" id="clock-date"></div>
+                        </div>
+                        <div class="glass dash-card">
+                            <div class="dash-label">Memory</div>
+                            <div class="dash-value" id="mem-value">4.2 GB</div>
+                            <div class="dash-bar"><div class="dash-bar-fill" id="mem-bar" style="width: 52%"></div></div>
+                            <div class="dash-sub" id="mem-sub">4.2 of 8 GB used</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -642,7 +1085,7 @@
             </p>
             <p class="manifesto-sub">
                 If you can't see through it with purpose, close the curtain.<br>
-                Every panel on this page runs at 60fps. Vista could never.
+                Transparency should explain the layers, not hide them.
             </p>
         </footer>
     </div>
