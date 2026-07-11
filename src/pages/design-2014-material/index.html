@@ -21,11 +21,24 @@
         --success: #4CAF50;
         --danger: #F44336;
 
-        --shadow-1dp: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        --shadow-2dp: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-        --shadow-4dp: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-        --shadow-6dp: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        --shadow-8dp: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+        --shadow-1dp: 0 2px 1px -1px rgba(0,0,0,0.20),
+                      0 1px 1px rgba(0,0,0,0.14),
+                      0 1px 3px rgba(0,0,0,0.12);
+        --shadow-2dp: 0 2px 2px rgba(0,0,0,0.14),
+                      0 3px 1px -2px rgba(0,0,0,0.20),
+                      0 1px 5px rgba(0,0,0,0.12);
+        --shadow-4dp: 0 4px 5px rgba(0,0,0,0.14),
+                      0 1px 10px rgba(0,0,0,0.12),
+                      0 2px 4px -1px rgba(0,0,0,0.20);
+        --shadow-6dp: 0 6px 10px rgba(0,0,0,0.14),
+                      0 1px 18px rgba(0,0,0,0.12),
+                      0 3px 5px -1px rgba(0,0,0,0.20);
+        --shadow-8dp: 0 8px 10px 1px rgba(0,0,0,0.14),
+                      0 3px 14px 2px rgba(0,0,0,0.12),
+                      0 5px 5px -3px rgba(0,0,0,0.20);
+        --shadow-24dp: 0 24px 38px 3px rgba(0,0,0,0.14),
+                       0 9px 46px 8px rgba(0,0,0,0.12),
+                       0 11px 15px -7px rgba(0,0,0,0.20);
     }
 
     body {
@@ -191,14 +204,14 @@
     }
     .elev-0:hover { box-shadow: var(--shadow-1dp); }
 
-    .elev-2 { box-shadow: var(--shadow-1dp); }
-    .elev-2:hover { box-shadow: var(--shadow-2dp); }
+    .elev-2 { box-shadow: var(--shadow-2dp); }
+    .elev-2:hover { box-shadow: var(--shadow-4dp); }
 
-    .elev-6 { box-shadow: var(--shadow-2dp); }
-    .elev-6:hover { box-shadow: var(--shadow-4dp); }
+    .elev-8 { box-shadow: var(--shadow-8dp); }
+    .elev-8:hover { box-shadow: var(--shadow-24dp); }
 
-    .elev-24 { box-shadow: var(--shadow-4dp); }
-    .elev-24:hover { box-shadow: var(--shadow-6dp); }
+    .elev-24 { box-shadow: var(--shadow-24dp); }
+    .elev-24:hover { box-shadow: var(--shadow-24dp); }
 
     .elev-dp {
         font-size: 1.8rem;
@@ -231,9 +244,13 @@
     }
 
     .ripple-target {
+        width: 100%;
+        border: 0;
         background: var(--card);
         border-radius: 2px;
         padding: 32px 20px;
+        font-family: inherit;
+        color: var(--text-primary);
         text-align: center;
         cursor: pointer;
         position: relative;
@@ -253,6 +270,7 @@
     }
 
     .ripple-target-label {
+        display: block;
         font-size: 0.88rem;
         font-weight: 500;
         position: relative;
@@ -261,10 +279,11 @@
     }
 
     .ripple-target.primary-bg .ripple-target-label {
-        color: var(--text-white);
+        color: var(--text-primary);
     }
 
     .ripple-target-sub {
+        display: block;
         font-size: 0.72rem;
         color: var(--text-hint);
         margin-top: 4px;
@@ -274,7 +293,7 @@
     }
 
     .ripple-target.primary-bg .ripple-target-sub {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(0, 0, 0, 0.7);
     }
 
     .ripple-surface {
@@ -343,12 +362,12 @@
 
     .btn-raised.primary {
         background: var(--primary);
-        color: var(--text-white);
+        color: var(--text-primary);
     }
 
     .btn-raised.accent {
         background: var(--accent);
-        color: var(--text-white);
+        color: var(--text-primary);
     }
 
     .btn-flat {
@@ -389,7 +408,7 @@
         border-radius: 50%;
         border: none;
         background: var(--accent);
-        color: var(--text-white);
+        color: var(--text-primary);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -423,6 +442,7 @@
     }
 
     .motion-chip {
+        border: 0;
         padding: 8px 16px;
         border-radius: 2px;
         background: var(--bg);
@@ -430,7 +450,11 @@
         font-weight: 500;
         color: var(--text-secondary);
         cursor: pointer;
-        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: inherit;
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                    box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                    background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                    color 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: var(--shadow-1dp);
         position: relative;
         overflow: hidden;
@@ -457,6 +481,15 @@
         font-size: 1rem;
         z-index: 2;
         box-shadow: var(--shadow-4dp);
+        transform-origin: top left;
+    }
+
+    .motion-chip.expanded:hover { transform: none; }
+
+    .motion-chip-placeholder {
+        display: block;
+        flex: 0 0 auto;
+        visibility: hidden;
     }
 
     .motion-chip .tap-hint {
@@ -534,7 +567,7 @@
 
     .frame-bar {
         background: var(--primary);
-        color: var(--text-white);
+        color: var(--text-primary);
         padding: 14px 16px;
         font-size: 1.1rem;
         font-weight: 400;
@@ -549,6 +582,7 @@
     }
 
     .frame-list-item {
+        width: 100%;
         display: flex;
         align-items: center;
         gap: 16px;
@@ -557,6 +591,13 @@
         cursor: pointer;
         position: relative;
         overflow: hidden;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+        background: transparent;
+        color: inherit;
+        font-family: inherit;
+        text-align: left;
     }
 
     .frame-list-item:last-child { border-bottom: none; }
@@ -569,12 +610,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--text-white);
+        color: var(--text-primary);
         font-size: 1rem;
         font-weight: 500;
     }
 
+    .frame-avatar.light-ink { color: var(--text-white); }
+
     .frame-item-text {
+        display: block;
         flex: 1;
         min-width: 0;
         position: relative;
@@ -583,18 +627,21 @@
     }
 
     .frame-item-title {
+        display: block;
         font-size: 0.88rem;
         font-weight: 500;
         color: var(--text-primary);
     }
 
     .frame-item-sub {
+        display: block;
         font-size: 0.78rem;
         color: var(--text-secondary);
         margin-top: 2px;
     }
 
     .frame-item-time {
+        display: block;
         font-size: 0.7rem;
         color: var(--text-hint);
         flex-shrink: 0;
@@ -612,7 +659,7 @@
         border-radius: 50%;
         border: none;
         background: var(--accent);
-        color: var(--text-white);
+        color: var(--text-primary);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -703,6 +750,33 @@
         font-weight: 400;
     }
 
+    .ripple-target:focus-visible,
+    .motion-chip:focus-visible,
+    .btn-raised:focus-visible,
+    .btn-flat:focus-visible,
+    .fab-mini:focus-visible,
+    .frame-list-item:focus-visible,
+    .frame-fab:focus-visible {
+        outline: 3px solid #1A237E;
+        outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .elevation-card,
+        .ripple-target,
+        .btn-raised,
+        .btn-flat,
+        .fab-mini,
+        .motion-chip,
+        .frame-fab {
+            transition-duration: 0.01ms !important;
+        }
+
+        .ripple.animate {
+            animation-duration: 0.01ms;
+        }
+    }
+
     /* =========================================
        RESPONSIVE
        ========================================= */
@@ -785,7 +859,7 @@
                     <div class="elev-label">Resting</div>
                     <div class="elev-sub">Cards</div>
                 </div>
-                <div class="elevation-card elev-6">
+                <div class="elevation-card elev-8">
                     <div class="elev-dp">8</div>
                     <div class="elev-label">Raised</div>
                     <div class="elev-sub">Menus</div>
@@ -799,8 +873,9 @@
             <div class="code-block">
                 <span class="cmt">/* Elevation = z-axis, not decoration */</span><br>
                 <span class="kw">box-shadow</span>:<br>
-                &nbsp;&nbsp;<span class="val">0 3px 6px</span> rgba(0,0,0,0.16),<br>
-                &nbsp;&nbsp;<span class="val">0 3px 6px</span> rgba(0,0,0,0.23);<br>
+                &nbsp;&nbsp;<span class="val">0 2px 2px</span> rgba(0,0,0,0.14),<br>
+                &nbsp;&nbsp;<span class="val">0 3px 1px -2px</span> rgba(0,0,0,0.20),<br>
+                &nbsp;&nbsp;<span class="val">0 1px 5px</span> rgba(0,0,0,0.12);<br>
                 <span class="kw">border-radius</span>: <span class="val">2px</span>; <span class="cmt">/* sharp. this is paper. */</span>
             </div>
         </section>
@@ -819,14 +894,14 @@
                 from where you actually clicked.
             </p>
             <div class="ripple-area">
-                <div class="ripple-target" id="ripple-light">
-                    <div class="ripple-target-label">Light Surface</div>
-                    <div class="ripple-target-sub">Dark ink ripple</div>
-                </div>
-                <div class="ripple-target primary-bg" id="ripple-primary">
-                    <div class="ripple-target-label">Primary Surface</div>
-                    <div class="ripple-target-sub">Light ink ripple</div>
-                </div>
+                <button type="button" class="ripple-target" id="ripple-light">
+                    <span class="ripple-target-label">Light Surface</span>
+                    <span class="ripple-target-sub">Dark ink ripple</span>
+                </button>
+                <button type="button" class="ripple-target primary-bg" id="ripple-primary">
+                    <span class="ripple-target-label">Primary Surface</span>
+                    <span class="ripple-target-sub">Light ink ripple</span>
+                </button>
             </div>
         </section>
 
@@ -845,11 +920,11 @@
             </p>
             <div class="motion-stage" id="motion-stage">
                 <div class="motion-items" id="motion-items">
-                    <div class="motion-chip" data-label="Inbox">Inbox</div>
-                    <div class="motion-chip" data-label="Sent">Sent</div>
-                    <div class="motion-chip" data-label="Drafts">Drafts</div>
-                    <div class="motion-chip" data-label="Starred">Starred</div>
-                    <div class="motion-chip" data-label="Trash">Trash</div>
+                    <button type="button" class="motion-chip" data-label="Inbox" aria-expanded="false">Inbox</button>
+                    <button type="button" class="motion-chip" data-label="Sent" aria-expanded="false">Sent</button>
+                    <button type="button" class="motion-chip" data-label="Drafts" aria-expanded="false">Drafts</button>
+                    <button type="button" class="motion-chip" data-label="Starred" aria-expanded="false">Starred</button>
+                    <button type="button" class="motion-chip" data-label="Trash" aria-expanded="false">Trash</button>
                 </div>
                 <div class="motion-btn-row">
                     <button class="btn-flat" id="motion-reset">Reset</button>
@@ -872,7 +947,7 @@
             </p>
             <div class="card">
                 <div class="palette-grid">
-                    <div class="palette-swatch teal-500 dark">
+                    <div class="palette-swatch teal-500 light">
                         <span class="palette-swatch-name">Teal 500</span>
                         <span class="palette-swatch-hex">#009688</span>
                     </div>
@@ -888,19 +963,19 @@
                         <span class="palette-swatch-name">Indigo 700</span>
                         <span class="palette-swatch-hex">#303F9F</span>
                     </div>
-                    <div class="palette-swatch pink-500 dark">
+                    <div class="palette-swatch pink-500 light">
                         <span class="palette-swatch-name">Pink 500</span>
                         <span class="palette-swatch-hex">#E91E63</span>
                     </div>
-                    <div class="palette-swatch pink-a200 dark">
+                    <div class="palette-swatch pink-a200 light">
                         <span class="palette-swatch-name">Pink A200</span>
                         <span class="palette-swatch-hex">#FF4081</span>
                     </div>
-                    <div class="palette-swatch deep-orange-500 dark">
+                    <div class="palette-swatch deep-orange-500 light">
                         <span class="palette-swatch-name">Deep Orange 500</span>
                         <span class="palette-swatch-hex">#FF5722</span>
                     </div>
-                    <div class="palette-swatch deep-orange-a200 dark">
+                    <div class="palette-swatch deep-orange-a200 light">
                         <span class="palette-swatch-name">Deep Orange A200</span>
                         <span class="palette-swatch-hex">#FF6E40</span>
                     </div>
@@ -934,7 +1009,7 @@
                 <button class="btn-raised accent" id="btn-accent">Delete</button>
                 <button class="btn-flat" id="btn-flat">Cancel</button>
                 <button class="btn-raised primary" disabled>Disabled</button>
-                <button class="fab-mini" id="fab-mini">+</button>
+                <button class="fab-mini" id="fab-mini" aria-label="Add">+</button>
             </div>
         </section>
 
@@ -955,45 +1030,45 @@
             <div class="app-frame">
                 <div class="frame-status"></div>
                 <div class="frame-bar">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                     Inbox
                 </div>
                 <div class="frame-body">
-                    <div class="frame-list-item" id="list-1">
-                        <div class="frame-avatar" style="background: #009688;">A</div>
-                        <div class="frame-item-text">
-                            <div class="frame-item-title">Alex Kim</div>
-                            <div class="frame-item-sub">Build is green, shipping tonight</div>
-                        </div>
-                        <div class="frame-item-time">2m</div>
-                    </div>
-                    <div class="frame-list-item" id="list-2">
-                        <div class="frame-avatar" style="background: #3F51B5;">M</div>
-                        <div class="frame-item-text">
-                            <div class="frame-item-title">Maria Chen</div>
-                            <div class="frame-item-sub">Design review notes attached</div>
-                        </div>
-                        <div class="frame-item-time">15m</div>
-                    </div>
-                    <div class="frame-list-item" id="list-3">
-                        <div class="frame-avatar" style="background: #E91E63;">J</div>
-                        <div class="frame-item-text">
-                            <div class="frame-item-title">Jake Torres</div>
-                            <div class="frame-item-sub">Can we push the deadline?</div>
-                        </div>
-                        <div class="frame-item-time">1h</div>
-                    </div>
-                    <div class="frame-list-item" id="list-4">
-                        <div class="frame-avatar" style="background: #FF5722;">S</div>
-                        <div class="frame-item-text">
-                            <div class="frame-item-title">Sara Park</div>
-                            <div class="frame-item-sub">Lollipop update broke the layout</div>
-                        </div>
-                        <div class="frame-item-time">3h</div>
-                    </div>
+                    <button type="button" class="frame-list-item" id="list-1">
+                        <span class="frame-avatar" style="background: #009688;">A</span>
+                        <span class="frame-item-text">
+                            <span class="frame-item-title">Alex Kim</span>
+                            <span class="frame-item-sub">Build is green, shipping tonight</span>
+                        </span>
+                        <span class="frame-item-time">2m</span>
+                    </button>
+                    <button type="button" class="frame-list-item" id="list-2">
+                        <span class="frame-avatar light-ink" style="background: #3F51B5;">M</span>
+                        <span class="frame-item-text">
+                            <span class="frame-item-title">Maria Chen</span>
+                            <span class="frame-item-sub">Design review notes attached</span>
+                        </span>
+                        <span class="frame-item-time">15m</span>
+                    </button>
+                    <button type="button" class="frame-list-item" id="list-3">
+                        <span class="frame-avatar" style="background: #E91E63;">J</span>
+                        <span class="frame-item-text">
+                            <span class="frame-item-title">Jake Torres</span>
+                            <span class="frame-item-sub">Can we push the deadline?</span>
+                        </span>
+                        <span class="frame-item-time">1h</span>
+                    </button>
+                    <button type="button" class="frame-list-item" id="list-4">
+                        <span class="frame-avatar" style="background: #FF5722;">S</span>
+                        <span class="frame-item-text">
+                            <span class="frame-item-title">Sara Park</span>
+                            <span class="frame-item-sub">Lollipop update broke the layout</span>
+                        </span>
+                        <span class="frame-item-time">3h</span>
+                    </button>
                 </div>
                 <button class="frame-fab" id="frame-fab" aria-label="Compose">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 </button>
             </div>
         </section>
@@ -1033,6 +1108,8 @@
 </body>
 
 <script>
+    document.documentElement.lang = 'en';
+
     /* Ripple — span container isolates overflow from <button> quirks */
     function createRipple(el, e, cls) {
         var rect = el.getBoundingClientRect();
@@ -1045,8 +1122,10 @@
         var r = document.createElement('span');
         r.classList.add('ripple', cls);
         var scale = Math.ceil(Math.sqrt(rect.width * rect.width + rect.height * rect.height) * 2.5);
-        r.style.left = (e.clientX - rect.left) + 'px';
-        r.style.top = (e.clientY - rect.top) + 'px';
+        var x = e.detail === 0 ? rect.width / 2 : e.clientX - rect.left;
+        var y = e.detail === 0 ? rect.height / 2 : e.clientY - rect.top;
+        r.style.left = x + 'px';
+        r.style.top = y + 'px';
         r.style.setProperty('--ripple-scale', scale);
         surface.appendChild(r);
         requestAnimationFrame(function() { r.classList.add('animate'); });
@@ -1082,27 +1161,98 @@
         createRipple(this, e, 'light');
     });
 
-    /* Motion demo */
+    /* Motion demo — FLIP keeps the chip's visible origin during expansion. */
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function cleanUpMotionChip(chip) {
+        var placeholder = chip._motionPlaceholder;
+        chip.style.transition = 'none';
+        if (placeholder) placeholder.remove();
+        chip._motionPlaceholder = null;
+        chip.classList.remove('expanded');
+        chip.style.transform = '';
+        chip.style.transformOrigin = '';
+        chip.setAttribute('aria-expanded', 'false');
+        chip.textContent = chip.dataset.label;
+        chip.offsetWidth;
+        chip.style.transition = '';
+    }
+
+    function collapseMotionChip(chip, immediately) {
+        if (!chip.classList.contains('expanded')) return;
+        var placeholder = chip._motionPlaceholder;
+        if (immediately || reduceMotion.matches || !placeholder) {
+            cleanUpMotionChip(chip);
+            return;
+        }
+
+        var current = chip.getBoundingClientRect();
+        var target = placeholder.getBoundingClientRect();
+        var dx = target.left - current.left;
+        var dy = target.top - current.top;
+        var sx = target.width / current.width;
+        var sy = target.height / current.height;
+        var finished = false;
+
+        function finish(e) {
+            if (finished || (e && e.propertyName !== 'transform')) return;
+            finished = true;
+            chip.removeEventListener('transitionend', finish);
+            cleanUpMotionChip(chip);
+        }
+
+        chip.addEventListener('transitionend', finish);
+        chip.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + sx + ', ' + sy + ')';
+        setTimeout(finish, 340);
+    }
+
+    function expandMotionChip(chip) {
+        document.querySelectorAll('.motion-chip.expanded').forEach(function(openChip) {
+            if (openChip !== chip) collapseMotionChip(openChip, true);
+        });
+
+        var first = chip.getBoundingClientRect();
+        var placeholder = document.createElement('span');
+        placeholder.className = 'motion-chip-placeholder';
+        placeholder.setAttribute('aria-hidden', 'true');
+        placeholder.style.width = first.width + 'px';
+        placeholder.style.height = first.height + 'px';
+        chip.parentNode.insertBefore(placeholder, chip);
+        chip._motionPlaceholder = placeholder;
+
+        chip.classList.add('expanded');
+        chip.setAttribute('aria-expanded', 'true');
+        chip.innerHTML = '<span>' + chip.dataset.label + '</span><span class="tap-hint">Tap to collapse</span>';
+
+        if (reduceMotion.matches) return;
+
+        var last = chip.getBoundingClientRect();
+        var dx = first.left - last.left;
+        var dy = first.top - last.top;
+        var sx = first.width / last.width;
+        var sy = first.height / last.height;
+        chip.style.transition = 'none';
+        chip.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + sx + ', ' + sy + ')';
+        chip.offsetWidth;
+        chip.style.transition = '';
+        requestAnimationFrame(function() {
+            chip.style.transform = 'none';
+        });
+    }
+
     document.querySelectorAll('.motion-chip').forEach(function(chip) {
         chip.addEventListener('click', function() {
             if (this.classList.contains('expanded')) {
-                this.classList.remove('expanded');
-                this.innerHTML = this.dataset.label;
-                return;
+                collapseMotionChip(this, false);
+            } else {
+                expandMotionChip(this);
             }
-            document.querySelectorAll('.motion-chip.expanded').forEach(function(c) {
-                c.classList.remove('expanded');
-                c.innerHTML = c.dataset.label;
-            });
-            this.classList.add('expanded');
-            this.innerHTML = '<span>' + this.dataset.label + '</span><span class="tap-hint">Tap to collapse</span>';
         });
     });
 
     document.getElementById('motion-reset').addEventListener('click', function() {
         document.querySelectorAll('.motion-chip.expanded').forEach(function(c) {
-            c.classList.remove('expanded');
-            c.innerHTML = c.dataset.label;
+            collapseMotionChip(c, false);
         });
     });
 </script>
