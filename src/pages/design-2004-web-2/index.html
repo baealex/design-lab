@@ -1,0 +1,1097 @@
+<!-- layout: base.html -->
+<!-- title: Web 2.0 (2004) -->
+<!-- description: Rounded corners, glossy buttons, and everyone could publish -->
+
+<style>
+    :root {
+        --bg: #dff2ff;
+        --sky: #8ed4ff;
+        --surface: #ffffff;
+        --surface-blue: #f2f9ff;
+        --line: #b8d9f0;
+        --line-strong: #6baed6;
+        --text: #1d3647;
+        --text-muted: #5f7c8f;
+        --text-dim: #91aabd;
+        --blue: #1689d9;
+        --blue-deep: #0669b1;
+        --blue-soft: #d9f0ff;
+        --green: #7cc242;
+        --green-deep: #4d9627;
+        --orange: #ff9d1e;
+        --orange-deep: #df7216;
+        --pink: #f15a9d;
+        --link: #1479c9;
+        --shadow: rgba(31, 91, 132, 0.22);
+        --shine: rgba(255, 255, 255, 0.72);
+    }
+
+    body {
+        font-family: 'Trebuchet MS', 'Lucida Grande', Verdana, sans-serif;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+            radial-gradient(circle at 18% 12%, rgba(255,255,255,0.95) 0 5%, transparent 28%),
+            radial-gradient(circle at 82% 20%, rgba(124,194,66,0.16) 0 10%, transparent 34%),
+            linear-gradient(180deg, #bce5ff 0%, #eaf8ff 38%, #ffffff 100%);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 100vw 100vh;
+        background-color: #f7fbff;
+        overflow-x: hidden;
+    }
+
+    button {
+        font: inherit;
+    }
+
+    a {
+        color: var(--link);
+        text-decoration: none;
+    }
+
+    .layout {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+    }
+
+    .hero {
+        position: relative;
+        text-align: center;
+        padding: 54px 0 44px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        padding: 6px 16px;
+        color: #fff;
+        background: linear-gradient(180deg, #a6d96a 0%, var(--green) 48%, var(--green-deep) 100%);
+        border: 1px solid rgba(62, 132, 34, 0.45);
+        border-radius: 999px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 3px 8px rgba(63, 130, 37, 0.25);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.2);
+    }
+
+    .hero-title {
+        margin: 0;
+        font-size: 4.25rem;
+        font-weight: 700;
+        line-height: 0.9;
+        letter-spacing: -0.08em;
+        color: var(--blue);
+        text-shadow: 0 2px 0 #fff, 0 7px 18px rgba(22, 137, 217, 0.28);
+    }
+
+    .hero-title span {
+        color: var(--green);
+    }
+
+    .hero-tagline {
+        margin-top: 18px;
+        color: var(--text-muted);
+        font-size: 0.98rem;
+        line-height: 1.7;
+    }
+
+    .browser-card {
+        margin: 34px auto 0;
+        max-width: 560px;
+        border: 1px solid var(--line-strong);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: 0 18px 36px var(--shadow), inset 0 1px 0 #fff;
+        overflow: hidden;
+        text-align: left;
+    }
+
+    .browser-chrome {
+        position: relative;
+        z-index: 2;
+        padding: 9px 12px;
+        border-bottom: 1px solid #9fcde9;
+        background: linear-gradient(180deg, #fefefe 0%, #cbe9fb 55%, #a8d5f1 100%);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .traffic {
+        display: flex;
+        gap: 5px;
+    }
+
+    .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        border: 1px solid rgba(0,0,0,0.18);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .dot.red { background: #ff6b67; }
+    .dot.yellow { background: #ffd25d; }
+    .dot.green { background: #6bd26b; }
+
+    .address {
+        flex: 1;
+        padding: 5px 10px;
+        color: var(--text-muted);
+        background: #fff;
+        border: 1px solid #8ebfdd;
+        border-radius: 14px;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+        font-size: 0.72rem;
+    }
+
+    .hero-site {
+        position: relative;
+        z-index: 1;
+        padding: 24px;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.78), transparent 44%),
+            linear-gradient(135deg, #eef9ff 0%, #ffffff 54%, #eff8df 100%);
+    }
+
+    .beta-ribbon {
+        position: absolute;
+        top: 15px;
+        right: -32px;
+        width: 128px;
+        padding: 4px 0;
+        color: #fff;
+        background: linear-gradient(180deg, #ffbe54, var(--orange-deep));
+        transform: rotate(35deg);
+        text-align: center;
+        font-size: 0.66rem;
+        font-weight: 700;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+    }
+
+    .site-logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+        color: var(--blue-deep);
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: -0.06em;
+    }
+
+    .site-logo-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        background: linear-gradient(180deg, #64c8ff, var(--blue));
+        box-shadow: inset 0 1px 0 var(--shine), 0 3px 8px rgba(22,137,217,0.32);
+        position: relative;
+    }
+
+    .site-logo-mark::after {
+        content: '';
+        position: absolute;
+        left: 6px;
+        right: 6px;
+        top: 5px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.68);
+    }
+
+    .hero-widget {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        align-items: center;
+    }
+
+    .hero-widget h2 {
+        margin-bottom: 6px;
+        color: var(--text);
+        font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .hero-widget p {
+        color: var(--text-muted);
+        font-size: 0.86rem;
+        line-height: 1.6;
+    }
+
+    .rss-pill {
+        align-self: start;
+        padding: 7px 12px;
+        color: #fff;
+        background: linear-gradient(180deg, #ffb85b, var(--orange));
+        border: 1px solid rgba(185, 101, 11, 0.5);
+        border-radius: 7px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 4px 10px rgba(255,157,30,0.28);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.24);
+    }
+
+    .intro-card,
+    .panel {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255,255,255,0.88);
+        box-shadow: 0 14px 30px rgba(31, 91, 132, 0.16), inset 0 1px 0 #fff;
+        overflow: hidden;
+    }
+
+    .intro-card {
+        margin-bottom: 46px;
+        padding: 28px 32px;
+    }
+
+    .intro-text {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        line-height: 1.85;
+    }
+
+    .intro-text strong {
+        color: var(--blue-deep);
+        font-weight: 700;
+    }
+
+    .divider {
+        height: 1px;
+        margin: 44px 0;
+        background: linear-gradient(90deg, transparent, rgba(22,137,217,0.35), transparent);
+    }
+
+    .section {
+        margin-bottom: 48px;
+    }
+
+    .section-label {
+        margin-bottom: 4px;
+        color: var(--orange-deep);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .section-title {
+        margin-bottom: 12px;
+        color: var(--text);
+        font-size: 1.58rem;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+        line-height: 1.2;
+    }
+
+    .section-desc {
+        margin-bottom: 20px;
+        color: var(--text-muted);
+        font-size: 0.88rem;
+        line-height: 1.8;
+    }
+
+    .section-desc code {
+        padding: 2px 6px;
+        color: var(--blue-deep);
+        background: var(--blue-soft);
+        border: 1px solid rgba(22,137,217,0.18);
+        border-radius: 6px;
+        font-size: 0.82em;
+    }
+
+    .gloss-demo {
+        padding: 24px;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.88), rgba(233,247,255,0.72)),
+            var(--surface);
+    }
+
+    .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .web-button {
+        position: relative;
+        min-height: 38px;
+        padding: 9px 18px;
+        color: #fff;
+        border: 1px solid rgba(0,0,0,0.18);
+        border-radius: 999px;
+        background: linear-gradient(180deg, #63c8ff 0%, var(--blue) 50%, var(--blue-deep) 100%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), inset 0 -1px 0 rgba(0,0,0,0.18), 0 4px 10px rgba(22,137,217,0.25);
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 0.86rem;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.28);
+        overflow: hidden;
+        transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .web-button::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        top: 4px;
+        height: 42%;
+        border-radius: 999px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.18));
+        pointer-events: none;
+    }
+
+    .web-button:hover,
+    .web-button.active,
+    .web-button:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.82), inset 0 -1px 0 rgba(0,0,0,0.2), 0 7px 16px rgba(22,137,217,0.32);
+        outline: none;
+    }
+
+    .web-button:active {
+        transform: translateY(1px);
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.22), 0 2px 5px rgba(22,137,217,0.16);
+    }
+
+    .web-button.green {
+        background: linear-gradient(180deg, #b8e96d 0%, var(--green) 50%, var(--green-deep) 100%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), inset 0 -1px 0 rgba(0,0,0,0.18), 0 4px 10px rgba(76,150,39,0.22);
+    }
+
+    .web-button.orange {
+        background: linear-gradient(180deg, #ffc16a 0%, var(--orange) 50%, var(--orange-deep) 100%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.76), inset 0 -1px 0 rgba(0,0,0,0.18), 0 4px 10px rgba(223,114,22,0.22);
+    }
+
+    .web-button.silver {
+        color: var(--text);
+        background: linear-gradient(180deg, #fff 0%, #edf6fb 50%, #d5eaf7 100%);
+        text-shadow: 0 1px 0 #fff;
+    }
+
+    .button-note {
+        min-height: 25px;
+        padding: 8px 12px;
+        color: var(--text-muted);
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        font-size: 0.78rem;
+    }
+
+    .participation-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .mini-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(180deg, #fff, #f5fbff);
+        box-shadow: inset 0 1px 0 #fff;
+    }
+
+    .mini-title {
+        margin-bottom: 10px;
+        color: var(--blue-deep);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+    }
+
+    .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    .tag-pill {
+        padding: 5px 10px;
+        color: var(--link);
+        background: linear-gradient(180deg, #fff, #e7f5ff);
+        border: 1px solid #acd6ef;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 0.78rem;
+        box-shadow: inset 0 1px 0 #fff;
+    }
+
+    .tag-pill:hover,
+    .tag-pill.active,
+    .tag-pill:focus-visible {
+        color: #fff;
+        background: linear-gradient(180deg, #5bbfff, var(--blue));
+        outline: none;
+    }
+
+    .tag-readout,
+    .rating-readout {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        line-height: 1.6;
+    }
+
+    .star-row {
+        display: flex;
+        gap: 4px;
+        margin: 7px 0 12px;
+    }
+
+    .star {
+        width: 31px;
+        height: 31px;
+        color: #b9cbd8;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        font-size: 1.5rem;
+        line-height: 1;
+        text-shadow: 0 1px 0 #fff;
+    }
+
+    .star.active,
+    .star:hover,
+    .star:focus-visible {
+        color: var(--orange);
+        outline: none;
+        text-shadow: 0 2px 4px rgba(223,114,22,0.22);
+    }
+
+    .stats-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .stat-pill {
+        padding: 4px 8px;
+        color: var(--text-muted);
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 0.7rem;
+    }
+
+    .ajax-shell {
+        background: var(--surface);
+    }
+
+    .ajax-header {
+        padding: 14px 18px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        background: linear-gradient(180deg, #ffffff, #dff1fb);
+        border-bottom: 1px solid var(--line);
+    }
+
+    .ajax-title {
+        color: var(--blue-deep);
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+    }
+
+    .ajax-status {
+        padding: 4px 9px;
+        color: var(--green-deep);
+        background: #eff9e9;
+        border: 1px solid rgba(76,150,39,0.24);
+        border-radius: 999px;
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+
+    .tab-row {
+        display: flex;
+        gap: 4px;
+        padding: 10px 12px 0;
+        background: #eff8ff;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .tab-button {
+        padding: 8px 15px;
+        color: var(--link);
+        background: linear-gradient(180deg, #fff, #dff0fb);
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 10px 10px 0 0;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    .tab-button.active,
+    .tab-button:hover,
+    .tab-button:focus-visible {
+        color: var(--text);
+        background: #fff;
+        outline: none;
+        position: relative;
+        top: 1px;
+    }
+
+    .tab-body {
+        min-height: 176px;
+        padding: 22px;
+        display: grid;
+        grid-template-columns: 78px 1fr;
+        gap: 18px;
+        align-items: start;
+    }
+
+    .avatar {
+        width: 72px;
+        height: 72px;
+        border: 4px solid #fff;
+        border-radius: 18px;
+        background:
+            radial-gradient(circle at 50% 34%, #fff 0 11px, transparent 12px),
+            radial-gradient(circle at 50% 88%, #fff 0 25px, transparent 26px),
+            linear-gradient(180deg, #66c7ff, var(--blue));
+        box-shadow: 0 4px 12px rgba(22,137,217,0.3);
+    }
+
+    .tab-content h3 {
+        margin-bottom: 7px;
+        color: var(--text);
+        font-size: 1.18rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+    }
+
+    .tab-content p {
+        color: var(--text-muted);
+        font-size: 0.86rem;
+        line-height: 1.72;
+    }
+
+    .content-list {
+        margin-top: 13px;
+        display: grid;
+        gap: 8px;
+    }
+
+    .content-item {
+        padding: 8px 10px;
+        color: var(--text-muted);
+        background: #f7fbff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        font-size: 0.78rem;
+    }
+
+    .feed-card {
+        padding: 22px;
+        display: grid;
+        grid-template-columns: 1fr 170px;
+        gap: 18px;
+        align-items: center;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.92), rgba(242,249,255,0.92)),
+            var(--surface);
+    }
+
+    .feed-kicker {
+        margin-bottom: 5px;
+        color: var(--green-deep);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .feed-title {
+        margin-bottom: 8px;
+        color: var(--text);
+        font-size: 1.28rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+    }
+
+    .feed-copy {
+        color: var(--text-muted);
+        font-size: 0.86rem;
+        line-height: 1.7;
+    }
+
+    .vote-box {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+        text-align: center;
+        box-shadow: inset 0 1px 0 #fff;
+    }
+
+    .vote-score {
+        color: var(--orange-deep);
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.08em;
+    }
+
+    .vote-label {
+        margin-bottom: 10px;
+        color: var(--text-dim);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .lesson-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .lesson-card {
+        padding: 24px;
+    }
+
+    .lesson-heading {
+        display: inline-block;
+        margin-bottom: 14px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .lesson-heading.keep {
+        color: #356e1c;
+        background: #edf8e7;
+        border: 1px solid rgba(76,150,39,0.24);
+    }
+
+    .lesson-heading.aged {
+        color: #a9500b;
+        background: #fff3df;
+        border: 1px solid rgba(223,114,22,0.24);
+    }
+
+    .lesson-list {
+        display: grid;
+        gap: 11px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .lesson-list li {
+        padding-left: 18px;
+        position: relative;
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        line-height: 1.6;
+    }
+
+    .lesson-list li::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        top: 0.48em;
+        left: 0;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .lesson-card.aged .lesson-list li::before {
+        background: var(--orange);
+    }
+
+    .code-block {
+        margin-top: 16px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        color: #dff2ff;
+        background: #12384f;
+        border-radius: 14px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+        font-family: Monaco, 'Courier New', monospace;
+        font-size: 0.74rem;
+        line-height: 1.7;
+    }
+
+    .code-block .cmt { color: #8db6cb; }
+    .code-block .kw { color: #fff; font-weight: 700; }
+    .code-block .val { color: #a6e76d; }
+    .code-block .fn { color: #ffca6a; }
+
+    @media (max-width: 640px) {
+        .layout { padding-inline: 16px; }
+        .hero { padding-top: 36px; }
+        .hero-title { font-size: 3rem; }
+        .hero-widget,
+        .participation-grid,
+        .tab-body,
+        .feed-card,
+        .lesson-grid {
+            grid-template-columns: 1fr;
+        }
+        .rss-pill { justify-self: start; }
+        .browser-chrome { gap: 6px; }
+        .traffic { display: none; }
+        .tab-row { overflow-x: auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            transition-duration: 0.001ms !important;
+            animation-duration: 0.001ms !important;
+        }
+    }
+</style>
+
+<body>
+    <div class="layout">
+        <header class="hero">
+            <div class="hero-badge">Perpetual beta, proudly rounded</div>
+            <h1 class="hero-title">Web <span>2.0</span></h1>
+            <p class="hero-tagline">
+                Glossy buttons, tag clouds, RSS badges, and the quiet revolution<br>
+                where pages stopped being brochures and started becoming places.
+            </p>
+
+            <div class="browser-card" aria-label="Web 2.0 browser specimen">
+                <div class="browser-chrome">
+                    <div class="traffic" aria-hidden="true">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <div class="address">http://share.example.com/dashboard</div>
+                </div>
+                <div class="hero-site">
+                    <div class="beta-ribbon">BETA</div>
+                    <div class="site-logo"><span class="site-logo-mark"></span>sharecloud</div>
+                    <div class="hero-widget">
+                        <div>
+                            <h2>Upload once. Share everywhere.</h2>
+                            <p>Rounded modules, soft gradients, and user activity made the web feel alive.</p>
+                        </div>
+                        <div class="rss-pill">RSS 2.0</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="intro-card">
+            <p class="intro-text">
+                Around 2004, “Web 2.0” became shorthand for a new product feeling:
+                <strong>participation over publishing</strong>. The visual language was just as loud:
+                wet gradients, rounded corners, beta ribbons, badges, star ratings, and big friendly
+                buttons that promised everything would happen without a full page reload.
+                <br><br>
+                The dated part is the shine. The durable part is the social contract: users can post,
+                rate, tag, remix, subscribe, and see the page respond right away.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">Principle 01</div>
+            <h2 class="section-title">Gloss made actions obvious</h2>
+            <p class="section-desc">
+                Web 2.0 buttons were not subtle. They used <code>linear-gradient</code>, inner highlights,
+                pill corners, and tiny shadows to say: this is pressable. The lasting lesson is not
+                “make everything shiny”; it is “make the next action unmistakable.” Click the buttons
+                below to change the status strip.
+            </p>
+
+            <div class="panel gloss-demo">
+                <div class="button-row">
+                    <button class="web-button active" data-note="Joined the beta. A confirmation appears without leaving the page.">Join beta</button>
+                    <button class="web-button green" data-note="Shared to your network. The button is optimistic on purpose.">Share this</button>
+                    <button class="web-button orange" data-note="Subscribed through RSS. Orange became a whole interface landmark.">Subscribe</button>
+                    <button class="web-button silver" data-note="Saved as a draft. Even neutral actions got a little shine.">Save draft</button>
+                </div>
+                <div class="button-note" id="button-note">Joined the beta. A confirmation appears without leaving the page.</div>
+            </div>
+
+            <div class="code-block">
+                <span class="cmt">/* The Web 2.0 pill: shine on top, saturated body below */</span><br>
+                <span class="kw">border-radius</span>: <span class="val">999px</span>;<br>
+                <span class="kw">background</span>: <span class="fn">linear-gradient</span>(180deg, <span class="val">#63c8ff</span>, <span class="val">#1689d9</span> 50%, <span class="val">#0669b1</span>);<br>
+                <span class="kw">box-shadow</span>: <span class="val">inset 0 1px 0 rgba(255,255,255,.72), 0 4px 10px rgba(22,137,217,.25)</span>;
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Principle 02</div>
+            <h2 class="section-title">The page became a crowd</h2>
+            <p class="section-desc">
+                Tags, stars, comments, counters, avatars: small social controls turned static pages
+                into living collections. They made participation visible, but public numbers could
+                also turn contribution into pressure. Visibility needs context, not just a counter.
+            </p>
+
+            <div class="participation-grid">
+                <div class="mini-card">
+                    <h3 class="mini-title">Tag cloud</h3>
+                    <div class="tag-cloud" aria-label="Tag cloud demo">
+                        <button class="tag-pill active" data-tag="ajax">ajax</button>
+                        <button class="tag-pill" data-tag="folksonomy">folksonomy</button>
+                        <button class="tag-pill" data-tag="mashup">mashup</button>
+                        <button class="tag-pill" data-tag="rss">rss</button>
+                        <button class="tag-pill" data-tag="social">social</button>
+                    </div>
+                    <p class="tag-readout" id="tag-readout">ajax: update the interface without reloading the whole page.</p>
+                    <div class="stats-strip">
+                        <span class="stat-pill">128 bookmarks</span>
+                        <span class="stat-pill">42 comments</span>
+                    </div>
+                </div>
+
+                <div class="mini-card">
+                    <h3 class="mini-title">User rating</h3>
+                    <div class="star-row" aria-label="Star rating demo">
+                        <button class="star active" data-star="1">&#9733;</button>
+                        <button class="star active" data-star="2">&#9733;</button>
+                        <button class="star active" data-star="3">&#9733;</button>
+                        <button class="star active" data-star="4">&#9733;</button>
+                        <button class="star" data-star="5">&#9733;</button>
+                    </div>
+                    <p class="rating-readout" id="rating-readout">4 stars from 2,004 people. The crowd becomes part of the interface.</p>
+                    <div class="stats-strip">
+                        <span class="stat-pill">digg it</span>
+                        <span class="stat-pill">add to favorites</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Principle 03</div>
+            <h2 class="section-title">AJAX made the page answer back</h2>
+            <p class="section-desc">
+                Before single-page apps became normal, AJAX felt like magic: a tab could switch,
+                a vote could save, a comment could appear, and the browser stayed put. Use the tabs;
+                only the module changes. A modern version must also announce loading, success, and
+                failure instead of silently replacing the page.
+            </p>
+
+            <div class="panel ajax-shell">
+                <div class="ajax-header">
+                    <div class="ajax-title">my.profile</div>
+                    <div class="ajax-status" id="ajax-status" role="status" aria-live="polite">updated just now</div>
+                </div>
+                <div class="tab-row" role="tablist" aria-label="Web 2.0 profile tabs">
+                    <button class="tab-button active" data-tab="profile" role="tab" aria-selected="true">Profile</button>
+                    <button class="tab-button" data-tab="photos" role="tab" aria-selected="false">Photos</button>
+                    <button class="tab-button" data-tab="comments" role="tab" aria-selected="false">Comments</button>
+                </div>
+                <div class="tab-body">
+                    <div class="avatar" aria-hidden="true"></div>
+                    <div class="tab-content" aria-live="polite">
+                        <h3 id="tab-title">Connie uploads the weekend</h3>
+                        <p id="tab-copy">
+                            A friendly profile module with a glossy avatar, visible activity, and links that invite contribution.
+                        </p>
+                        <div class="content-list" id="tab-list">
+                            <div class="content-item">Latest post: “Why rounded corners feel faster”</div>
+                            <div class="content-item">Currently tagging: interface, beta, ajax</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">All Together</div>
+            <h2 class="section-title">A small social object</h2>
+            <p class="section-desc">
+                The best Web 2.0 surfaces were not huge apps. They were little social objects with
+                enough feedback to feel alive: a title, a tag, a score, a subscribe path, and one
+                shiny primary action.
+            </p>
+
+            <div class="panel feed-card">
+                <div>
+                    <div class="feed-kicker">Featured bookmark</div>
+                    <h3 class="feed-title">“Interfaces that invite touch”</h3>
+                    <p class="feed-copy">
+                        Saved by 128 people, tagged with <a href="#">design</a>, <a href="#">ajax</a>, and
+                        <a href="#">social web</a>. It is not just content anymore; it is content with handles.
+                    </p>
+                </div>
+                <div class="vote-box">
+                    <div class="vote-score" id="vote-score">128</div>
+                    <div class="vote-label">people saved this</div>
+                    <button class="web-button green" id="vote-button">Save it</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <div class="section-label">After the Beta</div>
+            <h2 class="section-title">What survived. What aged.</h2>
+            <p class="section-desc">
+                Web 2.0 mattered because the audience became part of the product. The participation
+                model survived; most of the visual chrome did not. Modern products should keep the
+                responsiveness while correcting the pressure, clutter, and missing system states.
+            </p>
+
+            <div class="lesson-grid">
+                <article class="panel lesson-card">
+                    <h3 class="lesson-heading keep">What survived</h3>
+                    <ul class="lesson-list">
+                        <li>Participation made visible and actionable</li>
+                        <li>Immediate feedback without leaving the page</li>
+                        <li>Small modules that compose into a product</li>
+                        <li>Clear confirmation after every contribution</li>
+                    </ul>
+                </article>
+                <article class="panel lesson-card aged">
+                    <h3 class="lesson-heading aged">What needs work</h3>
+                    <ul class="lesson-list">
+                        <li>Public scores that bias or pressure people</li>
+                        <li>Badges and shine standing in for hierarchy</li>
+                        <li>Async actions without loading, error, or retry</li>
+                        <li>Participation that is difficult to undo or access</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script>
+    var buttonNote = document.getElementById('button-note');
+    var webButtons = document.querySelectorAll('.web-button[data-note]');
+
+    webButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            webButtons.forEach(function(item) { item.classList.remove('active'); });
+            button.classList.add('active');
+            buttonNote.textContent = button.getAttribute('data-note');
+        });
+    });
+
+    var tagCopy = {
+        ajax: 'ajax: update the interface without reloading the whole page.',
+        folksonomy: 'folksonomy: users organize the web in their own words.',
+        mashup: 'mashup: combine services and pretend every API is friendly.',
+        rss: 'rss: subscribe to the stream instead of checking the site by hand.',
+        social: 'social: the audience becomes part of the product surface.'
+    };
+
+    var tagReadout = document.getElementById('tag-readout');
+    var tagPills = document.querySelectorAll('.tag-pill');
+
+    tagPills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+            var tag = pill.getAttribute('data-tag');
+            tagPills.forEach(function(item) { item.classList.remove('active'); });
+            pill.classList.add('active');
+            tagReadout.textContent = tagCopy[tag];
+        });
+    });
+
+    var stars = document.querySelectorAll('.star');
+    var ratingReadout = document.getElementById('rating-readout');
+
+    stars.forEach(function(star) {
+        star.addEventListener('click', function() {
+            var rating = parseInt(star.getAttribute('data-star'), 10);
+            stars.forEach(function(item) {
+                item.classList.toggle('active', parseInt(item.getAttribute('data-star'), 10) <= rating);
+            });
+            ratingReadout.textContent = rating + ' stars from 2,004 people. The crowd becomes part of the interface.';
+        });
+    });
+
+    var tabData = {
+        profile: {
+            title: 'Connie uploads the weekend',
+            copy: 'A friendly profile module with a glossy avatar, visible activity, and links that invite contribution.',
+            items: ['Latest post: “Why rounded corners feel faster”', 'Currently tagging: interface, beta, ajax'],
+            status: 'profile loaded'
+        },
+        photos: {
+            title: 'Photos, now with comments',
+            copy: 'Media pages became gathering places. The frame is soft, but the invitation is direct: add yours.',
+            items: ['12 new photos from the launch party', 'Most used tag: shiny-buttons'],
+            status: 'photos loaded'
+        },
+        comments: {
+            title: 'Recent comments',
+            copy: 'The page keeps answering back. Small updates make the site feel occupied, current, and shared.',
+            items: ['Mika: “This needs an RSS feed.”', 'Alex: “I miss tiny badges.”'],
+            status: 'comments loaded'
+        }
+    };
+
+    var tabButtons = document.querySelectorAll('.tab-button');
+    var tabTitle = document.getElementById('tab-title');
+    var tabCopyEl = document.getElementById('tab-copy');
+    var tabList = document.getElementById('tab-list');
+    var ajaxStatus = document.getElementById('ajax-status');
+    var activeRequest = 0;
+
+    tabButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var key = button.getAttribute('data-tab');
+            var data = tabData[key];
+            var request = ++activeRequest;
+            tabButtons.forEach(function(item) {
+                item.classList.remove('active');
+                item.setAttribute('aria-selected', 'false');
+            });
+            button.classList.add('active');
+            button.setAttribute('aria-selected', 'true');
+            ajaxStatus.textContent = 'loading ' + key + '…';
+
+            window.setTimeout(function() {
+                if (request !== activeRequest) return;
+                tabTitle.textContent = data.title;
+                tabCopyEl.textContent = data.copy;
+                tabList.textContent = '';
+                data.items.forEach(function(item) {
+                    var node = document.createElement('div');
+                    node.className = 'content-item';
+                    node.textContent = item;
+                    tabList.appendChild(node);
+                });
+                ajaxStatus.textContent = data.status;
+            }, 320);
+        });
+    });
+
+    var voteButton = document.getElementById('vote-button');
+    var voteScore = document.getElementById('vote-score');
+    var saved = false;
+
+    voteButton.addEventListener('click', function() {
+        saved = !saved;
+        voteScore.textContent = saved ? '129' : '128';
+        voteButton.textContent = saved ? 'Saved' : 'Save it';
+    });
+</script>
