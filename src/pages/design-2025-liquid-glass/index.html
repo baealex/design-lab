@@ -1,0 +1,917 @@
+<!-- layout: base.html -->
+<!-- title: Liquid Glass (2025) -->
+<!-- description: A functional layer that changes with the content beneath it -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+    :root {
+        --ink: #142139;
+        --muted: #5d6b7d;
+        --accent: #315cf4;
+        --line: rgba(63, 79, 111, 0.14);
+        --glass: rgba(255, 255, 255, 0.46);
+        --glass-strong: rgba(255, 255, 255, 0.68);
+        --glass-line: rgba(255, 255, 255, 0.78);
+        --shadow: 0 18px 44px rgba(47, 66, 101, 0.16);
+        --success: #087f5b;
+        --warning: #b54708;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+            radial-gradient(circle at 8% 5%, rgba(92, 214, 225, 0.34), transparent 23rem),
+            radial-gradient(circle at 92% 16%, rgba(231, 139, 191, 0.28), transparent 25rem),
+            #edf3f5;
+        color: var(--ink);
+        font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    button:focus-visible,
+    input:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+    }
+
+    .layout {
+        width: min(100%, 820px);
+        margin: 0 auto;
+        padding: 40px 22px 80px;
+    }
+
+    .hero {
+        padding: 68px 0 50px;
+        text-align: center;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border: 0;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.48);
+        box-shadow: inset 0 1px rgba(255, 255, 255, 0.9), 0 8px 22px rgba(45, 63, 91, 0.08);
+        color: var(--muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+    }
+
+    .hero-badge::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #59dbe0, #8b65f6 62%, #f291b8);
+        content: '';
+        box-shadow: 0 0 8px rgba(91, 111, 246, 0.48);
+    }
+
+    .hero-title {
+        margin-top: 26px;
+        font-size: clamp(3.9rem, 13vw, 7rem);
+        line-height: 0.88;
+        letter-spacing: -0.075em;
+    }
+
+    .hero-tagline {
+        max-width: 500px;
+        margin: 24px auto 0;
+        color: var(--muted);
+        font-size: 0.96rem;
+        line-height: 1.7;
+    }
+
+    .context {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 28px;
+        margin-bottom: 72px;
+        padding: 30px 0;
+        border-block: 1px solid var(--line);
+    }
+
+    .eyebrow {
+        color: var(--accent);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+    }
+
+    .context-copy {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.8;
+    }
+
+    .context-copy strong { color: var(--ink); }
+
+    .section {
+        margin-bottom: 76px;
+    }
+
+    .section-number {
+        color: var(--accent);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+    }
+
+    .section-title {
+        margin-top: 8px;
+        font-size: clamp(1.9rem, 5vw, 2.65rem);
+        letter-spacing: -0.05em;
+    }
+
+    .section-desc {
+        max-width: 650px;
+        margin: 12px 0 24px;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.75;
+    }
+
+    .demo-frame {
+        position: relative;
+        overflow: hidden;
+        min-height: 330px;
+        border: 1px solid rgba(86, 102, 133, 0.12);
+        border-radius: 34px;
+        background: #dbe8ea;
+        box-shadow: 0 20px 50px rgba(54, 72, 103, 0.11);
+    }
+
+    .glass-control {
+        position: relative;
+        overflow: hidden;
+        border: 0;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 12px 30px rgba(47, 66, 101, 0.14);
+        -webkit-backdrop-filter: blur(1px) saturate(1.18) brightness(1.04);
+        backdrop-filter: url('#liquid-control-refraction') blur(0.35px) saturate(1.18) brightness(1.04);
+    }
+
+    .glass-control > * { position: relative; z-index: 1; }
+
+    .optical-demo {
+        min-height: 0;
+        background: #d8e5ec;
+    }
+
+    .refraction-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 360px;
+    }
+
+    .range-panel {
+        position: absolute;
+        right: 24px;
+        bottom: 22px;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 12px;
+        width: min(340px, calc(100% - 48px));
+        padding: 14px 16px;
+        border-radius: 20px;
+        font-size: 0.72rem;
+        font-weight: 700;
+    }
+
+    .refraction-note {
+        position: absolute;
+        top: 22px;
+        left: 24px;
+        z-index: 3;
+        width: min(250px, calc(100% - 48px));
+        color: rgba(14, 34, 59, 0.72);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    input[type='range'] { width: 100%; accent-color: var(--accent); }
+
+    .floating-stage {
+        display: grid;
+        min-height: 310px;
+        place-items: center;
+        padding: 40px 24px;
+        background:
+            linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+            linear-gradient(150deg, #263964, #7372bc 48%, #e89eb6);
+    }
+
+    .document-card {
+        position: relative;
+        overflow: hidden;
+        width: min(100%, 540px);
+        min-height: 190px;
+        padding: 28px;
+        border-radius: 24px;
+        background:
+            repeating-linear-gradient(to bottom, transparent 0 30px, rgba(49, 92, 244, 0.13) 30px 31px),
+            #f8f9fb;
+        box-shadow: 0 20px 50px rgba(14, 23, 49, 0.22);
+    }
+
+    .document-card::after {
+        position: absolute;
+        right: 0;
+        bottom: 18px;
+        left: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #315cf4, #e85c95);
+        content: '';
+        opacity: 0.42;
+    }
+
+    .document-card h3 { font-size: 1.2rem; }
+    .document-card p { max-width: 340px; margin-top: 8px; color: var(--muted); font-size: 0.78rem; line-height: 1.6; }
+    .document-status { display: block; margin-top: 30px; color: var(--accent); font-size: 0.72rem; font-weight: 700; }
+
+    .floating-actions {
+        position: absolute;
+        right: 36px;
+        bottom: 28px;
+        display: flex;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 26px;
+    }
+
+    .round-button,
+    .tool-button,
+    .scene-button {
+        border: 0;
+        cursor: pointer;
+    }
+
+    .ui-icon {
+        display: block;
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.7;
+    }
+
+    .round-button {
+        position: relative;
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border-radius: 18px;
+        background: transparent;
+        box-shadow: none;
+        font-size: 1rem;
+        transition: width 180ms ease, background 180ms ease, border-radius 180ms ease;
+    }
+
+    .round-button[aria-pressed='true'] {
+        width: 94px;
+        border-radius: 20px;
+        background: transparent;
+        box-shadow: none;
+        color: var(--accent);
+    }
+
+    .round-button[aria-pressed='true']::after {
+        margin-left: 6px;
+        content: attr(data-label);
+        font-size: 0.68rem;
+        font-weight: 700;
+    }
+
+    .toolbar-demo {
+        position: relative;
+        min-height: 390px;
+        padding: 30px;
+        background:
+            repeating-linear-gradient(110deg, transparent 0 47px, rgba(35, 61, 95, 0.1) 48px 50px),
+            linear-gradient(145deg, #f9ddd2, #d6e7fa 55%, #c4ddce);
+    }
+
+    .toolbar-demo::before {
+        position: absolute;
+        right: 11%;
+        bottom: 51px;
+        left: 11%;
+        color: rgba(29, 52, 82, 0.42);
+        content: 'UNDERLYING CONTENT';
+        font-size: clamp(0.7rem, 2.6vw, 1.15rem);
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-align: center;
+    }
+
+    .media-card {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 550px);
+        margin: 0 auto;
+        padding: 28px;
+        border-radius: 28px;
+        background: rgba(248, 250, 252, 0.9);
+        box-shadow: 0 18px 50px rgba(53, 67, 93, 0.14);
+    }
+
+    .media-kicker { color: var(--accent); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .media-card h3 { margin-top: 7px; font-size: 1.45rem; }
+    .media-card p { margin-top: 4px; color: var(--muted); font-size: 0.76rem; }
+
+    .media-progress {
+        display: grid;
+        grid-template-columns: 36px 1fr 36px;
+        align-items: center;
+        gap: 9px;
+        margin-top: 24px;
+        color: var(--muted);
+        font-size: 0.62rem;
+    }
+
+    .media-progress span:last-child { text-align: right; }
+
+    .morph-toolbar {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        width: max-content;
+        max-width: 100%;
+        margin: 24px auto 0;
+        padding: 8px;
+        border-radius: 25px;
+    }
+
+    .tool-button {
+        position: relative;
+        min-width: 48px;
+        min-height: 48px;
+        padding: 0 15px;
+        border-radius: 18px;
+        background: transparent;
+        box-shadow: inset 0 1px transparent;
+        transition: background 180ms ease, box-shadow 180ms ease, min-width 180ms ease;
+    }
+
+    .tool-button[aria-selected='true'] {
+        min-width: 116px;
+        background: transparent;
+        box-shadow: none;
+        color: var(--accent);
+        font-weight: 700;
+    }
+
+    .player-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .player-controls button {
+        position: relative;
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 7px 16px rgba(48, 62, 91, 0.12);
+        cursor: pointer;
+    }
+
+    .player-controls .play-button {
+        width: 52px;
+        height: 52px;
+        margin-top: -5px;
+        background: rgba(20, 33, 57, 0.64);
+        box-shadow: 0 9px 18px rgba(20, 33, 57, 0.2);
+        color: #fff;
+    }
+
+    .play-button .icon-pause,
+    .play-button[aria-pressed='true'] .icon-play { display: none; }
+    .play-button[aria-pressed='true'] .icon-pause { display: block; }
+    .play-button .icon-play { fill: currentColor; stroke: none; }
+
+    .contrast-stage {
+        position: relative;
+        min-height: 350px;
+        padding: 28px;
+        background: linear-gradient(135deg, #f4ce66, #f6eacc 55%, #e3eef1);
+        transition: background 220ms ease;
+    }
+
+    .contrast-stage[data-scene='dark'] { background: linear-gradient(145deg, #141b35, #394579 58%, #171b2d); }
+    .contrast-stage[data-scene='detail'] {
+        background:
+            repeating-linear-gradient(35deg, rgba(255, 255, 255, 0.18) 0 3px, transparent 3px 11px),
+            radial-gradient(circle at 24% 30%, #e25f7a 0 14%, transparent 14.5%),
+            linear-gradient(135deg, #1f8e84, #e3af48 54%, #614a9e);
+    }
+
+    .scene-picker {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .scene-button {
+        padding: 9px 13px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.72);
+        color: #26354d;
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+
+    .scene-button[aria-pressed='true'] { background: var(--ink); color: #fff; }
+
+    .adaptive-control {
+        position: absolute;
+        left: 50%;
+        top: 55%;
+        width: min(360px, calc(100% - 48px));
+        padding: 22px;
+        border-radius: 26px;
+        color: #142139;
+        transform: translate(-50%, -50%);
+        transition: color 180ms ease, background 180ms ease;
+    }
+
+    .contrast-stage[data-scene='dark'] .adaptive-control[data-adaptive='true'],
+    .contrast-stage[data-scene='detail'] .adaptive-control[data-adaptive='true'] {
+        background: rgba(18, 27, 52, 0.44);
+        color: #fff;
+    }
+
+    .adaptive-control[data-adaptive='false'] {
+        background: radial-gradient(ellipse at 50% 52%, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12));
+        color: #fff;
+    }
+
+    .adaptive-control h3 { font-size: 1.2rem; }
+    .adaptive-control p { margin-top: 7px; color: currentColor; font-size: 0.76rem; line-height: 1.55; opacity: 0.78; }
+
+    .adaptive-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 18px;
+        padding: 8px 11px;
+        border: 0;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 5px 12px rgba(30, 43, 70, 0.08);
+        color: inherit;
+        cursor: pointer;
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+
+    .adaptive-toggle::before {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: currentColor;
+        content: '';
+    }
+
+    .keep-improve {
+        margin-top: 12px;
+        padding-top: 54px;
+        border-top: 1px solid var(--line);
+    }
+
+    .keep-improve > h2 {
+        margin-top: 8px;
+        font-size: 2.3rem;
+        letter-spacing: -0.05em;
+    }
+
+    .verdict-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 26px;
+    }
+
+    .verdict {
+        padding: 26px 0;
+        border-top: 3px solid var(--success);
+    }
+
+    .verdict.improve { border-color: var(--warning); }
+    .verdict h3 { font-size: 1rem; }
+    .verdict ul { margin: 14px 0 0; padding-left: 19px; }
+    .verdict li { margin-top: 9px; color: var(--muted); font-size: 0.8rem; line-height: 1.55; }
+
+    .footer-note {
+        margin-top: 62px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.65;
+        text-align: center;
+    }
+
+    @media (max-width: 620px) {
+        .layout { padding: 22px 18px 58px; }
+        .hero { padding: 48px 0 38px; }
+        .context { grid-template-columns: 1fr; gap: 12px; margin-bottom: 58px; }
+        .section { margin-bottom: 60px; }
+        .refraction-svg { min-height: 390px; object-fit: cover; object-position: center; }
+        .refraction-note { top: 16px; left: 18px; }
+        .range-panel { right: 18px; bottom: 16px; width: calc(100% - 36px); }
+        .floating-stage { place-items: start stretch; min-height: 340px; padding: 22px; }
+        .floating-actions { right: 18px; bottom: 20px; left: 18px; justify-content: center; }
+        .round-button { width: 44px; height: 44px; }
+        .round-button[aria-pressed='true'] { width: 86px; }
+        .toolbar-demo { padding: 18px; }
+        .media-card { padding: 22px 18px; }
+        .morph-toolbar { width: 100%; }
+        .tool-button { flex: 1; min-width: 0; padding: 0 8px; font-size: 0.72rem; }
+        .tool-button[aria-selected='true'] { min-width: 0; }
+        .contrast-stage { min-height: 390px; padding: 18px; }
+        .adaptive-control { top: 58%; }
+        .verdict-grid { grid-template-columns: 1fr; gap: 4px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+        }
+    }
+
+</style>
+
+<body>
+    <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+        <defs>
+            <filter id="liquid-control-refraction" x="-12%" y="-20%" width="124%" height="140%" color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="0.3" result="soft-backdrop"></feGaussianBlur>
+                <feTurbulence type="fractalNoise" baseFrequency="0.008 0.018" numOctaves="1" seed="19" result="control-field"></feTurbulence>
+                <feDisplacementMap in="soft-backdrop" in2="control-field" scale="14" xChannelSelector="R" yChannelSelector="B"></feDisplacementMap>
+            </filter>
+        </defs>
+    </svg>
+    <main class="layout">
+        <header class="hero">
+            <span class="hero-badge">Inspired by Apple Liquid Glass</span>
+            <h1 class="hero-title">Liquid<br>Glass</h1>
+            <p class="hero-tagline">A translucent functional layer above content, shaped by optical depth and able to transform as its context changes.</p>
+        </header>
+
+        <section class="context" aria-labelledby="context-title">
+            <div class="eyebrow" id="context-title">Context</div>
+            <p class="context-copy">
+                Apple introduced Liquid Glass across its platforms in 2025. It moved controls into a shared material above content: edges catch light, underlying color appears refracted, and controls can change shape between states. The useful idea is not transparency everywhere. It is a <strong>consistent functional layer that keeps the content underneath in focus</strong>.
+            </p>
+        </section>
+
+        <section class="section" aria-labelledby="optical-title">
+            <div class="section-number">Principle 01 · Optical material</div>
+            <h2 class="section-title" id="optical-title">Refraction describes depth</h2>
+            <p class="section-desc">A molded control is not equally distorted from edge to edge. Its curved rim bends the scene strongly; the flatter center settles into mild magnification so content stays readable. Change the edge intensity below—the center remains at one fifth of that value.</p>
+            <div class="demo-frame optical-demo">
+                <div class="refraction-note">Strong rim · calm center</div>
+                <svg class="refraction-svg" viewBox="0 0 760 390" role="img" aria-labelledby="refraction-svg-title refraction-svg-desc" preserveAspectRatio="xMidYMid slice">
+                    <title id="refraction-svg-title">Interactive molded Liquid Glass card</title>
+                    <desc id="refraction-svg-desc">Straight grid lines, typography, and colored shapes bend strongly while crossing the rounded perimeter, then settle inside the mildly magnified center.</desc>
+                    <defs>
+                        <linearGradient id="liquid-scene-gradient" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#bceae5"></stop>
+                            <stop offset="0.5" stop-color="#f3e8b3"></stop>
+                            <stop offset="1" stop-color="#b8b7ef"></stop>
+                        </linearGradient>
+                        <pattern id="liquid-grid" width="34" height="34" patternUnits="userSpaceOnUse">
+                            <path d="M 34 0 L 0 0 0 34" fill="none" stroke="#263b59" stroke-opacity="0.22" stroke-width="1.4"></path>
+                        </pattern>
+                        <g id="liquid-scene">
+                            <rect width="760" height="390" fill="url(#liquid-scene-gradient)"></rect>
+                            <rect width="760" height="390" fill="url(#liquid-grid)"></rect>
+                            <circle cx="660" cy="88" r="78" fill="#ef6e9b" opacity="0.86"></circle>
+                            <rect x="525" y="240" width="190" height="82" rx="18" fill="#4c55b7" transform="rotate(-8 620 281)"></rect>
+                            <circle cx="142" cy="296" r="62" fill="#f3bb37"></circle>
+                            <path d="M40 138 H720 M40 166 H720 M40 222 H720 M40 250 H720" fill="none" stroke="#17304b" stroke-width="3" stroke-opacity="0.72"></path>
+                            <text x="54" y="112" fill="#17304b" font-family="Manrope, sans-serif" font-size="18" font-weight="700" letter-spacing="4">STRAIGHT LINES</text>
+                            <text x="438" y="112" fill="#17304b" font-family="Manrope, sans-serif" font-size="14" font-weight="700" letter-spacing="3">CALM CENTER</text>
+                            <text x="52" y="215" fill="#13263e" font-family="Manrope, sans-serif" font-size="68" font-weight="700" letter-spacing="-4">BEND HERE</text>
+                            <text x="360" y="287" fill="#13263e" font-family="Manrope, sans-serif" font-size="16" font-weight="600">objects viewed through water</text>
+                        </g>
+                        <rect id="liquid-card-shape" x="322" y="54" width="388" height="280" rx="76"></rect>
+                        <clipPath id="liquid-card-clip">
+                            <use href="#liquid-card-shape"></use>
+                        </clipPath>
+                        <filter id="liquid-card-filter" x="-18%" y="-24%" width="136%" height="148%" color-interpolation-filters="sRGB">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="0.35" result="card-softness"></feGaussianBlur>
+                            <feTurbulence type="fractalNoise" baseFrequency="0.013 0.032" numOctaves="2" seed="13" result="card-noise"></feTurbulence>
+                            <feMorphology in="SourceAlpha" operator="erode" radius="27" result="card-inner"></feMorphology>
+                            <feGaussianBlur in="card-inner" stdDeviation="15" result="card-inner-feather"></feGaussianBlur>
+                            <feComposite in="SourceAlpha" in2="card-inner-feather" operator="out" result="card-edge"></feComposite>
+                            <feComposite in="card-noise" in2="card-edge" operator="in" result="card-edge-noise"></feComposite>
+                            <feFlood flood-color="#808080" result="card-neutral"></feFlood>
+                            <feComposite in="card-neutral" in2="card-edge" operator="out" result="card-neutral-center"></feComposite>
+                            <feMerge result="card-field">
+                                <feMergeNode in="card-neutral-center"></feMergeNode>
+                                <feMergeNode in="card-edge-noise"></feMergeNode>
+                            </feMerge>
+                            <feDisplacementMap id="liquid-edge-displacement" in="card-softness" in2="card-field" scale="32" xChannelSelector="R" yChannelSelector="B"></feDisplacementMap>
+                        </filter>
+                        <linearGradient id="liquid-lens-fill" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"></stop>
+                            <stop offset="0.4" stop-color="#8cecff" stop-opacity="0.025"></stop>
+                            <stop offset="0.76" stop-color="#f68fd7" stop-opacity="0.035"></stop>
+                            <stop offset="1" stop-color="#ffffff" stop-opacity="0.1"></stop>
+                        </linearGradient>
+                        <filter id="liquid-lens-shadow" x="-30%" y="-30%" width="160%" height="170%">
+                            <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#233052" flood-opacity="0.15"></feDropShadow>
+                        </filter>
+                    </defs>
+
+                    <use href="#liquid-scene"></use>
+                    <use href="#liquid-card-shape" fill="#ffffff" fill-opacity="0.08" filter="url(#liquid-lens-shadow)"></use>
+                    <g clip-path="url(#liquid-card-clip)">
+                        <g filter="url(#liquid-card-filter)">
+                            <g clip-path="url(#liquid-card-clip)" transform="translate(516 194) scale(1.035) translate(-516 -194)">
+                                <use href="#liquid-scene"></use>
+                            </g>
+                        </g>
+                        <use href="#liquid-card-shape" fill="url(#liquid-lens-fill)"></use>
+                    </g>
+                </svg>
+                <label class="glass-control range-panel" for="lens-strength">
+                    <span>Edge refraction</span>
+                    <input id="lens-strength" type="range" min="0" max="54" value="32">
+                    <output id="lens-output" for="lens-strength">32px</output>
+                </label>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="floating-title">
+            <div class="section-number">Principle 02 · Floating controls</div>
+            <h2 class="section-title" id="floating-title">Actions sit above the work</h2>
+            <p class="section-desc">Buttons share one compact floating surface, while the chosen action expands just enough to expose its label. Each button below changes the document state; none is ornamental.</p>
+            <div class="demo-frame floating-stage">
+                <article class="document-card">
+                    <h3>Field notes</h3>
+                    <p>Keep controls visually separate from the document, but close enough to preserve the relationship between action and content.</p>
+                    <span class="document-status" id="document-status" aria-live="polite">Highlight mode selected</span>
+                </article>
+                <div class="glass-control floating-actions" aria-label="Document tools">
+                    <button class="round-button" type="button" data-label="Read" data-status="Reader mode selected" aria-label="Reader mode" aria-pressed="false">
+                        <svg class="ui-icon" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M3.5 5.2c2.3-.8 4.5-.4 6.5 1.2v10c-2-1.6-4.2-2-6.5-1.2z"></path>
+                            <path d="M16.5 5.2c-2.3-.8-4.5-.4-6.5 1.2v10c2-1.6 4.2-2 6.5-1.2z"></path>
+                        </svg>
+                    </button>
+                    <button class="round-button" type="button" data-label="Mark" data-status="Highlight mode selected" aria-label="Highlight mode" aria-pressed="true">
+                        <svg class="ui-icon" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="m5.5 13.5 7.4-7.4 3 3-7.4 7.4h-3z"></path>
+                            <path d="m11.8 7.2 3 3M4 17h8"></path>
+                        </svg>
+                    </button>
+                    <button class="round-button" type="button" data-label="Note" data-status="Note mode selected" aria-label="Note mode" aria-pressed="false">
+                        <svg class="ui-icon" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M5 3.5h8l3 3v10H5zM13 3.5v3h3"></path>
+                            <path d="M10.5 9v4M8.5 11h4"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="toolbar-title">
+            <div class="section-number">Principle 03 · Morphing toolbar &amp; media controls</div>
+            <h2 class="section-title" id="toolbar-title">One bar, several states</h2>
+            <p class="section-desc">A toolbar can reorganize around the current task instead of stacking more panels. Select a tab, scrub the track, or use the playback controls—the material changes state while the content remains stable.</p>
+            <div class="demo-frame toolbar-demo">
+                <div class="media-card">
+                    <div class="media-kicker">Now playing</div>
+                    <h3 id="track-title">Refractions</h3>
+                    <p id="track-artist">Chromatic Current</p>
+                    <div class="media-progress">
+                        <span id="elapsed">1:24</span>
+                        <input id="media-range" type="range" min="0" max="227" value="84" aria-label="Track position">
+                        <span id="duration">3:47</span>
+                    </div>
+                    <div class="player-controls" aria-label="Playback controls">
+                        <button class="glass-control" type="button" id="previous-track" aria-label="Previous track">
+                            <svg class="ui-icon" viewBox="0 0 20 20" aria-hidden="true">
+                                <path d="M5.5 5v10M15 5.5 7.5 10l7.5 4.5z"></path>
+                            </svg>
+                        </button>
+                        <button class="glass-control play-button" type="button" id="play-button" aria-label="Play" aria-pressed="false">
+                            <svg class="ui-icon icon-play" viewBox="0 0 20 20" aria-hidden="true">
+                                <path d="m7 5 8 5-8 5z"></path>
+                            </svg>
+                            <svg class="ui-icon icon-pause" viewBox="0 0 20 20" aria-hidden="true">
+                                <path d="M7.5 5.5v9M12.5 5.5v9"></path>
+                            </svg>
+                        </button>
+                        <button class="glass-control" type="button" id="next-track" aria-label="Next track">
+                            <svg class="ui-icon" viewBox="0 0 20 20" aria-hidden="true">
+                                <path d="M14.5 5v10M5 5.5l7.5 4.5L5 14.5z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="glass-control morph-toolbar" role="tablist" aria-label="Media views">
+                    <button class="tool-button" type="button" role="tab" id="tab-listen" aria-selected="true" aria-controls="media-card" tabindex="0">Listen</button>
+                    <button class="tool-button" type="button" role="tab" id="tab-queue" aria-selected="false" aria-controls="media-card" tabindex="-1">Queue</button>
+                    <button class="tool-button" type="button" role="tab" id="tab-info" aria-selected="false" aria-controls="media-card" tabindex="-1">Info</button>
+                </div>
+                <div id="media-card" role="tabpanel" aria-live="polite" aria-labelledby="tab-listen"></div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="contrast-title">
+            <div class="section-number">Principle 04 · Adaptive contrast</div>
+            <h2 class="section-title" id="contrast-title">Legibility follows the scene</h2>
+            <p class="section-desc">A floating material has to survive bright, dark, and detailed content. Switch scenes, then disable adaptive contrast to see why a single translucent fill is not enough.</p>
+            <div class="demo-frame contrast-stage" id="contrast-stage" data-scene="detail">
+                <div class="scene-picker" aria-label="Backdrop scenes">
+                    <button class="scene-button" type="button" data-scene="light" aria-pressed="false">Light</button>
+                    <button class="scene-button" type="button" data-scene="dark" aria-pressed="false">Dark</button>
+                    <button class="scene-button" type="button" data-scene="detail" aria-pressed="true">Detailed</button>
+                </div>
+                <div class="glass-control adaptive-control" id="adaptive-control" data-adaptive="true">
+                    <h3>Controls should stay readable</h3>
+                    <p id="contrast-status" aria-live="polite">Adaptive contrast is on for the detailed scene.</p>
+                    <button class="adaptive-toggle" id="adaptive-toggle" type="button" aria-pressed="true">Adaptive on</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="keep-improve" aria-labelledby="verdict-title">
+            <div class="eyebrow">Our take</div>
+            <h2 id="verdict-title">What we keep / What we improve</h2>
+            <div class="verdict-grid">
+                <article class="verdict">
+                    <h3>Keep</h3>
+                    <ul>
+                        <li>Keep controls in a coherent functional layer above the content.</li>
+                        <li>Use refraction, highlights, and shape changes to explain depth and state.</li>
+                        <li>Let toolbars consolidate around the current task instead of adding more chrome.</li>
+                    </ul>
+                </article>
+                <article class="verdict improve">
+                    <h3>Improve</h3>
+                    <ul>
+                        <li>Guarantee contrast and readability; transparency must never be the only treatment.</li>
+                        <li>Limit transparency to controls, not every section or content surface.</li>
+                        <li>Use motion only to explain state changes and respect reduced-motion preferences.</li>
+                        <li>Cap distortion, blur fallback, and layer count, with an opaque fallback for performance and support.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <footer class="footer-note">Liquid Glass is most useful as interface architecture: a responsive control layer, not a page-wide visual effect.</footer>
+    </main>
+</body>
+
+<script>
+    const lensRange = document.getElementById('lens-strength');
+    const edgeDisplacement = document.getElementById('liquid-edge-displacement');
+    const lensOutput = document.getElementById('lens-output');
+
+    function updateLens() {
+        const value = Number(lensRange.value);
+        edgeDisplacement.setAttribute('scale', String(value));
+        lensOutput.value = value + 'px';
+        lensOutput.textContent = value + 'px';
+    }
+
+    lensRange.addEventListener('input', updateLens);
+    updateLens();
+
+    const documentTools = Array.from(document.querySelectorAll('.round-button'));
+    const documentStatus = document.getElementById('document-status');
+    documentTools.forEach(function (button) {
+        button.addEventListener('click', function () {
+            documentTools.forEach(function (item) { item.setAttribute('aria-pressed', String(item === button)); });
+            documentStatus.textContent = button.dataset.status;
+        });
+    });
+
+    const tracks = [
+        { title: 'Refractions', artist: 'Chromatic Current', duration: 227 },
+        { title: 'Soft Focus', artist: 'Depth Field', duration: 194 },
+        { title: 'Clear Layer', artist: 'Context Shift', duration: 248 }
+    ];
+    let trackIndex = 0;
+    const mediaRange = document.getElementById('media-range');
+    const elapsed = document.getElementById('elapsed');
+    const duration = document.getElementById('duration');
+    const playButton = document.getElementById('play-button');
+
+    function formatTime(seconds) {
+        return Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
+    }
+
+    function updateTrack() {
+        const track = tracks[trackIndex];
+        document.getElementById('track-title').textContent = track.title;
+        document.getElementById('track-artist').textContent = track.artist;
+        mediaRange.max = track.duration;
+        mediaRange.value = Math.round(track.duration * 0.37);
+        duration.textContent = formatTime(track.duration);
+        elapsed.textContent = formatTime(Number(mediaRange.value));
+    }
+
+    mediaRange.addEventListener('input', function () { elapsed.textContent = formatTime(Number(mediaRange.value)); });
+    playButton.addEventListener('click', function () {
+        const playing = playButton.getAttribute('aria-pressed') !== 'true';
+        playButton.setAttribute('aria-pressed', String(playing));
+        playButton.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+    });
+    document.getElementById('previous-track').addEventListener('click', function () {
+        trackIndex = (trackIndex - 1 + tracks.length) % tracks.length;
+        updateTrack();
+    });
+    document.getElementById('next-track').addEventListener('click', function () {
+        trackIndex = (trackIndex + 1) % tracks.length;
+        updateTrack();
+    });
+
+    const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+    const tabPanel = document.getElementById('media-card');
+    const tabMessages = {
+        'tab-listen': 'Playback controls are active.',
+        'tab-queue': 'Queue view selected: 3 tracks remain.',
+        'tab-info': 'Info view selected: optical ambient, 2025.'
+    };
+
+    function selectTab(tab) {
+        tabs.forEach(function (item) {
+            const selected = item === tab;
+            item.setAttribute('aria-selected', String(selected));
+            item.tabIndex = selected ? 0 : -1;
+        });
+        tabPanel.setAttribute('aria-labelledby', tab.id);
+        tabPanel.textContent = tabMessages[tab.id];
+    }
+
+    tabs.forEach(function (tab, index) {
+        tab.addEventListener('click', function () { selectTab(tab); });
+        tab.addEventListener('keydown', function (event) {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            event.preventDefault();
+            const direction = event.key === 'ArrowRight' ? 1 : -1;
+            const next = tabs[(index + direction + tabs.length) % tabs.length];
+            selectTab(next);
+            next.focus();
+        });
+    });
+    selectTab(tabs[0]);
+
+    const contrastStage = document.getElementById('contrast-stage');
+    const sceneButtons = Array.from(document.querySelectorAll('.scene-button'));
+    const adaptiveControl = document.getElementById('adaptive-control');
+    const adaptiveToggle = document.getElementById('adaptive-toggle');
+    const contrastStatus = document.getElementById('contrast-status');
+
+    function updateContrastStatus() {
+        const adaptive = adaptiveToggle.getAttribute('aria-pressed') === 'true';
+        adaptiveControl.dataset.adaptive = String(adaptive);
+        adaptiveToggle.textContent = adaptive ? 'Adaptive on' : 'Adaptive off';
+        contrastStatus.textContent = adaptive
+            ? 'Adaptive contrast is on for the ' + contrastStage.dataset.scene + ' scene.'
+            : 'One fixed translucent fill is now used on every scene.';
+    }
+
+    sceneButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            contrastStage.dataset.scene = button.dataset.scene;
+            sceneButtons.forEach(function (item) { item.setAttribute('aria-pressed', String(item === button)); });
+            updateContrastStatus();
+        });
+    });
+    adaptiveToggle.addEventListener('click', function () {
+        adaptiveToggle.setAttribute('aria-pressed', String(adaptiveToggle.getAttribute('aria-pressed') !== 'true'));
+        updateContrastStatus();
+    });
+    updateContrastStatus();
+</script>
