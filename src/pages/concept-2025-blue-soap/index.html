@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Blue Soap (2025) -->
-<!-- description: Clean like a bar of blue soap -->
+<!-- description: One blue hue builds every layer of the interface -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -881,7 +881,7 @@
 
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Clean Interface</div>
+            <div class="hero-badge">Original Concept</div>
             <h1 class="hero-title">Soap</h1>
             <p class="hero-tagline">
                 Clean as blue soap. Soft as a bubble.<br>
@@ -892,17 +892,17 @@
         <!-- Intro -->
         <div class="panel intro-card">
             <p class="intro-text">
-                Most design systems need a dozen colors.
-                Blue Soap asks: <strong>what if you only had one?</strong>
+                Blue Soap is a one-hue interface study.
+                It asks: <strong>what if the entire system had only one color?</strong>
                 <br><br>
                 One hue &mdash; <strong>#1194ff</strong> &mdash; scaled by opacity.
                 Buttons at 100%. Shadows at 15%. Borders at 12%.
                 Background tint at 3%. The constraint forces every choice to be deliberate.
                 No color fights another because there's only one color to begin with.
                 <br><br>
-                The metaphor is a bar of blue soap.
-                The interface should feel like you just washed your hands &mdash;
-                <strong>refreshing, clean, done</strong>.
+                The name comes from a bar of blue soap: simple, clean, and complete.
+                The metaphor sets the mood, but the reusable idea is the constraint &mdash;
+                <strong>one hue, many roles</strong>.
             </p>
         </div>
 
@@ -910,7 +910,7 @@
 
         <!-- Principle 01: One Hue -->
         <section class="section">
-            <div class="section-label">Principle 01</div>
+            <div class="section-label">Rule 01</div>
             <h2 class="section-title">One Hue, Every Layer</h2>
             <p class="section-desc">
                 <code>rgba(17, 148, 255)</code> &mdash; this is the only color.
@@ -952,15 +952,14 @@
 
         <!-- Principle 02: Soap Film -->
         <section class="section">
-            <div class="section-label">Principle 02</div>
-            <h2 class="section-title">Soap Film Surface</h2>
+            <div class="section-label">Rule 02</div>
+            <h2 class="section-title">Let the Hue Pass Through</h2>
             <p class="section-desc">
-                A soap bubble isn't opaque. It's a thin film that lets light through
-                and bends what's behind it. That's <code>backdrop-filter: blur</code>
-                plus <code>rgba(255, 255, 255, 0.92)</code>.
-                The surface isn't solid white &mdash; it's <em>almost</em> white,
-                with a hint of whatever's underneath bleeding through.
-                It feels lighter than a solid card because it is.
+                Surfaces stay close to white so the shared blue can tint borders,
+                shadows, and the background without turning the page blue-on-blue.
+                A small amount of transparency can let that tint pass through;
+                blur is optional support, <em>not the identity of the concept</em>.
+                Blue Soap is a color constraint, not a glass effect.
             </p>
             <div class="film-stack">
                 <div class="film-layer film-layer-bg">
@@ -1003,15 +1002,13 @@
 
         <!-- Principle 03: Everything Floats -->
         <section class="section">
-            <div class="section-label">Principle 03</div>
-            <h2 class="section-title">Everything Floats</h2>
+            <div class="section-label">Rule 03</div>
+            <h2 class="section-title">Only Actions Float</h2>
             <p class="section-desc">
-                Soap floats. Bubbles float. So does everything in this system.
-                Hover lifts elements up and spreads their shadow.
-                <em>Nothing presses down.</em>
-                Corners are round because soap has no edges.
-                Buttons are pills because bubbles don't have corners.
-                The whole UI feels weightless &mdash; one tap and it might drift away.
+                The blue shadow doubles as an affordance. Interactive elements lift
+                slightly and spread that shadow; static surfaces do not move.
+                Rounded forms support the soap metaphor, but motion is reserved for
+                things a person can actually use.
             </p>
             <div class="float-pool">
                 <div class="float-item">
@@ -1056,10 +1053,10 @@
 
         <!-- All Together -->
         <section class="section">
-            <div class="section-label">All Together</div>
+            <div class="section-label">Working Example</div>
             <h2 class="section-title">Put It Together</h2>
             <p class="section-desc">
-                One hue for color. Soap film for surface. Float for interaction.
+                One hue for color. Pale surfaces for separation. Lift for interaction.
                 A settings panel that uses all three. Try the inputs, flip the toggles,
                 hit save.
             </p>
@@ -1112,24 +1109,27 @@
 
         <div class="divider"></div>
 
-        <!-- What This Is Not -->
+        <!-- Limits -->
         <section class="section">
-            <h2 class="section-title">What This Is Not</h2>
+            <div class="section-label">Limits</div>
+            <h2 class="section-title">When One Hue Is Enough</h2>
             <div class="panel anti-card">
                 <ul class="anti-list">
+                    <li><span class="o">&#x2713;</span> Suits focused utilities, settings, onboarding, and calm single-brand products</li>
+                    <li><span class="x">&#x2717;</span> Avoid when many semantic categories must be distinguished by color</li>
                     <li><span class="x">&#x2717;</span> Blue text on everything &mdash; body text stays dark, blue is accent only</li>
                     <li><span class="x">&#x2717;</span> Black shadows on a blue palette &mdash; shadows match the hue</li>
-                    <li><span class="x">&#x2717;</span> Opaque cards on a tinted background &mdash; surfaces are translucent film</li>
+                    <li><span class="x">&#x2717;</span> Blur on every card &mdash; transparency is optional, not the concept</li>
                     <li><span class="x">&#x2717;</span> Hover effects on static elements &mdash; only interactive things float</li>
                     <li><span class="o">&#x2713;</span> One hue at varying opacities builds every layer</li>
-                    <li><span class="o">&#x2713;</span> Translucent surfaces with backdrop blur</li>
-                    <li><span class="o">&#x2713;</span> Float-up hover &mdash; nothing presses down</li>
+                    <li><span class="o">&#x2713;</span> Pale surfaces that preserve the shared hue</li>
+                    <li><span class="o">&#x2713;</span> Float-up hover only on interactive elements</li>
                     <li><span class="o">&#x2713;</span> Blue-tinted shadows that belong to the palette</li>
                 </ul>
             </div>
         </section>
 
-        <!-- Manifesto -->
+        <!-- Closing note -->
         <footer class="manifesto">
             <p class="manifesto-text">
                 Not every tool needs to look<br>
@@ -1137,8 +1137,8 @@
                 like a fresh start.
             </p>
             <p class="manifesto-sub">
-                One hue. Soap film. Everything floats.<br>
-                That's the whole system.
+                One hue, pale surfaces, and restrained lift.<br>
+                The constraint is the system.
             </p>
         </footer>
     </div>

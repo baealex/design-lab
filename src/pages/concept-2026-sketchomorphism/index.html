@@ -1,9 +1,9 @@
 <!-- layout: base.html -->
 <!-- title: Sketchomorphism (2026) -->
-<!-- description: Human-like UI in the age of AI -->
+<!-- description: Deliberate hand-drawn variation as interface feedback -->
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nunito+Sans:wght@400;500;600;700&display=swap');
 
     :root {
         --surface: #fffcf7;
@@ -25,14 +25,26 @@
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
         background-size: 400px 400px;
         background-blend-mode: multiply;
-        font-family: 'Gaegu', cursive;
+        font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         color: var(--fg);
+        font-size: 16px;
+    }
+
+    .hero-title,
+    .section-title,
+    .demo-label,
+    .card-title,
+    .note-title,
+    .manifesto-text {
+        font-family: 'Gaegu', cursive;
     }
 
     .layout {
-        max-width: 720px;
+        width: 100%;
+        max-width: 700px;
         margin: 0 auto;
         padding: 32px 20px 64px;
+        box-sizing: border-box;
     }
 
     /* Hero */
@@ -42,7 +54,7 @@
     }
 
     .hero-title {
-        font-size: 3rem;
+        font-size: 2.8rem;
         font-weight: 700;
         line-height: 1.1;
         margin-bottom: 4px;
@@ -57,21 +69,23 @@
 
     .hero-badge {
         display: inline-block;
-        font-size: 0.85rem;
+        font-size: 0.7rem;
         font-weight: 700;
-        padding: 4px 14px;
+        padding: 5px 13px;
         border: 2px solid var(--border);
         border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
         color: var(--accent);
         margin-bottom: 12px;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
     }
 
     .hero-tagline {
-        font-size: 1.2rem;
+        font-size: 1.05rem;
         color: var(--fg-muted);
         margin-top: 16px;
-        line-height: 1.5;
+        line-height: 1.55;
+        font-weight: 500;
     }
 
     /* Section */
@@ -80,25 +94,33 @@
     }
 
     .section-label {
-        font-size: 0.95rem;
+        font-size: 0.72rem;
         font-weight: 700;
         color: var(--accent);
-        letter-spacing: 0.1em;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
         margin-bottom: 4px;
     }
 
     .section-title {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
         font-weight: 700;
-        margin-bottom: 12px;
+        line-height: 1.2;
+        margin-bottom: 10px;
     }
 
     .section-desc {
-        font-size: 1.15rem;
-        line-height: 1.8;
+        font-size: 1rem;
+        line-height: 1.75;
         color: var(--fg-muted);
         margin-bottom: 24px;
+    }
+
+    .intro-copy {
+        margin: 0;
+        color: #3f3f46;
+        font-size: 1.05rem;
+        line-height: 1.75;
     }
 
     /* Sketch card with alive SVG border */
@@ -124,6 +146,23 @@
         stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;
+        transition: stroke-width 160ms ease, opacity 160ms ease;
+    }
+
+    .sketch-border .sketch-border-echo {
+        stroke-width: 1;
+        opacity: 0.18;
+        transform: translate(1px, 1px);
+    }
+
+    [data-outline]:hover .sketch-border path,
+    [data-outline]:focus-within .sketch-border path {
+        stroke-width: 2.35;
+    }
+
+    [data-outline]:hover .sketch-border-echo,
+    [data-outline]:focus-within .sketch-border-echo {
+        opacity: 0.32;
     }
 
     /* Demo grid */
@@ -146,12 +185,12 @@
     }
 
     .demo-label {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         font-weight: 700;
     }
 
     .demo-sublabel {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: var(--fg-muted);
         margin-top: 4px;
     }
@@ -177,8 +216,8 @@
         border: 1.5px solid rgba(0, 0, 0, 0.1);
         border-radius: 4px 2px 5px 2px / 2px 4px 2px 4px;
         box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.08);
-        font-size: 1.05rem;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        line-height: 1.55;
         transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -189,18 +228,19 @@
 
     .note-title {
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         margin-bottom: 4px;
     }
 
     .note-body {
         color: var(--fg-muted);
-        font-size: 0.95rem;
+        font-size: 0.86rem;
+        line-height: 1.55;
     }
 
     /* Card title */
     .card-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 700;
         margin-bottom: 12px;
     }
@@ -214,6 +254,13 @@
         border-bottom: 1.5px dashed #d4d4d8;
         cursor: pointer;
         transition: opacity 0.2s;
+        width: 100%;
+        background: none;
+        border: 0;
+        border-bottom: 1.5px dashed #d4d4d8;
+        color: inherit;
+        font: inherit;
+        text-align: left;
     }
 
     .todo-item:last-child {
@@ -247,12 +294,12 @@
     }
 
     .todo-text {
-        font-size: 1.2rem;
-        line-height: 1.4;
+        font-size: 0.95rem;
+        line-height: 1.45;
     }
 
     .todo-tag {
-        font-size: 0.85rem;
+        font-size: 0.72rem;
         padding: 2px 10px;
         border-radius: 125px 10px 115px 10px / 10px 115px 10px 125px;
         border: 1.5px solid var(--border);
@@ -268,7 +315,7 @@
     .progress-label {
         display: flex;
         justify-content: space-between;
-        font-size: 1rem;
+        font-size: 0.82rem;
         color: var(--fg-muted);
         margin-bottom: 6px;
     }
@@ -301,7 +348,7 @@
     }
 
     .ruled-text {
-        font-size: 1.15rem;
+        font-size: 0.95rem;
         line-height: 32px;
         white-space: pre-wrap;
     }
@@ -314,8 +361,9 @@
     }
 
     .anti-list li {
-        font-size: 1.1rem;
-        padding: 8px 0;
+        font-size: 0.95rem;
+        line-height: 1.55;
+        padding: 9px 0;
         border-bottom: 1.5px dashed #d4d4d8;
         display: flex;
         align-items: center;
@@ -360,7 +408,7 @@
     }
 
     .manifesto-sub {
-        font-size: 1.05rem;
+        font-size: 0.9rem;
         color: var(--fg-muted);
         margin-top: 16px;
         line-height: 1.7;
@@ -425,91 +473,100 @@
             flex-direction: column;
         }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+        }
+    }
 </style>
 
 <body>
     <div class="layout">
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Human-like Interface</div>
+            <div class="hero-badge">Original Concept</div>
             <h1 class="hero-title">Sketchomorphism</h1>
             <svg class="hero-underline" aria-hidden="true"></svg>
             <p class="hero-tagline">
-                AI generates perfection.<br>
-                We chose imperfection. On purpose.
+                Precision is easy to repeat.<br>
+                Human variation is harder to fake.
             </p>
         </header>
 
         <!-- Intro -->
-        <div class="sketch-card" data-alive>
+        <div class="sketch-card" data-outline>
             <div class="sketch-tape"></div>
             <svg class="sketch-border" aria-hidden="true"></svg>
-            <p style="font-size: 1.2rem; line-height: 1.7; margin: 0;">
-                AI now generates flawless images, pixel-perfect layouts,
-                and interfaces smoother than anything a human hand could draw.
-                Everything has become polished, predictable, sterile.
-                So we went the other way —
-                <span class="pencil-link" data-underline>intentionally imperfect</span> interfaces.
-                Lines that wobble like they were drawn by a human hand.
-                Borders that redraw themselves, never the same twice.
-                This isn't retro cosplay. It's a way of saying
-                "a human made this" in the age of algorithms.
+            <p class="intro-copy">
+                Sketchomorphism explores
+                <span class="pencil-link" data-underline>deliberate variation</span>
+                in interfaces that otherwise feel mechanically uniform.
+                Lines keep a hand-drawn edge, while each component type receives
+                one stable outline from a small shared vocabulary.
+                The goal is not to imitate paper everywhere. It is to leave a visible
+                trace of making without sacrificing the structure underneath.
             </p>
         </div>
 
         <div class="sketch-divider"><svg aria-hidden="true"></svg></div>
 
-        <!-- Principle 01: Lines That Breathe -->
+        <!-- Rule 01: A line vocabulary -->
         <section class="section">
-            <div class="section-label">Principle 01</div>
-            <h2 class="section-title">Lines That Breathe</h2>
+            <div class="section-label">Rule 01</div>
+            <h2 class="section-title">Lines With a Vocabulary</h2>
             <p class="section-desc">
-                These borders are redrawn every few seconds.
-                If you didn't notice, good — that means we calibrated the
-                wobble just right. Hover over them if you want to see them panic a little.
+                Borders are not randomized. Cards, controls, and notes each use an
+                assigned outline with slightly different rhythm. A faint second stroke
+                adds the feel of a pencil passing over the same edge twice.
             </p>
             <div class="demo-grid">
-                <div class="demo-card" data-alive>
+                <div class="demo-card" data-outline>
                     <svg class="sketch-border" aria-hidden="true"></svg>
-                    <div class="demo-label">Alive</div>
-                    <div class="demo-sublabel">Lines shift and breathe</div>
+                    <div class="demo-label">Card</div>
+                    <div class="demo-sublabel">Soft, steady outline</div>
                 </div>
-                <div class="demo-card" data-alive>
+                <div class="demo-card" data-outline>
                     <svg class="sketch-border" aria-hidden="true"></svg>
-                    <div class="demo-label">Unique</div>
-                    <div class="demo-sublabel">Different every time</div>
+                    <div class="demo-label">Control</div>
+                    <div class="demo-sublabel">Tighter edge rhythm</div>
                 </div>
-                <div class="demo-card" data-alive>
+                <div class="demo-card" data-outline>
                     <svg class="sketch-border" aria-hidden="true"></svg>
-                    <div class="demo-label">Responsive</div>
-                    <div class="demo-sublabel">Reacts to your touch</div>
+                    <div class="demo-label">Note</div>
+                    <div class="demo-sublabel">Looser expressive edge</div>
                 </div>
             </div>
         </section>
 
-        <!-- Principle 02: Never Identical -->
+        <!-- Rule 02: Variation by role -->
         <section class="section">
-            <div class="section-label">Principle 02</div>
-            <h2 class="section-title">Never Identical</h2>
+            <div class="section-label">Rule 02</div>
+            <h2 class="section-title">Variation by Role</h2>
             <p class="section-desc">
-                Hit refresh. The borders changed. Hit it again. Different again.
-                We could've just used a PNG, but where's the fun in that?
+                Variation is chosen, not generated. Components with the same role keep
+                the same silhouette, so repetition creates familiarity instead of noise.
+                Expression comes from the system of shapes, not from a new accident on every load.
             </p>
             <div class="note-grid" id="note-grid"></div>
         </section>
 
         <!-- Principle 03: Responds to You -->
         <section class="section">
-            <div class="section-label">Principle 03</div>
+            <div class="section-label">Working Example</div>
             <h2 class="section-title">Responds to You</h2>
             <p class="section-desc">
                 Go ahead, <span class="pencil-link" data-underline>click the tasks</span>.
                 Check them off. Watch the progress bar fill up.
-                It won't change your life, but it might make you smile a little.
+                The task list keeps familiar controls while the drawn details respond
+                to state. The sketch is expression; the interaction remains ordinary.
             </p>
 
             <!-- Todo list -->
-            <div class="sketch-card" data-alive>
+            <div class="sketch-card" data-outline>
                 <svg class="sketch-border" aria-hidden="true"></svg>
                 <div class="card-title">Today's Tasks</div>
                 <div id="todo-list"></div>
@@ -525,14 +582,13 @@
             </div>
 
             <!-- Diary -->
-            <div class="sketch-card ruled" data-alive>
+            <div class="sketch-card ruled" data-outline>
                 <div class="sketch-tape--left sketch-tape"></div>
                 <div class="sketch-tape--right sketch-tape"></div>
                 <svg class="sketch-border" aria-hidden="true"></svg>
                 <div class="ruled-text">Dear diary,
-Today I made the borders wobble
-and spent 3 hours calibrating the
-exact amount of imperfection.
+Today I gave each component role
+its own outline and kept it stable.
 
 Sometimes the best interfaces are
 the ones that feel human.</div>
@@ -541,52 +597,53 @@ the ones that feel human.</div>
 
         <div class="sketch-divider"><svg aria-hidden="true"></svg></div>
 
-        <!-- What This Is Not -->
+        <!-- Limits -->
         <section class="section">
-            <h2 class="section-title">What This Is Not</h2>
-            <div class="sketch-card" data-alive>
+            <div class="section-label">Limits</div>
+            <h2 class="section-title">Keep the Structure Precise</h2>
+            <div class="sketch-card" data-outline>
                 <div class="sketch-tape"></div>
                 <svg class="sketch-border" aria-hidden="true"></svg>
                 <ul class="anti-list">
                     <li><span class="x">&#x2717;</span> Wobbly lines with no intent — imperfection without purpose</li>
                     <li><span class="x">&#x2717;</span> Illegible handwriting — readability is non-negotiable</li>
                     <li><span class="x">&#x2717;</span> Nostalgia cosplay — this is not a retreat to paper</li>
-                    <li><span class="o">&#x2713;</span> Living borders — redrawn every frame, never static</li>
-                    <li><span class="o">&#x2713;</span> A human signature in the age of AI — imperfect because it's real</li>
-                    <li><span class="o">&#x2713;</span> Precision engineering behind every imperfection</li>
+                    <li><span class="o">&#x2713;</span> Suits creative tools, personal products, education, and playful productivity</li>
+                    <li><span class="x">&#x2717;</span> Avoid for dense tables, emergency controls, and high-frequency enterprise workflows</li>
+                    <li><span class="o">&#x2713;</span> A small set of stable outlines assigned by component role</li>
+                    <li><span class="o">&#x2713;</span> Precise layout and readable body type beneath the imperfect surface</li>
                 </ul>
             </div>
         </section>
 
-        <!-- Manifesto -->
+        <!-- Closing note -->
         <footer class="manifesto">
             <svg class="hero-underline" aria-hidden="true" style="margin-bottom: 20px;"></svg>
             <p class="manifesto-text">
-                In a world of perfect pixels,<br>
-                the wobble is the signature.
+                Keep the grid precise.<br>
+                Let the edge show a hand.
             </p>
             <p class="manifesto-sub">
-                AI draws perfect lines. We choose not to.<br>
-                Every border on this page is alive, unique, and deliberately human.
+                A study in controlled variation, responsive marks,<br>
+                and readable interfaces with a visible trace of making.
             </p>
         </footer>
     </div>
 </body>
 
 <script>
-    /* ── Utility ── */
-    function rnd(r) {
-        return (Math.random() - 0.5) * r * 2;
+    /* ── Stable line vocabulary ── */
+    function lineOffset(index, edge, variant, amount) {
+        return Math.sin((index + 1) * (variant + 1) * 1.17 + edge * 0.83) * amount;
     }
 
-    /* ── Generate hand-drawn rectangle points ── */
-    function sketchRect(w, h, roughness) {
+    function sketchRect(w, h, variant, amount) {
         const segs = 6;
         const pts = [];
-        for (let i = 0; i <= segs; i++) pts.push([(w / segs) * i + rnd(roughness), rnd(roughness)]);
-        for (let i = 1; i <= segs; i++) pts.push([w + rnd(roughness), (h / segs) * i + rnd(roughness)]);
-        for (let i = segs - 1; i >= 0; i--) pts.push([(w / segs) * i + rnd(roughness), h + rnd(roughness)]);
-        for (let i = segs - 1; i >= 1; i--) pts.push([rnd(roughness), (h / segs) * i + rnd(roughness)]);
+        for (let i = 0; i <= segs; i++) pts.push([(w / segs) * i, lineOffset(i, 0, variant, amount)]);
+        for (let i = 1; i <= segs; i++) pts.push([w + lineOffset(i, 1, variant, amount), (h / segs) * i]);
+        for (let i = segs - 1; i >= 0; i--) pts.push([(w / segs) * i, h + lineOffset(i, 2, variant, amount)]);
+        for (let i = segs - 1; i >= 1; i--) pts.push([lineOffset(i, 3, variant, amount), (h / segs) * i]);
         return pts;
     }
 
@@ -594,21 +651,20 @@ the ones that feel human.</div>
         return 'M ' + pts.map(function (p) { return p[0].toFixed(2) + ',' + p[1].toFixed(2); }).join(' L ') + ' Z';
     }
 
-    /* ── Alive Border System ── */
-    function AliveBorder(el, roughness) {
+    function StableOutline(el, variant) {
         this.el = el;
-        this.baseRoughness = roughness || 2;
-        this.roughness = this.baseRoughness;
+        this.variant = variant || 0;
         this.svg = el.querySelector('.sketch-border');
         if (!this.svg) return;
 
         this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        this.echo = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        this.echo.setAttribute('class', 'sketch-border-echo');
         this.svg.appendChild(this.path);
+        this.svg.appendChild(this.echo);
 
         this.w = 0;
         this.h = 0;
-        this.current = [];
-        this.target = [];
         this.updateSize();
 
         var self = this;
@@ -617,56 +673,35 @@ the ones that feel human.</div>
             self.updateSize();
         });
         this.resizeObserver.observe(el);
-
-        this.interval = setInterval(function () {
-            self.target = sketchRect(self.w, self.h, self.roughness);
-        }, 3000);
-
-        el.addEventListener('mouseenter', function () { self.roughness = self.baseRoughness * 1.5; });
-        el.addEventListener('mouseleave', function () { self.roughness = self.baseRoughness; });
-
-        this.animate();
     }
 
-    AliveBorder.prototype.updateSize = function () {
+    StableOutline.prototype.updateSize = function () {
         var w = this.el.offsetWidth;
         var h = this.el.offsetHeight;
         if (w !== this.w || h !== this.h) {
             this.w = w;
             this.h = h;
             this.svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
-            this.current = sketchRect(w, h, this.roughness);
-            this.target = sketchRect(w, h, this.roughness);
             this.render();
         }
     };
 
-    AliveBorder.prototype.render = function () {
-        this.path.setAttribute('d', ptsToPath(this.current));
+    StableOutline.prototype.render = function () {
+        this.path.setAttribute('d', ptsToPath(sketchRect(this.w, this.h, this.variant, 1.8)));
+        this.echo.setAttribute('d', ptsToPath(sketchRect(this.w, this.h, this.variant + 4, 1.1)));
     };
 
-    AliveBorder.prototype.animate = function () {
-        for (var i = 0; i < this.current.length; i++) {
-            this.current[i][0] += (this.target[i][0] - this.current[i][0]) * 0.04;
-            this.current[i][1] += (this.target[i][1] - this.current[i][1]) * 0.04;
-        }
-        this.render();
-        var self = this;
-        requestAnimationFrame(function () { self.animate(); });
-    };
-
-    /* ── Generate wavy line points ── */
-    function wavyLine(w) {
+    function wavyLine(w, variant) {
         var pts = [];
         var segs = 8;
         for (var i = 0; i <= segs; i++) {
-            pts.push([(w / segs) * i, 3 + rnd(1.5)]);
+            pts.push([(w / segs) * i, 3 + lineOffset(i, 4, variant || 0, 1.1)]);
         }
         return pts;
     }
 
     /* ── Hero underline — alive wavy line ── */
-    document.querySelectorAll('.hero-underline').forEach(function (svg) {
+    document.querySelectorAll('.hero-underline').forEach(function (svg, index) {
         var w = 200;
         svg.setAttribute('viewBox', '0 0 ' + w + ' 8');
 
@@ -677,35 +712,19 @@ the ones that feel human.</div>
         path.setAttribute('stroke-linecap', 'round');
         svg.appendChild(path);
 
-        var current = wavyLine(w);
-        var target = wavyLine(w);
-
-        function render() {
-            path.setAttribute('d', 'M ' + current.map(function (p) {
-                return p[0].toFixed(2) + ',' + p[1].toFixed(2);
-            }).join(' L '));
-        }
-
-        setInterval(function () { target = wavyLine(w); }, 2500);
-
-        function animate() {
-            for (var i = 0; i < current.length; i++) {
-                current[i][0] += (target[i][0] - current[i][0]) * 0.04;
-                current[i][1] += (target[i][1] - current[i][1]) * 0.04;
-            }
-            render();
-            requestAnimationFrame(animate);
-        }
-        animate();
+        var current = wavyLine(w, index);
+        path.setAttribute('d', 'M ' + current.map(function (p) {
+            return p[0].toFixed(2) + ',' + p[1].toFixed(2);
+        }).join(' L '));
     });
 
     /* ── Pencil underline on hover ── */
-    document.querySelectorAll('[data-underline]').forEach(function (el) {
+    document.querySelectorAll('[data-underline]').forEach(function (el, index) {
         var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.style.cssText = 'position:absolute;bottom:-3px;left:0;width:100%;height:8px;overflow:visible;pointer-events:none;';
 
         var w = el.offsetWidth || 100;
-        var pts = wavyLine(w);
+        var pts = wavyLine(w, index + 2);
         var d = 'M ' + pts.map(function (p) { return p.join(','); }).join(' L ');
 
         var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -729,12 +748,9 @@ the ones that feel human.</div>
     });
 
     /* ── Sketch divider ── */
-    document.querySelectorAll('.sketch-divider svg').forEach(function (svg) {
+    document.querySelectorAll('.sketch-divider svg').forEach(function (svg, variant) {
         svg.setAttribute('viewBox', '0 0 120 8');
-        var pts = [];
-        for (var i = 0; i <= 10; i++) {
-            pts.push([(120 / 10) * i, 4 + rnd(2)]);
-        }
+        var pts = wavyLine(120, variant + 5);
         var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', 'M ' + pts.map(function (p) { return p.join(','); }).join(' L '));
         path.setAttribute('fill', 'none');
@@ -763,11 +779,11 @@ the ones that feel human.</div>
         var list = document.getElementById('todo-list');
         if (!list) return;
         list.innerHTML = todos.map(function (todo, i) {
-            return '<div class="todo-item ' + (todo.done ? 'done' : '') + '" data-index="' + i + '">' +
+            return '<button type="button" class="todo-item ' + (todo.done ? 'done' : '') + '" data-index="' + i + '">' +
                 '<div class="todo-checkbox">' + (todo.done ? '~' : '') + '</div>' +
                 '<span class="todo-text">' + todo.text + '</span>' +
                 '<span class="todo-tag" style="background:' + (tagColors[todo.tag] || 'var(--pastel-yellow)') + '">' + todo.tag + '</span>' +
-                '</div>';
+                '</button>';
         }).join('');
 
         list.querySelectorAll('.todo-item').forEach(function (item) {
@@ -785,31 +801,24 @@ the ones that feel human.</div>
 
     renderTodos();
 
-    /* ── Sticky notes (unique each load) ── */
-    var noteColors = ['#FCEBAF', '#FFB3C1', '#A4D8E1', '#B2E0B2', '#FFCCB3', '#E1B7E1'];
+    /* ── Stable role notes ── */
     var notes = [
-        { title: 'To do', body: 'Make borders wobble. Spend 3 hours calibrating wobble amount.' },
-        { title: 'Shower thought', body: 'If a border is perfectly straight, is it even hand-drawn?' },
-        { title: 'Note to self', body: 'Stop adding more sticky notes. Ship it.' },
-        { title: 'Bug report', body: 'The lines look too perfect. Intentionally make them worse.' },
-        { title: 'Question', body: 'How imperfect is too imperfect? When users file a bug.' },
-        { title: 'Answered', body: 'Yes, we did use Math.random() for the aesthetic. No regrets.' },
+        { title: 'Card rule', body: 'Use the quiet outline for content surfaces.', color: '#FFB3C1', rotation: -0.5 },
+        { title: 'Control rule', body: 'Keep action edges tighter and more direct.', color: '#FCEBAF', rotation: 0.4 },
+        { title: 'Note rule', body: 'Allow the loosest line only for annotations.', color: '#A4D8E1', rotation: -0.2 },
     ];
 
     var grid = document.getElementById('note-grid');
     if (grid) {
-        var shuffled = notes.slice().sort(function () { return Math.random() - 0.5; });
-        grid.innerHTML = shuffled.slice(0, 3).map(function (note) {
-            var color = noteColors[Math.floor(Math.random() * noteColors.length)];
-            var rot = (Math.random() - 0.5) * 3;
-            return '<div class="note" style="background:' + color + ';transform:rotate(' + rot + 'deg);">' +
+        grid.innerHTML = notes.map(function (note) {
+            return '<div class="note" style="background:' + note.color + ';transform:rotate(' + note.rotation + 'deg);">' +
                 '<div class="note-title">' + note.title + '</div>' +
                 '<div class="note-body">' + note.body + '</div>' +
                 '</div>';
         }).join('');
     }
 
-    document.querySelectorAll('[data-alive]').forEach(function (el) {
-        new AliveBorder(el);
+    document.querySelectorAll('[data-outline]').forEach(function (el, index) {
+        new StableOutline(el, index % 4);
     });
 </script>

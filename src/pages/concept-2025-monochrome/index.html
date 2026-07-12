@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Monochrome (2025) -->
-<!-- description: Content is the only color -->
+<!-- description: A grayscale shell that lets content own the color -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -245,7 +245,7 @@
         color: var(--gray-700);
     }
 
-    /* Principle 01: Radius demos */
+    /* Rule 01: Radius by component role */
     .radius-demo {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -265,10 +265,10 @@
         transform: translateY(-1px);
     }
 
-    .radius-card--16 { border-radius: 16px; }
-    .radius-card--12 { border-radius: 12px; }
-    .radius-card--8 { border-radius: 8px; }
-    .radius-card--pill { border-radius: 9999px; }
+    .radius-card--section { border-radius: 16px; }
+    .radius-card--panel { border-radius: 12px; }
+    .radius-card--control { border-radius: 8px; }
+    .radius-card--status { border-radius: 9999px; }
 
     .radius-value {
         font-size: 1.6rem;
@@ -406,128 +406,103 @@
     .code-block .val { color: var(--gray-600); }
     .code-block .cmt { color: var(--gray-400); }
 
-    /* Principle 04: Glass demo */
-    .glass-demo {
+    /* Rule 04: Depth without another color */
+    .depth-demo {
         position: relative;
-        background: var(--gray-200);
-        border-radius: 16px;
+        min-height: 260px;
         overflow: hidden;
-        height: 280px;
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        background: var(--gray-100);
+        padding: 28px;
     }
 
-    .glass-demo-content {
-        padding: 56px 24px 24px;
-        font-size: 0.8rem;
-        line-height: 2;
-        color: var(--gray-600);
-    }
-
-    .glass-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 12px 20px;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--surface-border);
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: var(--gray-800);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .glass-header-dots {
-        display: flex;
-        gap: 5px;
-    }
-
-    .glass-header-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--gray-300);
-    }
-
-    .glass-fab {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 9999px;
-        padding: 10px 20px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: var(--gray-800);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: box-shadow 150ms var(--ease), transform 150ms var(--ease);
-    }
-
-    .glass-fab:hover {
-        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16);
-        transform: scale(1.05);
-    }
-
-    .glass-fab:active {
-        transform: scale(0.98);
-    }
-
-    .glass-compare {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 20px;
-    }
-
-    .glass-compare-item {
-        padding: 16px;
+    .depth-document {
+        max-width: 430px;
+        padding: 24px;
+        border: 1px solid var(--surface-border);
         border-radius: 12px;
-        text-align: center;
+        background: var(--white);
+        box-shadow: 0 2px 10px var(--shadow-sm);
     }
 
-    .glass-compare-label {
-        font-size: 0.62rem;
+    .depth-document-title {
+        margin-bottom: 10px;
+        color: var(--gray-800);
+        font-size: 0.9rem;
         font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 8px;
     }
 
-    .glass-compare-value {
-        font-family: 'SF Mono', 'Fira Code', monospace;
-        font-size: 0.68rem;
-        color: var(--gray-500);
+    .depth-document-line {
+        height: 8px;
+        margin-top: 9px;
+        border-radius: 9999px;
+        background: var(--gray-200);
     }
 
-    .glass-compare-item.floating {
-        background: rgba(255, 255, 255, 0.7);
+    .depth-document-line.short { width: 62%; }
+    .depth-document-line.medium { width: 82%; }
+
+    .depth-toolbar {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        display: flex;
+        gap: 6px;
+        padding: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 10px 32px var(--shadow-lg);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        box-shadow: 0 4px 16px var(--shadow-sm);
     }
 
-    .glass-compare-item.floating .glass-compare-label {
-        color: var(--gray-800);
+    .depth-tool {
+        padding: 8px 12px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--gray-600);
+        font: inherit;
+        font-size: 0.7rem;
+        font-weight: 600;
     }
 
-    .glass-compare-item.grounded {
-        background: var(--white);
+    .depth-tool.active {
+        background: var(--gray-800);
+        color: var(--white);
+    }
+
+    .depth-key {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 14px;
+    }
+
+    .depth-key-item {
+        padding: 14px 16px;
         border: 1px solid var(--surface-border);
+        border-radius: 10px;
+        background: var(--white);
     }
 
-    .glass-compare-item.grounded .glass-compare-label {
-        color: var(--gray-400);
+    .depth-key-item strong,
+    .depth-key-item span {
+        display: block;
+    }
+
+    .depth-key-item strong {
+        margin-bottom: 4px;
+        color: var(--gray-800);
+        font-size: 0.72rem;
+    }
+
+    .depth-key-item span {
+        color: var(--gray-500);
+        font-size: 0.66rem;
+        line-height: 1.5;
     }
 
     /* All Together: mini card */
@@ -664,6 +639,13 @@
     /* Responsive */
     @media (prefers-reduced-motion: reduce) {
         .bg-orb { animation: none !important; }
+
+        .radius-card,
+        .swatch,
+        .mono-btn,
+        .demo-post-item {
+            transition: none !important;
+        }
     }
 
     @media screen and (max-width: 600px) {
@@ -673,6 +655,16 @@
 
         .radius-demo {
             grid-template-columns: 1fr 1fr;
+        }
+
+        .depth-demo {
+            min-height: 300px;
+            padding: 18px;
+        }
+
+        .depth-toolbar {
+            right: 14px;
+            bottom: 14px;
         }
 
         .swatch-grid {
@@ -717,7 +709,7 @@
 
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Invisible Interface</div>
+            <div class="hero-badge">Personal System</div>
             <h1 class="hero-title">Mono</h1>
             <p class="hero-tagline">
                 Content is the only color.<br>
@@ -731,60 +723,61 @@
         <!-- Intro -->
         <div class="panel intro-card">
             <p class="intro-text">
-                Monochrome strips the interface down to <strong>black, white, and gray</strong>.
-                No accent colors. No brand tints.
-                Content &mdash; text, images, code &mdash; provides all the color the UI needs.
+                Monochrome records a system used in BLEX: interface chrome stays
+                <strong>black, white, and gray</strong>, while content &mdash; images,
+                code, and artwork &mdash; is allowed to carry color.
                 <br><br>
                 The chrome disappears, leaving only what matters.
-                Where other systems add color to create hierarchy,
+                Instead of using accent colors to create hierarchy,
                 Monochrome uses <strong>weight, spacing, and shades of gray</strong>
-                to make the interface invisible and the content vivid.
+                to keep controls quiet and content vivid. It is a personal system,
+                not a claim that monochrome design itself is new.
             </p>
         </div>
 
         <div class="divider"></div>
 
-        <!-- Principle 01: Radius as Intent -->
+        <!-- Rule 01: Radius Maps Scope -->
         <section class="section">
-            <div class="section-label">Principle 01</div>
-            <h2 class="section-title">Radius as Intent</h2>
+            <div class="section-label">Rule 01</div>
+            <h2 class="section-title">Radius Maps Component Roles</h2>
             <p class="section-desc">
-                Border radius isn't decoration &mdash; it's a <em>semantic signal</em>.
-                Larger radii hold more content. Smaller radii demand faster action.
-                The radius tells you what the element does before you read a word.
+                Radius is part of the component grammar, not a decoration chosen per screen.
+                Large surfaces, contextual panels, direct controls, and compact statuses
+                each keep a consistent curvature so their roles remain recognizable without color.
             </p>
             <div class="radius-demo">
-                <div class="radius-card radius-card--16">
+                <div class="radius-card radius-card--section">
                     <div class="radius-value">16</div>
-                    <div class="radius-label">Card</div>
-                    <div class="radius-desc">High density, needs substance</div>
+                    <div class="radius-label">Section</div>
+                    <div class="radius-desc">Contains a complete content group</div>
                 </div>
-                <div class="radius-card radius-card--12">
+                <div class="radius-card radius-card--panel">
                     <div class="radius-value">12</div>
-                    <div class="radius-label">Dropdown</div>
-                    <div class="radius-desc">Focused context</div>
+                    <div class="radius-label">Panel</div>
+                    <div class="radius-desc">Holds focused or temporary context</div>
                 </div>
-                <div class="radius-card radius-card--8">
+                <div class="radius-card radius-card--control">
                     <div class="radius-value">8</div>
-                    <div class="radius-label">Button</div>
-                    <div class="radius-desc">Instant action, crisp</div>
+                    <div class="radius-label">Control</div>
+                    <div class="radius-desc">Keeps direct actions compact</div>
                 </div>
-                <div class="radius-card radius-card--pill">
+                <div class="radius-card radius-card--status">
                     <div class="radius-value">&infin;</div>
-                    <div class="radius-label">Tag</div>
-                    <div class="radius-desc">Low priority, playful</div>
+                    <div class="radius-label">Status</div>
+                    <div class="radius-desc">Labels a small piece of metadata</div>
                 </div>
             </div>
         </section>
 
-        <!-- Principle 02: Gray Is Not One Color -->
+        <!-- Rule 02: Color Belongs to Content -->
         <section class="section">
-            <div class="section-label">Principle 02</div>
-            <h2 class="section-title">Gray Is Not One Color</h2>
+            <div class="section-label">Rule 02</div>
+            <h2 class="section-title">Color Belongs to Content</h2>
             <p class="section-desc">
-                People say gray is boring. They're thinking of <em>one</em> gray. We use ten.
-                Each shade has a role &mdash; from <em>background whisper</em> to <em>foreground authority</em>.
-                The system breathes through contrast, not through hue.
+                The interface shell uses a ten-step gray scale, from background whisper
+                to foreground authority. Images, code, charts, and authored work keep
+                their natural colors; controls create hierarchy through contrast instead of hue.
             </p>
             <div class="swatch-grid">
                 <div class="swatch" style="background: var(--gray-50);">
@@ -840,15 +833,14 @@
             </div>
         </section>
 
-        <!-- Principle 03: Motion Is Meaning -->
+        <!-- Rule 03: Motion Carries State -->
         <section class="section">
-            <div class="section-label">Principle 03</div>
-            <h2 class="section-title">Motion Is Meaning</h2>
+            <div class="section-label">Rule 03</div>
+            <h2 class="section-title">Motion Carries State</h2>
             <p class="section-desc">
-                Every transition exists for a reason.
-                <em>150ms</em> for interactions &mdash; fast enough to feel instant,
-                slow enough to register. <em>500ms</em> for entrance &mdash;
-                just enough time to orient. Apple's easing curve for everything.
+                Without a colored highlight, controls confirm state through small changes
+                in position, fill, and shadow. Direct feedback stays quick; layer changes
+                take slightly longer. Motion explains what changed and then gets out of the way.
             </p>
             <div class="btn-demo">
                 <button class="mono-btn primary">Primary</button>
@@ -856,59 +848,48 @@
                 <button class="mono-btn ghost">Ghost</button>
             </div>
             <div class="code-block">
-                <span class="cmt">/* Monochrome &mdash; motion specs */</span><br>
-                <span class="kw">--duration-interaction</span>: <span class="val">150ms</span>;<br>
-                <span class="kw">--duration-entrance</span>: <span class="val">500ms</span>;<br>
-                <span class="kw">--easing</span>: <span class="val">cubic-bezier(0.25, 0.1, 0.25, 1)</span>;<br>
+                <span class="cmt">/* Motion confirms state without adding color */</span><br>
+                <span class="kw">--motion-control</span>: <span class="val">140ms</span>;<br>
+                <span class="kw">--motion-layer</span>: <span class="val">240ms</span>;<br>
+                <span class="kw">--ease-out</span>: <span class="val">cubic-bezier(0.2, 0, 0, 1)</span>;<br>
                 <br>
-                <span class="cmt">/* Touch feedback */</span><br>
-                <span class="kw">active</span>: <span class="val">scale(0.98)</span>;<br>
-                <br>
-                <span class="cmt">/* Shadow hierarchy */</span><br>
-                <span class="kw">--shadow-sm</span>: <span class="val">0 1px 3px rgba(0,0,0,0.04)</span>;<br>
-                <span class="kw">--shadow-md</span>: <span class="val">0 4px 12px rgba(0,0,0,0.08)</span>;<br>
-                <span class="kw">--shadow-lg</span>: <span class="val">0 8px 24px rgba(0,0,0,0.12)</span>;
+                <span class="kw">button:hover</span> { <span class="val">background: var(--gray-100)</span>; }<br>
+                <span class="kw">button:active</span> { <span class="val">transform: scale(0.98)</span>; }
             </div>
         </section>
 
-        <!-- Principle 04: Glass for What Floats -->
+        <!-- Rule 04: Depth Without Another Color -->
         <section class="section">
-            <div class="section-label">Principle 04</div>
-            <h2 class="section-title">Glass for What Floats</h2>
+            <div class="section-label">Rule 04</div>
+            <h2 class="section-title">Blur Is Reserved for Floating Tools</h2>
             <p class="section-desc">
-                Elements that live <em>inside</em> content are solid white.
-                Elements that float <em>above</em> content are glass &mdash;
-                <code>backdrop-blur</code> with semi-transparent white.
-                The blur tells you it's hovering. The transparency keeps you grounded.
+                Content surfaces are solid and stable. A toolbar or temporary overlay may
+                use translucent white with backdrop blur to show that it floats above content.
+                Blur communicates layer ownership; it is not a default treatment for every card.
             </p>
-            <div class="glass-demo">
-                <div class="glass-header">
-                    <div class="glass-header-dots">
-                        <div class="glass-header-dot"></div>
-                        <div class="glass-header-dot"></div>
-                        <div class="glass-header-dot"></div>
-                    </div>
-                    <span>white/80 &middot; blur(12px)</span>
+            <div class="depth-demo">
+                <div class="depth-document">
+                    <div class="depth-document-title">Content remains grounded</div>
+                    <div class="depth-document-line"></div>
+                    <div class="depth-document-line medium"></div>
+                    <div class="depth-document-line"></div>
+                    <div class="depth-document-line short"></div>
+                    <div class="depth-document-line medium"></div>
                 </div>
-                <div class="glass-demo-content">
-                    Content sits behind the glass. The header blurs it gently,
-                    just enough to separate layers without hiding anything.
-                    The floating action bar does the same &mdash; pill-shaped,
-                    translucent, casting a soft shadow. Glass for what floats.
-                    Solid for what sits. That's the rule.
-                </div>
-                <div class="glass-fab">
-                    &#x270E; Edit &middot; blur(20px)
+                <div class="depth-toolbar" aria-label="Floating editor tools">
+                    <button class="depth-tool" type="button">Edit</button>
+                    <button class="depth-tool" type="button">Share</button>
+                    <button class="depth-tool active" type="button">Publish</button>
                 </div>
             </div>
-            <div class="glass-compare">
-                <div class="glass-compare-item floating">
-                    <div class="glass-compare-label">Floating</div>
-                    <div class="glass-compare-value">white/80 + blur</div>
+            <div class="depth-key">
+                <div class="depth-key-item">
+                    <strong>Grounded content</strong>
+                    <span>Solid white, subtle border, minimal shadow</span>
                 </div>
-                <div class="glass-compare-item grounded">
-                    <div class="glass-compare-label">Grounded</div>
-                    <div class="glass-compare-value">white + border</div>
+                <div class="depth-key-item">
+                    <strong>Floating tool</strong>
+                    <span>Translucent white, blur, stronger elevation</span>
                 </div>
             </div>
         </section>
@@ -917,7 +898,7 @@
 
         <!-- All Together -->
         <section class="section">
-            <div class="section-label">All Together</div>
+            <div class="section-label">Working Example</div>
             <h2 class="section-title">White Surface, Gray System</h2>
             <p class="section-desc">
                 A card that needs no color to communicate.
@@ -946,32 +927,30 @@
 
         <div class="divider"></div>
 
-        <!-- What This Is Not -->
+        <!-- Limits -->
         <section class="section">
-            <h2 class="section-title">What This Is Not</h2>
+            <div class="section-label">Limits</div>
+            <h2 class="section-title">When the Shell Can Stay Quiet</h2>
             <div class="panel anti-card">
                 <ul class="anti-list">
-                    <li><span class="x">&#x2717;</span> Gray because you're lazy &mdash; <em>this gray has a system</em></li>
-                    <li><span class="x">&#x2717;</span> "Dark mode" with inverted colors &mdash; <em>Monochrome is light by nature</em></li>
-                    <li><span class="x">&#x2717;</span> Adding "just a little blue" for links &mdash; <em>resist</em></li>
-                    <li><span class="x">&#x2717;</span> Flat design &mdash; <em>we have shadows, just subtle ones</em></li>
+                    <li><span class="o">&#x2713;</span> Suits publishing, portfolios, readers, and tools where authored content is primary</li>
+                    <li><span class="x">&#x2717;</span> Avoid when status, categories, or live data depend heavily on color</li>
+                    <li><span class="x">&#x2717;</span> Gray without contrast discipline &mdash; every tone needs a readable role</li>
+                    <li><span class="x">&#x2717;</span> Removing color from the content itself &mdash; only the interface shell is constrained</li>
                     <li><span class="o">&#x2713;</span> Content provides all the color</li>
                     <li><span class="o">&#x2713;</span> Every gray has a semantic role</li>
                     <li><span class="o">&#x2713;</span> Invisible chrome, visible content</li>
-                    <li><span class="o">&#x2713;</span> Glass for overlays, solid for content</li>
-                    <li><span class="o">&#x2713;</span> Radius and weight carry the hierarchy</li>
+                    <li><span class="o">&#x2713;</span> Radius stays consistent for each component role</li>
+                    <li><span class="o">&#x2713;</span> Solid content surfaces, blur only for floating tools</li>
+                    <li><span class="o">&#x2713;</span> Short motion confirms state and respects reduced-motion</li>
                 </ul>
             </div>
         </section>
 
-        <!-- Manifesto -->
+        <!-- Closing note -->
         <footer class="manifesto">
-            <p class="manifesto-quote">
-                &ldquo;Good design is actually harder to notice<br>
-                than poor design.&rdquo;
-            </p>
-            <p class="manifesto-attr">&mdash; Donald Norman</p>
-            <p class="manifesto-sub">We took that literally.</p>
+            <p class="manifesto-quote">The interface stays quiet.<br>The content does not have to.</p>
+            <p class="manifesto-sub">A personal grayscale system used in BLEX.</p>
         </footer>
     </div>
 </body>
