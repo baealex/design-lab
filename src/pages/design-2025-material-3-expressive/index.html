@@ -1,0 +1,995 @@
+<!-- layout: base.html -->
+<!-- title: Material 3 Expressive (2025) -->
+<!-- description: Expression becomes useful when it makes the next action easier to find -->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap');
+
+    :root {
+        --primary: #5942c7;
+        --on-primary: #ffffff;
+        --primary-container: #e5deff;
+        --on-primary-container: #241452;
+        --secondary: #8d3c62;
+        --on-secondary: #ffffff;
+        --secondary-container: #ffd9e6;
+        --on-secondary-container: #4a102a;
+        --tertiary: #26684e;
+        --tertiary-container: #b9f1d2;
+        --on-tertiary-container: #0b3a28;
+        --surface: #fff9fc;
+        --surface-low: #f8f1f7;
+        --surface-high: #eee6ef;
+        --ink: #211d24;
+        --muted: #6e6671;
+        --outline: #d6ccd8;
+        --shadow: 0 18px 42px rgba(66, 44, 77, 0.11);
+        --spring: cubic-bezier(0.2, 1.35, 0.35, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        background: var(--surface);
+        color: var(--ink);
+        font-family: 'Roboto', system-ui, sans-serif;
+    }
+
+    button,
+    input { font: inherit; }
+
+    button {
+        border: 0;
+        color: inherit;
+    }
+
+    button:not(:disabled) { cursor: pointer; }
+
+    button:focus-visible,
+    input:focus-visible {
+        outline: 3px solid var(--ink);
+        outline-offset: 4px;
+    }
+
+    .layout {
+        width: min(100%, 820px);
+        margin: 0 auto;
+        padding: 34px 22px 82px;
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 82px 0 68px;
+        text-align: center;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 14px;
+        border-radius: 16px;
+        background: var(--primary-container);
+        color: var(--on-primary-container);
+        font-size: 0.7rem;
+        font-weight: 760;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .hero-title {
+        position: relative;
+        z-index: 1;
+        margin-top: 24px;
+        font-size: clamp(3.7rem, 11vw, 6.25rem);
+        font-weight: 600;
+        line-height: 0.88;
+        letter-spacing: -0.045em;
+    }
+
+    .hero-title span {
+        display: block;
+        color: var(--secondary);
+        font-weight: 600;
+    }
+
+    .hero-tagline {
+        max-width: 530px;
+        margin: 28px auto 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .context {
+        padding: 34px;
+        border: 1px solid var(--outline);
+        border-radius: 28px;
+        background: var(--surface-low);
+        color: var(--ink);
+    }
+
+    .eyebrow {
+        color: var(--primary);
+        font-size: 0.7rem;
+        font-weight: 780;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+    }
+
+    .context .eyebrow { color: var(--primary); }
+
+    .context-copy {
+        max-width: 680px;
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.78;
+    }
+
+    .context-copy strong { color: var(--ink); }
+
+    .lineage {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        overflow: hidden;
+        margin-top: 26px;
+        border-radius: 22px;
+        background: var(--outline);
+    }
+
+    .lineage-item {
+        min-height: 128px;
+        padding: 20px;
+        background: var(--surface);
+    }
+
+    .lineage-item.current { background: var(--primary-container); color: var(--on-primary-container); }
+    .lineage-year { font-size: 0.67rem; font-weight: 760; opacity: 0.62; }
+    .lineage-item strong { display: block; margin-top: 24px; font-size: 1rem; }
+    .lineage-item span { display: block; margin-top: 6px; font-size: 0.7rem; line-height: 1.45; opacity: 0.68; }
+
+    .section {
+        margin-top: 82px;
+    }
+
+    .section-title {
+        max-width: 690px;
+        margin-top: 8px;
+        font-size: clamp(2.05rem, 5.6vw, 3rem);
+        font-weight: 600;
+        line-height: 1.02;
+        letter-spacing: -0.03em;
+    }
+
+    .section-desc {
+        max-width: 650px;
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.75;
+    }
+
+    /* Working example */
+    .mode-switch {
+        display: inline-flex;
+        gap: 5px;
+        margin-top: 22px;
+        padding: 5px;
+        border-radius: 24px;
+        background: var(--surface-high);
+    }
+
+    .mode-button {
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 19px;
+        background: transparent;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 720;
+    }
+
+    .mode-button[aria-pressed='true'] {
+        background: var(--primary);
+        color: var(--on-primary);
+    }
+
+    .mail-stage {
+        margin-top: 20px;
+        padding: 38px;
+        border-radius: 30px;
+        background:
+            radial-gradient(circle at 84% 14%, rgba(255, 217, 230, 0.72) 0 14%, transparent 14.5%),
+            linear-gradient(145deg, #e2dcff, #f1edff 48%, #daf6e7);
+    }
+
+    .phone-shell {
+        width: min(100%, 430px);
+        margin: 0 auto;
+        padding: 5px;
+        border: 1px solid var(--outline);
+        border-radius: 39px;
+        background: var(--surface-high);
+        box-shadow: var(--shadow);
+    }
+
+    .mail-app {
+        overflow: hidden;
+        min-height: 570px;
+        padding: 20px;
+        border-radius: 34px;
+        background: var(--surface-low);
+    }
+
+    .phone-status {
+        display: flex;
+        justify-content: space-between;
+        padding: 2px 7px 18px;
+        font-size: 0.68rem;
+        font-weight: 700;
+    }
+
+    .mail-topbar {
+        display: flex;
+        align-items: center;
+        padding: 4px 4px 0;
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
+    }
+
+    .mail-topbar h3 {
+        font-size: 1.35rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+    }
+
+    .draft {
+        margin-top: 20px;
+        padding: 4px 18px 18px;
+        border-radius: 26px;
+        background: var(--surface);
+    }
+
+    .draft-row {
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        gap: 10px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--outline);
+        font-size: 0.78rem;
+    }
+
+    .draft-row span { color: var(--muted); }
+    .draft-row strong { font-weight: 650; }
+
+    .draft-message {
+        min-height: 170px;
+        padding-top: 18px;
+        color: #3e3841;
+        font-size: 0.82rem;
+        line-height: 1.65;
+    }
+
+    .compose-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 14px;
+        padding: 4px;
+        border-radius: 30px;
+        background: var(--surface);
+    }
+
+    .utility-button {
+        display: grid;
+        min-width: 0;
+        height: 48px;
+        flex: 0 0 48px;
+        place-items: center;
+        border-radius: 20px;
+        background: transparent;
+        color: var(--muted);
+    }
+
+    .send-button {
+        display: inline-flex;
+        min-width: 48px;
+        height: 56px;
+        flex: 1 1 0;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 0 22px;
+        border-radius: 28px;
+        background: var(--secondary);
+        color: var(--on-secondary);
+        font-size: 0.82rem;
+        font-weight: 760;
+    }
+
+    .send-button .icon { width: 18px; height: 18px; }
+
+    .send-label {
+        max-width: 80px;
+        overflow: hidden;
+        opacity: 1;
+        white-space: nowrap;
+    }
+
+    .mail-app[data-mode='baseline'] .utility-button { flex: 1 1 0; }
+    .mail-app[data-mode='baseline'] .send-button {
+        height: 48px;
+        flex: 1 1 0;
+        padding: 0;
+        border-radius: 20px;
+        background: var(--primary-container);
+        color: var(--on-primary-container);
+    }
+    .mail-app[data-mode='baseline'] .send-label { max-width: 0; opacity: 0; }
+    .mail-app.sent .send-button { background: var(--tertiary); }
+
+    .example-status {
+        min-height: 1.5em;
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 0.72rem;
+        text-align: center;
+    }
+
+    /* Principle 1 */
+    .hierarchy-stage {
+        margin-top: 24px;
+        padding: 42px;
+        border-radius: 28px;
+        background: var(--primary-container);
+        color: var(--on-primary-container);
+    }
+
+    .hierarchy-kicker {
+        font-size: 0.72rem;
+        font-weight: 760;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.64;
+    }
+
+    .adaptive-group {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+        margin-top: 26px;
+        padding: 6px;
+        border-radius: 32px;
+        background: rgba(255, 255, 255, 0.58);
+    }
+
+    .adaptive-action {
+        min-width: 0;
+        min-height: 58px;
+        flex: 0.78;
+        overflow: hidden;
+        padding: 0 12px;
+        border-radius: 25px;
+        background: transparent;
+        color: var(--on-primary-container);
+        font-size: 0.78rem;
+        font-weight: 720;
+        white-space: nowrap;
+        transition: flex 420ms var(--spring), background 220ms ease, color 220ms ease, transform 180ms ease;
+    }
+
+    .adaptive-action[aria-pressed='true'] {
+        flex: 1.75;
+        background: var(--primary);
+        color: var(--on-primary);
+    }
+
+    .adaptive-action:active { transform: scale(0.96); }
+
+    .hierarchy-status {
+        min-height: 1.5em;
+        margin-top: 18px;
+        font-size: 0.78rem;
+        opacity: 0.76;
+    }
+
+    /* Principle 2 */
+    .loading-stage {
+        display: grid;
+        grid-template-columns: 1fr 230px;
+        align-items: center;
+        gap: 34px;
+        margin-top: 24px;
+        padding: 38px;
+        border: 1px solid var(--outline);
+        border-radius: 28px;
+        background: var(--surface-low);
+        color: var(--ink);
+    }
+
+    .loading-stage .eyebrow { color: var(--primary); }
+
+    .loading-task {
+        display: block;
+        margin-top: 10px;
+        font-size: 1.45rem;
+        font-weight: 600;
+    }
+
+    .loading-help {
+        display: block;
+        min-height: 2.8em;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+
+    .range-label {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 28px;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 650;
+    }
+
+    .loading-range {
+        width: 100%;
+        margin-top: 10px;
+        accent-color: var(--primary);
+    }
+
+    .loading-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 22px;
+    }
+
+    .loading-button {
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 22px;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-size: 0.76rem;
+        font-weight: 740;
+    }
+
+    .loading-button.secondary {
+        background: var(--surface-high);
+        color: var(--ink);
+    }
+
+    .loading-visual {
+        display: grid;
+        width: 210px;
+        height: 210px;
+        place-items: center;
+        border-radius: 50%;
+        background: linear-gradient(145deg, var(--primary-container), var(--secondary-container));
+    }
+
+    .loading-shape {
+        width: 142px;
+        height: 142px;
+        overflow: visible;
+        transition: transform 480ms var(--spring);
+    }
+
+    .loading-shape path { fill: #ffd9e6; }
+
+    .loading-percent {
+        position: absolute;
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .loading-visual { position: relative; }
+
+    /* Principle 3 */
+    .motion-stage {
+        margin-top: 24px;
+        padding: 34px;
+        border-radius: 28px;
+        background: linear-gradient(135deg, #dff8e9, #f1edff 58%, #ffdce7);
+    }
+
+    .state-buttons {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 5px;
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.72);
+    }
+
+    .state-button {
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 21px;
+        background: transparent;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 720;
+    }
+
+    .state-button[aria-pressed='true'] {
+        background: var(--primary);
+        color: var(--on-primary);
+    }
+
+    .state-panel {
+        width: 72%;
+        min-height: 220px;
+        margin-top: 28px;
+        padding: 30px;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.82);
+        transform-origin: left center;
+        transition:
+            width 520ms var(--spring),
+            margin-left 520ms var(--spring),
+            border-radius 520ms var(--spring),
+            background 280ms ease,
+            transform 520ms var(--spring);
+    }
+
+    .variable-word {
+        font-family: 'Roboto Flex', 'Roboto', system-ui, sans-serif;
+        font-size: clamp(3rem, 10vw, 5.6rem);
+        font-variation-settings: 'wght' 510, 'wdth' 86;
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+        transition: font-variation-settings 560ms var(--spring), color 260ms ease;
+    }
+
+    .state-copy {
+        max-width: 400px;
+        margin-top: 22px;
+        color: var(--muted);
+        font-size: 0.8rem;
+        line-height: 1.55;
+    }
+
+    .motion-stage[data-state='focus'] .state-panel {
+        width: 100%;
+        border-radius: 54px;
+        background: var(--primary);
+        color: #fff;
+        transform: translateY(-4px);
+    }
+
+    .motion-stage[data-state='focus'] .variable-word {
+        color: #fff;
+        font-variation-settings: 'wght' 820, 'wdth' 122;
+    }
+
+    .motion-stage[data-state='focus'] .state-copy { color: rgba(255, 255, 255, 0.76); }
+
+    .motion-stage[data-state='done'] .state-panel {
+        width: 58%;
+        margin-left: 42%;
+        min-height: 180px;
+        border-radius: 90px;
+        background: var(--tertiary-container);
+        color: var(--on-tertiary-container);
+        transform: none;
+    }
+
+    .motion-stage[data-state='done'] .variable-word {
+        font-variation-settings: 'wght' 690, 'wdth' 104;
+    }
+
+    .motion-stage.springing .state-panel { animation: settle 520ms var(--spring); }
+
+    @keyframes settle {
+        0% { scale: 0.98; }
+        55% { scale: 1.025; }
+        100% { scale: 1; }
+    }
+
+    /* Verdict */
+    .verdict {
+        margin-top: 88px;
+        padding-top: 56px;
+        border-top: 1px solid var(--outline);
+    }
+
+    .verdict-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .verdict-card {
+        padding-top: 22px;
+        border-top: 4px solid var(--tertiary);
+    }
+
+    .verdict-card.improve { border-color: var(--secondary); }
+    .verdict-card h3 { font-size: 1.15rem; font-weight: 600; }
+    .verdict-card ul { margin: 16px 0 0; padding-left: 19px; }
+    .verdict-card li { margin-top: 10px; color: var(--muted); font-size: 0.8rem; line-height: 1.55; }
+
+    @media (max-width: 640px) {
+        .layout { padding: 24px 16px 62px; }
+        .hero { padding: 58px 0 48px; }
+        .hero-title { font-size: clamp(3.25rem, 15vw, 4.5rem); }
+        .context { padding: 26px; }
+        .lineage { grid-template-columns: 1fr; }
+        .lineage-item { min-height: 104px; }
+        .lineage-item strong { margin-top: 14px; }
+        .section { margin-top: 66px; }
+        .mode-switch { display: flex; }
+        .mode-button { flex: 1; padding-inline: 12px; }
+        .mail-stage { padding: 18px; border-radius: 30px; }
+        .phone-shell { padding: 8px; border-radius: 38px; }
+        .mail-app { min-height: 540px; padding: 16px; border-radius: 31px; }
+        .draft-message { min-height: 150px; }
+        .hierarchy-stage { padding: 24px 18px; border-radius: 30px; }
+        .adaptive-group { gap: 4px; padding: 5px; }
+        .adaptive-action { min-height: 54px; padding-inline: 8px; font-size: 0.7rem; }
+        .loading-stage { grid-template-columns: 1fr; padding: 26px; border-radius: 30px; }
+        .loading-visual { grid-row: 1; width: 180px; height: 180px; margin: 0 auto; }
+        .loading-shape { width: 122px; height: 122px; }
+        .motion-stage { padding: 22px 18px; border-radius: 30px; }
+        .state-buttons { display: flex; }
+        .state-button { flex: 1; padding-inline: 10px; }
+        .state-panel,
+        .motion-stage[data-state='focus'] .state-panel { width: 100%; }
+        .motion-stage[data-state='done'] .state-panel { width: 78%; margin-left: 22%; transform: none; }
+        .verdict-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            scroll-behavior: auto !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+</style>
+
+<body>
+    <main class="layout">
+        <header class="hero">
+            <span class="hero-badge">Inspired by Material 3 Expressive</span>
+            <h1 class="hero-title">Material 3<span>Expressive.</span></h1>
+            <p class="hero-tagline">Expression becomes useful when color, shape, size, motion, and type make the next action easier to find.</p>
+        </header>
+
+        <section class="context" aria-labelledby="context-title">
+            <div class="eyebrow">Context</div>
+            <p class="context-copy" id="context-title">
+                Material You made interfaces personal through dynamic color. Material 3 Expressive extends that foundation after research that began in 2022, asking a different question: <strong>can an interface feel more distinct while becoming easier to use?</strong> Its answer is not more decoration. It is stronger hierarchy, responsive components, and motion that preserves relationships.
+            </p>
+            <div class="lineage" aria-label="Material Design lineage">
+                <div class="lineage-item"><span class="lineage-year">2014</span><strong>Material</strong><span>Depth and motion explain digital surfaces.</span></div>
+                <div class="lineage-item"><span class="lineage-year">2021</span><strong>Material You</strong><span>Dynamic color makes the system personal.</span></div>
+                <div class="lineage-item current"><span class="lineage-year">2025</span><strong>M3 Expressive</strong><span>Hierarchy and emotion become part of usability.</span></div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="example-title">
+            <div class="eyebrow">Working example</div>
+            <h2 class="section-title" id="example-title">Make the next action obvious.</h2>
+            <p class="section-desc">The same email task can treat every action equally or give the primary action more size, color, and space. Switch modes, then use the controls.</p>
+            <div class="mode-switch" aria-label="Interface style">
+                <button class="mode-button" type="button" data-mode="baseline" aria-pressed="false">Material 3</button>
+                <button class="mode-button" type="button" data-mode="expressive" aria-pressed="true">Expressive</button>
+            </div>
+            <div class="mail-stage">
+                <div class="phone-shell">
+                    <div class="mail-app" id="mail-app" data-mode="expressive">
+                        <div class="phone-status"><span>9:41</span><span aria-label="Signal and battery status">● ● ◒</span></div>
+                        <div class="mail-topbar">
+                            <h3>New message</h3>
+                        </div>
+                        <div class="draft">
+                            <div class="draft-row"><span>To</span><strong>Design team</strong></div>
+                            <div class="draft-row"><span>Subject</span><strong>Friday review</strong></div>
+                            <div class="draft-message">I pulled the latest interaction notes into one place. Let’s review the hierarchy together before the next build.</div>
+                        </div>
+                        <div class="compose-actions" aria-label="Message actions">
+                            <button class="utility-button" type="button" data-mail-action="Attachment added." aria-label="Add attachment">
+                                <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m7 10.5 4.8-4.8a3 3 0 0 1 4.2 4.2l-6.1 6.2a4.5 4.5 0 0 1-6.4-6.4l6-6"></path></svg>
+                            </button>
+                            <button class="utility-button" type="button" data-mail-action="Writing tools opened." aria-label="Open writing tools">
+                                <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 15.5 1-3.7L13.8 3l3.2 3.2-8.8 8.8zM11.8 5l3.2 3.2M4 17h7"></path></svg>
+                            </button>
+                            <button class="send-button" id="send-button" type="button" aria-label="Send message">
+                                <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m3 4 14 6-14 6 2.4-6zM5.4 10H13"></path></svg>
+                                <span class="send-label">Send</span>
+                            </button>
+                        </div>
+                        <p class="example-status" id="example-status" aria-live="polite">Expressive mode emphasizes Send.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="hierarchy-title">
+            <div class="eyebrow">Principle 01 · Adaptive hierarchy</div>
+            <h2 class="section-title" id="hierarchy-title">Space follows importance.</h2>
+            <p class="section-desc">An expressive button group does more than recolor the selected item. The active action grows while its neighbors yield space, keeping the group coherent and the priority unmistakable.</p>
+            <div class="hierarchy-stage">
+                <div class="hierarchy-kicker">Choose the next step</div>
+                <div class="adaptive-group" aria-label="Project actions">
+                    <button class="adaptive-action" type="button" data-action-label="Edit remains available as a supporting action." aria-pressed="false">Edit</button>
+                    <button class="adaptive-action" type="button" data-action-label="Discuss is now the primary action." aria-pressed="false">Discuss</button>
+                    <button class="adaptive-action" type="button" data-action-label="Send is now the primary action." aria-pressed="true">Send update</button>
+                </div>
+                <p class="hierarchy-status" aria-live="polite">Send is now the primary action.</p>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="loading-title">
+            <div class="eyebrow">Principle 02 · Shape-morphing progress</div>
+            <h2 class="section-title" id="loading-title">Waiting can show momentum.</h2>
+            <p class="section-desc">The loading shape changes with real progress instead of looping as decoration. Scrub the value or advance one stage to see a continuous rounded polygon morph.</p>
+            <div class="loading-stage">
+                <div>
+                    <div class="eyebrow">Offline map</div>
+                    <strong class="loading-task" id="loading-task">Starting download</strong>
+                    <span class="loading-help" id="loading-help">Preparing the route and checking available storage.</span>
+                    <label class="range-label" for="loading-range"><span>Download progress</span><output id="loading-output" for="loading-range">0%</output></label>
+                    <input class="loading-range" id="loading-range" type="range" min="0" max="100" value="0">
+                    <div class="loading-actions">
+                        <button class="loading-button" id="loading-next" type="button">Next stage</button>
+                        <button class="loading-button secondary" id="loading-reset" type="button">Reset</button>
+                    </div>
+                </div>
+                <div class="loading-visual" id="loading-visual" role="progressbar" aria-label="Offline map download" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <svg class="loading-shape" id="loading-shape" viewBox="0 0 120 120" aria-hidden="true">
+                        <path id="loading-path" d="M60 12 Q88 15 103 39 Q111 65 97 88 Q77 108 50 106 Q24 100 13 76 Q8 50 23 29 Q39 12 60 12"></path>
+                    </svg>
+                    <span class="loading-percent" id="loading-percent">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="motion-title">
+            <div class="eyebrow">Principle 03 · Spring motion &amp; variable type</div>
+            <h2 class="section-title" id="motion-title">State changes keep their identity.</h2>
+            <p class="section-desc">Shape, scale, and variable font axes move together. The component remains recognizable while its emphasis changes from waiting, to focus, to completion.</p>
+            <div class="motion-stage" id="motion-stage" data-state="rest">
+                <div class="state-buttons" aria-label="Task state">
+                    <button class="state-button" type="button" data-state="rest" aria-pressed="true">Rest</button>
+                    <button class="state-button" type="button" data-state="focus" aria-pressed="false">Focus</button>
+                    <button class="state-button" type="button" data-state="done" aria-pressed="false">Done</button>
+                </div>
+                <div class="state-panel">
+                    <div class="variable-word" id="state-word">Ready</div>
+                    <p class="state-copy" id="state-copy" aria-live="polite">The task is available without demanding immediate attention.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="verdict" aria-labelledby="verdict-title">
+            <div class="eyebrow">Our take</div>
+            <h2 class="section-title" id="verdict-title">What we keep / What we leave behind</h2>
+            <div class="verdict-grid">
+                <article class="verdict-card">
+                    <h3>What we keep</h3>
+                    <ul>
+                        <li>Size and containment that make the primary action faster to find.</li>
+                        <li>Shape and type changes tied to real state transitions.</li>
+                        <li>Spring motion that preserves spatial relationships.</li>
+                        <li>Material You color roles as a stable personalization foundation.</li>
+                    </ul>
+                </article>
+                <article class="verdict-card improve">
+                    <h3>What we leave behind</h3>
+                    <ul>
+                        <li>Expressive shapes on every surface, even when they communicate nothing.</li>
+                        <li>Unfamiliar silhouettes that replace clear labels or familiar patterns.</li>
+                        <li>Motion that adds spectacle without explaining a state change.</li>
+                        <li>Copying Google’s visual identity instead of adapting the principles to the product.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+
+<script>
+    var modeButtons = Array.from(document.querySelectorAll('.mode-button'));
+    var mailApp = document.getElementById('mail-app');
+    var exampleStatus = document.getElementById('example-status');
+    var sendButton = document.getElementById('send-button');
+
+    modeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var mode = button.dataset.mode;
+            mailApp.dataset.mode = mode;
+            modeButtons.forEach(function (item) {
+                item.setAttribute('aria-pressed', String(item === button));
+            });
+            exampleStatus.textContent = mode === 'expressive'
+                ? 'Expressive mode emphasizes Send.'
+                : 'Material 3 mode gives the actions similar visual weight.';
+        });
+    });
+
+    document.querySelectorAll('[data-mail-action]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            exampleStatus.textContent = button.dataset.mailAction;
+        });
+    });
+
+    sendButton.addEventListener('click', function () {
+        mailApp.classList.add('sent');
+        exampleStatus.textContent = 'Message sent. The primary action completed.';
+        window.setTimeout(function () {
+            mailApp.classList.remove('sent');
+        }, 900);
+    });
+
+    var hierarchyActions = Array.from(document.querySelectorAll('.adaptive-action'));
+    var hierarchyStatus = document.querySelector('.hierarchy-status');
+
+    hierarchyActions.forEach(function (button) {
+        button.addEventListener('click', function () {
+            hierarchyActions.forEach(function (item) {
+                item.setAttribute('aria-pressed', String(item === button));
+            });
+            hierarchyStatus.textContent = button.dataset.actionLabel;
+        });
+    });
+
+    var loadingRange = document.getElementById('loading-range');
+    var loadingPath = document.getElementById('loading-path');
+    var loadingShape = document.getElementById('loading-shape');
+    var loadingVisual = document.getElementById('loading-visual');
+    var loadingOutput = document.getElementById('loading-output');
+    var loadingPercent = document.getElementById('loading-percent');
+    var loadingTask = document.getElementById('loading-task');
+    var loadingHelp = document.getElementById('loading-help');
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var progressAnimation = 0;
+
+    var shapeFrames = [
+        [47, 47, 47, 47, 47, 47, 47, 47, 47, 47],
+        [51, 30, 50, 31, 52, 29, 50, 31, 51, 30],
+        [48, 27, 53, 31, 47, 29, 54, 30, 49, 27],
+        [50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+    ];
+
+    function interpolate(a, b, amount) {
+        return a + (b - a) * amount;
+    }
+
+    function roundedPolygonPath(radii) {
+        var points = radii.map(function (radius, index) {
+            var angle = (-90 + index * 36) * Math.PI / 180;
+            return {
+                x: 60 + Math.cos(angle) * radius,
+                y: 60 + Math.sin(angle) * radius
+            };
+        });
+        var last = points[points.length - 1];
+        var first = points[0];
+        var path = 'M ' + ((last.x + first.x) / 2).toFixed(2) + ' ' + ((last.y + first.y) / 2).toFixed(2);
+        points.forEach(function (point, index) {
+            var next = points[(index + 1) % points.length];
+            path += ' Q ' + point.x.toFixed(2) + ' ' + point.y.toFixed(2) + ' ' + ((point.x + next.x) / 2).toFixed(2) + ' ' + ((point.y + next.y) / 2).toFixed(2);
+        });
+        return path + ' Z';
+    }
+
+    function renderLoading(rawValue) {
+        var value = Math.max(0, Math.min(100, rawValue));
+        var segment = Math.min(2, Math.floor(value / (100 / 3)));
+        var local = (value - segment * (100 / 3)) / (100 / 3);
+        var radii = shapeFrames[segment].map(function (radius, index) {
+            return interpolate(radius, shapeFrames[segment + 1][index], local);
+        });
+        var rounded = Math.round(value);
+        loadingPath.setAttribute('d', roundedPolygonPath(radii));
+        loadingShape.style.transform = 'rotate(' + (value * 0.48) + 'deg)';
+        loadingRange.value = String(rounded);
+        loadingOutput.value = rounded + '%';
+        loadingOutput.textContent = rounded + '%';
+        loadingPercent.textContent = rounded + '%';
+        loadingVisual.setAttribute('aria-valuenow', String(rounded));
+
+        if (value < 25) {
+            loadingTask.textContent = 'Starting download';
+            loadingHelp.textContent = 'Preparing the route and checking available storage.';
+            loadingPath.style.fill = '#8d3c62';
+        } else if (value < 70) {
+            loadingTask.textContent = 'Saving map tiles';
+            loadingHelp.textContent = 'The route is being packaged for offline use.';
+            loadingPath.style.fill = '#5942c7';
+        } else if (value < 100) {
+            loadingTask.textContent = 'Finishing details';
+            loadingHelp.textContent = 'Labels and transit data are being verified.';
+            loadingPath.style.fill = '#26684e';
+        } else {
+            loadingTask.textContent = 'Map ready';
+            loadingHelp.textContent = 'The route is available without a connection.';
+            loadingPath.style.fill = '#211d24';
+        }
+    }
+
+    function animateLoading(target) {
+        window.cancelAnimationFrame(progressAnimation);
+        var start = Number(loadingRange.value);
+        if (reducedMotion.matches) {
+            renderLoading(target);
+            return;
+        }
+        var started = performance.now();
+        function frame(now) {
+            var time = Math.min(1, (now - started) / 620);
+            var spring = 1 - Math.exp(-7 * time) * Math.cos(9 * time);
+            renderLoading(interpolate(start, target, spring));
+            if (time < 1) {
+                progressAnimation = window.requestAnimationFrame(frame);
+            } else {
+                renderLoading(target);
+            }
+        }
+        progressAnimation = window.requestAnimationFrame(frame);
+    }
+
+    loadingRange.addEventListener('input', function () {
+        window.cancelAnimationFrame(progressAnimation);
+        renderLoading(Number(loadingRange.value));
+    });
+
+    document.getElementById('loading-next').addEventListener('click', function () {
+        var value = Number(loadingRange.value);
+        var target = value < 25 ? 25 : value < 50 ? 50 : value < 75 ? 75 : 100;
+        animateLoading(target);
+    });
+
+    document.getElementById('loading-reset').addEventListener('click', function () {
+        animateLoading(0);
+    });
+
+    renderLoading(0);
+
+    var motionStage = document.getElementById('motion-stage');
+    var stateWord = document.getElementById('state-word');
+    var stateCopy = document.getElementById('state-copy');
+    var stateContent = {
+        rest: ['Ready', 'The task is available without demanding immediate attention.'],
+        focus: ['Focus', 'The active task expands while its label gains weight and width.'],
+        done: ['Done', 'Completion compacts the same component instead of replacing it.']
+    };
+
+    document.querySelectorAll('.state-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var state = button.dataset.state;
+            document.querySelectorAll('.state-button').forEach(function (item) {
+                item.setAttribute('aria-pressed', String(item === button));
+            });
+            motionStage.dataset.state = state;
+            stateWord.textContent = stateContent[state][0];
+            stateCopy.textContent = stateContent[state][1];
+            motionStage.classList.remove('springing');
+            void motionStage.offsetWidth;
+            motionStage.classList.add('springing');
+        });
+    });
+</script>
