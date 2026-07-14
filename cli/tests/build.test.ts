@@ -26,12 +26,18 @@ test('Production build preserves the full Page baseline and emits reproducible h
     baseline.pages.forEach(page => {
         const html = fs.readFileSync(path.join(DIST_PATH, `${page}.html`), 'utf8');
         assert.match(html, /<title>[^<]+<\/title>/);
-        assert.doesNotMatch(html, /<lab:|\$DATA|\/__lab\/|socket\.io\/socket\.io\.js/);
+        assert.doesNotMatch(html, /<lab:|lab:template|\$DATA|\/__lab\/|socket\.io\/socket\.io\.js/);
         const globalStyle = html.match(/href="(\/assets\/styles\/global\.[a-f0-9]+\.css)"/)?.[1];
         assert.ok(globalStyle, `${page} must reference the hashed global stylesheet`);
         globalStyles.add(globalStyle);
+
+        const pageStylePattern = new RegExp(`href="/assets/styles/${page}\\.[a-f0-9]+\\.css"`);
+        assert.match(html, pageStylePattern, `${page} must reference its bundled stylesheet`);
     });
     assert.equal(globalStyles.size, 1);
+
+    const indexHtml = fs.readFileSync(path.join(DIST_PATH, 'index.html'), 'utf8');
+    assert.match(indexHtml, /src="\/assets\/scripts\/index\.[a-f0-9]+\.js"/);
 
     await buildAll();
     assert.deepEqual(assetNames('assets/styles'), firstAssets.styles);

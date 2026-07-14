@@ -15,14 +15,26 @@ Add the following metadata at the top of the file:
 <!-- description: One sentence shown in the index -->
 ```
 
-Place the page body immediately after the compiler marker:
+Declare each Page block immediately after its compiler directive:
 
 ```html
+<!-- lab:template:bundle -->
+<style>
+    /* Page CSS */
+</style>
+
 <!-- lab:template -->
 <body>
     <!-- Page markup -->
 </body>
+
+<!-- lab:template:bundle -->
+<script>
+    // Page JavaScript
+</script>
 ```
+
+The next tag selects the matching Layout slot. `body` is inserted as markup, while `style` and `script` are bundled into hashed assets before their generated references are inserted. The body block is required; style and script blocks are optional. Unmarked blocks and incorrect directive modes fail the build.
 
 Public page copy and project documentation are written in English. Keep new work in English unless the subject itself requires another language.
 

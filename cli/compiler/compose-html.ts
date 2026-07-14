@@ -219,6 +219,15 @@ function fillSlots(source: string, slots: Record<string, string>, file: string):
         }
     });
 
+    Object.entries(slots).forEach(([name, value]) => {
+        if (!value || names.has(name)) return;
+        throw new LabCompilerError({
+            stage: 'compose',
+            file,
+            message: `Layout does not declare supplied slot: ${name}.`,
+        });
+    });
+
     const replacements = slotNodes.map(node => {
         const name = getAttribute(node, 'name')!;
         const location = node.sourceCodeLocation!;
@@ -314,4 +323,3 @@ export function injectDevClient(html: string, file: string): string {
     const offset = body.sourceCodeLocation.endTag.startOffset;
     return `${html.slice(0, offset)}${clientTags}\n${html.slice(offset)}`;
 }
-

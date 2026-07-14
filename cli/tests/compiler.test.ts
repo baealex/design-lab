@@ -34,14 +34,16 @@ async function createComposerFixture(layout: string, partials: Record<string, st
     return { layoutsPath, partialsPath };
 }
 
-test('Page parser preserves the original style, body, and script blocks', () => {
+test('Page parser maps annotated blocks to their matching template slots', () => {
     const source = [
         '<!-- layout: base.html -->',
         '<!-- title: Example -->',
         '<!-- description: Parser fixture -->',
+        '<!-- lab:template:bundle -->',
         '<style>body > main { color: red; }</style>',
         '<!-- lab:template -->',
         '<body><main data-value="<raw>">Hello</main></body>',
+        '<!-- lab:template:bundle -->',
         '<script>var closing = "body";</script>',
     ].join('\n');
 
@@ -57,7 +59,7 @@ test('Page parser preserves the original style, body, and script blocks', () => 
     });
 });
 
-test('Page parser requires one template marker immediately before an explicit body', () => {
+test('Page parser requires an explicit producer directive for every top-level Page block', () => {
     const metadata = [
         '<!-- layout: base.html -->',
         '<!-- title: Example -->',
@@ -65,18 +67,71 @@ test('Page parser requires one template marker immediately before an explicit bo
 
     assert.throws(
         () => parsePage(`${metadata}\n<body></body>`, 'missing.html'),
-        /Missing required Page template marker/,
+        /<body> must be preceded immediately by <!-- lab:template -->/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<style></style>',
+            '<!-- lab:template -->',
+            '<body></body>',
+        ].join('\n'), 'unmarked-style.html'),
+        /<style> must be preceded immediately by <!-- lab:template:bundle -->/,
     );
 
     assert.throws(
         () => parsePage([
             metadata,
             '<!-- lab:template -->',
+            '<body></body>',
+            '<script></script>',
+        ].join('\n'), 'unmarked-script.html'),
+        /<script> must be preceded immediately by <!-- lab:template:bundle -->/,
+    );
+});
+
+test('Page parser enforces template and bundle modes by target tag', () => {
+    const metadata = [
+        '<!-- layout: base.html -->',
+        '<!-- title: Example -->',
+    ].join('\n');
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template -->',
+            '<style></style>',
             '<!-- lab:template -->',
             '<body></body>',
-        ].join('\n'), 'duplicate.html'),
-        /Duplicate Page template marker/,
+        ].join('\n'), 'inline-style.html'),
+        /<style> must use <!-- lab:template:bundle -->/,
     );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template:bundle -->',
+            '<body></body>',
+        ].join('\n'), 'bundled-body.html'),
+        /<body> must use <!-- lab:template -->/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template:inline -->',
+            '<body></body>',
+        ].join('\n'), 'unknown-mode.html'),
+        /Unknown Page template directive/,
+    );
+});
+
+test('Page parser rejects malformed, duplicate, and nested producer declarations', () => {
+    const metadata = [
+        '<!-- layout: base.html -->',
+        '<!-- title: Example -->',
+    ].join('\n');
 
     assert.throws(
         () => parsePage([
@@ -85,12 +140,43 @@ test('Page parser requires one template marker immediately before an explicit bo
             '<!-- unrelated -->',
             '<body></body>',
         ].join('\n'), 'separated.html'),
-        /must be followed immediately by an explicit <body> block/,
+        /must be followed immediately by an explicit <style>, <body>, or <script> block/,
     );
 
     assert.throws(
         () => parsePage(`${metadata}\n<!-- lab:template -->\n<body>`, 'unclosed.html'),
         /<body> must have an explicit closing tag/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template:bundle -->',
+            '<style></style>',
+            '<!-- lab:template:bundle -->',
+            '<style></style>',
+            '<!-- lab:template -->',
+            '<body></body>',
+        ].join('\n'), 'duplicate-style.html'),
+        /Duplicate Page template block: style/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template -->',
+            '<body class="page"></body>',
+        ].join('\n'), 'attributes.html'),
+        /cannot declare attributes/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template -->',
+            '<body><!-- lab:template --><main></main></body>',
+        ].join('\n'), 'nested.html'),
+        /cannot be nested/,
     );
 });
 
@@ -160,6 +246,18 @@ test('Composer rejects malformed directives, missing required slots, and duplica
     assert.throws(
         () => composeHtml('base.html', { title: '' }, missingSlot),
         /Missing required Layout slot: body/,
+    );
+
+    const undeclaredSlot = await createComposerFixture(
+        '<html><head><lab:slot name="title"></lab:slot></head><body><lab:slot name="body"></lab:slot></body></html>',
+    );
+    assert.throws(
+        () => composeHtml('base.html', {
+            title: '<title>Fixture</title>',
+            body: '<main></main>',
+            style: '<link href="fixture.css" rel="stylesheet"/>',
+        }, undeclaredSlot),
+        /Layout does not declare supplied slot: style/,
     );
 
     const duplicateId = await createComposerFixture(
