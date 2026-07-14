@@ -8,8 +8,8 @@ function createReferenceUrls(slug) {
     var sourcePath = 'src/pages/' + encodeURIComponent(slug) + '/index.html';
 
     return {
-        source: 'https://github.com/baealex/design/blob/main/' + sourcePath,
-        raw: 'https://raw.githubusercontent.com/baealex/design/main/' + sourcePath,
+        source: 'https://github.com/baealex/design-lab/blob/main/' + sourcePath,
+        raw: 'https://raw.githubusercontent.com/baealex/design-lab/main/' + sourcePath,
     };
 }
 

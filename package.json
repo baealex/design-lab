@@ -1,8 +1,7 @@
 {
-  "name": "design",
+  "name": "design-lab",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Interactive studies of interface history, design trends, and original UI concepts.",
   "scripts": {
     "dev": "ts-node cli/dev.ts",
     "build": "ts-node cli/build.ts",
@@ -14,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/baealex/design-studio.git"
+    "url": "git+https://github.com/baealex/design-lab.git"
   },
-  "author": "",
+  "author": "BaeJino",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/baealex/design-studio/issues"
+    "url": "https://github.com/baealex/design-lab/issues"
   },
-  "homepage": "https://github.com/baealex/design-studio#readme",
+  "homepage": "https://design.baejino.com",
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/fs-extra": "^11.0.4",
