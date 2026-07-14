@@ -10,55 +10,20 @@
         font-family: 'Inter', sans-serif;
         overflow: hidden;
         height: 100vh;
+        height: 100dvh;
     }
 
-    /* Ambient background orbs for glassmorphism depth */
+    /* Quiet ambient field behind the catalog */
     .bg-ambient {
         position: fixed;
         inset: 0;
         z-index: 0;
         overflow: hidden;
         pointer-events: none;
-    }
-
-    .bg-orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(100px);
-        animation: drift 25s ease-in-out infinite;
-    }
-
-    .bg-orb-1 {
-        width: 500px;
-        height: 500px;
-        background: rgba(99, 102, 241, 0.12);
-        top: -10%;
-        left: -5%;
-        animation-delay: 0s;
-    }
-
-    .bg-orb-2 {
-        width: 400px;
-        height: 400px;
-        background: rgba(6, 182, 212, 0.08);
-        bottom: -15%;
-        right: 15%;
-        animation-delay: -8s;
-    }
-
-    .bg-orb-3 {
-        width: 350px;
-        height: 350px;
-        background: rgba(236, 72, 153, 0.06);
-        top: 50%;
-        right: -5%;
-        animation-delay: -16s;
-    }
-
-    @keyframes drift {
-        0%, 100% { transform: translate(0, 0) scale(1); }
-        33% { transform: translate(30px, -20px) scale(1.05); }
-        66% { transform: translate(-20px, 15px) scale(0.95); }
+        background:
+            radial-gradient(circle at 8% 0%, rgba(99, 102, 241, 0.1), transparent 32%),
+            radial-gradient(circle at 82% 100%, rgba(6, 182, 212, 0.06), transparent 30%),
+            #08080f;
     }
 
     /* App layout */
@@ -68,6 +33,7 @@
         display: flex;
         flex-direction: column;
         height: 100vh;
+        height: 100dvh;
     }
 
     /* Header */
@@ -98,6 +64,16 @@
         align-items: center;
         gap: 12px;
         flex: 1;
+    }
+
+    .header-summary {
+        color: rgba(255, 255, 255, 0.32);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        margin-right: 16px;
+        white-space: nowrap;
     }
 
     .brand {
@@ -215,16 +191,31 @@
         -webkit-backdrop-filter: blur(20px);
         border-top: 1px solid rgba(255, 255, 255, 0.06);
         z-index: 2;
-        opacity: 0;
+        opacity: 0.82;
         transition: opacity 0.3s ease;
     }
 
-    .preview-frame:hover .preview-bar {
+    .preview-frame:hover .preview-bar,
+    .preview-frame:focus-within .preview-bar {
         opacity: 1;
     }
 
     .preview-info {
         min-width: 0;
+        flex: 1;
+    }
+
+    .preview-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.34);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.56rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        margin-bottom: 3px;
+        text-transform: uppercase;
     }
 
     .preview-title {
@@ -243,6 +234,64 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .preview-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .preview-step {
+        color: rgba(255, 255, 255, 0.3);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.6rem;
+        font-weight: 600;
+        min-width: 42px;
+        text-align: center;
+    }
+
+    .preview-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .preview-nav-button {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.58);
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .preview-nav-button:hover {
+        background: rgba(255, 255, 255, 0.11);
+        border-color: rgba(255, 255, 255, 0.14);
+        color: #fff;
+    }
+
+    .preview-nav-button:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.5);
+        outline-offset: 2px;
+    }
+
+    .preview-nav-button svg {
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
     }
 
     .preview-open {
@@ -297,6 +346,159 @@
         z-index: 1;
     }
 
+    .catalog-header {
+        flex-shrink: 0;
+        padding: 18px 18px 14px;
+        background: rgba(8, 8, 15, 0.48);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        position: relative;
+        z-index: 2;
+    }
+
+    .catalog-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+    }
+
+    .catalog-kicker {
+        color: rgba(255, 255, 255, 0.26);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.56rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .catalog-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-top: 4px;
+    }
+
+    .catalog-total {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 34px;
+        height: 24px;
+        padding: 0 8px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        color: rgba(255, 255, 255, 0.45);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+    }
+
+    .catalog-search {
+        position: relative;
+    }
+
+    .catalog-search svg {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.28);
+        stroke-width: 2;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .catalog-search-input {
+        width: 100%;
+        height: 38px;
+        box-sizing: border-box;
+        padding: 0 38px 0 36px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.035);
+        color: #fff;
+        font: inherit;
+        font-size: 0.74rem;
+        outline: none;
+        transition: background 0.2s, border-color 0.2s;
+    }
+
+    .catalog-search-input::placeholder {
+        color: rgba(255, 255, 255, 0.24);
+    }
+
+    .catalog-search-input:focus {
+        background: rgba(255, 255, 255, 0.055);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .search-shortcut {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.2);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.56rem;
+        font-weight: 700;
+        pointer-events: none;
+    }
+
+    .catalog-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .catalog-filters {
+        display: inline-flex;
+        gap: 3px;
+        padding: 3px;
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.035);
+    }
+
+    .catalog-filter {
+        padding: 5px 9px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.32);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.58rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .catalog-filter:hover {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .catalog-filter[aria-pressed="true"] {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .catalog-filter:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.45);
+        outline-offset: 2px;
+    }
+
+    .catalog-result {
+        color: rgba(255, 255, 255, 0.24);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.56rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
     .sidebar-scroll {
         flex: 1;
         overflow-y: auto;
@@ -319,10 +521,21 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: rgba(255, 255, 255, 0.2);
-        padding: 16px 12px 8px;
+        padding: 14px 12px 8px;
         display: flex;
         align-items: center;
         gap: 10px;
+        position: sticky;
+        top: -12px;
+        z-index: 2;
+        background: rgba(10, 10, 18, 0.94);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .section-count {
+        color: rgba(255, 255, 255, 0.12);
+        font-size: 0.54rem;
     }
 
     .section-divider::after {
@@ -350,6 +563,7 @@
         text-align: left;
         font-family: inherit;
         font-size: inherit;
+        position: relative;
     }
 
     .card:hover {
@@ -362,6 +576,17 @@
         border-color: rgba(255, 255, 255, 0.12);
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2),
                     inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .card.active::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        left: 0;
+        width: 2px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.55);
     }
 
     .card:focus-visible {
@@ -388,9 +613,11 @@
     .card-body {
         flex: 1;
         min-width: 0;
+        display: block;
     }
 
     .card-title {
+        display: block;
         font-family: 'Montserrat', sans-serif;
         font-size: 0.78rem;
         font-weight: 700;
@@ -398,6 +625,7 @@
     }
 
     .card-desc {
+        display: block;
         font-size: 0.68rem;
         color: rgba(255, 255, 255, 0.3);
         margin-top: 1px;
@@ -415,12 +643,41 @@
         color: rgba(255, 255, 255, 0.45);
     }
 
+    .catalog-empty {
+        padding: 44px 24px;
+        color: rgba(255, 255, 255, 0.28);
+        font-size: 0.72rem;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .catalog-empty strong {
+        display: block;
+        color: rgba(255, 255, 255, 0.58);
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.78rem;
+        margin-bottom: 4px;
+    }
+
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
-        .bg-orb { animation: none !important; }
         .preview-frame iframe { transition: none !important; }
         .preview-bar { transition: none !important; opacity: 1 !important; }
-        .card { transition: none !important; }
+        .card,
+        .catalog-search-input,
+        .preview-nav-button { transition: none !important; }
     }
 
     /* Mobile */
@@ -433,9 +690,14 @@
             padding: 12px 16px;
         }
 
+        .header-summary {
+            display: none;
+        }
+
         .preview-pane {
             flex: none;
-            height: 38vh;
+            height: 36vh;
+            height: 36dvh;
             padding: 12px;
         }
 
@@ -464,6 +726,22 @@
             padding: 8px;
         }
 
+        .catalog-header {
+            padding: 14px 14px 12px;
+        }
+
+        .catalog-heading {
+            margin-bottom: 10px;
+        }
+
+        .section-divider {
+            top: -8px;
+        }
+
+        .preview-step {
+            display: none;
+        }
+
         .card {
             padding: 10px;
         }
@@ -471,8 +749,38 @@
 
     @media screen and (max-width: 480px) {
         .preview-pane {
-            height: 32vh;
+            height: 34vh;
+            height: 34dvh;
             padding: 8px;
+        }
+
+        .preview-bar {
+            gap: 8px;
+            padding: 9px 12px;
+        }
+
+        .preview-eyebrow {
+            font-size: 0.5rem;
+        }
+
+        .preview-desc {
+            display: none;
+        }
+
+        .preview-actions {
+            gap: 4px;
+        }
+
+        .preview-open {
+            padding: 6px 10px;
+        }
+
+        .catalog-row {
+            gap: 8px;
+        }
+
+        .catalog-filter {
+            padding: 5px 7px;
         }
 
         .card-desc {
@@ -482,11 +790,7 @@
 </style>
 
 <body>
-    <div class="bg-ambient">
-        <div class="bg-orb bg-orb-1"></div>
-        <div class="bg-orb bg-orb-2"></div>
-        <div class="bg-orb bg-orb-3"></div>
-    </div>
+    <div class="bg-ambient" aria-hidden="true"></div>
 
     <div class="app">
         <header class="app-header" role="banner">
@@ -496,6 +800,7 @@
                     <h1 class="logo">Design Lab <span class="logo-owner">by BaeJino</span></h1>
                 </a>
             </div>
+            <div class="header-summary" id="header-summary"></div>
             <a class="header-link" href="https://github.com/baealex/design" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
             </a>
@@ -507,15 +812,54 @@
                     <iframe id="preview-iframe" title="Design preview"></iframe>
                     <div class="preview-bar">
                         <div class="preview-info">
+                            <div class="preview-eyebrow">
+                                <span id="preview-category"></span>
+                                <span aria-hidden="true">&middot;</span>
+                                <span id="preview-year"></span>
+                            </div>
                             <div class="preview-title" id="preview-title"></div>
                             <div class="preview-desc" id="preview-desc"></div>
                         </div>
-                        <a class="preview-open" id="preview-open" href="#">Open</a>
+                        <div class="preview-actions">
+                            <span class="preview-step" id="preview-step" aria-live="polite"></span>
+                            <div class="preview-nav" aria-label="Preview navigation">
+                                <button class="preview-nav-button" id="preview-prev" type="button" aria-label="Previous exhibit">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                                </button>
+                                <button class="preview-nav-button" id="preview-next" type="button" aria-label="Next exhibit">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                                </button>
+                            </div>
+                            <a class="preview-open" id="preview-open" href="#">Open</a>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <aside class="sidebar" role="complementary" aria-label="Design catalog">
+                <div class="catalog-header">
+                    <div class="catalog-heading">
+                        <div>
+                            <div class="catalog-kicker">Explore the archive</div>
+                            <div class="catalog-title">Design Index</div>
+                        </div>
+                        <span class="catalog-total" id="catalog-total"></span>
+                    </div>
+                    <div class="catalog-search">
+                        <label class="visually-hidden" for="catalog-search-input">Search exhibits</label>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+                        <input class="catalog-search-input" id="catalog-search-input" type="search" placeholder="Search title, year, or idea" autocomplete="off">
+                        <span class="search-shortcut" aria-hidden="true">/</span>
+                    </div>
+                    <div class="catalog-row">
+                        <div class="catalog-filters" aria-label="Filter exhibits">
+                            <button class="catalog-filter" type="button" data-filter="all" aria-pressed="true">All</button>
+                            <button class="catalog-filter" type="button" data-filter="design" aria-pressed="false">Trends</button>
+                            <button class="catalog-filter" type="button" data-filter="concept" aria-pressed="false">Concepts</button>
+                        </div>
+                        <span class="catalog-result" id="catalog-result" role="status" aria-live="polite"></span>
+                    </div>
+                </div>
                 <div class="sidebar-scroll" id="sidebar-scroll"></div>
             </aside>
         </div>
@@ -533,84 +877,201 @@
         .filter(function(p) { return p.category === 'concept' && p.year !== null; })
         .sort(function(a, b) { return a.year - b.year; });
 
+    var allPages = designPages.concat(conceptPages);
+
     var $iframe = document.getElementById('preview-iframe');
+    var $previewCategory = document.getElementById('preview-category');
+    var $previewYear = document.getElementById('preview-year');
     var $previewTitle = document.getElementById('preview-title');
     var $previewDesc = document.getElementById('preview-desc');
+    var $previewStep = document.getElementById('preview-step');
+    var $previewPrev = document.getElementById('preview-prev');
+    var $previewNext = document.getElementById('preview-next');
     var $previewOpen = document.getElementById('preview-open');
     var $sidebarScroll = document.getElementById('sidebar-scroll');
+    var $headerSummary = document.getElementById('header-summary');
+    var $catalogTotal = document.getElementById('catalog-total');
+    var $catalogResult = document.getElementById('catalog-result');
+    var $catalogSearch = document.getElementById('catalog-search-input');
+    var $filterButtons = document.querySelectorAll('.catalog-filter');
 
     var currentPage = null;
     var activeCard = null;
     var isFirstLoad = true;
+    var activeFilter = 'all';
+    var searchQuery = '';
 
-    // Render cards
-    function renderCards() {
-        var frag = document.createDocumentFragment();
-
-        // Design label
-        var designLabel = document.createElement('div');
-        designLabel.className = 'section-divider';
-        designLabel.textContent = 'Trends';
-        frag.appendChild(designLabel);
-
-        designPages.forEach(function(page) {
-            var btn = document.createElement('button');
-            btn.className = 'card';
-            btn.dataset.name = page.name;
-            btn.innerHTML =
-                '<span class="card-year">' + page.year + '</span>' +
-                '<div class="card-body">' +
-                    '<div class="card-title">' + page.title + '</div>' +
-                    '<div class="card-desc">' + page.description + '</div>' +
-                '</div>';
-            btn.addEventListener('click', function() {
-                selectPage(page);
-            });
-            frag.appendChild(btn);
-        });
-
-        // Concepts label
-        if (conceptPages.length > 0) {
-            var conceptLabel = document.createElement('div');
-            conceptLabel.className = 'section-divider';
-            conceptLabel.textContent = 'Concepts';
-            frag.appendChild(conceptLabel);
-
-            conceptPages.forEach(function(page) {
-                var btn = document.createElement('button');
-                btn.className = 'card';
-                btn.dataset.name = page.name;
-                btn.innerHTML =
-                    '<span class="card-year">' + page.year + '</span>' +
-                    '<div class="card-body">' +
-                        '<div class="card-title">' + page.title + '</div>' +
-                        '<div class="card-desc">' + page.description + '</div>' +
-                    '</div>';
-                btn.addEventListener('click', function() {
-                    selectPage(page);
-                });
-                frag.appendChild(btn);
-            });
-        }
-
-        $sidebarScroll.appendChild(frag);
+    function cleanTitle(title) {
+        return title.replace(/\s*\((?:19|20)\d{2}s?\)\s*$/, '');
     }
 
-    // Update preview (pure UI, no history manipulation)
+    function pageMatches(page) {
+        if (activeFilter !== 'all' && page.category !== activeFilter) return false;
+        if (!searchQuery) return true;
+
+        var haystack = [
+            page.title,
+            page.description,
+            page.year,
+            page.category === 'concept' ? 'concept study' : 'design trend'
+        ].join(' ').toLowerCase();
+
+        return haystack.indexOf(searchQuery) > -1;
+    }
+
+    function getVisiblePages() {
+        return allPages.filter(pageMatches);
+    }
+
+    function createCard(page) {
+        var button = document.createElement('button');
+        button.className = 'card';
+        button.type = 'button';
+        button.dataset.name = page.name;
+        button.setAttribute('aria-pressed', 'false');
+
+        var year = document.createElement('span');
+        year.className = 'card-year';
+        year.textContent = page.year;
+
+        var body = document.createElement('span');
+        body.className = 'card-body';
+
+        var title = document.createElement('span');
+        title.className = 'card-title';
+        title.textContent = cleanTitle(page.title);
+
+        var description = document.createElement('span');
+        description.className = 'card-desc';
+        description.textContent = page.description;
+
+        body.appendChild(title);
+        body.appendChild(description);
+        button.appendChild(year);
+        button.appendChild(body);
+        button.addEventListener('click', function() {
+            selectPage(page);
+        });
+
+        return button;
+    }
+
+    function appendSection(fragment, label, sectionPages) {
+        if (sectionPages.length === 0) return;
+
+        var divider = document.createElement('div');
+        divider.className = 'section-divider';
+        divider.setAttribute('role', 'heading');
+        divider.setAttribute('aria-level', '2');
+
+        var name = document.createElement('span');
+        name.textContent = label;
+        var count = document.createElement('span');
+        count.className = 'section-count';
+        count.textContent = sectionPages.length;
+
+        divider.appendChild(name);
+        divider.appendChild(count);
+        fragment.appendChild(divider);
+        sectionPages.forEach(function(page) {
+            fragment.appendChild(createCard(page));
+        });
+    }
+
+    function renderCards() {
+        var fragment = document.createDocumentFragment();
+        var visible = getVisiblePages();
+        var visibleDesigns = visible.filter(function(page) { return page.category === 'design'; });
+        var visibleConcepts = visible.filter(function(page) { return page.category === 'concept'; });
+
+        $sidebarScroll.textContent = '';
+        activeCard = null;
+
+        if (visible.length === 0) {
+            var empty = document.createElement('div');
+            empty.className = 'catalog-empty';
+
+            var emptyTitle = document.createElement('strong');
+            emptyTitle.textContent = 'No exhibits found';
+            var emptyCopy = document.createElement('span');
+            emptyCopy.textContent = 'Try another title, year, or idea.';
+
+            empty.appendChild(emptyTitle);
+            empty.appendChild(emptyCopy);
+            fragment.appendChild(empty);
+        } else {
+            appendSection(fragment, 'Trends', visibleDesigns);
+            appendSection(fragment, 'Concepts', visibleConcepts);
+        }
+
+        $sidebarScroll.appendChild(fragment);
+        $catalogResult.textContent = visible.length + ' of ' + allPages.length;
+        syncActiveCard(false);
+        updatePreviewNavigation();
+    }
+
+    function syncActiveCard(shouldScroll) {
+        if (activeCard) {
+            activeCard.classList.remove('active');
+            activeCard.setAttribute('aria-pressed', 'false');
+        }
+
+        activeCard = null;
+        if (!currentPage) return;
+
+        var card = $sidebarScroll.querySelector('[data-name="' + currentPage.name + '"]');
+        if (!card) return;
+
+        card.classList.add('active');
+        card.setAttribute('aria-pressed', 'true');
+        activeCard = card;
+        if (shouldScroll) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function getNavigationPages() {
+        var visible = getVisiblePages();
+        return visible.length > 0 ? visible : allPages;
+    }
+
+    function updatePreviewNavigation() {
+        if (!currentPage) return;
+
+        var globalIndex = allPages.findIndex(function(page) {
+            return page.name === currentPage.name;
+        });
+        $previewStep.textContent = (globalIndex + 1) + ' / ' + allPages.length;
+
+        var navigationPages = getNavigationPages();
+        var index = navigationPages.findIndex(function(page) {
+            return page.name === currentPage.name;
+        });
+        var previous = index < 0
+            ? navigationPages[navigationPages.length - 1]
+            : navigationPages[(index - 1 + navigationPages.length) % navigationPages.length];
+        var next = index < 0
+            ? navigationPages[0]
+            : navigationPages[(index + 1) % navigationPages.length];
+        $previewPrev.setAttribute('aria-label', 'Previous: ' + cleanTitle(previous.title));
+        $previewNext.setAttribute('aria-label', 'Next: ' + cleanTitle(next.title));
+    }
+
     function updatePreview(page) {
-        if (currentPage && currentPage.name === page.name) return;
+        var isSamePage = currentPage && currentPage.name === page.name;
         currentPage = page;
 
-        // Update preview info
-        $previewTitle.textContent = page.title;
+        $previewCategory.textContent = page.category === 'concept' ? 'Concept study' : 'Design trend';
+        $previewYear.textContent = page.year;
+        $previewTitle.textContent = cleanTitle(page.title);
         $previewDesc.textContent = page.description;
         $previewOpen.href = '/' + page.name;
+        $previewOpen.setAttribute('aria-label', 'Open ' + cleanTitle(page.title));
 
-        // Iframe transition
-        if (isFirstLoad) {
+        if (!isSamePage && isFirstLoad) {
             isFirstLoad = false;
             $iframe.src = '/' + page.name;
-        } else {
+        } else if (!isSamePage) {
             $iframe.classList.add('fade-out');
             setTimeout(function() {
                 $iframe.src = '/' + page.name;
@@ -620,17 +1081,10 @@
             }, 150);
         }
 
-        // Active card
-        if (activeCard) activeCard.classList.remove('active');
-        var card = $sidebarScroll.querySelector('[data-name="' + page.name + '"]');
-        if (card) {
-            card.classList.add('active');
-            activeCard = card;
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+        syncActiveCard(!isSamePage);
+        updatePreviewNavigation();
     }
 
-    // Select page (updates UI + pushes hash to history)
     function selectPage(page) {
         updatePreview(page);
         var targetHash = '#' + page.name;
@@ -639,28 +1093,69 @@
         }
     }
 
-    // Find page by name
     function findPage(name) {
-        return designPages.find(function(p) { return p.name === name; })
-            || conceptPages.find(function(p) { return p.name === name; });
+        return allPages.find(function(page) { return page.name === name; });
     }
 
-    // Get all pages in display order
-    function getAllPages() {
-        return designPages.concat(conceptPages);
-    }
-
-    // Navigate to next/prev page
     function navigateOffset(offset) {
-        var all = getAllPages();
-        if (!currentPage || all.length === 0) return;
-        var idx = all.findIndex(function(p) { return p.name === currentPage.name; });
-        var next = (idx + offset + all.length) % all.length;
-        selectPage(all[next]);
+        var navigationPages = getNavigationPages();
+        if (!currentPage || navigationPages.length === 0) return;
+
+        var index = navigationPages.findIndex(function(page) {
+            return page.name === currentPage.name;
+        });
+        if (index < 0) index = offset > 0 ? -1 : 0;
+
+        var nextIndex = (index + offset + navigationPages.length) % navigationPages.length;
+        selectPage(navigationPages[nextIndex]);
     }
 
-    // Keyboard
+    function setFilter(filter) {
+        activeFilter = filter;
+        $filterButtons.forEach(function(button) {
+            button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
+        });
+        renderCards();
+    }
+
+    $filterButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            setFilter(button.dataset.filter);
+        });
+    });
+
+    $catalogSearch.addEventListener('input', function() {
+        searchQuery = $catalogSearch.value.trim().toLowerCase();
+        renderCards();
+    });
+
+    $previewPrev.addEventListener('click', function() {
+        navigateOffset(-1);
+    });
+
+    $previewNext.addEventListener('click', function() {
+        navigateOffset(1);
+    });
+
     document.addEventListener('keydown', function(e) {
+        var target = e.target instanceof Element ? e.target : document.body;
+        var isTextInput = target.matches('input, textarea, select, [contenteditable="true"]');
+
+        if (e.key === '/' && !isTextInput && !e.metaKey && !e.ctrlKey && !e.altKey) {
+            e.preventDefault();
+            $catalogSearch.focus();
+            return;
+        }
+
+        if (e.key === 'Escape' && document.activeElement === $catalogSearch && $catalogSearch.value) {
+            $catalogSearch.value = '';
+            searchQuery = '';
+            renderCards();
+            return;
+        }
+
+        if (isTextInput || target.closest('.catalog-filters') || e.metaKey || e.ctrlKey || e.altKey) return;
+
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
             e.preventDefault();
             navigateOffset(1);
@@ -670,7 +1165,6 @@
         }
     });
 
-    // Back/forward navigation
     window.addEventListener('hashchange', function() {
         var hash = window.location.hash.slice(1);
         var page = findPage(hash);
@@ -679,11 +1173,13 @@
         }
     });
 
-    // Init
+    $headerSummary.textContent = designPages.length + ' trends · ' + conceptPages.length + ' concepts';
+    $catalogTotal.textContent = allPages.length;
+    $catalogTotal.setAttribute('title', allPages.length + ' exhibits');
     renderCards();
 
     var hash = window.location.hash.slice(1);
-    var initialPage = (hash && findPage(hash)) || designPages[0];
+    var initialPage = (hash && findPage(hash)) || allPages[0];
     if (initialPage) {
         if (!hash) {
             history.replaceState(null, '', '#' + initialPage.name);
