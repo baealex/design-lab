@@ -5,12 +5,17 @@
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Inter:wght@400;500&display=swap');
 
     body {
+        --active-accent: 129, 140, 248;
         background: #08080f;
         color: #fff;
         font-family: 'Inter', sans-serif;
         overflow: hidden;
         height: 100vh;
         height: 100dvh;
+    }
+
+    body[data-active-category="concept"] {
+        --active-accent: 45, 212, 191;
     }
 
     /* Quiet ambient field behind the catalog */
@@ -67,7 +72,7 @@
     }
 
     .header-summary {
-        color: rgba(255, 255, 255, 0.32);
+        color: rgba(255, 255, 255, 0.42);
         font-family: 'Montserrat', sans-serif;
         font-size: 0.62rem;
         font-weight: 600;
@@ -145,10 +150,12 @@
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(var(--active-accent), 0.18);
         box-shadow:
             0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            inset 0 1px 0 rgba(255, 255, 255, 0.06),
+            0 0 0 1px rgba(var(--active-accent), 0.025);
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
     .preview-frame::before {
@@ -158,7 +165,7 @@
         left: 0;
         right: 0;
         height: 1px;
-        background: linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.15) 50%, transparent 90%);
+        background: linear-gradient(90deg, transparent 10%, rgba(var(--active-accent), 0.45) 50%, transparent 90%);
         z-index: 2;
     }
 
@@ -209,13 +216,23 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        color: rgba(255, 255, 255, 0.34);
+        color: rgba(var(--active-accent), 0.72);
         font-family: 'Montserrat', sans-serif;
         font-size: 0.56rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         margin-bottom: 3px;
         text-transform: uppercase;
+    }
+
+    .preview-eyebrow::before {
+        content: '';
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgb(var(--active-accent));
+        box-shadow: 0 0 8px rgba(var(--active-accent), 0.65);
+        flex: none;
     }
 
     .preview-title {
@@ -279,6 +296,11 @@
         color: #fff;
     }
 
+    .preview-nav-button:disabled {
+        cursor: default;
+        opacity: 0.34;
+    }
+
     .preview-nav-button:focus-visible {
         outline: 2px solid rgba(255, 255, 255, 0.5);
         outline-offset: 2px;
@@ -311,7 +333,8 @@
     }
 
     .preview-open:hover {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(var(--active-accent), 0.18);
+        border-color: rgba(var(--active-accent), 0.28);
         color: #fff;
     }
 
@@ -465,6 +488,9 @@
     }
 
     .catalog-filter {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
         padding: 5px 9px;
         border: 0;
         border-radius: 6px;
@@ -474,6 +500,12 @@
         font-size: 0.58rem;
         font-weight: 700;
         cursor: pointer;
+    }
+
+    .filter-count {
+        color: rgba(255, 255, 255, 0.18);
+        font-size: 0.5rem;
+        font-variant-numeric: tabular-nums;
     }
 
     .catalog-filter:hover {
@@ -486,13 +518,17 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
+    .catalog-filter[aria-pressed="true"] .filter-count {
+        color: rgba(255, 255, 255, 0.52);
+    }
+
     .catalog-filter:focus-visible {
         outline: 2px solid rgba(255, 255, 255, 0.45);
         outline-offset: 2px;
     }
 
     .catalog-result {
-        color: rgba(255, 255, 255, 0.24);
+        color: rgba(255, 255, 255, 0.34);
         font-family: 'Montserrat', sans-serif;
         font-size: 0.56rem;
         font-weight: 600;
@@ -547,9 +583,10 @@
 
     /* Card */
     .card {
+        --card-accent: 129, 140, 248;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 22px;
         padding: 10px 12px;
         margin-bottom: 2px;
         border-radius: 10px;
@@ -566,16 +603,32 @@
         position: relative;
     }
 
+    .card[data-category="concept"] {
+        --card-accent: 45, 212, 191;
+    }
+
+    .card::after {
+        content: '';
+        position: absolute;
+        top: -3px;
+        bottom: -5px;
+        left: 58px;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.055);
+        pointer-events: none;
+    }
+
     .card:hover {
         background: rgba(255, 255, 255, 0.04);
         border-color: rgba(255, 255, 255, 0.06);
     }
 
     .card.active {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(var(--card-accent), 0.085);
+        border-color: rgba(var(--card-accent), 0.24);
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                    0 0 24px rgba(var(--card-accent), 0.035);
     }
 
     .card.active::before {
@@ -586,7 +639,8 @@
         left: 0;
         width: 2px;
         border-radius: 2px;
-        background: rgba(255, 255, 255, 0.55);
+        background: rgb(var(--card-accent));
+        box-shadow: 0 0 10px rgba(var(--card-accent), 0.48);
     }
 
     .card:focus-visible {
@@ -598,9 +652,27 @@
         font-family: 'Montserrat', sans-serif;
         font-size: 0.68rem;
         font-weight: 800;
-        color: rgba(255, 255, 255, 0.18);
-        min-width: 36px;
+        color: rgba(255, 255, 255, 0.28);
+        min-width: 38px;
         flex-shrink: 0;
+        position: relative;
+        font-variant-numeric: tabular-nums;
+        z-index: 1;
+    }
+
+    .card-year::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: -12px;
+        width: 7px;
+        height: 7px;
+        border: 2px solid #0b0b13;
+        border-radius: 50%;
+        background: rgba(var(--card-accent), 0.42);
+        box-sizing: border-box;
+        transform: translateY(-50%);
+        transition: background 0.2s, box-shadow 0.2s;
     }
 
     .card-icon {
@@ -614,6 +686,8 @@
         flex: 1;
         min-width: 0;
         display: block;
+        position: relative;
+        z-index: 1;
     }
 
     .card-title {
@@ -627,7 +701,7 @@
     .card-desc {
         display: block;
         font-size: 0.68rem;
-        color: rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 0.38);
         margin-top: 1px;
         line-height: 1.4;
         white-space: nowrap;
@@ -636,7 +710,12 @@
     }
 
     .card.active .card-year {
-        color: rgba(255, 255, 255, 0.35);
+        color: rgba(var(--card-accent), 0.78);
+    }
+
+    .card.active .card-year::after {
+        background: rgb(var(--card-accent));
+        box-shadow: 0 0 9px rgba(var(--card-accent), 0.7);
     }
 
     .card.active .card-desc {
@@ -745,6 +824,10 @@
         .card {
             padding: 10px;
         }
+
+        .card::after {
+            left: 56px;
+        }
     }
 
     @media screen and (max-width: 480px) {
@@ -785,6 +868,14 @@
 
         .card-desc {
             display: none;
+        }
+
+        .card.active .card-desc {
+            display: -webkit-box;
+            margin-top: 3px;
+            white-space: normal;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
         }
     }
 </style>
@@ -854,9 +945,15 @@
                     </div>
                     <div class="catalog-row">
                         <div class="catalog-filters" aria-label="Filter exhibits">
-                            <button class="catalog-filter" type="button" data-filter="all" aria-pressed="true">All</button>
-                            <button class="catalog-filter" type="button" data-filter="design" aria-pressed="false">Trends</button>
-                            <button class="catalog-filter" type="button" data-filter="concept" aria-pressed="false">Concepts</button>
+                            <button class="catalog-filter" type="button" data-filter="all" aria-pressed="true">
+                                <span>All</span><span class="filter-count" id="filter-count-all"></span>
+                            </button>
+                            <button class="catalog-filter" type="button" data-filter="design" aria-pressed="false">
+                                <span>Trends</span><span class="filter-count" id="filter-count-design"></span>
+                            </button>
+                            <button class="catalog-filter" type="button" data-filter="concept" aria-pressed="false">
+                                <span>Concepts</span><span class="filter-count" id="filter-count-concept"></span>
+                            </button>
                         </div>
                         <span class="catalog-result" id="catalog-result" role="status" aria-live="polite"></span>
                     </div>
@@ -913,6 +1010,9 @@
     var $catalogResult = document.getElementById('catalog-result');
     var $catalogSearch = document.getElementById('catalog-search-input');
     var $filterButtons = document.querySelectorAll('.catalog-filter');
+    var $filterCountAll = document.getElementById('filter-count-all');
+    var $filterCountDesign = document.getElementById('filter-count-design');
+    var $filterCountConcept = document.getElementById('filter-count-concept');
 
     var currentPage = null;
     var activeCard = null;
@@ -924,8 +1024,7 @@
         return title.replace(/\s*\((?:19|20)\d{2}s?\)\s*$/, '');
     }
 
-    function pageMatches(page) {
-        if (activeFilter !== 'all' && page.category !== activeFilter) return false;
+    function pageMatchesQuery(page) {
         if (!searchQuery) return true;
 
         var haystack = [
@@ -938,6 +1037,11 @@
         return haystack.indexOf(searchQuery) > -1;
     }
 
+    function pageMatches(page) {
+        if (activeFilter !== 'all' && page.category !== activeFilter) return false;
+        return pageMatchesQuery(page);
+    }
+
     function getVisiblePages() {
         return allPages.filter(pageMatches);
     }
@@ -947,6 +1051,7 @@
         button.className = 'card';
         button.type = 'button';
         button.dataset.name = page.name;
+        button.dataset.category = page.category;
         button.setAttribute('aria-pressed', 'false');
 
         var year = document.createElement('span');
@@ -997,6 +1102,16 @@
         });
     }
 
+    function updateFilterCounts() {
+        var queryMatches = allPages.filter(pageMatchesQuery);
+        var matchingDesigns = queryMatches.filter(function(page) { return page.category === 'design'; });
+        var matchingConcepts = queryMatches.filter(function(page) { return page.category === 'concept'; });
+
+        $filterCountAll.textContent = queryMatches.length;
+        $filterCountDesign.textContent = matchingDesigns.length;
+        $filterCountConcept.textContent = matchingConcepts.length;
+    }
+
     function renderCards() {
         var fragment = document.createDocumentFragment();
         var visible = getVisiblePages();
@@ -1024,7 +1139,8 @@
         }
 
         $sidebarScroll.appendChild(fragment);
-        $catalogResult.textContent = visible.length + ' of ' + allPages.length;
+        updateFilterCounts();
+        $catalogResult.textContent = visible.length + ' visible';
         syncActiveCard(false);
         updatePreviewNavigation();
     }
@@ -1057,15 +1173,24 @@
     function updatePreviewNavigation() {
         if (!currentPage) return;
 
-        var globalIndex = allPages.findIndex(function(page) {
-            return page.name === currentPage.name;
-        });
-        $previewStep.textContent = (globalIndex + 1) + ' / ' + allPages.length;
-
         var navigationPages = getNavigationPages();
+        if (navigationPages.length === 0) {
+            $previewStep.textContent = '0 / 0';
+            $previewPrev.disabled = true;
+            $previewNext.disabled = true;
+            return;
+        }
+
         var index = navigationPages.findIndex(function(page) {
             return page.name === currentPage.name;
         });
+        $previewStep.textContent = index < 0
+            ? '— / ' + navigationPages.length
+            : (index + 1) + ' / ' + navigationPages.length;
+
+        var navigationDisabled = navigationPages.length < 2;
+        $previewPrev.disabled = navigationDisabled;
+        $previewNext.disabled = navigationDisabled;
         var previous = index < 0
             ? navigationPages[navigationPages.length - 1]
             : navigationPages[(index - 1 + navigationPages.length) % navigationPages.length];
@@ -1079,6 +1204,7 @@
     function updatePreview(page) {
         var isSamePage = currentPage && currentPage.name === page.name;
         currentPage = page;
+        document.body.dataset.activeCategory = page.category;
 
         $previewCategory.textContent = page.category === 'concept' ? 'Concept study' : 'Design trend';
         $previewYear.textContent = page.year;
@@ -1129,12 +1255,23 @@
         selectPage(navigationPages[nextIndex]);
     }
 
+    function reconcilePreviewWithCatalog() {
+        var visible = getVisiblePages();
+        if (visible.length === 0) return;
+
+        var currentIsVisible = currentPage && visible.some(function(page) {
+            return page.name === currentPage.name;
+        });
+        if (!currentIsVisible) selectPage(visible[0]);
+    }
+
     function setFilter(filter) {
         activeFilter = filter;
         $filterButtons.forEach(function(button) {
             button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
         });
         renderCards();
+        reconcilePreviewWithCatalog();
     }
 
     $filterButtons.forEach(function(button) {
@@ -1146,6 +1283,7 @@
     $catalogSearch.addEventListener('input', function() {
         searchQuery = $catalogSearch.value.trim().toLowerCase();
         renderCards();
+        reconcilePreviewWithCatalog();
     });
 
     $previewPrev.addEventListener('click', function() {
@@ -1170,6 +1308,7 @@
             $catalogSearch.value = '';
             searchQuery = '';
             renderCards();
+            reconcilePreviewWithCatalog();
             return;
         }
 
@@ -1188,6 +1327,20 @@
         var hash = window.location.hash.slice(1);
         var page = findPage(hash);
         if (page) {
+            var catalogChanged = false;
+            if (activeFilter !== 'all' && page.category !== activeFilter) {
+                activeFilter = 'all';
+                $filterButtons.forEach(function(button) {
+                    button.setAttribute('aria-pressed', String(button.dataset.filter === 'all'));
+                });
+                catalogChanged = true;
+            }
+            if (!pageMatchesQuery(page)) {
+                $catalogSearch.value = '';
+                searchQuery = '';
+                catalogChanged = true;
+            }
+            if (catalogChanged) renderCards();
             updatePreview(page);
         }
     });
