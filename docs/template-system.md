@@ -35,23 +35,27 @@ A producer directive owns the explicit HTML element immediately following it. Th
 
 | Page source | Compiler result | Layout destination |
 | --- | --- | --- |
+| `lab:template` + `style` | Preserve the complete `<style>` element inline | `lab:slot name="style"` |
 | `lab:template:bundle` + `style` | Emit a page CSS asset and create its `<link>` | `lab:slot name="style"` |
 | `lab:template` + `body` | Extract the body markup | `lab:slot name="body"` |
+| `lab:template` + `script` | Preserve the complete `<script>` element inline | `lab:slot name="script"` |
 | `lab:template:bundle` + `script` | Process and emit a page JavaScript asset, then create its `<script src>` | `lab:slot name="script"` |
 
-Production assets include a content hash. Development assets keep stable names so the socket client can patch or reload the affected Page.
+Bundled production assets include a content hash. Bundled development assets keep stable names so the socket client can patch or reload the affected Page. Inline elements do not create asset files.
 
 These directives are compiler instructions, not optional labels:
 
 - A directive must be followed immediately by its element, with only whitespace between them.
-- `style` and `script` must use `lab:template:bundle`.
-- `body` must use `lab:template`.
+- `style` and `script` may use `lab:template` for inline insertion or `lab:template:bundle` for external assets.
+- `body` must use `lab:template`; HTML body markup cannot be bundled.
 - Each block type may appear at most once.
-- Block wrappers must have explicit closing tags and cannot have attributes because the compiler consumes the wrappers.
+- Every block wrapper must have an explicit closing tag.
+- Inline style and script wrappers are preserved and may have attributes.
+- Body and bundled asset wrappers are consumed and therefore cannot have attributes.
 - An unmarked top-level `style`, `body`, or `script` block fails the build.
 - A producer directive cannot be nested inside another Page block.
 
-The final document receives the generated asset reference or inner markup, never the source directive or its compile-time wrapper.
+The final document receives the preserved inline element, generated asset reference, or body markup. It never receives the producer directive itself.
 
 ## Layout
 
@@ -132,7 +136,6 @@ var data = JSON.parse(element.textContent || '{}');
 - Variable interpolation
 - Conditionals and loops
 - Filters and Partial arguments
-- Unbundled top-level Page style or script blocks
 - Runtime Custom Elements
 - Shadow DOM and component lifecycle hooks
 

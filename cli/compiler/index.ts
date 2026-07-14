@@ -7,7 +7,6 @@ export type { BuildStage, LabBuildError } from './errors';
 export { prepareGlobalAssets } from './global-assets';
 export type { GlobalAssets, PreparedGlobalAssets } from './global-assets';
 export { parsePage } from './parse-page';
-export type { PageDefinition, PageMetadata } from './parse-page';
+export type { PageAssetBlock, PageDefinition, PageMetadata } from './parse-page';
 export { serializePageData, writePreparedFiles } from './emit-assets';
 export type { PreparedFile } from './emit-assets';
-

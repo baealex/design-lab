@@ -7,15 +7,19 @@ export interface PageMetadata {
     description: string;
 }
 
+export type PageAssetBlock =
+    | { mode: 'inline'; html: string }
+    | { mode: 'bundle'; content: string };
+
 export interface PageDefinition {
     metadata: PageMetadata;
-    style: string;
+    style?: PageAssetBlock;
     body: string;
-    script: string;
+    script?: PageAssetBlock;
 }
 
 type PageBlockName = 'style' | 'body' | 'script';
-type TemplateMode = 'template' | 'bundle';
+type TemplateMode = PageAssetBlock['mode'];
 
 interface PageBlock {
     name: PageBlockName;
@@ -68,6 +72,11 @@ function extractNodeContent(source: string, node: HtmlNode, tagName: string, fil
     return source.slice(location.startTag.endOffset, location.endTag.startOffset);
 }
 
+function extractNodeHtml(source: string, node: HtmlNode): string {
+    const location = node.sourceCodeLocation!;
+    return source.slice(location.startTag!.startOffset, location.endTag!.endOffset);
+}
+
 function isPageBlockName(value: string | undefined): value is PageBlockName {
     return value !== undefined && PAGE_BLOCK_NAMES.has(value as PageBlockName);
 }
@@ -97,7 +106,7 @@ function collectTopLevelPageBlocks(root: HtmlNode): PageBlock[] {
 }
 
 function markerMode(value: string, node: HtmlNode, file: string): TemplateMode {
-    if (value === 'lab:template') return 'template';
+    if (value === 'lab:template') return 'inline';
     if (value === 'lab:template:bundle') return 'bundle';
 
     throw new LabCompilerError({
@@ -142,19 +151,21 @@ function collectTemplateMarkers(root: HtmlNode, blocks: PageBlock[], file: strin
     return markers.sort((left, right) => left.start - right.start);
 }
 
-function expectedDirective(name: PageBlockName): string {
-    return name === 'body' ? 'lab:template' : 'lab:template:bundle';
+function directiveHint(name: PageBlockName): string {
+    return name === 'body'
+        ? '<!-- lab:template -->'
+        : '<!-- lab:template --> or <!-- lab:template:bundle -->';
 }
 
 function parseTemplateBlocks(source: string, root: HtmlNode, file: string) {
     const blocks = collectTopLevelPageBlocks(root);
     const markers = collectTemplateMarkers(root, blocks, file);
     const assigned = new Set<HtmlNode>();
-    const values: Record<PageBlockName, string> = {
-        style: '',
-        body: '',
-        script: '',
-    };
+    const values: {
+        style?: PageAssetBlock;
+        body?: string;
+        script?: PageAssetBlock;
+    } = {};
     const declared = new Set<PageBlockName>();
 
     markers.forEach(marker => {
@@ -172,15 +183,13 @@ function parseTemplateBlocks(source: string, root: HtmlNode, file: string) {
             });
         }
 
-        const expected = expectedDirective(block.name);
-        const actual = marker.mode === 'bundle' ? 'lab:template:bundle' : 'lab:template';
-        if (actual !== expected) {
+        if (block.name === 'body' && marker.mode === 'bundle') {
             throw new LabCompilerError({
                 stage: 'parse',
                 file,
                 line: marker.node.sourceCodeLocation?.startLine,
                 column: marker.node.sourceCodeLocation?.startCol,
-                message: `<${block.name}> must use <!-- ${expected} -->.`,
+                message: '<body> must use <!-- lab:template --> because HTML markup cannot be bundled.',
             });
         }
 
@@ -194,30 +203,40 @@ function parseTemplateBlocks(source: string, root: HtmlNode, file: string) {
             });
         }
 
-        if ((block.node.attrs?.length ?? 0) > 0) {
+        const consumesWrapper = block.name === 'body' || marker.mode === 'bundle';
+        if (consumesWrapper && (block.node.attrs?.length ?? 0) > 0) {
             throw new LabCompilerError({
                 stage: 'parse',
                 file,
                 line: block.node.sourceCodeLocation?.startLine,
                 column: block.node.sourceCodeLocation?.startCol,
-                message: `<${block.name}> cannot declare attributes because its wrapper is consumed by the Page compiler.`,
+                message: `<${block.name}> cannot declare attributes when its wrapper is consumed by the Page compiler.`,
             });
         }
 
-        values[block.name] = extractNodeContent(source, block.node, block.name, file);
+        const content = extractNodeContent(source, block.node, block.name, file);
+        if (block.name === 'body') {
+            values.body = content;
+        } else if (marker.mode === 'bundle') {
+            values[block.name] = { mode: 'bundle', content };
+        } else {
+            values[block.name] = {
+                mode: 'inline',
+                html: extractNodeHtml(source, block.node),
+            };
+        }
         assigned.add(block.node);
         declared.add(block.name);
     });
 
     const unmarked = blocks.find(block => !assigned.has(block.node));
     if (unmarked) {
-        const directive = expectedDirective(unmarked.name);
         throw new LabCompilerError({
             stage: 'parse',
             file,
             line: unmarked.node.sourceCodeLocation?.startLine,
             column: unmarked.node.sourceCodeLocation?.startCol,
-            message: `<${unmarked.name}> must be preceded immediately by <!-- ${directive} -->.`,
+            message: `<${unmarked.name}> must be preceded immediately by ${directiveHint(unmarked.name)}.`,
         });
     }
 
@@ -257,7 +276,7 @@ export function parsePage(source: string, file = '<page>'): PageDefinition {
     return {
         metadata,
         style: blocks.style,
-        body: blocks.body,
+        body: blocks.body!,
         script: blocks.script,
     };
 }

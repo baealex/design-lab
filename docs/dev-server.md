@@ -12,7 +12,8 @@ The development runtime separates the Compiler, Watcher, Server, Protocol, and C
 
 | Change | Build scope | Browser behavior |
 | --- | --- | --- |
-| Page style | Affected page | Replace the stylesheet |
+| Bundled Page style | Affected page | Replace the stylesheet |
+| Inline Page style | Affected page | Reload the affected page |
 | Page body or script | Affected page and index data | Reload the affected page only |
 | Partial | Dependent pages | Reload affected pages only |
 | Layout | Dependent pages | Reload affected pages only |

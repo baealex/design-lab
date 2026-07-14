@@ -31,13 +31,14 @@ export async function compilePage(
         role: 'page',
         data: options.data,
     });
+    const pageScripts = [assets.script, compiled.inlineScript].filter(Boolean).join('\n');
     const composition = composeHtml(definition.metadata.layout, {
         title: assets.title,
         'global-style': options.globalAssets.style,
-        style: assets.style,
+        style: compiled.inlineStyle || assets.style,
         body: assets.body,
         'global-script': options.globalAssets.script,
-        script: assets.script,
+        script: pageScripts,
     }, {
         isDev,
         pageFile: options.file,
@@ -50,4 +51,3 @@ export async function compilePage(
         files: assets.files,
     };
 }
-

@@ -70,6 +70,17 @@ function sameMetadata(left: PageDefinition, right: PageDefinition): boolean {
         && left.metadata.description === right.metadata.description;
 }
 
+function sameAssetBlock(
+    left: PageDefinition['style'],
+    right: PageDefinition['style'],
+): boolean {
+    if (!left || !right) return left === right;
+    if (left.mode !== right.mode) return false;
+    return left.mode === 'bundle'
+        ? right.mode === 'bundle' && left.content === right.content
+        : right.mode === 'inline' && left.html === right.html;
+}
+
 export function getPages(): string[] {
     return [...pages];
 }
@@ -102,28 +113,36 @@ export function refreshPages(): { added: string[]; removed: string[] } {
     };
 }
 
-export function classifyPageChange(page: string): PageChange {
-    const file = pageFile(page);
-    const current = parsePage(fs.readFileSync(file, 'utf8'), file);
-    const previous = pageDefinitions.get(page);
+export function classifyDefinitionChange(
+    previous: PageDefinition | undefined,
+    current: PageDefinition,
+): PageChange {
     if (!previous) return { kind: 'page', metadataChanged: true };
 
     const metadataChanged = !sameMetadata(previous, current);
     const unchanged = !metadataChanged
-        && previous.style === current.style
+        && sameAssetBlock(previous.style, current.style)
         && previous.body === current.body
-        && previous.script === current.script;
+        && sameAssetBlock(previous.script, current.script);
     if (unchanged) return { kind: 'none', metadataChanged: false };
 
-    const styleOnly = !metadataChanged
-        && previous.style !== current.style
+    const bundledStyleOnly = !metadataChanged
+        && previous.style?.mode === 'bundle'
+        && current.style?.mode === 'bundle'
+        && !sameAssetBlock(previous.style, current.style)
         && previous.body === current.body
-        && previous.script === current.script;
+        && sameAssetBlock(previous.script, current.script);
 
     return {
-        kind: styleOnly ? 'style' : 'page',
+        kind: bundledStyleOnly ? 'style' : 'page',
         metadataChanged,
     };
+}
+
+export function classifyPageChange(page: string): PageChange {
+    const file = pageFile(page);
+    const current = parsePage(fs.readFileSync(file, 'utf8'), file);
+    return classifyDefinitionChange(pageDefinitions.get(page), current);
 }
 
 export async function preparePage(

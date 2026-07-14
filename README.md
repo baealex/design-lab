@@ -27,4 +27,4 @@ Run the compiler, linter, unit tests, and full production build together:
 npm run check
 ```
 
-Each page keeps its HTML, styles, and scripts in one file. Explicit `lab:template*` producer directives map those blocks to layout slots, with page styles and scripts emitted as hashed assets. Shared markup is assembled from layouts and partials at build time, while the development server rebuilds and refreshes only the affected pages.
+Each page keeps its HTML, styles, and scripts in one file. Explicit `lab:template*` producer directives map those blocks to layout slots, either preserving style and script elements inline or emitting them as hashed assets. Shared markup is assembled from layouts and partials at build time, while the development server rebuilds and refreshes only the affected pages.

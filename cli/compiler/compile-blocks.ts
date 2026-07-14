@@ -14,13 +14,20 @@ export interface CompiledBlocks {
     script: string;
 }
 
+export interface CompiledPageBlocks extends CompiledBlocks {
+    inlineStyle: string;
+    inlineScript: string;
+}
+
 export async function compileBlocks(
     page: PageDefinition,
     options: CompileOptions,
-): Promise<CompiledBlocks> {
+): Promise<CompiledPageBlocks> {
     let script = '';
     try {
-        script = page.script ? await minifyScript(page.script, { isDev: options.isDev }) : '';
+        script = page.script?.mode === 'bundle'
+            ? await minifyScript(page.script.content, { isDev: options.isDev })
+            : '';
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         throw new LabCompilerError({
@@ -33,9 +40,10 @@ export async function compileBlocks(
 
     return {
         title: page.metadata.title,
-        style: page.style ?? '',
+        style: page.style?.mode === 'bundle' ? page.style.content : '',
         body: page.body,
         script,
+        inlineStyle: page.style?.mode === 'inline' ? page.style.html : '',
+        inlineScript: page.script?.mode === 'inline' ? page.script.html : '',
     };
 }
-

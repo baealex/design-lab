@@ -5,6 +5,7 @@ import * as path from 'node:path';
 import { afterEach, test } from 'node:test';
 
 import {
+    compilePage,
     composeHtml,
     DependencyGraph,
     injectDevClient,
@@ -13,6 +14,9 @@ import {
     serializePageData,
     toLabBuildError,
 } from '../compiler';
+import { compileBlocks } from '../compiler/compile-blocks';
+import { prepareAssets } from '../compiler/emit-assets';
+import { classifyDefinitionChange } from '../compiler/project-builder';
 
 const temporaryDirectories: string[] = [];
 
@@ -53,9 +57,15 @@ test('Page parser maps annotated blocks to their matching template slots', () =>
             title: 'Example',
             description: 'Parser fixture',
         },
-        style: 'body > main { color: red; }',
+        style: {
+            mode: 'bundle',
+            content: 'body > main { color: red; }',
+        },
         body: '<main data-value="<raw>">Hello</main>',
-        script: 'var closing = "body";',
+        script: {
+            mode: 'bundle',
+            content: 'var closing = "body";',
+        },
     });
 });
 
@@ -77,7 +87,7 @@ test('Page parser requires an explicit producer directive for every top-level Pa
             '<!-- lab:template -->',
             '<body></body>',
         ].join('\n'), 'unmarked-style.html'),
-        /<style> must be preceded immediately by <!-- lab:template:bundle -->/,
+        /<style> must be preceded immediately by <!-- lab:template --> or <!-- lab:template:bundle -->/,
     );
 
     assert.throws(
@@ -87,26 +97,63 @@ test('Page parser requires an explicit producer directive for every top-level Pa
             '<body></body>',
             '<script></script>',
         ].join('\n'), 'unmarked-script.html'),
-        /<script> must be preceded immediately by <!-- lab:template:bundle -->/,
+        /<script> must be preceded immediately by <!-- lab:template --> or <!-- lab:template:bundle -->/,
     );
 });
 
-test('Page parser enforces template and bundle modes by target tag', () => {
+test('Page parser preserves inline style and script elements', async () => {
     const metadata = [
         '<!-- layout: base.html -->',
         '<!-- title: Example -->',
     ].join('\n');
 
-    assert.throws(
-        () => parsePage([
-            metadata,
-            '<!-- lab:template -->',
-            '<style></style>',
-            '<!-- lab:template -->',
-            '<body></body>',
-        ].join('\n'), 'inline-style.html'),
-        /<style> must use <!-- lab:template:bundle -->/,
-    );
+    const source = [
+        metadata,
+        '<!-- lab:template -->',
+        '<style media="screen">main { color: red; }</style>',
+        '<!-- lab:template -->',
+        '<body><main>Inline</main></body>',
+        '<!-- lab:template -->',
+        '<script type="module">const mode = "inline";</script>',
+    ].join('\n');
+    const definition = parsePage(source, 'inline.html');
+
+    assert.deepEqual(definition.style, {
+        mode: 'inline',
+        html: '<style media="screen">main { color: red; }</style>',
+    });
+    assert.deepEqual(definition.script, {
+        mode: 'inline',
+        html: '<script type="module">const mode = "inline";</script>',
+    });
+
+    const compiled = await compileBlocks(definition, { isDev: false, file: 'inline.html' });
+    assert.equal(compiled.style, '');
+    assert.equal(compiled.script, '');
+    assert.equal(compiled.inlineStyle, definition.style.html);
+    assert.equal(compiled.inlineScript, definition.script.html);
+
+    const assets = prepareAssets('inline', compiled, { isDev: false, role: 'page' });
+    assert.deepEqual(assets.files, []);
+    assert.equal(assets.style, '');
+    assert.equal(assets.script, '');
+
+    const page = await compilePage('inline-fixture', source, {
+        isDev: false,
+        globalAssets: { style: '', script: '' },
+        file: 'inline.html',
+    });
+    assert.deepEqual(page.files, []);
+    assert.match(page.html, /<style media="screen">main \{ color: red; \}<\/style>/);
+    assert.match(page.html, /<script type="module">const mode = "inline";<\/script>/);
+    assert.doesNotMatch(page.html, /lab:template|inline-fixture\.[a-f0-9]+\.(?:css|js)/);
+});
+
+test('Page parser rejects bundle mode for body and unknown modes', () => {
+    const metadata = [
+        '<!-- layout: base.html -->',
+        '<!-- title: Example -->',
+    ].join('\n');
 
     assert.throws(
         () => parsePage([
@@ -125,6 +172,37 @@ test('Page parser enforces template and bundle modes by target tag', () => {
         ].join('\n'), 'unknown-mode.html'),
         /Unknown Page template directive/,
     );
+});
+
+test('Development updates patch bundled styles and reload inline styles', () => {
+    function pageWithStyle(directive: string, color: string) {
+        return parsePage([
+            '<!-- layout: base.html -->',
+            '<!-- title: Example -->',
+            `<!-- ${directive} -->`,
+            `<style>main { color: ${color}; }</style>`,
+            '<!-- lab:template -->',
+            '<body><main>Example</main></body>',
+        ].join('\n'), 'style-update.html');
+    }
+
+    const bundledBefore = pageWithStyle('lab:template:bundle', 'red');
+    const bundledAfter = pageWithStyle('lab:template:bundle', 'blue');
+    assert.deepEqual(classifyDefinitionChange(bundledBefore, bundledAfter), {
+        kind: 'style',
+        metadataChanged: false,
+    });
+
+    const inlineBefore = pageWithStyle('lab:template', 'red');
+    const inlineAfter = pageWithStyle('lab:template', 'blue');
+    assert.deepEqual(classifyDefinitionChange(inlineBefore, inlineAfter), {
+        kind: 'page',
+        metadataChanged: false,
+    });
+    assert.deepEqual(classifyDefinitionChange(bundledBefore, inlineAfter), {
+        kind: 'page',
+        metadataChanged: false,
+    });
 });
 
 test('Page parser rejects malformed, duplicate, and nested producer declarations', () => {
@@ -167,6 +245,17 @@ test('Page parser rejects malformed, duplicate, and nested producer declarations
             '<!-- lab:template -->',
             '<body class="page"></body>',
         ].join('\n'), 'attributes.html'),
+        /cannot declare attributes/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template:bundle -->',
+            '<style media="screen"></style>',
+            '<!-- lab:template -->',
+            '<body></body>',
+        ].join('\n'), 'bundle-attributes.html'),
         /cannot declare attributes/,
     );
 
