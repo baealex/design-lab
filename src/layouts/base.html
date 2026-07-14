@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <lab:slot name="title"></lab:slot>
+    <link href="/assets/images/brand-mark.svg" rel="icon" type="image/svg+xml" />
+    <link href="/favicon.ico" rel="alternate icon" />
+    <lab:slot name="global-style"></lab:slot>
+    <lab:slot name="style"></lab:slot>
+</head>
+
+<body lang="ko">
+    <lab:slot name="body"></lab:slot>
+    <lab:use partial="page-tools"></lab:use>
+    <lab:slot name="global-script"></lab:slot>
+    <lab:slot name="script"></lab:slot>
+</body>
+
+</html>
+

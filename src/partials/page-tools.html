@@ -1,0 +1,61 @@
+<aside id="page-tools" class="page-tools" aria-label="Page tools" hidden>
+    <a id="view-code" class="page-tools__button" href="#" aria-label="View this page's source code on GitHub">
+        <svg class="page-tools__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m8 9-3 3 3 3m8-6 3 3-3 3m-2-10-4 14" />
+        </svg>
+        <span>VIEW CODE</span>
+    </a>
+    <button id="copy-prompt" class="page-tools__button" type="button" aria-haspopup="dialog" aria-controls="prompt-editor">
+        <svg class="page-tools__icon page-tools__icon--copy" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="8" y="8" width="11" height="11" rx="2" />
+            <path d="M16 8V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h1" />
+        </svg>
+        <svg class="page-tools__icon page-tools__icon--check" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m5 12 4 4L19 6" />
+        </svg>
+        <span id="copy-prompt-label">COPY PROMPT</span>
+    </button>
+</aside>
+<dialog id="prompt-editor" class="prompt-sheet" aria-labelledby="prompt-editor-title" aria-describedby="prompt-editor-description" lang="en">
+    <div class="prompt-sheet__surface">
+        <header class="prompt-sheet__header">
+            <div>
+                <span class="prompt-sheet__eyebrow">AI PROMPT</span>
+                <h2 id="prompt-editor-title" class="prompt-sheet__title">Review and edit</h2>
+                <p id="prompt-editor-description" class="prompt-sheet__description">
+                    Your changes will be copied exactly as shown.
+                </p>
+            </div>
+            <button id="prompt-editor-close" class="prompt-sheet__close" type="button" aria-label="Close prompt editor">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 6 12 12M18 6 6 18" />
+                </svg>
+            </button>
+        </header>
+        <div class="prompt-sheet__meta">
+            <label for="prompt-editor-content">PROMPT</label>
+            <span id="prompt-editor-count"></span>
+        </div>
+        <textarea id="prompt-editor-content" class="prompt-sheet__content" spellcheck="false"></textarea>
+        <footer class="prompt-sheet__footer">
+            <p class="prompt-sheet__shortcut">⌘ / Ctrl + Enter to copy</p>
+            <div class="prompt-sheet__actions">
+                <button id="prompt-editor-reset" class="prompt-sheet__button prompt-sheet__button--secondary" type="button">
+                    RESET
+                </button>
+                <button id="prompt-editor-copy" class="prompt-sheet__button prompt-sheet__button--primary" type="button" aria-keyshortcuts="Meta+Enter Control+Enter">
+                    <svg class="prompt-sheet__button-icon prompt-sheet__button-icon--copy" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="8" y="8" width="11" height="11" rx="2" />
+                        <path d="M16 8V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h1" />
+                    </svg>
+                    <svg class="prompt-sheet__button-icon prompt-sheet__button-icon--check" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m5 12 4 4L19 6" />
+                    </svg>
+                    <span id="prompt-editor-copy-label">COPY</span>
+                </button>
+            </div>
+        </footer>
+        <span id="prompt-editor-status" class="prompt-sheet__status" aria-live="polite"></span>
+    </div>
+</dialog>
+

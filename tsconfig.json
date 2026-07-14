@@ -3,6 +3,7 @@
     "allowJs": false,
     "baseUrl": "./cli",
     "outDir": "./cli/dist",
+    "resolveJsonModule": true,
     "strict": true,
   },
   "include": [

@@ -9,6 +9,7 @@
 
 ```bash
 npm i
+npx playwright install chromium
 npm run dev
 ```
 
@@ -18,4 +19,11 @@ npm run dev
 npm run build
 ```
 
+전체 검증:
+
+```bash
+npm run check
+```
+
 각 페이지는 HTML 파일 안에 스타일과 스크립트를 함께 작성합니다.
+공용 HTML은 빌드 타임 Layout과 Partial로 조립하며, 개발 서버는 변경된 범위만 다시 빌드하고 갱신합니다.

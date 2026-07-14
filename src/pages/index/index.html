@@ -867,17 +867,35 @@
 </body>
 
 <script>
-    var pages = $DATA.pages;
+    function readPageData() {
+        var element = document.getElementById('lab-page-data');
+        if (!element) return { pages: [] };
 
-    var designPages = pages
-        .filter(function(p) { return p.category === 'design' && p.year !== null; })
-        .sort(function(a, b) { return a.year - b.year; });
+        try {
+            return JSON.parse(element.textContent || '{}');
+        } catch (error) {
+            console.error('Could not parse Lab page data.', error);
+            return { pages: [] };
+        }
+    }
 
-    var conceptPages = pages
-        .filter(function(p) { return p.category === 'concept' && p.year !== null; })
-        .sort(function(a, b) { return a.year - b.year; });
+    var pages = [];
+    var designPages = [];
+    var conceptPages = [];
+    var allPages = [];
 
-    var allPages = designPages.concat(conceptPages);
+    function setPageCollections(nextPages) {
+        pages = Array.isArray(nextPages) ? nextPages : [];
+        designPages = pages
+            .filter(function(p) { return p.category === 'design' && p.year !== null; })
+            .sort(function(a, b) { return a.year - b.year; });
+        conceptPages = pages
+            .filter(function(p) { return p.category === 'concept' && p.year !== null; })
+            .sort(function(a, b) { return a.year - b.year; });
+        allPages = designPages.concat(conceptPages);
+    }
+
+    setPageCollections(readPageData().pages);
 
     var $iframe = document.getElementById('preview-iframe');
     var $previewCategory = document.getElementById('preview-category');
@@ -1170,6 +1188,25 @@
         var page = findPage(hash);
         if (page) {
             updatePreview(page);
+        }
+    });
+
+    window.addEventListener('lab:pages-update', function(event) {
+        if (!event.detail || !Array.isArray(event.detail.pages)) return;
+
+        var currentName = currentPage && currentPage.name;
+        setPageCollections(event.detail.pages);
+        $headerSummary.textContent = designPages.length + ' trends · ' + conceptPages.length + ' concepts';
+        $catalogTotal.textContent = allPages.length;
+        $catalogTotal.setAttribute('title', allPages.length + ' exhibits');
+        renderCards();
+
+        var nextPage = (currentName && findPage(currentName)) || allPages[0];
+        if (nextPage) {
+            if (!currentName || nextPage.name !== currentName) {
+                history.replaceState(null, '', '#' + nextPage.name);
+            }
+            updatePreview(nextPage);
         }
     });
 
