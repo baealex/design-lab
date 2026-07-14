@@ -23,6 +23,7 @@ setErrorHandler((error) => {
 
 (async () => {
     await builder.distDirInit();
+    await builder.makeGlobalAssets({ isDev: true });
 
     const debounceEvent = useDebounce<string>((value = '') => {
         clientManager.run(value);

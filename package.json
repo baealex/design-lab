@@ -29,6 +29,7 @@
     "eslint-plugin-html": "^7.1.0",
     "express": "^4.18.2",
     "fs-extra": "^11.2.0",
+    "sass": "^1.101.0",
     "socket.io": "^4.7.2",
     "terser": "^5.37.0",
     "ts-node": "^10.9.1",

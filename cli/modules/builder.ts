@@ -3,12 +3,13 @@ import * as path from 'path';
 import { watch } from 'chokidar';
 
 import { useSocketClient } from './hooks';
-import { buildPage } from './pipeline';
+import { buildGlobalAssets, buildPage, type GlobalAssets } from './pipeline';
 import { parsePage } from './pipeline/parse-page';
 
 export const SOURCE_PATH = './src';
 const PAGES_PATH = `${SOURCE_PATH}/pages`;
 const TEMPLATES_PATH = `${SOURCE_PATH}/templates`;
+const GLOBAL_PATH = `${SOURCE_PATH}/global`;
 const DIST_PATH = './dist';
 
 const INIT_OPTIONS = {
@@ -22,6 +23,14 @@ function scanPages(): string[] {
 }
 
 export let pages = scanPages();
+let globalAssets: GlobalAssets = {
+    style: '',
+    script: '',
+};
+
+export async function makeGlobalAssets({ isDev } = INIT_OPTIONS) {
+    globalAssets = await buildGlobalAssets({ isDev });
+}
 
 export async function distDirInit() {
     if (fs.existsSync(DIST_PATH)) {
@@ -70,6 +79,7 @@ export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
 
     const newIndex = await buildPage(pagePath, indexFile, {
         isDev,
+        globalAssets,
         data: {
             pages: pagesData,
         },
@@ -78,6 +88,10 @@ export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
     if (isDev) {
         await fs.writeFile(`${DIST_PATH}/${pagePath}.html`, useSocketClient(newIndex, `
             socket.on('onchange', function(path) {
+                if (path === '*') {
+                    location.reload();
+                    return;
+                }
                 if (path === 'index') {
                     path = '/';
                 }
@@ -99,7 +113,7 @@ export async function makePage(pagePath: string, { isDev } = INIT_OPTIONS) {
 }
 
 export function watchSrc(onChange: (pagePath: string) => void) {
-    const watcher = watch([PAGES_PATH, TEMPLATES_PATH, `${SOURCE_PATH}/public`], {
+    const watcher = watch([PAGES_PATH, TEMPLATES_PATH, GLOBAL_PATH, `${SOURCE_PATH}/public`], {
         ignoreInitial: true,
         awaitWriteFinish: {
             stabilityThreshold: 100,
@@ -113,13 +127,24 @@ export function watchSrc(onChange: (pagePath: string) => void) {
         const time = new Date();
         const relativePath = path.relative(SOURCE_PATH, filePath);
 
+        if (relativePath.startsWith('global/')) {
+            console.log(`Global asset changed: ${relativePath}, rebuilding all pages...`);
+            await makeGlobalAssets({ isDev: true });
+            await Promise.all(
+                pages.map(page => makePage(page, { isDev: true }))
+            );
+            console.log(`Rebuild all... : ${(new Date().getTime() - time.getTime()) / 1000}s`);
+            onChange('*');
+            return;
+        }
+
         if (relativePath.startsWith('templates/')) {
             console.log(`Template changed: ${relativePath}, rebuilding all pages...`);
             await Promise.all(
                 pages.map(page => makePage(page, { isDev: true }))
             );
             console.log(`Rebuild all... : ${(new Date().getTime() - time.getTime()) / 1000}s`);
-            onChange('index');
+            onChange('*');
             return;
         }
 
