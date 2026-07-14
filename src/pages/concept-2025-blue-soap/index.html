@@ -7,18 +7,20 @@
 
     :root {
         --bg: #f0f8ff;
-        --primary: #1194ff;
+        --primary-rgb: 17, 148, 255;
+        --primary: rgb(var(--primary-rgb));
         --primary-soft: #e6f7ff;
-        --accent: #00a5fe;
+        --accent: var(--primary);
         --text: #1d1d1f;
         --text-secondary: #6e6e73;
         --text-hint: #aeaeb2;
         --surface: rgba(255, 255, 255, 0.92);
-        --surface-border: rgba(17, 148, 255, 0.12);
-        --shadow-blue: rgba(17, 148, 255, 0.15);
-        --shadow-blue-lg: rgba(17, 148, 255, 0.25);
-        --success: #198754;
-        --danger: #ff4d4f;
+        --tint-blue: rgba(var(--primary-rgb), 0.03);
+        --badge-blue: rgba(var(--primary-rgb), 0.08);
+        --focus-blue: rgba(var(--primary-rgb), 0.1);
+        --surface-border: rgba(var(--primary-rgb), 0.12);
+        --shadow-blue: rgba(var(--primary-rgb), 0.15);
+        --shadow-blue-lg: rgba(var(--primary-rgb), 0.25);
         --radius: 24px;
         --radius-pill: 9999px;
         --radius-sm: 12px;
@@ -42,38 +44,6 @@
         pointer-events: none;
     }
 
-    .bg-bubbles {
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        overflow: hidden;
-    }
-
-    .bubble {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(17, 148, 255, 0.06);
-        border: 1px solid rgba(17, 148, 255, 0.06);
-        bottom: -120px;
-        animation: bubble-rise var(--dur) ease-in infinite;
-        animation-delay: var(--delay);
-    }
-
-    @keyframes bubble-rise {
-        0% {
-            transform: translateX(0) scale(1);
-            opacity: 0;
-        }
-        10% { opacity: 1; }
-        90% { opacity: 0.6; }
-        100% {
-            transform: translateX(var(--drift)) scale(0.6);
-            opacity: 0;
-            bottom: 110%;
-        }
-    }
-
     .layout {
         position: relative;
         z-index: 1;
@@ -84,8 +54,6 @@
 
     .panel {
         background: var(--surface);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--surface-border);
         border-radius: var(--radius);
         box-shadow: 0 4px 20px var(--shadow-blue);
@@ -114,7 +82,7 @@
         font-size: 5.5rem;
         font-weight: 700;
         letter-spacing: 4px;
-        background: linear-gradient(135deg, #1194ff 0%, #00a5fe 100%);
+        background: linear-gradient(135deg, rgba(17, 148, 255, 1) 0%, rgba(17, 148, 255, 0.72) 100%);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -200,7 +168,7 @@
 
     /* Code block */
     .code-block {
-        background: rgba(17, 148, 255, 0.03);
+        background: var(--tint-blue);
         border-radius: 16px;
         padding: 18px 22px;
         font-family: 'SF Mono', 'Fira Code', monospace;
@@ -232,7 +200,7 @@
 
     .shadow-card.blue-shadow {
         box-shadow: 0 8px 30px rgba(17, 148, 255, 0.2);
-        border: 1px solid rgba(17, 148, 255, 0.08);
+        border: 1px solid var(--surface-border);
     }
 
     .shadow-card.black-shadow {
@@ -268,7 +236,7 @@
     }
 
     .shadow-card.blue-shadow .shadow-card-btn {
-        background: linear-gradient(135deg, #1194ff, #00a5fe);
+        background: linear-gradient(135deg, rgba(17, 148, 255, 1), rgba(17, 148, 255, 0.78));
         color: #fff;
         box-shadow: 0 4px 16px rgba(17, 148, 255, 0.3);
     }
@@ -350,7 +318,7 @@
         height: 200px;
         left: 10%;
         top: 0;
-        background: linear-gradient(135deg, rgba(17, 148, 255, 0.08), rgba(17, 148, 255, 0.03));
+        background: linear-gradient(135deg, var(--badge-blue), var(--tint-blue));
         border: 1px solid rgba(17, 148, 255, 0.06);
         color: var(--text-hint);
     }
@@ -462,6 +430,7 @@
     }
 
     .float-item {
+        width: 100%;
         padding: 28px 16px;
         text-align: center;
         border-radius: var(--radius);
@@ -472,6 +441,8 @@
         box-shadow: 0 4px 20px var(--shadow-blue);
         cursor: pointer;
         transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
     }
 
     .float-item:hover {
@@ -483,12 +454,32 @@
         transform: translateY(-2px) scale(0.98);
     }
 
+    .float-item.selected {
+        box-shadow: 0 0 0 3px var(--focus-blue), 0 12px 36px var(--shadow-blue-lg);
+    }
+
     .float-item-icon {
-        font-size: 1.4rem;
-        margin-bottom: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        margin: 0 auto 10px;
+        color: var(--primary);
+    }
+
+    .float-item-icon svg {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
     }
 
     .float-item-label {
+        display: block;
         font-size: 0.78rem;
         font-weight: 600;
         color: var(--text);
@@ -496,16 +487,17 @@
     }
 
     .float-item-sub {
+        display: block;
         font-size: 0.65rem;
         color: var(--text-hint);
     }
 
-    .pill-row {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 20px;
+    .float-feedback {
+        min-height: 1.5em;
+        margin-top: 14px;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-align: center;
     }
 
     .pill-btn {
@@ -531,13 +523,17 @@
     }
 
     .pill-btn.primary {
-        background: linear-gradient(135deg, #1194ff, #00a5fe);
+        background: linear-gradient(135deg, rgba(17, 148, 255, 1), rgba(17, 148, 255, 0.78));
         color: #ffffff;
         box-shadow: 0 4px 16px var(--shadow-blue);
     }
 
     .pill-btn.primary:hover {
         box-shadow: 0 8px 28px var(--shadow-blue-lg);
+    }
+
+    .pill-btn.primary.saved {
+        box-shadow: 0 0 0 4px rgba(17, 148, 255, 0.12), 0 8px 28px var(--shadow-blue-lg);
     }
 
     .pill-btn.outline {
@@ -585,7 +581,7 @@
 
     .wash-header {
         padding: 16px 24px;
-        background: rgba(17, 148, 255, 0.03);
+        background: var(--tint-blue);
         border-bottom: 1px solid var(--surface-border);
         display: flex;
         align-items: center;
@@ -657,7 +653,7 @@
 
     .soap-input:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(0, 165, 254, 0.1), 0 2px 8px rgba(17, 148, 255, 0.15);
+        box-shadow: 0 0 0 3px var(--focus-blue), 0 2px 8px var(--shadow-blue);
     }
 
     .soap-switch-row {
@@ -691,7 +687,7 @@
         height: 20px;
         border-radius: 50%;
         background: #ffffff;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 1px 3px rgba(17, 148, 255, 0.18);
         transition: left 250ms var(--ease);
         pointer-events: none;
     }
@@ -709,11 +705,11 @@
     .wash-alert {
         padding: 12px 16px;
         border-radius: 8px;
-        border-left: 4px solid var(--success);
-        background: rgba(25, 135, 84, 0.08);
+        border-left: 4px solid var(--primary);
+        background: var(--badge-blue);
         font-size: 0.82rem;
         font-weight: 500;
-        color: var(--success);
+        color: var(--primary);
         margin-top: 4px;
         display: none;
     }
@@ -741,49 +737,6 @@
         font-size: 0.78rem;
     }
 
-    /* Terminal */
-    .mini-terminal {
-        background: rgba(17, 148, 255, 0.03);
-        border: 1px solid var(--surface-border);
-        border-radius: 16px;
-        padding: 16px 22px;
-        font-family: 'SF Mono', 'Fira Code', monospace;
-        font-size: 0.72rem;
-        line-height: 1.9;
-        color: var(--text);
-        text-align: left;
-        margin-top: 20px;
-    }
-
-    .mini-terminal-dots {
-        display: flex;
-        gap: 6px;
-        margin-bottom: 12px;
-    }
-
-    .mini-terminal-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-    }
-
-    .mini-terminal-dot:nth-child(1) { background: rgba(17, 148, 255, 0.2); }
-    .mini-terminal-dot:nth-child(2) { background: rgba(17, 148, 255, 0.15); }
-    .mini-terminal-dot:nth-child(3) { background: rgba(17, 148, 255, 0.1); }
-
-    .mini-prompt { color: var(--primary); user-select: none; }
-    .mini-cmd { color: var(--text-secondary); }
-    .mini-result { color: var(--text-hint); }
-    .mini-cursor {
-        display: inline-block;
-        animation: cursor-blink 1s step-end infinite;
-    }
-
-    @keyframes cursor-blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
-    }
-
     /* Anti-pattern list */
     .anti-card { padding: 28px 32px; }
 
@@ -805,8 +758,27 @@
     }
 
     .anti-list li:last-child { border-bottom: none; }
-    .anti-list .x { color: var(--danger); font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
-    .anti-list .o { color: var(--primary); font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+    .anti-list .x,
+    .anti-list .o {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        color: var(--primary);
+        flex-shrink: 0;
+    }
+
+    .anti-list .x svg,
+    .anti-list .o svg {
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
 
     /* Manifesto */
     .manifesto {
@@ -830,7 +802,6 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .bubble { animation: none !important; display: none; }
         .float-item, .shadow-card-btn, .pill-btn { transition: none !important; }
     }
 
@@ -842,8 +813,6 @@
         .wash-row { grid-template-columns: 1fr; }
 
         .float-pool { grid-template-columns: 1fr 1fr; }
-
-        .pill-row { flex-direction: column; align-items: center; }
 
         .intro-card,
         .anti-card { padding: 24px; }
@@ -864,19 +833,6 @@
 
 <body>
     <div class="bg"></div>
-    <div class="bg-bubbles">
-        <div class="bubble" style="width: 20px; height: 20px; left: 8%; --dur: 10s; --delay: 0s; --drift: 15px"></div>
-        <div class="bubble" style="width: 14px; height: 14px; left: 22%; --dur: 12s; --delay: 2s; --drift: -10px"></div>
-        <div class="bubble" style="width: 24px; height: 24px; left: 38%; --dur: 14s; --delay: 1s; --drift: 20px"></div>
-        <div class="bubble" style="width: 10px; height: 10px; left: 52%; --dur: 9s; --delay: 4s; --drift: -8px"></div>
-        <div class="bubble" style="width: 18px; height: 18px; left: 65%; --dur: 11s; --delay: 3s; --drift: 12px"></div>
-        <div class="bubble" style="width: 12px; height: 12px; left: 78%; --dur: 13s; --delay: 0.5s; --drift: -15px"></div>
-        <div class="bubble" style="width: 22px; height: 22px; left: 88%; --dur: 15s; --delay: 5s; --drift: 10px"></div>
-        <div class="bubble" style="width: 16px; height: 16px; left: 45%; --dur: 10s; --delay: 6s; --drift: -12px"></div>
-        <div class="bubble" style="width: 8px; height: 8px; left: 15%; --dur: 8s; --delay: 3.5s; --drift: 6px"></div>
-        <div class="bubble" style="width: 26px; height: 26px; left: 72%; --dur: 16s; --delay: 7s; --drift: -18px"></div>
-    </div>
-
     <div class="layout">
 
         <!-- Hero -->
@@ -932,12 +888,12 @@
                 </div>
             </div>
             <div class="hue-strip">
-                <div class="hue-cell" style="background: #1194ff; color: #fff;">100%<span class="hue-cell-role">Buttons</span></div>
-                <div class="hue-cell" style="background: rgba(17,148,255,0.6); color: #fff;">60%<span class="hue-cell-role">Links</span></div>
-                <div class="hue-cell" style="background: rgba(17,148,255,0.25); color: var(--primary);">25%<span class="hue-cell-role">Borders</span></div>
-                <div class="hue-cell" style="background: rgba(17,148,255,0.15); color: var(--primary);">15%<span class="hue-cell-role">Shadows</span></div>
-                <div class="hue-cell" style="background: rgba(17,148,255,0.08); color: var(--primary);">8%<span class="hue-cell-role">Badges</span></div>
-                <div class="hue-cell" style="background: rgba(17,148,255,0.03); color: var(--text-hint);">3%<span class="hue-cell-role">Background</span></div>
+                <div class="hue-cell" style="background: var(--primary); color: #fff;">100%<span class="hue-cell-role">Buttons</span></div>
+                <div class="hue-cell" style="background: rgba(var(--primary-rgb), 0.6); color: #fff;">60%<span class="hue-cell-role">Links</span></div>
+                <div class="hue-cell" style="background: var(--surface-border); color: var(--primary);">12%<span class="hue-cell-role">Borders</span></div>
+                <div class="hue-cell" style="background: var(--shadow-blue); color: var(--primary);">15%<span class="hue-cell-role">Shadows</span></div>
+                <div class="hue-cell" style="background: var(--badge-blue); color: var(--primary);">8%<span class="hue-cell-role">Badges</span></div>
+                <div class="hue-cell" style="background: var(--tint-blue); color: var(--text-hint);">3%<span class="hue-cell-role">Background</span></div>
             </div>
             <div class="code-block">
                 <span class="cmt">/* One hue &mdash; all layers from the same RGB */</span><br>
@@ -1008,30 +964,33 @@
                 The blue shadow doubles as an affordance. Interactive elements lift
                 slightly and spread that shadow; static surfaces do not move.
                 Rounded forms support the soap metaphor, but motion is reserved for
-                things a person can actually use.
+                things a person can actually use. The controls below perform actions;
+                the tags beneath them remain still.
             </p>
             <div class="float-pool">
-                <div class="float-item">
-                    <div class="float-item-icon">☁️</div>
-                    <div class="float-item-label">Cards</div>
-                    <div class="float-item-sub">Hover to lift</div>
-                </div>
-                <div class="float-item">
-                    <div class="float-item-icon">💊</div>
-                    <div class="float-item-label">Buttons</div>
-                    <div class="float-item-sub">Pill-shaped</div>
-                </div>
-                <div class="float-item">
-                    <div class="float-item-icon">🫧</div>
-                    <div class="float-item-label">Tags</div>
-                    <div class="float-item-sub">Soft corners</div>
-                </div>
+                <button class="float-item" type="button" data-feedback="Files are ready to sync." aria-pressed="false">
+                    <span class="float-item-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 11a8 8 0 0 0-14.9-4M5 3v4h4M4 13a8 8 0 0 0 14.9 4M19 21v-4h-4"/></svg>
+                    </span>
+                    <span class="float-item-label">Sync files</span>
+                    <span class="float-item-sub">Prepare cloud backup</span>
+                </button>
+                <button class="float-item" type="button" data-feedback="Invite link copied." aria-pressed="false">
+                    <span class="float-item-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+                    </span>
+                    <span class="float-item-label">Invite teammate</span>
+                    <span class="float-item-sub">Copy a secure link</span>
+                </button>
+                <button class="float-item" type="button" data-feedback="A private tunnel is ready." aria-pressed="false">
+                    <span class="float-item-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                    </span>
+                    <span class="float-item-label">Create tunnel</span>
+                    <span class="float-item-sub">Start a private route</span>
+                </button>
             </div>
-            <div class="pill-row">
-                <button class="pill-btn primary">Get Started</button>
-                <button class="pill-btn outline">Learn More</button>
-                <button class="pill-btn primary" disabled>Disabled</button>
-            </div>
+            <p class="float-feedback" id="float-feedback" aria-live="polite">Choose an action to see its result.</p>
             <div class="tag-row">
                 <span class="tag">Tunnel</span>
                 <span class="tag">Secure</span>
@@ -1091,20 +1050,6 @@
                     <button class="pill-btn primary" id="btn-save">Save Changes</button>
                 </div>
             </div>
-            <div class="mini-terminal">
-                <div class="mini-terminal-dots">
-                    <div class="mini-terminal-dot"></div>
-                    <div class="mini-terminal-dot"></div>
-                    <div class="mini-terminal-dot"></div>
-                </div>
-                <span class="mini-prompt">$ </span><span class="mini-cmd">blue-soap --tokens</span><br>
-                <span class="mini-result">&nbsp;&nbsp;primary &nbsp;&nbsp;&nbsp;#1194ff</span><br>
-                <span class="mini-result">&nbsp;&nbsp;surface &nbsp;&nbsp;&nbsp;rgba(255,255,255,0.92)</span><br>
-                <span class="mini-result">&nbsp;&nbsp;shadow &nbsp;&nbsp;&nbsp;&nbsp;rgba(17,148,255,0.15)</span><br>
-                <span class="mini-result">&nbsp;&nbsp;blur &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12px</span><br>
-                <span class="mini-result">&nbsp;&nbsp;radius &nbsp;&nbsp;&nbsp;&nbsp;24 / 9999 / 12</span><br>
-                <span class="mini-prompt">$ </span><span class="mini-cursor">_</span>
-            </div>
         </section>
 
         <div class="divider"></div>
@@ -1115,16 +1060,16 @@
             <h2 class="section-title">When One Hue Is Enough</h2>
             <div class="panel anti-card">
                 <ul class="anti-list">
-                    <li><span class="o">&#x2713;</span> Suits focused utilities, settings, onboarding, and calm single-brand products</li>
-                    <li><span class="x">&#x2717;</span> Avoid when many semantic categories must be distinguished by color</li>
-                    <li><span class="x">&#x2717;</span> Blue text on everything &mdash; body text stays dark, blue is accent only</li>
-                    <li><span class="x">&#x2717;</span> Black shadows on a blue palette &mdash; shadows match the hue</li>
-                    <li><span class="x">&#x2717;</span> Blur on every card &mdash; transparency is optional, not the concept</li>
-                    <li><span class="x">&#x2717;</span> Hover effects on static elements &mdash; only interactive things float</li>
-                    <li><span class="o">&#x2713;</span> One hue at varying opacities builds every layer</li>
-                    <li><span class="o">&#x2713;</span> Pale surfaces that preserve the shared hue</li>
-                    <li><span class="o">&#x2713;</span> Float-up hover only on interactive elements</li>
-                    <li><span class="o">&#x2713;</span> Blue-tinted shadows that belong to the palette</li>
+                    <li><span class="o" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12 4 4L19 6"/></svg></span> Suits focused utilities, settings, onboarding, and calm single-brand products</li>
+                    <li><span class="x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></span> Avoid when many semantic categories must be distinguished by color</li>
+                    <li><span class="x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></span> Blue text on everything &mdash; body text stays dark, blue is accent only</li>
+                    <li><span class="x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></span> Black shadows on a blue palette &mdash; shadows match the hue</li>
+                    <li><span class="x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></span> Blur on every card &mdash; transparency is optional, not the concept</li>
+                    <li><span class="x" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></span> Hover effects on static elements &mdash; only interactive things float</li>
+                    <li><span class="o" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12 4 4L19 6"/></svg></span> One hue at varying opacities builds every layer</li>
+                    <li><span class="o" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12 4 4L19 6"/></svg></span> Pale surfaces that preserve the shared hue</li>
+                    <li><span class="o" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12 4 4L19 6"/></svg></span> Float-up hover only on interactive elements</li>
+                    <li><span class="o" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12 4 4L19 6"/></svg></span> Blue-tinted shadows that belong to the palette</li>
                 </ul>
             </div>
         </section>
@@ -1145,6 +1090,19 @@
 </body>
 
 <script>
+    /* Action-only floating surfaces */
+    var floatFeedback = document.getElementById('float-feedback');
+    document.querySelectorAll('.float-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.float-item').forEach(function(other) {
+                var selected = other === item;
+                other.classList.toggle('selected', selected);
+                other.setAttribute('aria-pressed', selected ? 'true' : 'false');
+            });
+            floatFeedback.textContent = item.getAttribute('data-feedback');
+        });
+    });
+
     /* Toggle switches */
     document.querySelectorAll('.soap-switch').forEach(function(sw) {
         sw.addEventListener('click', function() {
@@ -1162,11 +1120,11 @@
 
         btn.addEventListener('click', function() {
             btn.textContent = 'Saved!';
-            btn.style.background = 'linear-gradient(135deg, #198754, #157347)';
+            btn.classList.add('saved');
             alert.classList.add('show');
             setTimeout(function() {
                 btn.textContent = original;
-                btn.style.background = '';
+                btn.classList.remove('saved');
                 alert.classList.remove('show');
             }, 2000);
         });

@@ -19,8 +19,8 @@
         --glow-shadow: rgba(140, 80, 255, 0.4);
         --glow-ambient: rgba(140, 80, 255, 0.06);
         --glow-line: rgba(140, 80, 255, 0.3);
-        --danger: #ff5c5c;
-        --success: #5cffaa;
+        --danger: rgba(200, 160, 255, 0.45);
+        --success: var(--glow-light);
     }
 
     body {
@@ -37,22 +37,13 @@
         z-index: 0;
     }
 
-    .bg-noise {
-        position: absolute;
-        inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-        opacity: 0.035;
-        mix-blend-mode: overlay;
-        pointer-events: none;
-    }
-
     .bg-gradient {
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(ellipse at 15% 50%, rgba(140, 40, 180, 0.12) 0%, transparent 55%),
-            radial-gradient(ellipse at 85% 25%, rgba(160, 60, 190, 0.06) 0%, transparent 45%),
-            radial-gradient(ellipse at 50% 90%, rgba(120, 30, 160, 0.08) 0%, transparent 45%);
+            radial-gradient(ellipse at 15% 50%, rgba(140, 80, 255, 0.12) 0%, transparent 55%),
+            radial-gradient(ellipse at 85% 25%, rgba(140, 80, 255, 0.06) 0%, transparent 45%),
+            radial-gradient(ellipse at 50% 90%, rgba(140, 80, 255, 0.08) 0%, transparent 45%);
     }
 
     .bg-vignette {
@@ -60,95 +51,6 @@
         inset: 0;
         background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
         pointer-events: none;
-    }
-
-    .bg-orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(100px);
-        pointer-events: none;
-    }
-
-    .bg-orb--1 {
-        width: 600px;
-        height: 600px;
-        background: rgba(140, 50, 180, 0.1);
-        top: -150px;
-        left: -150px;
-        animation: orb-pulse-1 6s ease-in-out infinite;
-    }
-
-    .bg-orb--2 {
-        width: 500px;
-        height: 500px;
-        background: rgba(160, 70, 200, 0.08);
-        bottom: -120px;
-        right: -120px;
-        animation: orb-pulse-2 8s ease-in-out infinite;
-    }
-
-    .bg-orb--3 {
-        width: 300px;
-        height: 300px;
-        background: rgba(180, 80, 210, 0.06);
-        top: 45%;
-        left: 55%;
-        animation: orb-pulse-3 10s ease-in-out infinite;
-    }
-
-    @keyframes orb-pulse-1 {
-        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-        50% { transform: translate(50px, 30px) scale(1.2); opacity: 0.8; }
-    }
-
-    @keyframes orb-pulse-2 {
-        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-        50% { transform: translate(-40px, -25px) scale(1.15); opacity: 0.7; }
-    }
-
-    @keyframes orb-pulse-3 {
-        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-        33% { transform: translate(-25px, 20px) scale(1.1); opacity: 0.5; }
-        66% { transform: translate(20px, -15px) scale(0.9); opacity: 0.4; }
-    }
-
-    .bg-particle {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(180, 120, 255, 0.6);
-        box-shadow: 0 0 6px rgba(180, 120, 255, 0.4);
-        pointer-events: none;
-        left: var(--x);
-        top: var(--y);
-        width: var(--size);
-        height: var(--size);
-        animation: particle-float var(--dur) ease-in-out infinite;
-        animation-delay: var(--delay);
-    }
-
-    @keyframes particle-float {
-        0%, 100% { transform: translate(0, 0); opacity: 0.3; }
-        25% { transform: translate(10px, -15px); opacity: 0.7; }
-        50% { transform: translate(-5px, -25px); opacity: 0.5; }
-        75% { transform: translate(8px, -10px); opacity: 0.8; }
-    }
-
-    .bg-line {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(to right, transparent, rgba(140, 80, 255, 0.3) 20%, rgba(200, 120, 255, 0.5) 50%, rgba(140, 80, 255, 0.3) 80%, transparent);
-        box-shadow: 0 0 20px rgba(140, 80, 255, 0.2);
-        opacity: 0.4;
-        animation: line-pulse 4s ease-in-out infinite;
-        pointer-events: none;
-    }
-
-    @keyframes line-pulse {
-        0%, 100% { opacity: 0.15; }
-        50% { opacity: 0.4; }
     }
 
     .layout {
@@ -198,12 +100,6 @@
         -webkit-text-fill-color: transparent;
         filter: drop-shadow(0 0 30px rgba(140, 80, 255, 0.5));
         position: relative;
-        animation: hero-breathe 3s ease-in-out infinite;
-    }
-
-    @keyframes hero-breathe {
-        0%, 100% { filter: drop-shadow(0 0 30px rgba(140, 80, 255, 0.4)); }
-        50% { filter: drop-shadow(0 0 50px rgba(140, 80, 255, 0.7)); }
     }
 
     .hero-title::after {
@@ -235,28 +131,6 @@
         margin-top: -12px;
         margin-bottom: 80px;
         line-height: 1;
-    }
-
-    .flicker {
-        animation: glow-flicker 4s infinite;
-    }
-
-    @keyframes glow-flicker {
-        0%, 100% { opacity: 1; }
-        4% { opacity: 0.2; }
-        6% { opacity: 1; }
-        8% { opacity: 0.4; }
-        9% { opacity: 1; }
-        50% { opacity: 1; }
-        52% { opacity: 0.3; }
-        53% { opacity: 1; }
-        54% { opacity: 0.6; }
-        55% { opacity: 1; }
-        78% { opacity: 1; }
-        80% { opacity: 0.15; }
-        81% { opacity: 0.8; }
-        82% { opacity: 0.1; }
-        83.5% { opacity: 1; }
     }
 
     .hero-tagline {
@@ -415,23 +289,11 @@
     .glow-card.bright .glow-card-text {
         color: #fff;
         text-shadow: 0 0 12px rgba(200, 160, 255, 0.8), 0 0 40px var(--glow-shadow), 0 0 80px rgba(140, 80, 255, 0.25);
-        animation: text-breathe 2s ease-in-out infinite;
-    }
-
-    @keyframes text-breathe {
-        0%, 100% { text-shadow: 0 0 12px rgba(200, 160, 255, 0.6), 0 0 40px var(--glow-shadow); }
-        50% { text-shadow: 0 0 16px rgba(200, 160, 255, 1), 0 0 50px rgba(140, 80, 255, 0.6), 0 0 100px rgba(140, 80, 255, 0.2); }
     }
 
     .glow-card.bright .glow-line {
         background: var(--glow-bright);
         box-shadow: 0 0 8px rgba(200, 160, 255, 0.6), 0 0 24px var(--glow-shadow);
-        animation: line-breathe 2s ease-in-out infinite;
-    }
-
-    @keyframes line-breathe {
-        0%, 100% { box-shadow: 0 0 8px rgba(200, 160, 255, 0.5), 0 0 20px var(--glow-shadow); }
-        50% { box-shadow: 0 0 12px rgba(200, 160, 255, 0.8), 0 0 30px rgba(140, 80, 255, 0.5); }
     }
 
     /* Code block */
@@ -495,12 +357,6 @@
     .compare-panel.dark .compare-text {
         color: var(--glow-light);
         text-shadow: 0 0 10px var(--glow-shadow), 0 0 36px var(--glow-shadow), 0 0 72px rgba(140, 80, 255, 0.15);
-        animation: glow-text-pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes glow-text-pulse {
-        0%, 100% { text-shadow: 0 0 10px var(--glow-shadow), 0 0 36px var(--glow-shadow); }
-        50% { text-shadow: 0 0 14px rgba(180, 120, 255, 0.8), 0 0 44px rgba(140, 80, 255, 0.6), 0 0 80px rgba(140, 80, 255, 0.2); }
     }
 
     .compare-panel.dark .compare-sub { color: var(--text-dim); }
@@ -565,73 +421,124 @@
         box-shadow: none;
     }
 
-    /* Dashboard */
-    .dash-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
+    /* Working example: a single-task broadcast console */
+    .session-console {
+        overflow: hidden;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .dash-card { padding: 28px; }
+    .session-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--surface-border);
+        background: rgba(140, 80, 255, 0.025);
+    }
 
-    .dash-label {
-        font-size: 0.65rem;
-        text-transform: uppercase;
+    .session-brand {
+        font-size: 0.7rem;
+        font-weight: 600;
         letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+    }
+
+    .session-status {
+        padding: 4px 10px;
+        border: 1px solid rgba(140, 80, 255, 0.22);
+        border-radius: 20px;
+        color: var(--glow-light);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .session-body {
+        padding: 28px;
+    }
+
+    .session-kicker {
         color: var(--text-dim);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .session-title {
+        margin-top: 8px;
+        color: var(--glow-light);
+        font-size: 2rem;
+        font-weight: 600;
+        text-shadow: 0 0 16px rgba(140, 80, 255, 0.2);
+    }
+
+    .session-copy {
+        max-width: 520px;
+        margin-top: 8px;
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        font-weight: 300;
+        line-height: 1.7;
+    }
+
+    .session-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    .session-detail {
+        padding: 12px 14px;
+        border: 1px solid rgba(140, 80, 255, 0.1);
+        border-radius: 8px;
+        background: rgba(140, 80, 255, 0.025);
+    }
+
+    .session-detail span,
+    .session-detail strong {
+        display: block;
+    }
+
+    .session-detail span {
+        color: var(--text-dim);
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .session-detail strong {
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 0.78rem;
         font-weight: 500;
     }
 
-    .dash-value {
-        font-size: 2.4rem;
-        font-weight: 700;
-        margin-top: 10px;
-        color: var(--glow-light);
-        text-shadow: 0 0 16px rgba(140, 80, 255, 0.3), 0 0 40px rgba(140, 80, 255, 0.1);
+    .session-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 24px;
     }
 
-    .dash-card {
-        transition: box-shadow 0.5s ease, border-color 0.5s ease;
+    .session-feedback {
+        color: var(--text-muted);
+        font-size: 0.72rem;
+        line-height: 1.5;
     }
 
-    .dash-card:hover {
-        border-color: rgba(160, 100, 255, 0.2);
-        box-shadow: 0 0 30px rgba(140, 80, 255, 0.08), 0 0 60px rgba(140, 80, 255, 0.04);
+    .session-console.live {
+        border-color: rgba(200, 160, 255, 0.35);
+        box-shadow: 0 0 36px rgba(140, 80, 255, 0.12), 0 0 72px rgba(140, 80, 255, 0.05);
     }
 
-    .dash-sub {
-        font-size: 0.7rem;
-        color: var(--text-dim);
-        margin-top: 6px;
-    }
-
-    .dash-trend {
-        font-size: 0.7rem;
-        margin-top: 6px;
-        font-weight: 600;
-        color: var(--success);
-    }
-
-    .dash-bar {
-        height: 2px;
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 1px;
-        margin-top: 20px;
-        overflow: hidden;
-    }
-
-    .dash-bar-fill {
-        height: 100%;
-        border-radius: 1px;
-        background: linear-gradient(90deg, var(--glow-deep), var(--glow), var(--glow-light));
-        box-shadow: 0 0 8px var(--glow-shadow), 0 0 16px rgba(140, 80, 255, 0.15);
-        transition: width 0.8s ease;
-        animation: bar-glow 3s ease-in-out infinite;
-    }
-
-    @keyframes bar-glow {
-        0%, 100% { box-shadow: 0 0 6px var(--glow-shadow); }
-        50% { box-shadow: 0 0 10px var(--glow-shadow), 0 0 20px rgba(140, 80, 255, 0.2); }
+    .session-console.live .session-status,
+    .session-console.live .session-title {
+        color: #fff;
+        text-shadow: 0 0 12px rgba(200, 160, 255, 0.65), 0 0 36px var(--glow-shadow);
     }
 
     /* Anti-pattern list */
@@ -695,24 +602,27 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .bg-orb, .bg-particle, .bg-line,
-        .glow-card.bright .glow-card-text,
-        .glow-card.bright .glow-line,
-        .compare-panel.dark .compare-text,
-        .dash-bar-fill,
-        .hero-title,
-        .flicker { animation: none !important; }
+        .glow-btn,
+        .session-console,
+        .glow-link { transition: none !important; }
     }
 
     @media screen and (max-width: 600px) {
         .hero-title,
         .hero-reflection { font-size: 3rem; letter-spacing: 8px; }
 
+        .hero-title::after { width: 100%; }
+
         .glow-demo,
         .compare-row,
-        .dash-grid { grid-template-columns: 1fr; }
+        .session-details { grid-template-columns: 1fr; }
 
         .btn-demo { flex-direction: column; }
+
+        .session-actions {
+            align-items: stretch;
+            flex-direction: column;
+        }
 
         .intro-card,
         .anti-card { padding: 24px 24px; }
@@ -721,27 +631,16 @@
 
 <body>
     <div class="bg">
-        <div class="bg-noise"></div>
         <div class="bg-gradient"></div>
-        <div class="bg-orb bg-orb--1"></div>
-        <div class="bg-orb bg-orb--2"></div>
-        <div class="bg-orb bg-orb--3"></div>
         <div class="bg-vignette"></div>
-        <div class="bg-particle" style="--x: 12%; --y: 18%; --size: 3px; --dur: 8s; --delay: 0s"></div>
-        <div class="bg-particle" style="--x: 88%; --y: 32%; --size: 2px; --dur: 12s; --delay: 1s"></div>
-        <div class="bg-particle" style="--x: 72%; --y: 72%; --size: 4px; --dur: 10s; --delay: 2s"></div>
-        <div class="bg-particle" style="--x: 22%; --y: 62%; --size: 2px; --dur: 9s; --delay: 0.5s"></div>
-        <div class="bg-particle" style="--x: 48%; --y: 12%; --size: 3px; --dur: 11s; --delay: 3s"></div>
-        <div class="bg-particle" style="--x: 92%; --y: 52%; --size: 2px; --dur: 7s; --delay: 1.5s"></div>
-        <div class="bg-line"></div>
     </div>
     <div class="layout">
 
         <!-- Hero -->
         <header class="hero">
             <div class="hero-badge">Personal Study</div>
-            <h1 class="hero-title">Ne<span class="flicker">o</span>n</h1>
-            <div class="hero-reflection" aria-hidden="true">Ne<span class="flicker">o</span>n</div>
+            <h1 class="hero-title">Neon</h1>
+            <div class="hero-reflection" aria-hidden="true">Neon</div>
             <p class="hero-tagline">
                 Not colored. Not highlighted.<br>
                 Lit from within.
@@ -830,16 +729,16 @@
         <!-- Principle 03 -->
         <section class="section">
             <div class="section-label">Rule 03</div>
-            <h2 class="section-title">One Color. All the Hierarchy.</h2>
+            <h2 class="section-title">One Hue, Clear States</h2>
             <p class="section-desc">
-                The temptation is to add pink for warm, blue for cool, green for success.
-                Resist. A single color family at different intensities
-                creates a more cohesive, more <em>atmospheric</em> system than any rainbow.
+                Success, warning, and availability do not introduce new hues.
+                The same violet is paired with explicit language, while intensity only
+                distinguishes <em>quiet, available, and current</em> states.
             </p>
             <div class="btn-demo">
-                <button class="glow-btn primary">Primary</button>
-                <button class="glow-btn">Secondary</button>
-                <button class="glow-btn" disabled>Disabled</button>
+                <button class="glow-btn primary">Start session</button>
+                <button class="glow-btn">Copy invite</button>
+                <button class="glow-btn" disabled>Unavailable</button>
             </div>
         </section>
 
@@ -848,24 +747,38 @@
         <!-- All Together -->
         <section class="section">
             <div class="section-label">Working Example</div>
-            <h2 class="section-title">Night Dashboard</h2>
+            <h2 class="section-title">Night Broadcast</h2>
             <p class="section-desc">
-                Glow as a system, not a gimmick.
-                The intensity carries the role &mdash; bright for pulse, dim for context.
-                Every element is the same color. The darkness is the grid.
+                A host console for one task: taking a listening room live.
+                Quiet violet frames the context; the current action becomes bright;
+                explicit copy confirms the state without introducing another hue.
             </p>
-            <div class="dash-grid">
-                <div class="panel dash-card">
-                    <div class="dash-label">Revenue</div>
-                    <div class="dash-value" id="dash-revenue">$48.2k</div>
-                    <div class="dash-trend" id="dash-trend">&#9650; 12.3%</div>
-                    <div class="dash-bar"><div class="dash-bar-fill" style="width: 72%"></div></div>
+            <div class="panel session-console" id="session-console">
+                <div class="session-topbar">
+                    <span class="session-brand">Signal Room</span>
+                    <span class="session-status" id="session-status">Standby</span>
                 </div>
-                <div class="panel dash-card">
-                    <div class="dash-label">Uptime</div>
-                    <div class="dash-value">99.97%</div>
-                    <div class="dash-sub">Last 30 days</div>
-                    <div class="dash-bar"><div class="dash-bar-fill" style="width: 99%"></div></div>
+                <div class="session-body">
+                    <div class="session-kicker">Tonight's listening room</div>
+                    <div class="session-title">Quiet Signals</div>
+                    <p class="session-copy">
+                        A focused 30-minute broadcast for invited listeners. Review the
+                        room details, then take the session live when the host is ready.
+                    </p>
+                    <div class="session-details">
+                        <div class="session-detail">
+                            <span>Starts</span>
+                            <strong>11:30 PM</strong>
+                        </div>
+                        <div class="session-detail">
+                            <span>Audience</span>
+                            <strong>Invite only</strong>
+                        </div>
+                    </div>
+                    <div class="session-actions">
+                        <button class="glow-btn primary" id="session-toggle" type="button" aria-pressed="false">Go live</button>
+                        <p class="session-feedback" id="session-feedback" aria-live="polite">Room is ready. Listeners cannot hear it yet.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -883,11 +796,10 @@
                     <li><span class="x">&#x2717;</span> text-shadow: 0 0 99px on everything</li>
                     <li><span class="x">&#x2717;</span> Rainbow RGB on every surface &mdash; one color family only</li>
                     <li><span class="x">&#x2717;</span> Glow without darkness to justify it</li>
-                    <li><span class="x">&#x2717;</span> Cheap cyberpunk cosplay &mdash; all grime, no system</li>
-                    <li><span class="o">&#x2713;</span> Glow that simulates actual light emission</li>
-                    <li><span class="o">&#x2713;</span> Intensity as the only hierarchy dial</li>
-                    <li><span class="o">&#x2713;</span> Pitch darkness as a deliberate design surface</li>
-                    <li><span class="o">&#x2713;</span> One color &mdash; the constraint is the power</li>
+                    <li><span class="x">&#x2717;</span> Decorative grime or particles that do not communicate hierarchy</li>
+                    <li><span class="o">&#x2713;</span> One violet hue paired with explicit state labels</li>
+                    <li><span class="o">&#x2713;</span> Brightness reserved for the current action</li>
+                    <li><span class="o">&#x2713;</span> Dark canvas with readable, quiet body copy</li>
                 </ul>
             </div>
         </section>
@@ -908,10 +820,18 @@
 </body>
 
 <script>
-    setInterval(function() {
-        var val = (42 + Math.random() * 12).toFixed(1);
-        document.getElementById('dash-revenue').textContent = '$' + val + 'k';
-        var trend = (8 + Math.random() * 10).toFixed(1);
-        document.getElementById('dash-trend').textContent = '\u25B2 ' + trend + '%';
-    }, 4000);
+    var sessionConsole = document.getElementById('session-console');
+    var sessionToggle = document.getElementById('session-toggle');
+    var sessionStatus = document.getElementById('session-status');
+    var sessionFeedback = document.getElementById('session-feedback');
+
+    sessionToggle.addEventListener('click', function() {
+        var isLive = sessionConsole.classList.toggle('live');
+        sessionToggle.setAttribute('aria-pressed', String(isLive));
+        sessionToggle.textContent = isLive ? 'End session' : 'Go live';
+        sessionStatus.textContent = isLive ? 'Live now' : 'Standby';
+        sessionFeedback.textContent = isLive
+            ? 'Broadcast is live. Invited listeners can now join.'
+            : 'Room is ready. Listeners cannot hear it yet.';
+    });
 </script>

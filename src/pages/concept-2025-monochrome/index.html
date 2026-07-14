@@ -51,57 +51,6 @@
         -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 20%, transparent 70%);
     }
 
-    .bg-orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(120px);
-        pointer-events: none;
-        opacity: 0.4;
-    }
-
-    .bg-orb--1 {
-        width: 500px;
-        height: 500px;
-        background: rgba(0, 0, 0, 0.03);
-        top: -100px;
-        right: -100px;
-        animation: orb-drift-1 12s ease-in-out infinite;
-    }
-
-    .bg-orb--2 {
-        width: 400px;
-        height: 400px;
-        background: rgba(0, 0, 0, 0.025);
-        bottom: -80px;
-        left: -80px;
-        animation: orb-drift-2 15s ease-in-out infinite;
-    }
-
-    .bg-orb--3 {
-        width: 300px;
-        height: 300px;
-        background: rgba(0, 0, 0, 0.02);
-        top: 40%;
-        left: 30%;
-        animation: orb-drift-3 18s ease-in-out infinite;
-    }
-
-    @keyframes orb-drift-1 {
-        0%, 100% { transform: translate(0, 0); }
-        50% { transform: translate(-30px, 20px); }
-    }
-
-    @keyframes orb-drift-2 {
-        0%, 100% { transform: translate(0, 0); }
-        50% { transform: translate(25px, -15px); }
-    }
-
-    @keyframes orb-drift-3 {
-        0%, 100% { transform: translate(0, 0); }
-        33% { transform: translate(15px, -10px); }
-        66% { transform: translate(-10px, 8px); }
-    }
-
     /* Layout */
     .layout {
         position: relative;
@@ -165,11 +114,9 @@
         border-color: var(--gray-600);
     }
 
-    /* Panel (glass surface) */
+    /* Grounded panel: blur is reserved for floating tools */
     .panel {
-        background: var(--surface);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: var(--white);
         border: 1px solid var(--surface-border);
         border-radius: 16px;
         box-shadow: 0 1px 3px var(--shadow-sm), 0 4px 12px var(--shadow-sm);
@@ -505,59 +452,227 @@
         line-height: 1.5;
     }
 
-    /* All Together: mini card */
-    .demo-posts-card {
-        padding: 24px 28px;
+    /* All Together: publishing workspace */
+    .mono-workspace {
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 82px;
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        background: var(--white);
+        box-shadow: 0 4px 20px var(--shadow-md);
     }
 
-    .demo-posts-title {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--gray-800);
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid var(--surface-border);
-    }
-
-    .demo-post-item {
+    .workspace-topbar {
         display: flex;
         align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-        transition: background 150ms var(--ease);
-        cursor: default;
+        justify-content: space-between;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--surface-border);
+        background: var(--white);
     }
 
-    .demo-post-item:last-child {
-        border-bottom: none;
+    .workspace-brand {
+        color: var(--gray-700);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
     }
 
-    .demo-post-item:hover {
-        background: rgba(0, 0, 0, 0.01);
-    }
-
-    .demo-post-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--gray-300);
-        margin-right: 14px;
-        flex-shrink: 0;
-    }
-
-    .demo-post-text {
-        font-size: 0.82rem;
+    .workspace-state {
+        padding: 4px 11px;
+        border: 1px solid var(--gray-200);
+        border-radius: 9999px;
+        background: var(--gray-100);
         color: var(--gray-600);
-        font-weight: 400;
-        flex: 1;
+        font-size: 0.65rem;
+        font-weight: 600;
+        transition: background 150ms var(--ease), color 150ms var(--ease);
     }
 
-    .demo-post-date {
-        font-size: 0.68rem;
+    .workspace-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(160px, 0.65fr);
+        gap: 16px;
+        padding: 20px;
+        background: var(--gray-50);
+    }
+
+    .story-preview {
+        overflow: hidden;
+        border: 1px solid var(--surface-border);
+        border-radius: 12px;
+        background: var(--white);
+        box-shadow: 0 2px 10px var(--shadow-sm);
+    }
+
+    .story-art {
+        position: relative;
+        height: 168px;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at 76% 25%, #f9c74f 0 14%, transparent 15%),
+            radial-gradient(circle at 30% 70%, #43aa8b 0 22%, transparent 23%),
+            linear-gradient(135deg, #577590 0%, #277da1 38%, #f9844a 100%);
+    }
+
+    .story-art::before,
+    .story-art::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.32);
+    }
+
+    .story-art::before {
+        width: 100px;
+        height: 100px;
+        top: 18px;
+        left: -28px;
+    }
+
+    .story-art::after {
+        width: 74px;
+        height: 74px;
+        right: 28px;
+        bottom: -24px;
+    }
+
+    .story-art-label {
+        position: absolute;
+        z-index: 1;
+        left: 14px;
+        bottom: 12px;
+        padding: 4px 9px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--gray-800);
+        font-size: 0.6rem;
+        font-weight: 600;
+    }
+
+    .story-copy {
+        padding: 18px;
+    }
+
+    .story-kicker {
         color: var(--gray-400);
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .story-title {
+        margin-top: 6px;
+        color: var(--gray-800);
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .story-excerpt {
+        margin-top: 7px;
+        color: var(--gray-500);
+        font-size: 0.72rem;
         font-weight: 300;
-        margin-left: 12px;
-        flex-shrink: 0;
+        line-height: 1.6;
+    }
+
+    .workspace-inspector {
+        align-self: start;
+        padding: 16px;
+        border: 1px solid var(--surface-border);
+        border-radius: 12px;
+        background: var(--white);
+        transition: opacity 240ms var(--ease), transform 240ms var(--ease);
+    }
+
+    .inspector-title {
+        margin-bottom: 10px;
+        color: var(--gray-800);
+        font-size: 0.72rem;
+        font-weight: 600;
+    }
+
+    .inspector-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 0;
+        border-top: 1px solid var(--gray-100);
+        color: var(--gray-500);
+        font-size: 0.66rem;
+    }
+
+    .inspector-row strong {
+        color: var(--gray-700);
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .workspace-feedback {
+        position: absolute;
+        left: 20px;
+        bottom: 27px;
+        max-width: 260px;
+        color: var(--gray-500);
+        font-size: 0.68rem;
+        line-height: 1.5;
+    }
+
+    .workspace-toolbar {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        display: flex;
+        gap: 6px;
+        padding: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.76);
+        box-shadow: 0 10px 32px var(--shadow-lg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .workspace-tool {
+        padding: 8px 12px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--gray-600);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.68rem;
+        font-weight: 600;
+        transition: background 150ms var(--ease), color 150ms var(--ease), transform 150ms var(--ease);
+    }
+
+    .workspace-tool:hover,
+    .workspace-tool.active {
+        background: var(--gray-100);
+        color: var(--gray-800);
+    }
+
+    .workspace-tool.primary {
+        background: var(--gray-800);
+        color: var(--white);
+    }
+
+    .workspace-tool:active {
+        transform: scale(0.98);
+    }
+
+    .mono-workspace.is-preview .workspace-inspector {
+        opacity: 0.38;
+        transform: translateX(6px);
+    }
+
+    .mono-workspace.is-published .workspace-state {
+        background: var(--gray-800);
+        color: var(--white);
     }
 
     /* Anti-pattern list */
@@ -638,12 +753,12 @@
 
     /* Responsive */
     @media (prefers-reduced-motion: reduce) {
-        .bg-orb { animation: none !important; }
-
         .radius-card,
         .swatch,
         .mono-btn,
-        .demo-post-item {
+        .workspace-state,
+        .workspace-inspector,
+        .workspace-tool {
             transition: none !important;
         }
     }
@@ -689,6 +804,28 @@
         .anti-card {
             padding: 24px 24px;
         }
+
+        .mono-workspace {
+            padding-bottom: 132px;
+        }
+
+        .workspace-body {
+            grid-template-columns: 1fr;
+        }
+
+        .workspace-feedback {
+            right: 20px;
+            bottom: 76px;
+            max-width: none;
+            text-align: center;
+        }
+
+        .workspace-toolbar {
+            right: 14px;
+            bottom: 14px;
+            left: 14px;
+            justify-content: center;
+        }
     }
 
     @media screen and (max-width: 400px) {
@@ -701,9 +838,6 @@
 <body>
     <div class="bg">
         <div class="bg-dots"></div>
-        <div class="bg-orb bg-orb--1"></div>
-        <div class="bg-orb bg-orb--2"></div>
-        <div class="bg-orb bg-orb--3"></div>
     </div>
     <div class="layout">
 
@@ -901,26 +1035,37 @@
             <div class="section-label">Working Example</div>
             <h2 class="section-title">White Surface, Gray System</h2>
             <p class="section-desc">
-                A card that needs no color to communicate.
-                Title weight pulls the eye. Gray text steps back. Subtle borders contain.
-                The content &mdash; whatever it may be &mdash; is the only thing that gets to be vivid.
+                A publishing workspace puts all four rules in one screen. The shell stays
+                grayscale, the author's artwork keeps its color, component radii describe
+                role, and a floating toolbar confirms preview and publish states.
             </p>
-            <div class="panel demo-posts-card">
-                <div class="demo-posts-title">Recent Posts</div>
-                <div class="demo-post-item">
-                    <div class="demo-post-dot"></div>
-                    <div class="demo-post-text">Why monochrome interfaces feel faster than colorful ones</div>
-                    <div class="demo-post-date">Feb 14</div>
+            <div class="mono-workspace" id="publishing-demo">
+                <div class="workspace-topbar">
+                    <span class="workspace-brand">Draftroom</span>
+                    <span class="workspace-state" id="workspace-state">Draft</span>
                 </div>
-                <div class="demo-post-item">
-                    <div class="demo-post-dot"></div>
-                    <div class="demo-post-text">The semantic weight of border-radius in component systems</div>
-                    <div class="demo-post-date">Feb 9</div>
+                <div class="workspace-body">
+                    <article class="story-preview">
+                        <div class="story-art" role="img" aria-label="Colorful abstract artwork in blue, orange, yellow, and green">
+                            <span class="story-art-label">Author artwork</span>
+                        </div>
+                        <div class="story-copy">
+                            <div class="story-kicker">Photo essay</div>
+                            <h3 class="story-title">A quiet walk after rain</h3>
+                            <p class="story-excerpt">Color belongs to the story. The editor around it stays neutral and lets the work set the mood.</p>
+                        </div>
+                    </article>
+                    <aside class="workspace-inspector" aria-label="Publishing settings">
+                        <h3 class="inspector-title">Publishing</h3>
+                        <div class="inspector-row"><span>Audience</span><strong>Everyone</strong></div>
+                        <div class="inspector-row"><span>Section</span><strong>Journal</strong></div>
+                        <div class="inspector-row"><span>URL</span><strong>/after-rain</strong></div>
+                    </aside>
                 </div>
-                <div class="demo-post-item">
-                    <div class="demo-post-dot"></div>
-                    <div class="demo-post-text">Content-first design: letting images and code be the palette</div>
-                    <div class="demo-post-date">Jan 28</div>
+                <p class="workspace-feedback" id="workspace-feedback" aria-live="polite">Draft saved. Preview the story or publish when it is ready.</p>
+                <div class="workspace-toolbar" role="toolbar" aria-label="Story actions">
+                    <button class="workspace-tool" id="preview-toggle" type="button" aria-pressed="false">Preview</button>
+                    <button class="workspace-tool primary" id="publish-toggle" type="button" aria-pressed="false">Publish</button>
                 </div>
             </div>
         </section>
@@ -954,3 +1099,30 @@
         </footer>
     </div>
 </body>
+
+<script>
+    var publishingDemo = document.getElementById('publishing-demo');
+    var previewToggle = document.getElementById('preview-toggle');
+    var publishToggle = document.getElementById('publish-toggle');
+    var workspaceState = document.getElementById('workspace-state');
+    var workspaceFeedback = document.getElementById('workspace-feedback');
+
+    previewToggle.addEventListener('click', function() {
+        var isPreview = publishingDemo.classList.toggle('is-preview');
+        previewToggle.classList.toggle('active', isPreview);
+        previewToggle.setAttribute('aria-pressed', String(isPreview));
+        workspaceFeedback.textContent = isPreview
+            ? 'Preview is on. Editing controls have stepped back.'
+            : 'Preview is off. Publishing controls are available again.';
+    });
+
+    publishToggle.addEventListener('click', function() {
+        var isPublished = publishingDemo.classList.toggle('is-published');
+        publishToggle.setAttribute('aria-pressed', String(isPublished));
+        publishToggle.textContent = isPublished ? 'Unpublish' : 'Publish';
+        workspaceState.textContent = isPublished ? 'Published' : 'Draft';
+        workspaceFeedback.textContent = isPublished
+            ? 'Story published. The status, control label, and shell changed together.'
+            : 'Story returned to draft.';
+    });
+</script>

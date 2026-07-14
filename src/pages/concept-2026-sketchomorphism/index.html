@@ -307,6 +307,62 @@
         flex-shrink: 0;
     }
 
+    /* Rule 03: state changes the mark */
+    .state-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .state-sample {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        border: 2px solid var(--border);
+        border-radius: 8px 3px 9px 4px / 4px 9px 3px 8px;
+        background: var(--surface);
+    }
+
+    .state-sample-mark {
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        flex-shrink: 0;
+        border: 2px solid var(--border);
+        border-radius: 5px 2px 6px 3px / 3px 6px 2px 5px;
+        font-family: 'Gaegu', cursive;
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+
+    .state-sample strong,
+    .state-sample-copy {
+        display: block;
+    }
+
+    .state-sample strong {
+        font-family: 'Gaegu', cursive;
+        font-size: 1.05rem;
+    }
+
+    .state-sample-copy {
+        margin-top: 2px;
+        color: var(--fg-muted);
+        font-size: 0.78rem;
+        line-height: 1.45;
+    }
+
+    .state-sample.done .state-sample-mark {
+        background: var(--pastel-green);
+    }
+
+    .state-sample.done strong {
+        color: var(--fg-muted);
+        text-decoration: line-through;
+    }
+
     /* Progress bar */
     .progress-wrap {
         margin-top: 12px;
@@ -333,24 +389,6 @@
         background: var(--pastel-green);
         border-radius: 125px 10px 115px 10px / 10px 115px 10px 125px;
         transition: width 0.4s ease;
-    }
-
-    /* Ruled lines card */
-    .ruled {
-        background-image: repeating-linear-gradient(
-            transparent,
-            transparent 31px,
-            #e8e4df 31px,
-            #e8e4df 32px
-        );
-        background-position: 0 20px;
-        padding-top: 20px;
-    }
-
-    .ruled-text {
-        font-size: 0.95rem;
-        line-height: 32px;
-        white-space: pre-wrap;
     }
 
     /* Anti-patterns list */
@@ -447,21 +485,11 @@
     .sketch-tape::before { left: 4px; }
     .sketch-tape::after { right: 4px; }
 
-    .sketch-tape--right {
-        left: auto;
-        right: 16px;
-        transform: rotate(3deg);
-    }
-
-    .sketch-tape--left {
-        left: 16px;
-        transform: rotate(-3deg);
-    }
-
     /* Responsive */
     @media screen and (max-width: 520px) {
         .demo-grid,
-        .note-grid {
+        .note-grid,
+        .state-demo {
             grid-template-columns: 1fr;
         }
 
@@ -498,7 +526,7 @@
         </header>
 
         <!-- Intro -->
-        <div class="sketch-card" data-outline>
+        <div class="sketch-card" data-outline="card">
             <div class="sketch-tape"></div>
             <svg class="sketch-border" aria-hidden="true"></svg>
             <p class="intro-copy">
@@ -524,17 +552,17 @@
                 adds the feel of a pencil passing over the same edge twice.
             </p>
             <div class="demo-grid">
-                <div class="demo-card" data-outline>
+                <div class="demo-card" data-outline="card">
                     <svg class="sketch-border" aria-hidden="true"></svg>
                     <div class="demo-label">Card</div>
                     <div class="demo-sublabel">Soft, steady outline</div>
                 </div>
-                <div class="demo-card" data-outline>
+                <div class="demo-card" data-outline="control">
                     <svg class="sketch-border" aria-hidden="true"></svg>
                     <div class="demo-label">Control</div>
                     <div class="demo-sublabel">Tighter edge rhythm</div>
                 </div>
-                <div class="demo-card" data-outline>
+                <div class="demo-card" data-outline="note">
                     <svg class="sketch-border" aria-hidden="true"></svg>
                     <div class="demo-label">Note</div>
                     <div class="demo-sublabel">Looser expressive edge</div>
@@ -554,19 +582,45 @@
             <div class="note-grid" id="note-grid"></div>
         </section>
 
-        <!-- Principle 03: Responds to You -->
+        <!-- Rule 03: State changes the mark -->
+        <section class="section">
+            <div class="section-label">Rule 03</div>
+            <h2 class="section-title">Marks Respond to State</h2>
+            <p class="section-desc">
+                State changes the fill, mark, and text treatment without redrawing the
+                component into a new shape. The outline stays familiar; the hand-made
+                details make the result visible.
+            </p>
+            <div class="state-demo">
+                <div class="state-sample">
+                    <span class="state-sample-mark" aria-hidden="true"></span>
+                    <div>
+                        <strong>Open task</strong>
+                        <span class="state-sample-copy">Quiet outline, readable label</span>
+                    </div>
+                </div>
+                <div class="state-sample done">
+                    <span class="state-sample-mark" aria-hidden="true">~</span>
+                    <div>
+                        <strong>Completed task</strong>
+                        <span class="state-sample-copy">Same outline, marked result</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Working example -->
         <section class="section">
             <div class="section-label">Working Example</div>
-            <h2 class="section-title">Responds to You</h2>
+            <h2 class="section-title">A Task List That Answers Back</h2>
             <p class="section-desc">
                 Go ahead, <span class="pencil-link" data-underline>click the tasks</span>.
-                Check them off. Watch the progress bar fill up.
-                The task list keeps familiar controls while the drawn details respond
-                to state. The sketch is expression; the interaction remains ordinary.
+                Each familiar control keeps its assigned outline while the mark, label,
+                and progress summary respond together.
             </p>
 
             <!-- Todo list -->
-            <div class="sketch-card" data-outline>
+            <div class="sketch-card" data-outline="card">
                 <svg class="sketch-border" aria-hidden="true"></svg>
                 <div class="card-title">Today's Tasks</div>
                 <div id="todo-list"></div>
@@ -580,19 +634,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Diary -->
-            <div class="sketch-card ruled" data-outline>
-                <div class="sketch-tape--left sketch-tape"></div>
-                <div class="sketch-tape--right sketch-tape"></div>
-                <svg class="sketch-border" aria-hidden="true"></svg>
-                <div class="ruled-text">Dear diary,
-Today I gave each component role
-its own outline and kept it stable.
-
-Sometimes the best interfaces are
-the ones that feel human.</div>
-            </div>
         </section>
 
         <div class="sketch-divider"><svg aria-hidden="true"></svg></div>
@@ -601,8 +642,7 @@ the ones that feel human.</div>
         <section class="section">
             <div class="section-label">Limits</div>
             <h2 class="section-title">Keep the Structure Precise</h2>
-            <div class="sketch-card" data-outline>
-                <div class="sketch-tape"></div>
+            <div class="sketch-card" data-outline="card">
                 <svg class="sketch-border" aria-hidden="true"></svg>
                 <ul class="anti-list">
                     <li><span class="x">&#x2717;</span> Wobbly lines with no intent — imperfection without purpose</li>
@@ -818,7 +858,17 @@ the ones that feel human.</div>
         }).join('');
     }
 
-    document.querySelectorAll('[data-outline]').forEach(function (el, index) {
-        new StableOutline(el, index % 4);
+    var outlineVariants = {
+        card: 0,
+        control: 1,
+        note: 2,
+    };
+
+    document.querySelectorAll('[data-outline]').forEach(function (el) {
+        var role = el.getAttribute('data-outline');
+        var variant = Object.prototype.hasOwnProperty.call(outlineVariants, role)
+            ? outlineVariants[role]
+            : outlineVariants.card;
+        new StableOutline(el, variant);
     });
 </script>

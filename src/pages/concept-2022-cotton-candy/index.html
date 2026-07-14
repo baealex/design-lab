@@ -112,9 +112,9 @@
     }
 
     .hero-title {
-        font-size: 5rem;
+        font-size: 4.4rem;
         font-weight: 900;
-        letter-spacing: 4px;
+        letter-spacing: 1px;
         line-height: 1;
         background: linear-gradient(135deg, var(--pink), var(--violet), var(--sky));
         -webkit-background-clip: text;
@@ -547,6 +547,47 @@
         border-top: 1px solid rgba(0, 0, 0, 0.06);
     }
 
+    .purchase-status {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 64px;
+        margin-bottom: 20px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: var(--bg-warm);
+        border: 1px solid var(--pink-light);
+    }
+
+    .purchase-status-icon {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: var(--surface);
+        color: var(--pink);
+        font-weight: 900;
+        box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .purchase-status-title {
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--text);
+    }
+
+    .purchase-status-copy {
+        margin-top: 2px;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+    }
+
+    .ticket.selected {
+        box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--pink-light);
+    }
+
     .booth-footer-label {
         font-size: 0.78rem;
         font-weight: 600;
@@ -668,7 +709,7 @@
         pointer-events: none;
     }
 
-    /* Party mode bounce */
+    /* Finite celebration preview */
     @keyframes party-bounce {
         0%, 100% { transform: translateY(0) rotate(0deg); }
         25% { transform: translateY(-6px) rotate(-1deg); }
@@ -676,18 +717,15 @@
         75% { transform: translateY(-4px) rotate(1deg); }
     }
 
-    .party-mode .play-card-interactive,
-    .party-mode .ticket {
-        animation: party-bounce 1.2s var(--bounce) infinite;
+    .party-mode .booth .ticket {
+        animation: party-bounce 0.9s var(--bounce) 1 both;
     }
 
-    .party-mode .play-card-interactive:nth-child(2),
-    .party-mode .ticket:nth-child(2) {
+    .party-mode .booth .ticket:nth-child(2) {
         animation-delay: 0.15s;
     }
 
-    .party-mode .play-card-interactive:nth-child(3),
-    .party-mode .ticket:nth-child(3) {
+    .party-mode .booth .ticket:nth-child(3) {
         animation-delay: 0.3s;
     }
 
@@ -706,7 +744,7 @@
     }
 
     @media screen and (max-width: 600px) {
-        .hero-title { font-size: 3rem; }
+        .hero-title { font-size: 2.65rem; }
 
         .celebration-grid,
         .compare-grid,
@@ -735,7 +773,7 @@
         <!-- 1. Hero -->
         <header class="hero">
             <div class="hero-badge">Concept Study</div>
-            <h1 class="hero-title">CANDY</h1>
+            <h1 class="hero-title">Cotton Candy</h1>
             <p class="hero-tagline">
                 Meaningful moments earn a celebration.<br>
                 Cotton Candy turns success feedback into joy.
@@ -918,9 +956,16 @@
                         <button class="ticket-buy">Buy</button>
                     </div>
                 </div>
+                <div class="purchase-status" id="purchase-status" aria-live="polite">
+                    <span class="purchase-status-icon" id="purchase-status-icon" aria-hidden="true">&#x1F3AB;</span>
+                    <div>
+                        <div class="purchase-status-title" id="purchase-status-title">Ready when you are</div>
+                        <div class="purchase-status-copy" id="purchase-status-copy">Choose one experience to see the confirmed ticket here.</div>
+                    </div>
+                </div>
                 <div class="booth-footer">
-                    <span class="booth-footer-label">Party Mode</span>
-                    <button class="play-toggle" id="party-toggle" role="switch" aria-checked="false" aria-label="Toggle party mode"></button>
+                    <span class="booth-footer-label">Celebration Preview</span>
+                    <button class="play-toggle" id="party-toggle" type="button" aria-pressed="false" aria-label="Preview celebration feedback"></button>
                 </div>
             </div>
         </section>
@@ -936,16 +981,11 @@
                 <ul class="rules-list">
                     <li><span class="o">&#x2713;</span> Good for games, events, onboarding, achievements, and personal milestones</li>
                     <li><span class="x">&#x2717;</span> Avoid for banking, medical, legal, destructive, or high-frequency workflows</li>
-                    <li><span class="x">&#x2717;</span> Celebrate everything &mdash; only meaningful actions earn effects</li>
-                    <li><span class="x">&#x2717;</span> Bounce on non-interactive elements &mdash; motion is affordance, not decoration</li>
-                    <li><span class="x">&#x2717;</span> Infinite particles &mdash; always cap, always auto-remove</li>
-                    <li><span class="x">&#x2717;</span> Skip reduced-motion &mdash; always provide static text fallback</li>
-                    <li><span class="x">&#x2717;</span> Every card looks the same &mdash; interactive and static must feel different</li>
-                    <li><span class="x">&#x2717;</span> Festival aesthetic for serious contexts &mdash; banking, medical, legal</li>
-                    <li><span class="o">&#x2713;</span> Interactive elements get color borders + lift on hover &mdash; clear affordance</li>
                     <li><span class="o">&#x2713;</span> Confetti on success, fireworks on milestones</li>
-                    <li><span class="o">&#x2713;</span> Particle budgets &mdash; 50 confetti max, 15 fireworks max</li>
-                    <li><span class="o">&#x2713;</span> Bounce easing on interactive elements only &mdash; <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code></li>
+                    <li><span class="o">&#x2713;</span> Keep routine navigation quiet and reserve bounce for interactive controls</li>
+                    <li><span class="x">&#x2717;</span> Do not celebrate every click or animate static decoration</li>
+                    <li><span class="x">&#x2717;</span> Do not leave particles running; cap and remove every effect</li>
+                    <li><span class="x">&#x2717;</span> Never make motion the only confirmation of success</li>
                 </ul>
             </div>
         </section>
@@ -1232,11 +1272,24 @@
        5. Ticket buy buttons (fireworks)
        ======================================== */
     var ticketBuyBtns = document.querySelectorAll('.ticket-buy');
+    var purchaseStatusIcon = document.getElementById('purchase-status-icon');
+    var purchaseStatusTitle = document.getElementById('purchase-status-title');
+    var purchaseStatusCopy = document.getElementById('purchase-status-copy');
     ticketBuyBtns.forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             var rect = btn.getBoundingClientRect();
             var cx = rect.left + rect.width / 2;
+            var ticket = btn.closest('.ticket');
+            var ticketName = ticket.querySelector('.ticket-name').textContent;
+            var ticketPrice = ticket.querySelector('.ticket-price').textContent;
+
+            document.querySelectorAll('.ticket').forEach(function(item) {
+                item.classList.toggle('selected', item === ticket);
+            });
+            purchaseStatusIcon.textContent = '\u2713';
+            purchaseStatusTitle.textContent = ticketName + ' confirmed';
+            purchaseStatusCopy.textContent = ticketPrice + ' · Your ticket is ready for Play Fest 2022.';
 
             if (reducedMotion) {
                 btn.textContent = 'Purchased!';
@@ -1251,13 +1304,26 @@
     });
 
     /* ========================================
-       6. Party Mode toggle
+       6. Finite celebration preview
        ======================================== */
     var partyToggle = document.getElementById('party-toggle');
+    var partyTimer = null;
     partyToggle.addEventListener('click', function() {
-        this.classList.toggle('on');
-        var isOn = this.classList.contains('on');
-        this.setAttribute('aria-checked', String(isOn));
-        document.body.classList.toggle('party-mode', isOn);
+        clearTimeout(partyTimer);
+        partyToggle.classList.remove('on');
+        document.body.classList.remove('party-mode');
+
+        /* Restart one finite preview even when the button is pressed repeatedly. */
+        void document.body.offsetWidth;
+        partyToggle.classList.add('on');
+        partyToggle.setAttribute('aria-pressed', 'true');
+        document.body.classList.add('party-mode');
+
+        partyTimer = setTimeout(function() {
+            partyToggle.classList.remove('on');
+            partyToggle.setAttribute('aria-pressed', 'false');
+            document.body.classList.remove('party-mode');
+            partyTimer = null;
+        }, reducedMotion ? 300 : 1300);
     });
 </script>
