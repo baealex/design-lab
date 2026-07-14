@@ -16,6 +16,7 @@ Page는 `src/pages/{slug}/index.html` 한 파일입니다. metadata, style, body
     /* Page-only styles */
 </style>
 
+<!-- lab:template -->
 <body>
     <!-- Page markup -->
 </body>
@@ -25,7 +26,9 @@ Page는 `src/pages/{slug}/index.html` 한 파일입니다. metadata, style, body
 </script>
 ```
 
-`layout`과 `title`은 필수입니다. `body`는 명시적인 여는 태그와 닫는 태그가 모두 필요합니다.
+`layout`과 `title`은 필수입니다. `<!-- lab:template -->`은 Page 본문의 시작을 알리는 컴파일러 예약 표식입니다.
+표식은 정확히 한 번만 작성하고, 바로 다음에 명시적인 여는 태그와 닫는 태그를 갖춘 `body`를 둡니다.
+표식이 없거나 중복되거나 표식과 `body` 사이에 다른 내용이 있으면 빌드가 실패합니다.
 
 ## Layout
 

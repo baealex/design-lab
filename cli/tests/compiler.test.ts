@@ -40,6 +40,7 @@ test('Page parser preserves the original style, body, and script blocks', () => 
         '<!-- title: Example -->',
         '<!-- description: Parser fixture -->',
         '<style>body > main { color: red; }</style>',
+        '<!-- lab:template -->',
         '<body><main data-value="<raw>">Hello</main></body>',
         '<script>var closing = "body";</script>',
     ].join('\n');
@@ -54,6 +55,43 @@ test('Page parser preserves the original style, body, and script blocks', () => 
         body: '<main data-value="<raw>">Hello</main>',
         script: 'var closing = "body";',
     });
+});
+
+test('Page parser requires one template marker immediately before an explicit body', () => {
+    const metadata = [
+        '<!-- layout: base.html -->',
+        '<!-- title: Example -->',
+    ].join('\n');
+
+    assert.throws(
+        () => parsePage(`${metadata}\n<body></body>`, 'missing.html'),
+        /Missing required Page template marker/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template -->',
+            '<!-- lab:template -->',
+            '<body></body>',
+        ].join('\n'), 'duplicate.html'),
+        /Duplicate Page template marker/,
+    );
+
+    assert.throws(
+        () => parsePage([
+            metadata,
+            '<!-- lab:template -->',
+            '<!-- unrelated -->',
+            '<body></body>',
+        ].join('\n'), 'separated.html'),
+        /must be followed immediately by an explicit <body> block/,
+    );
+
+    assert.throws(
+        () => parsePage(`${metadata}\n<!-- lab:template -->\n<body>`, 'unclosed.html'),
+        /<body> must have an explicit closing tag/,
+    );
 });
 
 test('Composer expands nested Partials, fills slots, and keeps fallback content', async () => {

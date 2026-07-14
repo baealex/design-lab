@@ -42,10 +42,7 @@ function findElement(root: HtmlNode, tagName: string): HtmlNode | undefined {
     return match;
 }
 
-function extractElementContent(source: string, root: HtmlNode, tagName: string, file: string): string {
-    const node = findElement(root, tagName);
-    if (!node) return '';
-
+function extractNodeContent(source: string, node: HtmlNode, tagName: string, file: string): string {
     const location = node.sourceCodeLocation;
     if (!location?.startTag || !location.endTag) {
         throw new LabCompilerError({
@@ -58,6 +55,62 @@ function extractElementContent(source: string, root: HtmlNode, tagName: string, 
     }
 
     return source.slice(location.startTag.endOffset, location.endTag.startOffset);
+}
+
+function extractElementContent(source: string, root: HtmlNode, tagName: string, file: string): string {
+    const node = findElement(root, tagName);
+    return node ? extractNodeContent(source, node, tagName, file) : '';
+}
+
+function findTemplateBody(source: string, root: HtmlNode, file: string): HtmlNode {
+    const markers: HtmlNode[] = [];
+
+    walkHtml(root, node => {
+        if (node.nodeName === '#comment' && node.data?.trim() === 'lab:template') {
+            markers.push(node);
+        }
+    });
+
+    if (markers.length === 0) {
+        throw new LabCompilerError({
+            stage: 'parse',
+            file,
+            message: 'Missing required Page template marker: <!-- lab:template -->.',
+        });
+    }
+
+    if (markers.length > 1) {
+        const location = markers[1].sourceCodeLocation;
+        throw new LabCompilerError({
+            stage: 'parse',
+            file,
+            line: location?.startLine,
+            column: location?.startCol,
+            message: 'Duplicate Page template marker: <!-- lab:template -->.',
+        });
+    }
+
+    const markerLocation = markers[0].sourceCodeLocation;
+    const body = findElement(root, 'body');
+    const bodyLocation = body?.sourceCodeLocation;
+    const markerEnd = markerLocation?.endOffset;
+    const bodyStart = bodyLocation?.startTag?.startOffset;
+    const isImmediatelyFollowed = markerEnd !== undefined
+        && bodyStart !== undefined
+        && bodyStart >= markerEnd
+        && source.slice(markerEnd, bodyStart).trim() === '';
+
+    if (!body || !isImmediatelyFollowed) {
+        throw new LabCompilerError({
+            stage: 'parse',
+            file,
+            line: markerLocation?.startLine,
+            column: markerLocation?.startCol,
+            message: '<!-- lab:template --> must be followed immediately by an explicit <body> block.',
+        });
+    }
+
+    return body;
 }
 
 export function parsePage(source: string, file = '<page>'): PageDefinition {
@@ -80,19 +133,12 @@ export function parsePage(source: string, file = '<page>'): PageDefinition {
         });
     }
 
-    const body = extractElementContent(source, root, 'body', file);
-    if (!findElement(root, 'body')) {
-        throw new LabCompilerError({
-            stage: 'parse',
-            file,
-            message: 'Missing required <body> block.',
-        });
-    }
+    const bodyNode = findTemplateBody(source, root, file);
 
     return {
         metadata,
         style: extractElementContent(source, root, 'style', file),
-        body,
+        body: extractNodeContent(source, bodyNode, 'body', file),
         script: extractElementContent(source, root, 'script', file),
     };
 }
