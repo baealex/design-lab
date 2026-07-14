@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Fluent (2017) -->
-<!-- description: Microsoft tried glass again -->
+<!-- description: Microsoft expanded its design language for a multi-device, multi-input world -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
@@ -714,22 +714,26 @@
             <div class="hero-badge">Inspired by Windows 10</div>
             <h1 class="hero-title">Fluent</h1>
             <p class="hero-tagline">
-                Microsoft learned from Metro's mistakes.<br>
-                We take Acrylic and Reveal and make them consistent.
+                One design language for mouse, touch, pen, gamepad, and gaze.<br>
+                We focus on the material and feedback that make that range understandable.
             </p>
         </header>
 
         <!-- Intro -->
         <div class="intro-card">
             <p class="intro-text">
-                Fluent was Metro's redemption.
-                It brought back depth (<strong>Acrylic</strong>),
-                added discoverability (<strong>Reveal</strong>),
-                and planned for 3D.
+                By 2017, Windows no longer lived on one kind of screen or accepted one kind of
+                input. PCs, tablets, consoles, and mixed-reality devices had to support
+                <strong>mouse, touch, pen, gamepad, and gaze</strong> without becoming separate
+                visual systems. Metro's flat vocabulary was clear, but it did not always provide
+                enough spatial or interaction feedback across that range.
                 <br><br>
-                The problem was <strong>inconsistency</strong> —
-                half of Windows used Fluent, half didn't.
-                We apply the principles uniformly.
+                Fluent answered with five building blocks: Light, Depth, Motion, Material, and
+                Scale. Acrylic separated temporary layers, Reveal made pointer proximity visible,
+                and motion preserved continuity as layouts moved between contexts.
+                <br><br>
+                The early rollout was <strong>inconsistent</strong>, so this page narrows the system
+                to three durable lessons and applies them as one coherent interaction language.
             </p>
         </div>
 
@@ -740,12 +744,10 @@
             <div class="section-label">Principle 01</div>
             <h2 class="section-title">Acrylic Material</h2>
             <p class="section-desc">
-                Acrylic is Fluent's frosted glass — <code>backdrop-filter: blur()</code> plus
-                a noise texture overlay. That noise is doing more work than you think.
-                Without it, blurred surfaces look like vaseline on a lens.
-                With it, they feel like actual material — ground glass, not a rendering artifact.
-                Microsoft's design team spent months tuning the noise frequency.
-                We're borrowing their homework.
+                On the web, Acrylic can be approximated with <code>backdrop-filter: blur()</code>,
+                a translucent tint, and a subtle noise texture. The texture breaks up an overly
+                smooth blur so the panel reads as a material rather than a camera effect.
+                We use that practical approximation here while keeping the layer's purpose clear.
             </p>
             <div class="acrylic-demo">
                 <div class="acrylic-panel with-noise">
@@ -777,8 +779,8 @@
                 illuminating borders and surfaces as you move.
                 It's not decoration — it's <strong>light as interaction feedback</strong>.
                 Your cursor becomes a flashlight, and the UI responds by showing you
-                where things are, where boundaries exist, what you can click.
-                No other design system has done this. Not before, not since.
+                where things are, where boundaries exist, and what you can click.
+                It is most useful when it reveals a real boundary, not when every surface glows.
             </p>
             <div class="reveal-grid" id="reveal-grid">
                 <div class="reveal-card">
@@ -833,16 +835,18 @@
             <h2 class="section-title">Depth Without Weight</h2>
             <p class="section-desc">
                 Fluent doesn't need heavy shadows to create spatial relationships.
-                The system uses four elevation levels — Base, Card, Dialog, Flyout —
-                each with progressively stronger shadows.
+                This page groups depth into four practical levels — Base, Card, Dialog, Flyout —
+                with progressively stronger separation.
                 The jump between levels is subtle. That's the point.
                 Where Material Design screams "I'm floating at 8dp!",
                 Fluent whispers. And somehow you still know exactly which layer is on top.
+                Fluent later added Mica as a persistent base material in the Windows 11 era;
+                the label below marks that later extension rather than a 2017 Acrylic feature.
             </p>
             <div class="depth-demo">
                 <div class="depth-layer layer-base">
                     <span class="depth-label">Base</span>
-                    <span class="depth-meta">Mica background, no shadow</span>
+                    <span class="depth-meta">Later extension: Mica base, no shadow</span>
                 </div>
                 <div class="depth-layer layer-card">
                     <span class="depth-label">Card</span>
@@ -867,9 +871,9 @@
             <h2 class="section-title">Quick Settings</h2>
             <p class="section-desc">
                 Acrylic backdrop + Reveal-lit tiles + depth layering.
-                Three principles, one panel. This is the interface that Fluent was designed for
-                &mdash; system controls floating over your content, translucent enough to know
-                what's behind, opaque enough to focus on what's ahead.
+                This reinterpretation connects early Fluent's Acrylic and Reveal ideas with
+                the compact Quick Settings layout used in later Windows releases. It is a view
+                across the language's evolution, not a snapshot of the 2017 launch.
                 Click the tiles. Drag the sliders. Feel the material.
             </p>
             <div class="action-center" id="action-center">
@@ -956,8 +960,8 @@
                 Light without heat.
             </p>
             <p class="manifesto-sub">
-                Fluent proved you can have richness without excess.<br>
-                The vision was bigger than the execution. We're closing the gap.
+                Fluent connected material, light, and motion to a wider range of devices and inputs.<br>
+                Keep that adaptive intent, and apply its effects consistently.
             </p>
         </footer>
     </div>

@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Aurora (2021) -->
-<!-- description: Stripe proved a gradient alone can be a brand -->
+<!-- description: How mesh gradients became a brand layer while familiar UI preserved clarity -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -304,7 +304,7 @@
 
     /* Solid cards sitting ON the gradient — not translucent */
     .layer-card {
-        background: rgba(17, 19, 39, 0.92);
+        background: var(--surface);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
         padding: 20px 14px;
@@ -475,97 +475,6 @@
     }
 
     /* =========================================
-       DASHBOARD — solid cards, gradient accents
-       on top border only (like a tiny aurora streak)
-       ========================================= */
-    .dash-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
-
-    .dash-card {
-        padding: 24px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Gradient top-border — a thin aurora streak */
-    .dash-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-    }
-
-    .dash-card.accent-purple::before {
-        background: linear-gradient(90deg, var(--accent), var(--purple));
-    }
-
-    .dash-card.accent-green::before {
-        background: linear-gradient(90deg, var(--green), var(--teal));
-    }
-
-    .dash-label {
-        font-size: 0.68rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--text-dim);
-        font-weight: 500;
-    }
-
-    .dash-value {
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-top: 8px;
-        color: #fff;
-    }
-
-    .dash-sub {
-        font-size: 0.72rem;
-        color: var(--text-dim);
-        margin-top: 4px;
-    }
-
-    .dash-change {
-        display: inline-block;
-        font-size: 0.7rem;
-        font-weight: 600;
-        margin-top: 4px;
-        padding: 2px 8px;
-        border-radius: 4px;
-    }
-
-    .dash-change.up {
-        color: var(--green);
-        background: rgba(0, 212, 170, 0.1);
-    }
-
-    .dash-bar {
-        height: 3px;
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 2px;
-        margin-top: 18px;
-        overflow: hidden;
-    }
-
-    .dash-bar-fill {
-        height: 100%;
-        border-radius: 2px;
-        transition: width 0.8s ease;
-    }
-
-    .dash-bar-fill.purple {
-        background: linear-gradient(90deg, var(--accent), var(--purple));
-    }
-
-    .dash-bar-fill.green {
-        background: linear-gradient(90deg, var(--green), var(--teal));
-    }
-
-    /* =========================================
        COLOR PALETTE
        ========================================= */
     .palette {
@@ -699,7 +608,6 @@
         .gradient-showcase,
         .layer-cards { grid-template-columns: 1fr; }
 
-        .dash-grid { grid-template-columns: 1fr; }
         .palette { grid-template-columns: repeat(3, 1fr); }
 
         .btn-demo { flex-direction: column; }
@@ -722,11 +630,11 @@
         <header class="hero">
             <div class="hero-mesh"></div>
             <div class="hero-content">
-                <div class="hero-badge">Inspired by Stripe / Aurora UI</div>
+                <div class="hero-badge">Inspired by Stripe</div>
                 <h1 class="hero-title">Aurora</h1>
                 <p class="hero-tagline">
-                    The gradient is the design.<br>
-                    The UI stays out of its way.
+                    Mesh gradients carry visual identity.<br>
+                    Familiar controls keep the interface clear.
                 </p>
             </div>
         </header>
@@ -734,19 +642,19 @@
         <!-- Intro -->
         <div class="card intro-card">
             <p class="intro-text">
-                Stripe proved that <strong>a mesh gradient can be a brand</strong>.
-                Not a background detail — the main event. Bold, saturated color
-                blobs drifting behind simple, solid UI elements.
+                Around 2021, after years of restrained white product interfaces,
+                designers looked for stronger visual identity without rebuilding
+                familiar interaction patterns. <strong>Aurora UI put layered,
+                organic gradients behind otherwise conventional controls.</strong>
+                Stripe's product pages became a prominent example of that approach.
                 <br><br>
-                Aurora UI is not Glassmorphism with a green tint.
-                The panels aren't translucent — they're <strong>opaque and flat</strong>.
-                It's not Neon with softer colors either.
-                Nothing glows. Nothing emits light.
+                Unlike glassmorphism, the content does not depend on background blur.
+                Unlike neon, the color does not need to imply emitted light. The mesh
+                establishes atmosphere and brand; solid surfaces preserve contrast.
                 <br><br>
-                The gradient lives in <strong>its own layer</strong>.
-                The UI lives in its own layer.
-                They never compete.
-                That separation is the entire point.
+                The practical lesson is restraint: use a limited gradient field where
+                it earns attention, keep controls recognizable, and make motion slow,
+                optional, and compatible with reduced-motion preferences.
             </p>
         </div>
 
@@ -759,9 +667,8 @@
             <p class="section-desc">
                 Layer <code>radial-gradient()</code> blobs at different positions
                 and sizes. Each blob is a single saturated color fading to transparent.
-                Three to five layers is the sweet spot. Animate them on
-                <em>15-25 second cycles</em> — slow enough to feel organic,
-                fast enough to notice if you stare.
+                Three to five layers are a useful starting point. If the field moves,
+                use a long cycle and provide a static reduced-motion state.
             </p>
             <div class="gradient-showcase">
                 <div class="gradient-swatch dusk">
@@ -791,14 +698,11 @@
         <!-- Principle 02: Layer Discipline -->
         <section class="section">
             <div class="section-label">Principle 02</div>
-            <h2 class="section-title">Layer Discipline</h2>
+            <h2 class="section-title">Protect Readability</h2>
             <p class="section-desc">
-                The gradient and the UI are <em>separate layers</em>.
-                The gradient is atmospheric — it sets the mood.
-                The UI is solid and opaque — it does the work.
-                No <code>backdrop-filter</code>. No translucent panels.
-                The cards don't borrow color from the gradient.
-                They sit on top, cleanly, like signage on a painted wall.
+                Place text and controls on <em>solid, high-contrast surfaces</em> so
+                their legibility does not change as the gradient moves. Blur and
+                translucency are optional effects, not requirements of Aurora UI.
             </p>
             <div class="layer-demo">
                 <div class="layer-demo-bg"></div>
@@ -806,28 +710,27 @@
                     <div class="layer-demo-label">Solid panels over mesh gradient</div>
                     <div class="layer-cards">
                         <div class="layer-card">
-                            <div class="layer-card-value">24</div>
-                            <div class="layer-card-label">Deploys</div>
+                            <div class="layer-card-value">Title</div>
+                            <div class="layer-card-label">High contrast</div>
                         </div>
                         <div class="layer-card">
-                            <div class="layer-card-value">99.9%</div>
-                            <div class="layer-card-label">Uptime</div>
+                            <div class="layer-card-value">Body</div>
+                            <div class="layer-card-label">Stable surface</div>
                         </div>
                         <div class="layer-card">
-                            <div class="layer-card-value">42ms</div>
-                            <div class="layer-card-label">Latency</div>
+                            <div class="layer-card-value">Action</div>
+                            <div class="layer-card-label">Visible focus</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="code-block">
-                <span class="cmt">/* Solid card — NOT glass. The gradient stays behind. */</span><br>
-                <span class="kw">background</span>: <span class="val">rgba(17, 19, 39, 0.92)</span>;<br>
+                <span class="cmt">/* Stable content surface over a changing background */</span><br>
+                <span class="kw">background</span>: <span class="val">#111327</span>;<br>
                 <span class="kw">border</span>: <span class="val">1px</span> solid <span class="val">rgba(255, 255, 255, 0.08)</span>;<br>
                 <span class="kw">border-radius</span>: <span class="val">12px</span>;<br>
                 <br>
-                <span class="cmt">/* No backdrop-filter. No blur. No translucency games. */</span><br>
-                <span class="cmt">/* The card is opaque. The gradient is behind it. Done. */</span>
+                <span class="cmt">/* No backdrop-filter required */</span>
             </div>
         </section>
 
@@ -838,9 +741,8 @@
             <p class="section-desc">
                 Buttons are solid fills. Inputs are clean boxes.
                 Hover states are subtle background shifts — <em>not glow effects</em>.
-                The gradient already provides all the visual drama.
-                Interactive elements just need to be readable and clickable.
-                Let the mesh do the talking.
+                The background already provides visual emphasis. Interactive elements
+                should prioritize readable labels, clear focus, and predictable states.
             </p>
             <div class="btn-demo">
                 <button class="btn btn-primary">Deploy</button>
@@ -880,42 +782,14 @@
 
         <div class="divider"></div>
 
-        <!-- All Together -->
-        <section class="section">
-            <div class="section-label">All Together</div>
-            <h2 class="section-title">Dashboard</h2>
-            <p class="section-desc">
-                Solid cards. Gradient top-borders as subtle aurora streaks.
-                Clean typography. Flat progress bars with gradient fills —
-                the only place where aurora colors touch the UI layer.
-            </p>
-            <div class="dash-grid">
-                <div class="card dash-card accent-purple">
-                    <div class="dash-label">Monthly Revenue</div>
-                    <div class="dash-value" id="dash-revenue">$48.2k</div>
-                    <div class="dash-change up" id="dash-change">+12.3%</div>
-                    <div class="dash-bar"><div class="dash-bar-fill purple" style="width: 72%"></div></div>
-                </div>
-                <div class="card dash-card accent-green">
-                    <div class="dash-label">Success Rate</div>
-                    <div class="dash-value" id="dash-rate">99.7%</div>
-                    <div class="dash-sub">Last 30 days</div>
-                    <div class="dash-bar"><div class="dash-bar-fill green" style="width: 92%"></div></div>
-                </div>
-            </div>
-        </section>
-
-        <div class="divider"></div>
-
         <!-- Color Palette -->
         <section class="section">
             <div class="section-label">Palette</div>
             <h2 class="section-title">Aurora Spectrum</h2>
             <p class="section-desc">
-                Six saturated colors. They appear at full intensity only
-                in the mesh gradient layer. In the UI layer, they show up
-                muted — as thin border accents, progress bars, and badges.
-                The palette is wide because the gradients blend them.
+                A compact set of saturated hues supplies the mesh. Reuse one or two
+                as restrained accents for status or emphasis, with contrast checked
+                independently from the background field.
             </p>
             <div class="palette">
                 <div class="swatch s1"><span class="swatch-hex">#635BFF</span></div>
@@ -938,10 +812,10 @@
                     <li><span class="x">&#x2717;</span> Neon — nothing glows, nothing emits light</li>
                     <li><span class="x">&#x2717;</span> Gradient on buttons or text — the gradient stays behind</li>
                     <li><span class="x">&#x2717;</span> Subtle tinted backgrounds — the mesh is bold and vivid</li>
-                    <li><span class="o">&#x2713;</span> Mesh gradients as atmosphere, not decoration</li>
-                    <li><span class="o">&#x2713;</span> Solid opaque UI — flat, readable, boring on purpose</li>
-                    <li><span class="o">&#x2713;</span> Two layers: gradient layer and UI layer, never mixed</li>
-                    <li><span class="o">&#x2713;</span> Slow animation — the gradient drifts, the UI stays still</li>
+                    <li><span class="o">&#x2713;</span> Mesh gradients in a defined brand or emphasis role</li>
+                    <li><span class="o">&#x2713;</span> Stable content surfaces with tested contrast</li>
+                    <li><span class="o">&#x2713;</span> Familiar controls and explicit interaction states</li>
+                    <li><span class="o">&#x2713;</span> Optional slow motion with a reduced-motion fallback</li>
                 </ul>
             </div>
         </section>
@@ -951,23 +825,14 @@
             <div class="manifesto-mesh"></div>
             <div class="manifesto-content">
                 <p class="manifesto-text">
-                    The most dramatic interfaces<br>
-                    are built on the simplest rule:<br>
-                    one layer moves, one layer works.
+                    Color creates atmosphere.<br>
+                    Structure carries meaning.<br>
+                    Motion stays optional.
                 </p>
                 <p class="manifesto-sub">
-                    Bold gradients. Flat UI. Two layers. That's Aurora.
+                    Use the mesh where it earns attention; keep content calm.
                 </p>
             </div>
         </footer>
     </div>
 </body>
-
-<script>
-    setInterval(() => {
-        const rev = (42 + Math.random() * 12).toFixed(1);
-        document.getElementById('dash-revenue').textContent = '$' + rev + 'k';
-        const change = (8 + Math.random() * 10).toFixed(1);
-        document.getElementById('dash-change').textContent = '+' + change + '%';
-    }, 4000);
-</script>

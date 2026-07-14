@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Material Design (2014) -->
-<!-- description: Giving paper gravity changed everything -->
+<!-- description: How elevation, touch feedback, and motion formed a shared Android design language -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
@@ -810,7 +810,7 @@
             <div class="hero-badge">Inspired by Android Lollipop</div>
             <h1 class="hero-title">Material</h1>
             <p class="hero-tagline">
-                Paper, ink, and physics made a billion phones feel designed.<br>
+                Paper, ink, and motion gave Android interfaces a shared spatial logic.<br>
                 We keep the spatial logic. Free it from the template.
             </p>
         </header>
@@ -821,16 +821,17 @@
                 Material Design gave motion meaning. The ripple tells you
                 "I heard you, right here." The shadow tells you "I'm above that."
                 The easing curve tells you "I came from there."
-                No design system before had treated <strong>physics as a language</strong>.
+                Material formalized <strong>physics as a shared design language</strong>.
                 <br><br>
-                The problem was rigidity. Every app became a Google app.
-                The spec was so prescriptive — "cards at 2dp, dialogs at 24dp,
-                FAB at bottom-right" — that it became a template, not a toolkit.
+                The problem was rigidity. Unrelated apps risked resembling Google products.
+                Prescriptions such as "cards at 2dp, dialogs at 24dp, FAB at
+                bottom-right" were often copied as a template instead of adapted
+                as a toolkit.
                 <br><br>
                 <strong>We keep the physics. We drop the dogma.</strong>
                 Elevation as hierarchy, ripple as honest feedback,
                 bold color as identity — these are principles worth preserving.
-                The 300-page spec telling you exactly where to put the FAB is not.
+                A fixed component recipe is not.
             </p>
         </div>
 
@@ -843,8 +844,8 @@
             <p class="section-desc">
                 Every surface is a sheet of paper at a specific height.
                 The shadow isn't a style choice — it's a <em>z-coordinate</em>.
-                Google specified exact dp values for every component.
-                We don't follow the table religiously, but we keep the rule:
+                Google's guidance mapped common surfaces to named elevation levels.
+                We do not copy those values as a fixed recipe, but we keep the rule:
                 <em>higher means more important</em>. Hover these cards — they rise,
                 and their shadow tells you they did.
             </p>
@@ -885,8 +886,8 @@
             <div class="section-label">Principle 02</div>
             <h2 class="section-title">Ink Ripple</h2>
             <p class="section-desc">
-                The most honest piece of touch feedback ever designed.
-                A ripple radiates from the <em>exact point of contact</em> —
+                A ripple ties touch feedback to the point of contact.
+                It radiates from the <em>exact point of contact</em> —
                 not a generic highlight, not a color swap.
                 A physics-based wave that confirms "yes, here, I felt that."
                 On light surfaces the ink is dark. On colored surfaces it's light.
@@ -941,9 +942,9 @@
             <p class="section-desc">
                 Material shipped a palette of named colors at fixed saturation stops —
                 <em>500</em> for primary, <em>700</em> for the status bar, <em>A200</em> for accents.
-                The color band at the top of every app was the app's identity.
-                We borrow the confidence: pick a bold primary, commit to it,
-                and let it carry the interface. No pastels. No hedging.
+                A strong app-bar color became a recognizable Material pattern.
+                For this Lollipop study, one saturated primary carries the app bar,
+                active controls, and touch feedback without becoming a universal rule.
             </p>
             <div class="card">
                 <div class="palette-grid">
@@ -1000,8 +1001,8 @@
                 <em>Raised</em> buttons cast shadow — they're for primary actions
                 that need to stand out. <em>Flat</em> buttons sit flush — they're
                 for secondary actions inside cards or dialogs.
-                The <em>FAB</em> floats above everything — one per screen,
-                the single most important action. We keep this hierarchy.
+                The <em>FAB</em> floats above content when a screen has one recurring
+                primary action. We keep that hierarchy without forcing a FAB everywhere.
                 The uppercase is Lollipop's voice. The ripple on click is its handshake.
             </p>
             <div class="btn-row">
@@ -1021,11 +1022,11 @@
             <h2 class="section-title">Lollipop Inbox</h2>
             <p class="section-desc">
                 Status bar at 700. App bar at 500. Cards with 2dp shadow.
-                A FAB hovering in the corner. Ripple on every touch.
+                A FAB for compose. Ripples on interactive rows.
                 The original Material formula — paper, ink, bold color, physics —
-                assembled into the app that defined an era.
-                Every Android app looked like this from 2014 to 2021.
-                We show it here to honor the system, not to copy it.
+                assembled into a recognizable 2014 Android pattern.
+                Google apps and many apps following the defaults adopted variations of it.
+                We show the pattern here to study its logic, not to prescribe a template.
             </p>
             <div class="app-frame">
                 <div class="frame-status"></div>
@@ -1080,7 +1081,7 @@
             <h2 class="section-title">What This Is Not</h2>
             <div class="card anti-card">
                 <ul class="anti-list">
-                    <li><span class="x">&#x2717;</span> The 300-page spec — we take principles, not prescriptions</li>
+                    <li><span class="x">&#x2717;</span> Treating the guidance as a fixed template — adapt principles to the product</li>
                     <li><span class="x">&#x2717;</span> Every app looking like Gmail — your app has its own identity</li>
                     <li><span class="x">&#x2717;</span> FAB on every screen — not everything needs a primary action</li>
                     <li><span class="x">&#x2717;</span> Ripple on static text — ink responds to interaction only</li>
@@ -1100,8 +1101,8 @@
                 Motion has reason.
             </p>
             <p class="manifesto-sub">
-                Material taught us that design is physics.<br>
-                We keep the physics. The 300 pages of where to put the FAB, we don't.
+                Material taught us to make depth and motion explain the interface.<br>
+                Keep that logic; adapt the component choices to the product.
             </p>
         </footer>
     </div>

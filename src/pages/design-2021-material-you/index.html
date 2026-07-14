@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Material You (2021) -->
-<!-- description: Where real personalization began -->
+<!-- description: How Android 12 introduced opt-in dynamic color while apps kept control of identity -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
@@ -177,6 +177,33 @@
         border-radius: 28px;
         overflow: hidden;
         position: relative;
+        box-sizing: border-box;
+        padding: 0;
+        border: 3px solid transparent;
+        background: none;
+        color: var(--primary);
+        font: inherit;
+        text-align: inherit;
+        cursor: pointer;
+        transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .wallpaper-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .wallpaper-card[aria-pressed="true"] {
+        border-color: currentColor;
+        box-shadow: 0 0 0 3px var(--surface-container-high);
+    }
+
+    .wallpaper-card:focus-visible {
+        outline: 3px solid var(--on-surface);
+        outline-offset: 3px;
+    }
+
+    .wallpaper-card[data-theme="green"] {
+        color: #006D3B;
     }
 
     .wallpaper-img {
@@ -216,12 +243,21 @@
     .wp-g5 { background: #F5FFF8; }
 
     .wallpaper-label {
+        display: block;
         font-size: 0.68rem;
         font-weight: 500;
         color: var(--on-surface-variant);
         text-align: center;
         padding: 10px 0;
         background: var(--surface);
+    }
+
+    .seed-status {
+        min-height: 1.5em;
+        margin: 12px 4px 0;
+        color: var(--on-surface-variant);
+        font-size: 0.76rem;
+        text-align: center;
     }
 
     /* =========================================
@@ -501,6 +537,7 @@
         background: var(--surface-container-low);
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         position: relative;
+        transition: background-color 0.2s, color 0.2s;
     }
 
     .frame-top-bar {
@@ -566,6 +603,22 @@
     .frame-card-img {
         width: 100%;
         height: 80px;
+    }
+
+    .frame-card-img.theme-primary {
+        background: linear-gradient(135deg, var(--primary-container), var(--secondary-container));
+    }
+
+    .frame-card-img.theme-tertiary {
+        background: linear-gradient(135deg, var(--tertiary-container), var(--primary-container));
+    }
+
+    .frame-card-img.theme-secondary {
+        background: linear-gradient(135deg, var(--secondary-container), var(--surface-container-high));
+    }
+
+    .frame-card-img.theme-mixed {
+        background: linear-gradient(135deg, var(--primary-container), var(--tertiary-container));
     }
 
     .frame-card-body {
@@ -761,17 +814,17 @@
         <!-- Intro -->
         <div class="surface surface-1 intro-card">
             <p class="intro-text">
-                Material You asked a radical question:
+                Material You reframed personalization around a practical question:
                 <strong>what if the OS looked like you?</strong>
-                Android 12 extracts a color palette from your wallpaper
-                and paints the entire system with it. Buttons, toggles,
-                notifications, even the keyboard — all tinted by one
-                photo you chose.
+                Android 12 can derive a tonal palette from wallpaper and apply it
+                across system surfaces such as buttons, toggles, notifications,
+                and the keyboard.
                 <br><br>
                 The strength is emotional — your phone feels <strong>yours</strong>.
-                The weakness is identity — when the OS recolors every app,
-                apps lose their own brand. Everything becomes the same
-                pastel blob in a different shade.
+                Apps are not automatically recolored: developers opt into dynamic
+                color and map its roles. The identity risk appears when an app adopts
+                every generated role without reserving stable brand colors or clear
+                semantic states.
                 <br><br>
                 <strong>We keep the personal warmth. We protect the app's identity.</strong>
                 Dynamic color is a starting point, not a straitjacket.
@@ -790,35 +843,36 @@
                 algorithmically. Google's "Monet" engine extracts the
                 dominant hue from your wallpaper and builds a complete
                 color system — primary, secondary, tertiary, plus neutral
-                surface tones. The same app looks different on every phone.
+                surface tones. An app that opts in can adapt to each user's theme.
                 We embrace the idea: <em>let users influence the palette</em>.
                 But we pick which surfaces accept dynamic color
                 and which keep the brand.
             </p>
-            <div class="color-demo">
-                <div class="wallpaper-card">
-                    <div class="wallpaper-img purple"></div>
-                    <div class="wallpaper-palette">
-                        <div class="wallpaper-palette-swatch wp-p1"></div>
-                        <div class="wallpaper-palette-swatch wp-p2"></div>
-                        <div class="wallpaper-palette-swatch wp-p3"></div>
-                        <div class="wallpaper-palette-swatch wp-p4"></div>
-                        <div class="wallpaper-palette-swatch wp-p5"></div>
-                    </div>
-                    <div class="wallpaper-label">Purple seed &rarr; tonal palette</div>
-                </div>
-                <div class="wallpaper-card">
-                    <div class="wallpaper-img green"></div>
-                    <div class="wallpaper-palette">
-                        <div class="wallpaper-palette-swatch wp-g1"></div>
-                        <div class="wallpaper-palette-swatch wp-g2"></div>
-                        <div class="wallpaper-palette-swatch wp-g3"></div>
-                        <div class="wallpaper-palette-swatch wp-g4"></div>
-                        <div class="wallpaper-palette-swatch wp-g5"></div>
-                    </div>
-                    <div class="wallpaper-label">Green seed &rarr; tonal palette</div>
-                </div>
+            <div class="color-demo" aria-label="Choose a wallpaper seed for the app example">
+                <button class="wallpaper-card" type="button" data-theme="purple" aria-pressed="true" aria-controls="dynamic-app">
+                    <span class="wallpaper-img purple"></span>
+                    <span class="wallpaper-palette">
+                        <span class="wallpaper-palette-swatch wp-p1"></span>
+                        <span class="wallpaper-palette-swatch wp-p2"></span>
+                        <span class="wallpaper-palette-swatch wp-p3"></span>
+                        <span class="wallpaper-palette-swatch wp-p4"></span>
+                        <span class="wallpaper-palette-swatch wp-p5"></span>
+                    </span>
+                    <span class="wallpaper-label">Apply purple seed to the app</span>
+                </button>
+                <button class="wallpaper-card" type="button" data-theme="green" aria-pressed="false" aria-controls="dynamic-app">
+                    <span class="wallpaper-img green"></span>
+                    <span class="wallpaper-palette">
+                        <span class="wallpaper-palette-swatch wp-g1"></span>
+                        <span class="wallpaper-palette-swatch wp-g2"></span>
+                        <span class="wallpaper-palette-swatch wp-g3"></span>
+                        <span class="wallpaper-palette-swatch wp-g4"></span>
+                        <span class="wallpaper-palette-swatch wp-g5"></span>
+                    </span>
+                    <span class="wallpaper-label">Apply green seed to the app</span>
+                </button>
             </div>
+            <p class="seed-status" id="seed-status" role="status">Purple seed is applied to the app example below.</p>
             <div class="code-block">
                 <span class="cmt">/* M3 color roles — generated from a single seed */</span><br>
                 <span class="kw">--primary</span>: <span class="fn">tonalPalette</span>(<span class="val">seed</span>, <span class="val">40</span>);<br>
@@ -960,8 +1014,8 @@
                 <em>Filled</em> buttons use full primary — highest emphasis.
                 <em>Tonal</em> buttons use the secondary container — medium emphasis,
                 the new default. <em>Outlined</em> for low emphasis.
-                The FAB is now a rounded square in the primary container color.
-                Everything is a pill. Everything is soft.
+                The FAB is a rounded square in the primary container color.
+                Compact controls use pill shapes; larger surfaces use their own rounded forms.
             </p>
             <div class="btn-row">
                 <button class="btn-filled" id="btn-filled">Submit</button>
@@ -985,9 +1039,10 @@
                 A bottom navigation bar with an active pill indicator.
                 A FAB in primary-container, rounded square.
                 No heavy shadows. No sharp edges. No uppercase buttons.
-                This is what "personal" looks like as a system.
+                Choose either wallpaper seed above: the same app remaps its primary,
+                secondary, tertiary, and surface roles while its content stays unchanged.
             </p>
-            <div class="app-frame">
+            <div class="app-frame" id="dynamic-app">
                 <div class="frame-top-bar">
                     <div class="frame-top-bar-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -1000,28 +1055,28 @@
                 </div>
                 <div class="frame-body">
                     <div class="frame-card" id="frame-card-1">
-                        <div class="frame-card-img" style="background: linear-gradient(135deg, #EADDFF, #D0BCFF);"></div>
+                        <div class="frame-card-img theme-primary"></div>
                         <div class="frame-card-body">
                             <div class="frame-card-title">Evening walk</div>
                             <div class="frame-card-sub">3 min read</div>
                         </div>
                     </div>
                     <div class="frame-card" id="frame-card-2">
-                        <div class="frame-card-img" style="background: linear-gradient(135deg, #FFD8E4, #EADDFF);"></div>
+                        <div class="frame-card-img theme-tertiary"></div>
                         <div class="frame-card-body">
                             <div class="frame-card-title">Morning light</div>
                             <div class="frame-card-sub">5 min read</div>
                         </div>
                     </div>
                     <div class="frame-card" id="frame-card-3">
-                        <div class="frame-card-img" style="background: linear-gradient(135deg, #E8DEF8, #F3EDF7);"></div>
+                        <div class="frame-card-img theme-secondary"></div>
                         <div class="frame-card-body">
                             <div class="frame-card-title">City sounds</div>
                             <div class="frame-card-sub">2 min read</div>
                         </div>
                     </div>
                     <div class="frame-card" id="frame-card-4">
-                        <div class="frame-card-img" style="background: linear-gradient(135deg, #D0BCFF, #FFD8E4);"></div>
+                        <div class="frame-card-img theme-mixed"></div>
                         <div class="frame-card-body">
                             <div class="frame-card-title">Late summer</div>
                             <div class="frame-card-sub">4 min read</div>
@@ -1061,7 +1116,7 @@
             <h2 class="section-title">What This Is Not</h2>
             <div class="surface surface-1 anti-card">
                 <ul class="anti-list">
-                    <li><span class="x">&#x2717;</span> Letting the OS recolor your brand out of existence</li>
+                    <li><span class="x">&#x2717;</span> Mapping every brand and semantic role directly to the generated palette</li>
                     <li><span class="x">&#x2717;</span> Pastel everything — some surfaces need to stay neutral</li>
                     <li><span class="x">&#x2717;</span> Material 1 with rounded corners — this is a new system</li>
                     <li><span class="x">&#x2717;</span> "It's the default M3 theme" — adapt it, don't copy it</li>
@@ -1089,6 +1144,75 @@
 </body>
 
 <script>
+    const appThemes = {
+        purple: {
+            '--primary': '#6750A4',
+            '--on-primary': '#FFFFFF',
+            '--primary-container': '#EADDFF',
+            '--on-primary-container': '#21005D',
+            '--secondary': '#625B71',
+            '--secondary-container': '#E8DEF8',
+            '--on-secondary-container': '#1D192B',
+            '--tertiary': '#7D5260',
+            '--tertiary-container': '#FFD8E4',
+            '--on-tertiary-container': '#31111D',
+            '--surface': '#FFFBFE',
+            '--surface-container-low': '#F7F2FA',
+            '--surface-container': '#F3EDF7',
+            '--surface-container-high': '#ECE6F0',
+            '--on-surface': '#1C1B1F',
+            '--on-surface-variant': '#49454F',
+            '--outline': '#79747E'
+        },
+        green: {
+            '--primary': '#006D3B',
+            '--on-primary': '#FFFFFF',
+            '--primary-container': '#B9F6CA',
+            '--on-primary-container': '#00210D',
+            '--secondary': '#506352',
+            '--secondary-container': '#D3E8D3',
+            '--on-secondary-container': '#0E1F12',
+            '--tertiary': '#3A665C',
+            '--tertiary-container': '#BCECE0',
+            '--on-tertiary-container': '#00201A',
+            '--surface': '#F5FFF8',
+            '--surface-container-low': '#EEF8F0',
+            '--surface-container': '#E8F2EA',
+            '--surface-container-high': '#E2ECE4',
+            '--on-surface': '#171D19',
+            '--on-surface-variant': '#414942',
+            '--outline': '#717971'
+        }
+    };
+
+    const dynamicApp = document.getElementById('dynamic-app');
+    const seedStatus = document.getElementById('seed-status');
+    const seedButtons = document.querySelectorAll('.wallpaper-card[data-theme]');
+
+    function applyAppTheme(themeName) {
+        const theme = appThemes[themeName];
+        if (!theme) return;
+
+        Object.entries(theme).forEach(function ([token, value]) {
+            dynamicApp.style.setProperty(token, value);
+        });
+
+        seedButtons.forEach(function (button) {
+            button.setAttribute('aria-pressed', String(button.dataset.theme === themeName));
+        });
+
+        const label = themeName === 'green' ? 'Green' : 'Purple';
+        seedStatus.textContent = `${label} seed is applied to the app's color roles below.`;
+    }
+
+    seedButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            applyAppTheme(this.dataset.theme);
+        });
+    });
+
+    applyAppTheme('purple');
+
     /* Ripple — span container isolates overflow from <button> quirks */
     function createRipple(el, e, cls) {
         var rect = el.getBoundingClientRect();

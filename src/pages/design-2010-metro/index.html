@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Metro (2010) -->
-<!-- description: Stripped all decoration, then users got lost -->
+<!-- description: How Windows Phone put content, type, and live information before interface chrome -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700;900&display=swap');
@@ -357,129 +357,143 @@
         letter-spacing: -0.5px;
     }
 
-    /* Dashboard demo */
-    .dash-grid {
+    /* Working example — one release task, expressed with Metro hierarchy */
+    .release-flow {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-auto-rows: 120px;
-        gap: 3px;
+        grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+        background: #202020;
+        border-left: 6px solid var(--blue);
     }
 
-    .dash-tile {
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-        transition: filter 0.15s ease;
+    .release-main,
+    .release-next {
+        padding: 28px;
     }
 
-    .dash-tile:hover {
-        filter: brightness(1.18);
+    .release-main {
+        border-right: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    .dash-sm   { grid-column: span 1; grid-row: span 1; }
-    .dash-wide { grid-column: span 2; grid-row: span 1; }
-    .dash-lg   { grid-column: span 2; grid-row: span 2; }
-
-    .dash-time {
-        font-size: 3rem;
-        font-weight: 300;
-        line-height: 1;
-        letter-spacing: 2px;
-    }
-
-    .dash-time-sec {
-        font-size: 1.2rem;
-        font-weight: 300;
-        opacity: 0.5;
-        vertical-align: top;
-    }
-
-    .dash-date {
-        font-size: 0.8rem;
-        font-weight: 300;
-        color: var(--text-muted);
-        margin-top: auto;
-    }
-
-    .dash-value {
-        font-size: 2.2rem;
-        font-weight: 300;
-        line-height: 1;
-    }
-
-    .dash-label {
-        font-size: 0.65rem;
+    .release-kicker,
+    .release-step-state,
+    .release-action-label {
+        font-size: 0.68rem;
         font-weight: 700;
-        text-transform: uppercase;
         letter-spacing: 0.1em;
-        opacity: 0.6;
-        margin-top: auto;
-    }
-
-    .dash-sub {
-        font-size: 0.7rem;
-        opacity: 0.5;
-        margin-top: 4px;
-    }
-
-    .dash-bar {
-        height: 3px;
-        background: rgba(255, 255, 255, 0.15);
-        margin-top: 10px;
-    }
-
-    .dash-bar-fill {
-        height: 100%;
-        background: #fff;
-        transition: width 0.6s;
-    }
-
-    .dash-update {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        flex: 1;
-    }
-
-    .dash-update-label {
-        font-size: 0.65rem;
-        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        opacity: 0.6;
+    }
+
+    .release-kicker {
+        color: var(--blue);
         margin-bottom: 6px;
     }
 
-    .dash-update-item {
-        font-size: 0.82rem;
+    .release-title {
+        font-size: 2.4rem;
         font-weight: 300;
-        padding: 3px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        letter-spacing: -1px;
+        line-height: 1.1;
     }
 
-    .dash-update-item:last-child {
-        border-bottom: none;
+    .release-meta,
+    .release-action-detail,
+    .release-status {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        font-weight: 300;
+        line-height: 1.55;
     }
 
-    .dash-content {
-        font-size: 0.88rem;
-        font-weight: 300;
-        font-style: italic;
-        line-height: 1.5;
-        flex: 1;
-        display: flex;
+    .release-meta {
+        margin-top: 8px;
+    }
+
+    .release-steps {
+        list-style: none;
+        padding: 0;
+        margin: 28px 0 0;
+    }
+
+    .release-step {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
         align-items: center;
+        padding: 12px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .dash-attr {
-        font-size: 0.65rem;
-        opacity: 0.5;
-        margin-top: auto;
-        text-align: right;
-        font-style: normal;
+    .release-step-name {
+        font-size: 1rem;
+        font-weight: 300;
+    }
+
+    .release-step-state {
+        color: var(--success);
+    }
+
+    .release-step.current .release-step-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .release-step.current .release-step-state {
+        color: var(--orange);
+    }
+
+    .release-next {
+        background: var(--dark-blue);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .release-action-label {
+        opacity: 0.65;
+    }
+
+    .release-action-title {
+        margin-top: 10px;
+        font-size: 1.45rem;
+        font-weight: 300;
+        line-height: 1.25;
+    }
+
+    .release-action-detail {
+        margin-top: 8px;
+    }
+
+    .release-button {
+        width: 100%;
+        margin-top: 24px;
+        padding: 12px 14px;
+        border: 0;
+        border-left: 3px solid #fff;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font: 600 0.76rem 'Noto Sans', sans-serif;
+        letter-spacing: 0.06em;
+        text-align: left;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .release-button:hover,
+    .release-button:focus-visible {
+        background: rgba(255, 255, 255, 0.2);
+        border-left-color: var(--orange);
+        outline: none;
+    }
+
+    .release-button:disabled {
+        cursor: default;
+        opacity: 0.65;
+    }
+
+    .release-status {
+        min-height: 1.55em;
+        margin-top: 12px;
     }
 
     /* Anti-pattern list */
@@ -545,10 +559,18 @@
             font-size: 3rem;
         }
 
-        .tile-grid,
-        .dash-grid {
+        .tile-grid {
             grid-template-columns: repeat(2, 1fr);
             grid-auto-rows: 110px;
+        }
+
+        .release-flow {
+            grid-template-columns: 1fr;
+        }
+
+        .release-main {
+            border-right: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .chrome-compare {
@@ -574,29 +596,29 @@
     <div class="layout">
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Inspired by Windows 8</div>
+            <div class="hero-badge">Inspired by Windows Phone 7</div>
             <h1 class="hero-title">Metro</h1>
             <p class="hero-tagline">
-                Metro killed the chrome.<br>
-                We keep the content-first purity. Restore the discoverability.
+                Metro put content before chrome.<br>
+                We keep the clarity and restore the cues each input method needs.
             </p>
         </header>
 
         <!-- Intro -->
         <div class="intro-card">
             <p class="intro-text">
-                Metro stripped everything down to typography and color.
-                Beautiful on Windows Phone, disastrous on desktop.
-                Windows 8 hid the Start menu, forced touch on mouse users,
-                and made flatness so extreme that people couldn't tell
-                what was clickable. Radical minimalism became hostile minimalism.
+                Metro emerged with <strong>Windows Phone 7 in 2010</strong>, when smartphone
+                interfaces were crowded with glossy icons, physical metaphors, and app-by-app
+                chrome. Drawing on transit signage, it used large type, flat color, panoramic
+                layouts, and live tiles to make information easy to scan on a small touch screen.
                 <br><br>
-                But the core insight was brilliant:
-                <strong>content is the interface</strong>. No chrome. No decoration.
-                Just words and color, doing all the work.
+                The same language exposed different weaknesses when Microsoft carried it into
+                <strong>Windows 8 in 2012</strong>. Hidden navigation and touch-first gestures
+                reached mouse-and-keyboard users without enough visible cues. The lesson is not
+                that flatness failed; a visual language has to adapt its affordances to the device.
                 <br><br>
-                We preserve the <strong>radical content-first philosophy</strong>
-                while making sure users can actually find things.
+                We preserve the <strong>content-first philosophy</strong> while making sure users
+                can find and operate things.
                 Every tile on this page is glanceable, every section is discoverable,
                 and the typography does the navigation for you.
             </p>
@@ -609,11 +631,11 @@
             <div class="section-label">Principle 01</div>
             <h2 class="section-title">Typography IS the Interface</h2>
             <p class="section-desc">
-                Metro's most radical claim: you don't need icons, borders, or boxes.
+                Metro's central claim: you don't always need icons, borders, or boxes.
                 A 42px light-weight header says "this is important."
                 A 12px uppercase label says "this is a category."
                 The type hierarchy does what buttons and panels used to do.
-                It sounds insane until you see it work.
+                The hierarchy can carry much of that work on its own.
             </p>
             <div class="type-demo">
                 <div class="type-demo-hero">my music</div>
@@ -637,7 +659,7 @@
                 that updates and informs you without ever opening the app.
                 Your email count, the weather, your next meeting — all glanceable,
                 all alive. The home screen wasn't a launcher. It was a dashboard.
-                This was genuinely ahead of its time. Widgets wish they were this clean.
+                It turned a launcher into an at-a-glance information surface.
             </p>
             <div class="tile-grid">
                 <!-- Clock — large -->
@@ -741,51 +763,39 @@
 
         <!-- Put It Together -->
         <section class="section">
-            <div class="section-label">Our Take</div>
-            <h2 class="section-title">Metro, Reinterpreted</h2>
+            <div class="section-label">Working Example</div>
+            <h2 class="section-title">Release #247</h2>
             <p class="section-desc">
-                Same three principles — but every tile responds to your attention.
-                Hover any tile: it brightens, acknowledging you without adding chrome.
-                This is what Metro missed: <strong>minimalism doesn't mean silence</strong>.
-                The interface stays flat, stays content-first, but it breathes.
+                A release handoff needs one clear next action, not a wall of unrelated numbers.
+                Large type names the task, status text carries live information, and a visible
+                focus treatment restores the affordance that chromeless interfaces often lost.
             </p>
-            <div class="dash-grid">
-                <!-- Clock — large -->
-                <div class="dash-tile dash-lg" style="background: var(--dark-blue)">
-                    <div class="dash-time">
-                        <span id="dash-hm"></span><span class="dash-time-sec" id="dash-sec"></span>
-                    </div>
-                    <div class="dash-date" id="dash-date"></div>
+            <div class="release-flow">
+                <div class="release-main">
+                    <div class="release-kicker">Production release</div>
+                    <div class="release-title">release #247</div>
+                    <div class="release-meta">main · approved by Mina and Alex · window closes at 16:30</div>
+                    <ol class="release-steps" aria-label="Release progress">
+                        <li class="release-step">
+                            <span class="release-step-name">Build and tests</span>
+                            <span class="release-step-state">passed</span>
+                        </li>
+                        <li class="release-step">
+                            <span class="release-step-name">Staging verification</span>
+                            <span class="release-step-state">approved</span>
+                        </li>
+                        <li class="release-step current" id="release-production-step">
+                            <span class="release-step-name">Production deploy</span>
+                            <span class="release-step-state" id="release-production-state">ready</span>
+                        </li>
+                    </ol>
                 </div>
-
-                <!-- Notifications -->
-                <div class="dash-tile dash-wide" style="background: var(--blue)">
-                    <div class="dash-update-label">Notifications</div>
-                    <div class="dash-update">
-                        <div class="dash-update-item">Build #247 passed</div>
-                        <div class="dash-update-item">PR review requested</div>
-                        <div class="dash-update-item">Deploy to staging complete</div>
-                    </div>
-                </div>
-
-                <!-- Counter -->
-                <div class="dash-tile dash-sm" style="background: var(--green)">
-                    <div class="dash-value" id="dash-tasks">5</div>
-                    <div class="dash-sub">remaining</div>
-                    <div class="dash-label">Tasks</div>
-                </div>
-
-                <!-- Metric -->
-                <div class="dash-tile dash-sm" style="background: var(--orange)">
-                    <div class="dash-value">92%</div>
-                    <div class="dash-bar"><div class="dash-bar-fill" style="width: 92%"></div></div>
-                    <div class="dash-label">Uptime</div>
-                </div>
-
-                <!-- Quote -->
-                <div class="dash-tile dash-wide" style="background: #444">
-                    <div class="dash-content" id="dash-quote">"Content before chrome."</div>
-                    <div class="dash-attr" id="dash-quote-attr">— The Metro Manifesto</div>
+                <div class="release-next">
+                    <div class="release-action-label">Next action</div>
+                    <div class="release-action-title">Deploy the approved build</div>
+                    <div class="release-action-detail">Artifact #247-a13f is signed and matches the staging build.</div>
+                    <button class="release-button" id="release-deploy" type="button">Deploy to production</button>
+                    <div class="release-status" id="release-status" role="status">Ready for the release owner.</div>
                 </div>
             </div>
         </section>
@@ -796,10 +806,9 @@
         <section class="section">
             <h2 class="section-title">What This Is Not</h2>
             <p class="section-desc">
-                Metro was right about a lot. It was also catastrophically wrong about some things.
-                Windows 8 forced a touch interface onto mouse-and-keyboard users, hid the Start menu,
-                and made flatness so extreme that people couldn't tell what was clickable.
-                Radical is good. Hostile is not.
+                Metro's strongest ideas came from a touch-first phone, while its weakest moments
+                appeared when those ideas moved to other inputs without adaptation. Keep the
+                hierarchy and live information; do not hide essential navigation or interaction cues.
             </p>
             <div class="anti-card">
                 <ul class="anti-list">
@@ -818,14 +827,13 @@
         <!-- Manifesto -->
         <footer class="manifesto">
             <p class="manifesto-text">
-                The content is the interface.<br>
-                The type is the hierarchy.<br>
-                The chrome was never needed.
+                Let content lead.<br>
+                Let type organize.<br>
+                Let affordance fit the device.
             </p>
             <p class="manifesto-sub">
-                Metro proved you could build an entire design language from two ingredients:
-                typography and color. It also proved you shouldn't kill the Start menu.<br>
-                Take the conviction. Leave the hubris.
+                Windows Phone 7 showed how little chrome a clear touch interface needed.
+                Windows 8 showed why the same answer cannot be copied across every device unchanged.
             </p>
         </footer>
     </div>
@@ -850,24 +858,18 @@
     updateTileClock();
     setInterval(updateTileClock, 1000);
 
-    /* Clock — Dashboard demo */
-    function updateDashClock() {
-        const now = new Date();
-        const h = String(now.getHours()).padStart(2, '0');
-        const m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-
-        document.getElementById('dash-hm').textContent = `${h}:${m}`;
-        document.getElementById('dash-sec').textContent = `:${s}`;
-        document.getElementById('dash-date').textContent =
-            `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
-    }
-    updateDashClock();
-    setInterval(updateDashClock, 1000);
-
     /* Calendar tile */
     const now = new Date();
     document.getElementById('cal-day').textContent = now.getDate();
     document.getElementById('cal-month').textContent = months[now.getMonth()];
     document.getElementById('cal-weekday').textContent = days[now.getDay()];
+
+    /* Working example — advance the release task */
+    const releaseDeploy = document.getElementById('release-deploy');
+    releaseDeploy.addEventListener('click', function () {
+        document.getElementById('release-production-state').textContent = 'deploying';
+        document.getElementById('release-status').textContent = 'Deployment started with artifact #247-a13f.';
+        this.textContent = 'Deployment started';
+        this.disabled = true;
+    });
 </script>

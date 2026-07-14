@@ -361,14 +361,51 @@
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     }
 
-    /* Combined demo */
+    /* Context comparison */
     .combined-demo {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
     }
 
+    .combined-scene {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        min-height: 260px;
+        padding: 22px;
+        overflow: hidden;
+        border-radius: 18px;
+    }
+
+    .combined-scene.contextual {
+        background:
+            linear-gradient(118deg, transparent 46%, rgba(255, 255, 255, 0.7) 47%, rgba(255, 255, 255, 0.7) 49%, transparent 50%),
+            repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 34px),
+            repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 34px),
+            linear-gradient(135deg, #134e6f, #6b4f9f 58%, #c05c7e);
+    }
+
+    .combined-scene.contextual::before {
+        content: 'ROUTE 7  ·  TERMINAL MAP';
+        position: absolute;
+        top: 18px;
+        left: 20px;
+        color: rgba(255,255,255,0.82);
+        font-size: 0.64rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+    }
+
+    .combined-scene.decorative {
+        background:
+            radial-gradient(circle at 22% 22%, #ec4899, transparent 42%),
+            radial-gradient(circle at 78% 72%, #06b6d4, transparent 46%),
+            #34206b;
+    }
+
     .combined-card {
+        width: 100%;
         padding: 24px;
     }
 
@@ -382,7 +419,7 @@
     }
 
     .combined-value {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
         font-weight: 200;
         margin-top: 8px;
         position: relative;
@@ -399,24 +436,6 @@
         margin-top: 4px;
         position: relative;
         z-index: 1;
-    }
-
-    .combined-bar {
-        height: 4px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 2px;
-        margin-top: 16px;
-        overflow: hidden;
-        position: relative;
-        z-index: 1;
-    }
-
-    .combined-bar-fill {
-        height: 100%;
-        border-radius: 2px;
-        background: linear-gradient(90deg, var(--accent), #ec4899);
-        box-shadow: 0 0 8px var(--accent-glow);
-        transition: width 0.8s ease;
     }
 
     /* Anti-pattern list */
@@ -511,7 +530,7 @@
     <div class="layout">
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Inspired by Glassmorphism</div>
+            <div class="hero-badge">Inspired by Big Sur</div>
             <h1 class="hero-title">Glassmorphism</h1>
             <p class="hero-tagline">
                 Frosted glass that shows context, not confusion.<br>
@@ -522,18 +541,19 @@
         <!-- Intro -->
         <div class="glass intro-card">
             <p class="intro-text">
-                Glassmorphism elegantly solves <strong>"where am I?"</strong> by
-                letting the background bleed through. A frosted panel over a colorful
-                canvas gives you spatial awareness — you sense what's behind the
-                surface without needing to see it clearly.
+                Frosted translucency long predates the name Glassmorphism. Windows Aero
+                and Fluent Acrylic had already used blur to separate interface layers.
+                Around 2020, macOS Big Sur, broader <code>backdrop-filter</code> support,
+                and a shared name turned the technique into a widely copied web trend.
                 <br><br>
-                The risk is readability — text over variable backgrounds is a
-                contrast nightmare. One panel looks great, three stacked panels
-                turn your GPU into a space heater.
+                Its useful job is specific: keep a temporary control or status layer connected
+                to the content beneath it without exposing enough detail to compete with reading.
+                The color field on this page is a test scene for that relationship, not a reason
+                to make every surface transparent.
                 <br><br>
-                <strong>We keep the contextual transparency. We enforce contrast.</strong>
-                This page shows that frosted glass can work — if every panel
-                has a reason to be transparent and the text never loses the fight.
+                The risk is readability and cost. Text over variable backgrounds can lose
+                contrast, while stacked blur layers multiply rendering work.
+                <strong>We keep contextual transparency, enforce contrast, and limit the layers.</strong>
             </p>
         </div>
 
@@ -641,27 +661,29 @@
 
         <div class="divider"></div>
 
-        <!-- Put It Together -->
+        <!-- Context comparison -->
         <section class="section">
-            <div class="section-label">All Together</div>
-            <h2 class="section-title">Put It Together</h2>
+            <div class="section-label">Working Example</div>
+            <h2 class="section-title">Context, Not Decoration</h2>
             <p class="section-desc">
-                Frosted glass + the border trick + layered depth.
-                Three principles, one dashboard. The gradient background bleeds through
-                meaningfully. The borders define each panel. Nothing is stacked three deep.
+                The same blur recipe can clarify a relationship or merely decorate a box.
+                On the left, the route remains recognizable beneath a temporary gate update.
+                On the right, no underlying information explains why the panel is transparent.
             </p>
             <div class="combined-demo">
-                <div class="glass combined-card">
-                    <div class="combined-label">Storage</div>
-                    <div class="combined-value" id="storage-value">64%</div>
-                    <div class="combined-bar"><div class="combined-bar-fill" style="width: 64%"></div></div>
-                    <div class="combined-sub">128 GB used of 200 GB</div>
+                <div class="combined-scene contextual">
+                    <div class="glass combined-card">
+                        <div class="combined-label">Useful glass</div>
+                        <div class="combined-value">Gate B12</div>
+                        <div class="combined-sub">The map stays present while the changed gate takes priority.</div>
+                    </div>
                 </div>
-                <div class="glass combined-card">
-                    <div class="combined-label">Bandwidth</div>
-                    <div class="combined-value" id="bandwidth-value">2.4</div>
-                    <div class="combined-bar"><div class="combined-bar-fill" id="bandwidth-bar" style="width: 48%"></div></div>
-                    <div class="combined-sub" id="bandwidth-sub">2.4 of 5 Gbps</div>
+                <div class="combined-scene decorative">
+                    <div class="glass combined-card">
+                        <div class="combined-label">Decorative glass</div>
+                        <div class="combined-value">Blur only</div>
+                        <div class="combined-sub">Color shows through, but it adds no context or hierarchy.</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -673,7 +695,7 @@
             <h2 class="section-title">What This Is Not</h2>
             <div class="glass anti-card">
                 <ul class="anti-list">
-                    <li><span class="x">&#x2717;</span> Glass over meaningless gradient blobs</li>
+                    <li><span class="x">&#x2717;</span> Glass added only because the background is colorful</li>
                     <li><span class="x">&#x2717;</span> Stacking glass on glass on glass</li>
                     <li><span class="x">&#x2717;</span> Frosted panels with no visible content behind them</li>
                     <li><span class="x">&#x2717;</span> "It looks like macOS" as the design goal</li>
@@ -683,12 +705,6 @@
                     <li><span class="o">&#x2713;</span> Test on low-end devices. backdrop-filter is expensive</li>
                 </ul>
             </div>
-            <p class="section-desc" style="margin-top: 16px; margin-bottom: 0;">
-                Yes, this very page uses gradient blobs as its background.
-                We broke rule one to show you the technique — and that's exactly why
-                glassmorphism is so seductive. Even the people warning you about it
-                can't resist making it look pretty first.
-            </p>
         </section>
 
         <!-- Manifesto -->
@@ -704,17 +720,3 @@
         </footer>
     </div>
 </body>
-
-<script>
-    /* Fake bandwidth fluctuation */
-    setInterval(() => {
-        const val = (1.8 + Math.random() * 1.8).toFixed(1);
-        const pct = Math.round((val / 5) * 100);
-        const $val = document.getElementById('bandwidth-value');
-        const $bar = document.getElementById('bandwidth-bar');
-        const $sub = document.getElementById('bandwidth-sub');
-        if ($val) $val.textContent = val;
-        if ($bar) $bar.style.width = pct + '%';
-        if ($sub) $sub.textContent = val + ' of 5 Gbps';
-    }, 3000);
-</script>

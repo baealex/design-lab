@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Neubrutalism (2022) -->
-<!-- description: Thick borders, loud colors, zero apologies -->
+<!-- description: How hard outlines, offset shadows, and controlled contrast create clear hierarchy -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
@@ -603,27 +603,24 @@
                 NEU<span class="hero-title-highlight">BRUTAL</span>ISM
             </h1>
             <p class="hero-tagline">
-                Hard shadows and loud colors that refuse to whisper.<br>
-                <strong>The problem isn't the volume. It's the lack of a volume knob.</strong>
+                Hard outlines and offset shadows make structure visible.<br>
+                <strong>Hierarchy decides where strong color belongs.</strong>
             </p>
         </header>
 
         <!-- Intro -->
         <div class="panel intro-card">
             <p class="intro-text">
-                Neubrutalism was a rebellion against polished sameness.
-                Thick borders, solid shadows, clashing colors — every element
-                <strong>stamped onto the page with zero apology</strong>.
+                In the early 2020s, neubrutalism adapted web brutalism's directness
+                into a more graphic, component-friendly language: thick outlines,
+                flat color, blocky type, and <strong>solid offset shadows</strong>.
                 <br><br>
-                The strength is obvious affordance — every button screams
-                <strong>"click me."</strong> Hard edges and loud contrast make
-                interactive elements impossible to miss. The risk is visual fatigue.
-                When everything shouts at the same volume, the user's eyes have
-                nowhere to rest — and no way to tell what matters.
+                Those explicit edges can make controls easy to locate. The risk is
+                uniform emphasis: if every card, label, and action uses a saturated
+                fill and full shadow, users cannot quickly identify the next action.
                 <br><br>
-                <strong>We keep the boldness. We add a volume knob.</strong>
-                Three levels of loudness — loud, medium, quiet — same border system,
-                same personality, but now the interface can whisper too.
+                These three principles keep the recognizable visual grammar while
+                assigning <strong>color and shadow according to information hierarchy</strong>.
             </p>
         </div>
 
@@ -631,13 +628,13 @@
 
         <!-- Principle 01: Hard Shadows -->
         <section class="section">
-            <div class="section-label">Technique</div>
-            <h2 class="section-title">Hard Shadows</h2>
+            <div class="section-label">Principle 01 · Structure</div>
+            <h2 class="section-title">Visible Edges</h2>
             <p class="section-desc">
                 The signature move. A solid offset shadow with <em>zero blur</em>.
-                Combined with a thick black <code>border</code>, every element looks like
-                it's been stamped onto the page. No subtlety, no softness.
-                The shadow doesn't simulate depth — it <em>declares</em> it.
+                Combined with a thick black <code>border</code>, it separates a component
+                from its surroundings without gradients or blur. A small translation on
+                press connects the graphic depth cue to interaction.
                 Move your cursor over the cards below and watch them lift.
             </p>
             <div class="shadow-demo">
@@ -662,20 +659,19 @@
                 <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
                 <span class="kw">box-shadow</span>: <span class="val">5px 5px 0px #000</span>;<br>
                 <span class="kw">border-radius</span>: <span class="val">6px</span>;&nbsp;&nbsp;&nbsp;<span class="cmt">/* small or zero */</span><br>
-                <span class="kw">background</span>: <span class="val">#f9f54b</span>;&nbsp;&nbsp;<span class="cmt">/* loud color */</span>
+                <span class="kw">background</span>: <span class="val">#f9f54b</span>;&nbsp;&nbsp;<span class="cmt">/* emphasis color */</span>
             </div>
         </section>
 
-        <!-- The Palette -->
+        <!-- Principle 02: Controlled Contrast -->
         <section class="section">
-            <div class="section-label">Palette</div>
-            <h2 class="section-title">Clashing Colors</h2>
+            <div class="section-label">Principle 02 · Color</div>
+            <h2 class="section-title">Controlled Contrast</h2>
             <p class="section-desc">
-                Forget color harmony. Neubrutalism puts <em>yellow next to pink</em>,
-                <em>blue next to orange</em>, and dares you to look away.
-                Every element is its own announcement. The colors don't blend —
-                they collide. And the black borders hold the whole thing together
-                like a frame around chaos.
+                Saturated yellow, pink, blue, and orange create the style's graphic
+                character, while a shared black outline makes different fills feel
+                related. Assign colors to a limited set of semantic or emphasis roles;
+                do not give every adjacent component a different hue.
             </p>
             <div class="palette-row">
                 <div class="palette-swatch">
@@ -703,16 +699,15 @@
 
         <div class="divider"></div>
 
-        <!-- The Problem -->
+        <!-- Failure Case -->
         <section class="section">
-            <div class="section-label">The Problem</div>
-            <h2 class="section-title">When Everything Shouts</h2>
+            <div class="section-label">Failure Case</div>
+            <h2 class="section-title">Uniform Emphasis</h2>
             <p class="section-desc">
                 Five buttons. Five colors. Five shadows.
                 Which one is the primary action? Which one matters?
-                When every element is at maximum volume, the user hears noise —
-                not a message. This is neubrutalism's fatal flaw: <em>loudness
-                without hierarchy is just chaos</em>.
+                Repeating the strongest treatment removes hierarchy, even when each
+                individual control remains visually distinct.
             </p>
             <div class="compare-grid">
                 <div class="compare-side">
@@ -723,47 +718,46 @@
                         <button class="nb-btn blue">Download</button>
                         <button class="nb-btn green">Confirm</button>
                     </div>
-                    <div class="compare-note">Four buttons, all screaming. The user freezes.</div>
+                    <div class="compare-note">Four equal treatments make the next action ambiguous.</div>
                 </div>
                 <div class="compare-side">
-                    <div class="compare-label good">Volume control</div>
+                    <div class="compare-label good">Clear hierarchy</div>
                     <div class="compare-btns">
                         <button class="nb-btn yellow">Subscribe</button>
                         <button class="nb-btn white">New Post</button>
                         <button class="nb-btn quiet">Cancel</button>
                     </div>
-                    <div class="compare-note">One shouts. One speaks. One whispers. The user knows.</div>
+                    <div class="compare-note">Fill and shadow now distinguish primary, secondary, and tertiary actions.</div>
                 </div>
             </div>
         </section>
 
-        <!-- The Fix -->
+        <!-- Principle 03: Hierarchy -->
         <section class="section">
-            <div class="section-label">The Fix</div>
-            <h2 class="section-title">Volume Control</h2>
+            <div class="section-label">Principle 03 · Hierarchy</div>
+            <h2 class="section-title">Emphasis Levels</h2>
             <p class="section-desc">
-                The border is the constant — every element gets the thick black stroke.
-                That's what makes it neubrutalist. But <em>shadow</em> and <em>color</em>
-                are volume knobs. Turn them up for primary actions, down for support.
-                Three levels, one system.
+                Keep the thick outline as a shared structural token. Then vary
+                <em>fill</em> and <em>shadow</em>: color plus shadow for primary items,
+                white plus shadow for secondary items, and outline alone for support.
             </p>
             <div class="volume-demo">
                 <div class="volume-level">
-                    <div class="volume-tag">Loud</div>
+                    <div class="volume-tag">Primary</div>
                     <div class="volume-sample loud">
                         Deploy to Production
                         <div class="volume-desc">Color fill + border + shadow — primary actions, alerts</div>
                     </div>
                 </div>
                 <div class="volume-level">
-                    <div class="volume-tag">Medium</div>
+                    <div class="volume-tag">Secondary</div>
                     <div class="volume-sample medium">
                         Save as Draft
                         <div class="volume-desc">White fill + border + shadow — secondary content, info cards</div>
                     </div>
                 </div>
                 <div class="volume-level">
-                    <div class="volume-tag">Quiet</div>
+                    <div class="volume-tag">Tertiary</div>
                     <div class="volume-sample quiet">
                         Cancel
                         <div class="volume-desc">White fill + border, no shadow — tertiary, supporting</div>
@@ -771,15 +765,15 @@
                 </div>
             </div>
             <div class="code-block">
-                <span class="cmt">/* Loud — color + border + shadow */</span><br>
+                <span class="cmt">/* Primary — color + border + shadow */</span><br>
                 <span class="kw">background</span>: <span class="val">#f9f54b</span>;<br>
                 <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
                 <span class="kw">box-shadow</span>: <span class="val">5px 5px 0px #000</span>;<br><br>
-                <span class="cmt">/* Medium — white + border + shadow */</span><br>
+                <span class="cmt">/* Secondary — white + border + shadow */</span><br>
                 <span class="kw">background</span>: <span class="val">#fff</span>;<br>
                 <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
                 <span class="kw">box-shadow</span>: <span class="val">5px 5px 0px #000</span>;<br><br>
-                <span class="cmt">/* Quiet — white + border, no shadow */</span><br>
+                <span class="cmt">/* Tertiary — white + border, no shadow */</span><br>
                 <span class="kw">background</span>: <span class="val">#fff</span>;<br>
                 <span class="kw">border</span>: <span class="val">3px solid #000</span>;<br>
                 <span class="kw">box-shadow</span>: <span class="val">none</span>;
@@ -788,15 +782,14 @@
 
         <div class="divider"></div>
 
-        <!-- All Together -->
+        <!-- Working Example -->
         <section class="section">
-            <div class="section-label">All Together</div>
-            <h2 class="section-title">Volume in Action</h2>
+            <div class="section-label">Working Example</div>
+            <h2 class="section-title">Hierarchy in Action</h2>
             <p class="section-desc">
-                A dashboard where loudness serves the user.
-                The alert screams — it should. The stats speak clearly.
-                The metadata whispers. Same border system, same personality,
-                but now the interface has dynamics, not just volume.
+                A deployment dashboard reserves the strongest fill for failure state
+                and recovery action. Supporting recovery details use the shared outline and shadow;
+                metadata drops the shadow so it stays visibly subordinate.
             </p>
             <div class="dash-grid">
                 <div class="dash-card loud" style="grid-column: 1 / -1; background: var(--red); color: #fff;">
@@ -808,18 +801,18 @@
                     <div class="dash-card-sub" style="color: rgba(255,255,255,0.8);">main branch — 2 minutes ago</div>
                 </div>
                 <div class="dash-card medium" style="background: var(--surface);">
-                    <div class="dash-card-title">Visitors</div>
-                    <div class="dash-card-stat">12,847</div>
-                    <div class="dash-card-sub">This month</div>
+                    <div class="dash-card-title">Failed Step</div>
+                    <div class="dash-card-stat">Migration</div>
+                    <div class="dash-card-sub">Lock timeout after 60 seconds</div>
                 </div>
                 <div class="dash-card medium" style="background: var(--surface);">
-                    <div class="dash-card-title">Revenue</div>
-                    <div class="dash-card-stat">$8.4k</div>
-                    <div class="dash-card-sub">Last 30 days</div>
+                    <div class="dash-card-title">Rollback</div>
+                    <div class="dash-card-stat">#846 Active</div>
+                    <div class="dash-card-sub">Production remains healthy</div>
                 </div>
                 <div class="dash-card quiet dash-full" style="background: var(--surface);">
-                    <div class="dash-full-text">Last updated: 2 minutes ago &middot; All other systems operational</div>
-                    <button class="nb-btn yellow">Retry Deploy</button>
+                    <div class="dash-full-text" id="deploy-retry-status" role="status">Migration lock cleared &middot; Artifact #847-a13f is ready to retry</div>
+                    <button class="nb-btn yellow" id="retry-deploy" type="button">Retry Deploy</button>
                 </div>
             </div>
         </section>
@@ -831,14 +824,14 @@
             <h2 class="section-title">The Rules</h2>
             <div class="panel anti-card">
                 <ul class="anti-list">
-                    <li><span class="x">&#x2717;</span> Every element at max volume — loudness without hierarchy is noise</li>
+                    <li><span class="x">&#x2717;</span> The strongest treatment on every element — equal emphasis obscures priority</li>
                     <li><span class="x">&#x2717;</span> Gradients, blurs, or soft shadows — that's another language entirely</li>
                     <li><span class="x">&#x2717;</span> Half-committed brutalism — if it's clean and polished, it's not this</li>
-                    <li><span class="x">&#x2717;</span> Color as decoration — each color should signal a meaning, not just "loud"</li>
+                    <li><span class="x">&#x2717;</span> Color as decoration — give each recurring color a role</li>
                     <li><span class="o">&#x2713;</span> The black border is the constant — that's what makes it neubrutalist</li>
-                    <li><span class="o">&#x2713;</span> Shadow and color are volume knobs — turn up for primary, down for support</li>
-                    <li><span class="o">&#x2713;</span> Three levels: loud (color + shadow), medium (white + shadow), quiet (border only)</li>
-                    <li><span class="o">&#x2713;</span> One loud element per view — if everything's loud, nothing is</li>
+                    <li><span class="o">&#x2713;</span> Use fill and shadow as explicit emphasis tokens</li>
+                    <li><span class="o">&#x2713;</span> Three levels: primary (color + shadow), secondary (white + shadow), tertiary (border only)</li>
+                    <li><span class="o">&#x2713;</span> Reserve the primary treatment for the most important item in a group</li>
                 </ul>
             </div>
         </section>
@@ -846,14 +839,14 @@
         <!-- Manifesto -->
         <footer class="manifesto">
             <p class="manifesto-text">
-                Design doesn't have to<br>
-                <span class="manifesto-highlight">whisper</span>.<br>
-                But it does need to know<br>
-                <span class="manifesto-highlight">when to</span>.
+                Make structure<br>
+                <span class="manifesto-highlight">visible</span>.<br>
+                Make priority<br>
+                <span class="manifesto-highlight">unmistakable</span>.
             </p>
             <p class="manifesto-sub">
-                Black borders. Solid shadows. Colors that fight each other.<br>
-                That's the whole system. The fix is knowing which element deserves the spotlight.
+                Black borders and solid shadows establish the grammar.<br>
+                Controlled color turns that grammar into hierarchy.
             </p>
         </footer>
     </div>
@@ -874,5 +867,13 @@
             btn.style.transform = '';
             btn.style.boxShadow = '';
         });
+    });
+
+    /* Working example — advance the recovery action */
+    const retryDeploy = document.getElementById('retry-deploy');
+    retryDeploy.addEventListener('click', function () {
+        document.getElementById('deploy-retry-status').textContent = 'Retry queued · deploying artifact #847-a13f';
+        this.textContent = 'Retry Queued';
+        this.disabled = true;
     });
 </script>

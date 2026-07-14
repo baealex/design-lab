@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Material Design 2 (2018) -->
-<!-- description: Finally, your app didn't have to look like Gmail -->
+<!-- description: How Material opened its system to shape, type, and brand expression -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
@@ -933,14 +933,15 @@
         <!-- Intro -->
         <div class="card card-elevated intro-card">
             <p class="intro-text">
-                Material Design 1 was a brilliant cage. Every app looked like Google.
-                In 2018, Google I/O introduced Material Design 2 — the system
-                that finally said <strong>"make it yours."</strong>
+                Material Design 1 created a coherent system, but its distinctive defaults
+                often made unrelated apps resemble Google products.
+                In 2018, Google I/O introduced Material Design 2 — a system
+                that explicitly said <strong>"make it yours."</strong>
                 <br><br>
                 Shape theming. Google Sans for personality. Outlined inputs
                 instead of underlined ones. White space as the primary surface.
-                Bottom navigation replacing the hamburger menu.
-                The era of <strong>"Google White"</strong> began.
+                Bottom navigation for a small set of peer destinations.
+                White surfaces became a recognizable M2 pattern.
                 <br><br>
                 The strength was breathing room — apps felt open, light, modern.
                 The weakness was identity — when everything is white and airy,
@@ -958,13 +959,12 @@
             <div class="section-label">Principle 01</div>
             <h2 class="section-title">Shape Theming</h2>
             <p class="section-desc">
-                M2 introduced the idea that corners are a design decision.
-                Not just one radius for everything — a <em>system</em> of shapes.
-                Small components (<code>4dp</code>) for buttons and text fields.
-                Medium (<code>8dp</code>) for cards and dialogs.
-                Large (<code>16dp</code>) for bottom sheets and navigation drawers.
-                For the first time, you could tune the personality of an entire
-                app by adjusting three numbers. We keep this: shape as brand expression.
+                M2 made corner shape an explicit part of theming.
+                Instead of one radius everywhere, it defined a <em>system</em> of shapes.
+                This example maps small components to <code>4dp</code>, cards and dialogs
+                to <code>8dp</code>, and larger sheets and drawers to <code>16dp</code>.
+                M2 made those shape categories configurable, so a small token set could
+                give components a consistent brand character. We keep this: shape as brand expression.
             </p>
             <div class="shape-demo">
                 <div class="shape-card sm">
@@ -984,7 +984,7 @@
                 </div>
             </div>
             <div class="code-block">
-                <span class="cmt">/* Shape theming — three radii, one personality */</span><br>
+                <span class="cmt">/* Example shape theme — three radii, one personality */</span><br>
                 <span class="kw">--shape-sm</span>: <span class="val">4px</span>; <span class="cmt">/* buttons, chips, fields */</span><br>
                 <span class="kw">--shape-md</span>: <span class="val">8px</span>; <span class="cmt">/* cards, dialogs */</span><br>
                 <span class="kw">--shape-lg</span>: <span class="val">16px</span>; <span class="cmt">/* sheets, drawers */</span><br>
@@ -997,8 +997,8 @@
             <div class="section-label">Principle 02</div>
             <h2 class="section-title">White Space as Surface</h2>
             <p class="section-desc">
-                M1 used heavy shadows to separate content.
-                M2 realized you could use <em>white space</em> instead.
+                M1 often used shadows to separate content.
+                M2 relied more on <em>white space</em> and subtle surface changes.
                 Cards got thinner borders. Backgrounds became lighter.
                 The primary surface became <code>#FFFFFF</code> on <code>#F8F9FA</code> —
                 almost nothing, but enough. Content breathes.
@@ -1031,12 +1031,11 @@
             <div class="section-label">Principle 03</div>
             <h2 class="section-title">Bottom Navigation</h2>
             <p class="section-desc">
-                The hamburger menu was M1's biggest UX failure.
-                Three lines in the corner, hiding the entire navigation
-                behind a swipe nobody remembered to do.
-                M2 moved primary destinations to the <em>bottom of the screen</em> —
-                visible, reachable, always there. One thumb, all sections.
-                We embrace this: put navigation where thumbs already are.
+                A hamburger menu can hide primary destinations and make frequent switching
+                less direct. M2 guidance emphasized <em>bottom navigation</em> when a mobile
+                app has three to five peer destinations: visible, reachable, and available
+                without opening a drawer. We keep that fit-for-purpose rule rather than
+                treating bottom navigation as the answer for every screen.
             </p>
             <div class="nav-demo">
                 <div class="nav-demo-body">
@@ -1082,8 +1081,8 @@
                 M2 introduced <em>Google Sans</em> for headlines and display text —
                 rounder, friendlier, with just enough personality to feel
                 like a brand without screaming it. Roboto stayed for body text.
-                The pairing gave Google's products a warmth they never had.
-                We borrow this: a personality font for headlines,
+                The pairing made headlines feel rounder and more branded than Roboto alone.
+                We borrow the underlying rule: a personality font for headlines,
                 a readable font for everything else.
             </p>
             <div class="font-compare">
@@ -1110,7 +1109,7 @@
                 Google Sans and configurable shape. <em>Outlined</em> for secondary.
                 <em>Text</em> buttons for the lowest emphasis.
                 The Extended FAB was new — a pill with an icon and a label,
-                finally giving the FAB a voice instead of just a plus sign.
+                giving the action a name instead of only a plus sign.
             </p>
             <div class="btn-row" style="margin-bottom: 16px;">
                 <button class="btn-contained" id="btn-contained">Contained</button>
@@ -1145,10 +1144,10 @@
             <p class="section-desc">
                 White surfaces. Thin borders. Google Sans headlines.
                 Tabs with a primary indicator. Cards with outlined borders.
-                Bottom navigation visible at all times. An Extended FAB
-                floating in the corner with a label. This is the app
-                that lived in every pocket from 2018 to 2021 —
-                clean, open, and unmistakably Google.
+                Bottom navigation for peer destinations. An Extended FAB
+                floating in the corner with a label. Together these choices formed
+                a common Google product pattern during the Material 2 period:
+                open, lightly outlined, and clearly branded.
             </p>
             <div class="app-frame">
                 <div class="frame-toolbar">
@@ -1176,8 +1175,8 @@
                         </div>
                         <div class="frame-card-img" style="background: linear-gradient(135deg, #D2E3FC, #E8F0FE);"></div>
                         <div class="frame-card-body">
-                            <div class="frame-card-title">The white space revolution</div>
-                            <div class="frame-card-desc">How Google taught a billion apps to breathe.</div>
+                            <div class="frame-card-title">Spacing as hierarchy</div>
+                            <div class="frame-card-desc">How lighter surfaces can separate content without a heavy shadow.</div>
                         </div>
                         <div class="frame-card-actions">
                             <button class="btn-text-m2" style="font-size:0.72rem; height:28px; padding:0 12px;">Share</button>
@@ -1245,7 +1244,7 @@
                     <li><span class="o">&#x2713;</span> Shape theming as brand expression — three radii, one personality</li>
                     <li><span class="o">&#x2713;</span> White space as hierarchy — let content breathe</li>
                     <li><span class="o">&#x2713;</span> Bottom navigation — put destinations where thumbs are</li>
-                    <li><span class="o">&#x2713;</span> Extended FAB — the floating action finally got a label</li>
+                    <li><span class="o">&#x2713;</span> Extended FAB — label an action when the icon is not enough</li>
                 </ul>
             </div>
         </section>
@@ -1258,8 +1257,8 @@
                 It just looks like your app.
             </p>
             <p class="manifesto-sub">
-                Material 2 gave designers permission to breathe.<br>
-                We breathe — but we fill the lungs with something worth saying.
+                Material 2 made shape, type, and spacing easier to adapt.<br>
+                Keep that flexibility while giving the product a distinct voice.
             </p>
         </footer>
     </div>

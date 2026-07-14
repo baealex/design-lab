@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Neumorphism (2019) -->
-<!-- description: Everyone loved it until they couldn't find the buttons -->
+<!-- description: How soft extrusion works, why contrast failed, and how to restore affordance -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
@@ -840,17 +840,17 @@
         <!-- Intro -->
         <div class="intro-card">
             <p class="intro-text">
-                Neumorphism was gorgeous on Dribbble and unusable in production.
-                The double-shadow technique is genuinely clever —
-                <strong>surfaces that push out of the page, not float above it.</strong>
+                Neumorphism emerged in 2019 as a hybrid of minimal interfaces and
+                skeuomorphic depth. Its signature double shadow makes a control look
+                <strong>extruded from the same material as its background</strong>.
                 <br><br>
-                The fatal flaw was zero contrast. Every element melted into its
-                background, and users couldn't tell a button from a panel.
-                WCAG? Not a chance.
+                The same-color constraint also created its central usability problem:
+                controls could blend into panels, text contrast could fall short, and
+                a shadow change alone was easy to miss as an interaction state.
                 <br><br>
-                <strong>Here's our proposal: keep the extrusion, add the affordance.</strong>
-                Every component on this page proves that neumorphism can work
-                in production — if you respect the user's ability to see and operate it.
+                <strong>Keep the extrusion, then add explicit affordance.</strong>
+                These four principles separate the visual technique from the contrast,
+                state, and focus cues a usable interface still needs.
             </p>
         </div>
 
@@ -858,15 +858,15 @@
 
         <!-- Principle 01: The Double Shadow -->
         <section class="section">
-            <div class="section-label">Technique</div>
+            <div class="section-label">Principle 01 · Form</div>
             <h2 class="section-title">The Double Shadow</h2>
             <p class="section-desc">
                 One dark shadow cast to the bottom-right. One light shadow cast to the top-left.
                 That's the entire trick. The dark shadow mimics an absence of light.
                 The light shadow mimics a reflection.
                 Together: <code>box-shadow</code> creates the illusion of physical extrusion.
-                It's the only CSS technique that makes a surface look like it's pushing
-                out of the page — not floating above it, but growing from it.
+                Because both shadows share the page's base color, the surface appears
+                to grow from the background rather than float as a separate sheet.
             </p>
             <div class="demo-row">
                 <div class="demo-panel raised">
@@ -901,7 +901,7 @@
 
         <!-- Principle 02: Pressed vs Raised -->
         <section class="section">
-            <div class="section-label">Interaction</div>
+            <div class="section-label">Principle 02 · State</div>
             <h2 class="section-title">Pressed vs Raised</h2>
             <p class="section-desc">
                 Invert the shadows with <code>inset</code> and the surface flips from
@@ -936,9 +936,9 @@
 
         <div class="divider"></div>
 
-        <!-- The Beauty: Monochrome Discipline -->
+        <!-- Principle 03: Monochrome Discipline -->
         <section class="section">
-            <div class="section-label">The Beauty</div>
+            <div class="section-label">Principle 03 · Palette</div>
             <h2 class="section-title">Monochrome Discipline</h2>
             <p class="section-desc">
                 Here's what makes neumorphism neumorphism: everything is the same
@@ -967,24 +967,23 @@
                 </div>
             </div>
             <p class="section-desc" style="margin-bottom: 0;">
-                This monochrome foundation is sacred. We don't abandon it.
-                The fix is surgical: add <strong>one accent color</strong>,
-                only where the user needs to know "this is interactive."
-                Everything else stays monochrome.
+                The monochrome foundation defines the style, but it does not need
+                to carry interaction by itself. Reserve <strong>one accent color</strong>
+                for primary actions and state; keep supporting surfaces monochrome.
             </p>
         </section>
 
         <div class="divider"></div>
 
-        <!-- Principle 03: The Fix -->
+        <!-- Principle 04: Affordance -->
         <section class="section">
-            <div class="section-label">The Fix</div>
+            <div class="section-label">Principle 04 · Affordance</div>
             <h2 class="section-title">Adding Affordance</h2>
             <p class="section-desc">
                 Shadows alone cannot carry affordance — when everything is the same
                 color, nothing says "click me." But we don't need to abandon the
-                aesthetic. One accent color, applied only to interactive elements,
-                solves the problem without breaking the monochrome spell.
+                aesthetic. Accent color, labels, focus rings, and sufficient text
+                contrast make action and state visible without replacing the soft form.
             </p>
 
             <!-- Fix 1: Buttons -->
@@ -1057,7 +1056,7 @@
 
         <!-- All Together -->
         <section class="section">
-            <div class="section-label">All Together</div>
+            <div class="section-label">Working Example</div>
             <h2 class="section-title">Accessible Neumorphic Player</h2>
             <p class="section-desc">
                 Double shadows + accent affordance + focus rings.
