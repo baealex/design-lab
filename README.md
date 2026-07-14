@@ -9,7 +9,6 @@
 
 ```bash
 npm i
-npx playwright install chromium
 npm run dev
 ```
 
