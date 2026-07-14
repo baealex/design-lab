@@ -705,27 +705,26 @@
             <div class="hero-badge">Inspired by CLI &amp; TUI</div>
             <h1 class="hero-title">CLI/TUI<span class="cursor"></span></h1>
             <p class="hero-tagline">
-                No interface ever packed more power per pixel.<br>
-                We kept the density and the speed. We lost the learning curve.
+                Text made limited screens dense, fast, and direct.<br>
+                Keep that structure. Make the commands easier to discover.
             </p>
         </header>
 
         <!-- Intro -->
         <div class="panel intro-card">
             <p class="intro-text">
-                The Command Line Interface was the most efficient interface ever built.
-                A Teletype Model 33 printed <strong>READY</strong> in 1964, and for three
-                decades that blinking prompt was <strong>the</strong> interface &mdash;
-                monospace grids, input-output loops, raw information density that no GUI
-                has ever matched.
+                In 1960s time-sharing systems, terminals turned a shared computer into a
+                workspace that could answer one person at a time. A short prompt, a monospace
+                grid, and a command-response loop made good use of slow links and limited displays.
+                The interface exposed the machine's vocabulary directly instead of spending scarce
+                screen space on persistent controls.
                 <br><br>
                 But it demanded memorization. It punished typos. It assumed the user
                 already knew everything. <strong>That was the weakness.</strong>
-                The density, the speed, the directness &mdash; those were the strengths,
-                and they never went away. Every Cmd+K palette, every AI chat, every
-                terminal emulator proves it. This page keeps what the CLI got right
-                and builds it into a <strong>usable, modern interface</strong> that
-                doesn't require a manual to operate.
+                The density, speed, and immediate feedback remain useful, but a modern
+                interface should add visible choices, forgiving input, and recovery.
+                Command palettes, terminal emulators, and conversational tools all reuse
+                parts of that pattern without requiring every command to be memorized.
             </p>
         </div>
 
@@ -737,11 +736,12 @@
             <h2 class="section-title">The Monospace Grid</h2>
             <p class="section-desc">
                 Every character occupies the same width. That single constraint
-                creates <em>perfect vertical alignment</em> without CSS Grid,
+                creates <em>reliable vertical alignment</em> without CSS Grid,
                 without Flexbox, without any layout engine at all.
                 Columns line up because the font forces them to.
                 Tables, borders, charts &mdash; all drawn with text alone.
-                This is the original design system: <code>80 columns x 24 rows</code>.
+                Later terminals made <code>80 columns x 24 rows</code> a widely recognized
+                standard &mdash; not the origin of the grid, but one durable expression of it.
             </p>
             <div class="grid-demo" id="grid-demo">
                 <pre><span class="header-line">  PID  USER       CPU%   MEM%   STATE    COMMAND</span>
@@ -768,10 +768,9 @@
             <p class="section-desc">
                 You type. The system answers. No loading spinners,
                 no skeleton screens, no optimistic updates.
-                The <em>input-output loop</em> is the most honest interaction pattern
-                ever designed. It's also the ancestor of every chatbot,
-                every AI assistant, every command palette you use today.
-                <code>Cmd+K</code> is just a terminal that went to design school.
+                The <em>input-output loop</em> makes cause and effect explicit: one request,
+                followed by one visible response. Chat interfaces and command palettes reuse
+                that direct exchange while adding suggestions and discoverable actions.
             </p>
             <div class="terminal" id="terminal-demo">
                 <div class="terminal-titlebar">
@@ -809,10 +808,9 @@
             <div class="section-label">Principle 03</div>
             <h2 class="section-title">Information Density</h2>
             <p class="section-desc">
-                A terminal shows more data per pixel than any GUI ever built.
-                No padding, no whitespace worship, no card-based layouts
-                that wrap three words in a 200px box. Just <em>raw information</em>,
-                structured by alignment and box-drawing characters.
+                A terminal can show dense data with very little interface chrome.
+                Compact spacing and monospace alignment keep <em>raw information</em>
+                structured without turning every value into a separate card.
                 This is what <code>htop</code> understood:
                 density is not clutter when the structure is clear.
             </p>
@@ -847,7 +845,7 @@
             <p class="section-desc">
                 Monospace grid for alignment. Command pattern for interaction.
                 Dense information display. Three principles, one interface.
-                This is what Midnight Commander, ranger, and every TUI file manager
+                This is what Midnight Commander, ranger, and many TUI file managers
                 understood: <em>text is enough</em> when the structure does the work.
             </p>
             <div class="fm-container" id="file-manager">
@@ -893,10 +891,10 @@
                     <li><span class="x">&#x2717;</span> Unreadable tiny monospace everywhere</li>
                     <li><span class="x">&#x2717;</span> Terminal emulation without purpose</li>
                     <li><span class="x">&#x2717;</span> Nostalgia cosplay with no UX value</li>
-                    <li><span class="o">&#x2713;</span> Monospace grid for perfect data alignment</li>
+                    <li><span class="o">&#x2713;</span> Monospace grid for predictable data alignment</li>
                     <li><span class="o">&#x2713;</span> Command patterns for direct, efficient interaction</li>
                     <li><span class="o">&#x2713;</span> Information density that respects the user's time</li>
-                    <li><span class="o">&#x2713;</span> The ancestor of every chat interface you use today</li>
+                    <li><span class="o">&#x2713;</span> Direct request-and-response patterns with visible feedback</li>
                 </ul>
             </div>
         </section>
@@ -904,14 +902,13 @@
         <!-- Manifesto -->
         <footer class="manifesto">
             <p class="manifesto-text">
-                The command line never died.<br>
-                It became every Cmd+K palette.<br>
-                Every terminal emulator.<br>
-                Every AI chat you type into.
+                Keep the grid for alignment.<br>
+                Keep the direct feedback.<br>
+                Add visible choices and recovery.
             </p>
             <p class="manifesto-sub">
-                $ echo "The prompt is the most enduring interface ever designed."<br>
-                &gt; The prompt is the most enduring interface ever designed.
+                Dense does not have to mean cryptic.<br>
+                Direct does not have to mean unforgiving.
             </p>
         </footer>
     </div>

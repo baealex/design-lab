@@ -1,9 +1,9 @@
 <!-- layout: base.html -->
 <!-- title: Skeuomorphism (2007) -->
-<!-- description: Looked real until it looked dated -->
+<!-- description: Real-world cues helped early touch interfaces explain themselves -->
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Georgia&family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
     :root {
         --cream: #faf6ef;
@@ -839,63 +839,71 @@
             <div class="hero-badge">Inspired by iOS 6</div>
             <h1 class="hero-title">Skeuomorphism</h1>
             <p class="hero-tagline">
-                The leather stitching was too much.<br>
-                But "things that look like what they do" is genius.
+                Physical metaphors helped unfamiliar gestures feel learnable.<br>
+                Keep the cues. Lose the literal imitation.
             </p>
         </header>
 
         <!-- Intro -->
         <div class="intro-card">
             <div class="texture-leather stitching-top intro-card-header">
-                About This Philosophy
+                Why Physical Metaphors Appeared
             </div>
             <div class="texture-paper intro-card-body">
                 <p class="intro-text">
-                    Skeuomorphism's textures aged badly. The stitched leather, the green felt,
-                    the wood grain on a podcast app &mdash; all of it became parody.
-                    Jony Ive killed it overnight with iOS 7, and the world moved on.
+                    Skeuomorphism did not begin with smartphones, but <strong>2007</strong> marks
+                    an important shift in this study: the first iPhone brought a multi-touch screen
+                    to people who had few established conventions for tapping, swiping, and dragging.
+                    Familiar objects &mdash; a notepad, calculator, shelf, or switch &mdash; could lend
+                    their existing cues to those new gestures.
                     <br><br>
-                    But its core principle &mdash; <strong>affordance through familiar metaphor</strong>
-                    &mdash; is timeless. A button that looks pressable gets pressed.
-                    A slider that looks draggable gets dragged.
-                    "Things that look like what they do" is not decoration. It is communication.
+                    By <strong>2011</strong>, many mobile apps had pushed that language toward literal
+                    leather, felt, paper, and wood. <strong>iOS 6 in 2012</strong> is the visual reference
+                    for that mature phase on this page. <strong>iOS 7 in 2013</strong> changed direction,
+                    favoring flatter layers and lighter ornament rather than ending physical metaphor
+                    in a single moment.
                     <br><br>
-                    We keep the <strong>tactile feedback</strong>. We lose the fake leather.
-                    Every interactive element on this page teaches you how to use it
-                    just by looking at it.
+                    The useful principle is <strong>affordance through familiar metaphor</strong>:
+                    shape, depth, and feedback can suggest what moves or responds. The weakness appears
+                    when imitation adds texture without adding understanding. We keep the tactile cue
+                    and recognizable behavior; we lose the unnecessary costume.
                 </p>
             </div>
         </div>
 
         <div class="divider"></div>
 
-        <!-- Principle 01: Texture as Material -->
+        <!-- Principle 01: Texture Must Map to a Role -->
         <section class="section">
             <div class="section-label">Principle 01</div>
-            <h2 class="section-title">Texture as Material</h2>
+            <h2 class="section-title">Texture Must Map to a Role</h2>
             <p class="section-desc">
                 Leather, linen, wood, felt. The original skeuomorphic palette treated every surface
-                like a real thing you could touch. These days we build them with
+                like a real thing you could touch. A texture earns its place only when the material
+                explains a region or behavior: paper can mark the writing surface, leather can mark
+                its cover, and wood can frame objects that behave like items on a shelf. If hierarchy
+                and behavior read the same without it, leave the texture out. Once the role is clear,
+                the material can be suggested with
                 <code>linear-gradient</code>, <code>repeating-linear-gradient</code>, and
-                inline SVG noise filters. No images. No download penalty. Just CSS pretending
-                to be a craft store.
+                inline SVG noise filters rather than image assets. The rendering technique does not
+                justify a texture; the interaction model does.
             </p>
             <div class="demo-row-4">
                 <div class="texture-swatch texture-leather">
                     <div class="swatch-label">Leather</div>
-                    <div class="swatch-sub">Warm, authoritative</div>
+                    <div class="swatch-sub">Cover, not content</div>
                 </div>
                 <div class="texture-swatch texture-linen">
                     <div class="swatch-label">Linen</div>
-                    <div class="swatch-sub">Quiet, familiar</div>
+                    <div class="swatch-sub">Low-contrast grouping</div>
                 </div>
                 <div class="texture-swatch texture-wood">
                     <div class="swatch-label">Wood</div>
-                    <div class="swatch-sub">Grounded, organic</div>
+                    <div class="swatch-sub">Shelf behavior only</div>
                 </div>
                 <div class="texture-swatch texture-felt">
                     <div class="swatch-label">Felt</div>
-                    <div class="swatch-sub">Playful, soft</div>
+                    <div class="swatch-sub">Bounded play surface</div>
                 </div>
             </div>
             <div class="code-block">
@@ -977,9 +985,9 @@
             <h2 class="section-title">Real-World Metaphor</h2>
             <p class="section-desc">
                 The notepad looks like a notepad. The calculator has button bezels.
-                The bookshelf has wood grain. Skeuomorphism's killer insight: if a thing
-                behaves like a real object, it should <em>look</em> like that object.
-                The user's existing knowledge becomes the instruction manual.
+                The bookshelf has wood grain. Skeuomorphism's practical insight was that a
+                digital control could borrow a familiar object's cues when the behavior matched.
+                Existing knowledge then shortened the explanation, while mismatched decoration did not.
             </p>
             <div class="metaphor-grid">
                 <!-- Calculator -->
@@ -1039,7 +1047,8 @@
             <p class="section-desc">
                 Leather header with stitching detail. Paper texture body with ruled lines.
                 Beveled buttons with real press feedback. One card, all three principles.
-                It looks like something from 2011. That's the compliment.
+                The result combines cues that accumulated across the late 2000s and early 2010s,
+                while keeping them inside one object where the journal metaphor is useful.
             </p>
             <div class="note-demo">
                 <div class="texture-leather stitching-top stitching-bottom note-demo-header">
@@ -1083,10 +1092,10 @@
                 <ul class="anti-list">
                     <li><span class="x">&#x2717;</span> Leather texture on a SaaS dashboard (your B2B users don't want a saddle)</li>
                     <li><span class="x">&#x2717;</span> Realistic stitching that serves no purpose (decoration is not affordance)</li>
-                    <li><span class="x">&#x2717;</span> Wood grain on a music player (looking at you, early iOS)</li>
+                    <li><span class="x">&#x2717;</span> Literal wood grain that adds no information to a music player</li>
                     <li><span class="x">&#x2717;</span> Textures that slow down rendering (CSS noise, not PNG noise)</li>
                     <li><span class="o">&#x2713;</span> Affordance: interactive elements that look interactive</li>
-                    <li><span class="o">&#x2713;</span> Texture as personality (one surface with warmth, not everything cowhide)</li>
+                    <li><span class="o">&#x2713;</span> Texture that separates a meaningful object or interaction region</li>
                     <li><span class="o">&#x2713;</span> Emboss and deboss for subtle depth cues</li>
                     <li><span class="o">&#x2713;</span> Physical metaphors that genuinely aid understanding</li>
                 </ul>
@@ -1096,12 +1105,12 @@
         <!-- Manifesto -->
         <footer class="manifesto">
             <p class="manifesto-text">
-                A button should look<br>
-                like it wants to be pressed.
+                Borrow the familiar cue.<br>
+                Keep only what teaches.
             </p>
             <p class="manifesto-sub">
-                Flat design taught us restraint. Skeuomorphism taught us empathy.<br>
-                The best interfaces remember both lessons.
+                Physical metaphor can shorten learning; restraint keeps content in focus.<br>
+                Use both when they clarify behavior.
             </p>
         </footer>
     </div>

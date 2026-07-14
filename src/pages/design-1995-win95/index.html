@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Windows 95 (1995) -->
-<!-- description: The legendary “Start” -->
+<!-- description: Raised controls, sunken fields, and one place to Start -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
@@ -74,7 +74,7 @@
     }
 
     .win-titlebar {
-        background: linear-gradient(90deg, var(--titlebar), #1084d0);
+        background: var(--titlebar);
         color: var(--titlebar-text);
         padding: 3px 4px;
         display: flex;
@@ -1019,11 +1019,10 @@
             <h1 class="hero-title">
                 WINDOWS
                 <span class="hero-title-highlight">95</span>
-                <span class="hero-title-95">&rsquo;95</span>
             </h1>
             <p class="hero-tagline">
-                It taught the world what a button looks like.<br>
-                We're keeping that <strong>affordance clarity</strong> and making it work today.
+                Raised controls, sunken fields, and one clear place to begin.<br>
+                Keep the visible states. Reduce the visual weight.
             </p>
         </header>
 
@@ -1034,21 +1033,20 @@
             </div>
             <div class="intro-card-body">
                 <p class="intro-text">
-                    Windows 95's beveled borders made every clickable thing
-                    <strong>obviously clickable</strong>. Raised means push it.
-                    Sunken means type in it. A child could understand it. A billion people did.
-                    <strong>That was the strength: instant affordance.</strong>
+                    In 1995, personal computers were carrying more programs, documents, and
+                    settings into homes and workplaces. Windows 95 gathered those destinations
+                    behind the Start menu and applied a consistent visual grammar across them:
+                    raised controls invited a press, while sunken fields invited input.
+                    <strong>That was the strength: visible affordance and predictable structure.</strong>
                     <br><br>
                     The weakness? The 3D effects aged poorly. The gray surfaces became
                     oppressive. The visual weight overwhelmed the content. But the
-                    <strong>principle</strong> underneath &mdash; that every element should
-                    communicate its function through its appearance &mdash; is eternal.
+                    <strong>principle</strong> underneath still matters: an element's appearance
+                    should help explain its role and state.
                     <br><br>
-                    This page takes that principle and proves it still works.
-                    Not pixel-perfect retro emulation, but <strong>the affordance system
-                    itself</strong> &mdash; rebuilt for a modern context where
-                    raised surfaces, sunken fields, and window chrome aren't
-                    nostalgia. They're <strong>usable UI</strong>.
+                    This page studies that affordance system rather than reproducing every pixel.
+                    A modern version can preserve clear states and stable navigation while using
+                    less chrome, more space, and more restrained contrast.
                 </p>
             </div>
         </div>
@@ -1064,7 +1062,7 @@
                 A <em>white highlight on the top-left</em> and a <em>dark shadow on the bottom-right</em>
                 creates the illusion of a 3D surface lit from the upper left.
                 Reverse the colors and the surface looks pressed inward. This single technique
-                gave every pixel a physical meaning: raised means <em>clickable</em>,
+                gave controls a physical meaning: raised means <em>clickable</em>,
                 sunken means <em>editable</em>. No labels needed.
                 Try pressing the buttons below.
             </p>
@@ -1132,10 +1130,10 @@
             <div class="section-label">Principle 02</div>
             <h2 class="section-title">The Window Chrome</h2>
             <p class="section-desc">
-                Every application in Windows 95 lived inside a <em>framed window</em>.
-                A blue gradient title bar told you what you were looking at. Three buttons
+                Graphical applications in Windows 95 lived inside a <em>framed window</em>.
+                A solid navy title bar told you what you were looking at. Three buttons
                 in the corner gave you <em>minimize, maximize, and close</em>.
-                A menu bar organized every action under predictable headings:
+                A menu bar organized common actions under predictable headings:
                 File, Edit, View, Help. And a status bar at the bottom kept you informed.
                 This chrome wasn't decoration — it was <em>structure</em>. Try typing in the
                 notepad below.
@@ -1164,9 +1162,9 @@
 The interface you are looking at defined
 a generation of computer users.
 
-Every raised surface is a button.
-Every sunken field is an input.
-Every blue title bar is a handle.
+Raised surfaces suggest buttons.
+Sunken fields suggest input.
+Blue title bars identify window handles.
 
 This is the language of affordance.</textarea>
                     </div>
@@ -1178,7 +1176,7 @@ This is the language of affordance.</textarea>
 
             <div class="code-block">
                 <span class="cmt">/* Title bar — the window's identity */</span><br>
-                <span class="kw">background</span>: <span class="val">linear-gradient(90deg, #000080, #1084d0)</span>;<br>
+                <span class="kw">background</span>: <span class="val">#000080</span>;<br>
                 <span class="kw">color</span>: <span class="val">#ffffff</span>;<br>
                 <span class="kw">font-weight</span>: <span class="val">bold</span>;<br>
                 <span class="kw">padding</span>: <span class="val">3px 4px</span>;<br>
@@ -1195,12 +1193,12 @@ This is the language of affordance.</textarea>
             <div class="section-label">Principle 03</div>
             <h2 class="section-title">The Start Menu</h2>
             <p class="section-desc">
-                Microsoft's answer to "Where do I begin?" was revolutionary in its simplicity:
+                Microsoft's answer to "Where do I begin?" was direct:
                 <em>a single button labeled "Start."</em> Everything you could do with your
                 computer funneled through one entry point. Programs, documents, settings,
                 help — all organized in a cascading menu that rewarded exploration.
-                The Start button became so iconic that it survived as a concept for
-                <em>thirty years</em>. Click "Start" in the demo below.
+                The pattern remained a central part of Windows navigation across later versions.
+                Click "Start" in the demo below.
             </p>
 
             <div class="desktop-demo" id="desktop-demo">
@@ -1304,8 +1302,8 @@ This is the language of affordance.</textarea>
             <h2 class="section-title">Calculator</h2>
             <p class="section-desc">
                 Beveled buttons, window chrome, and status feedback — combined into one of
-                Windows 95's most-used accessories.
-                Every button has <em>tactile press feedback</em>. The display is a sunken field.
+                Windows 95's familiar accessories.
+                Its buttons have <em>tactile press feedback</em>. The display is a sunken field.
                 The whole thing lives inside a proper window frame.
                 This is what <em>affordance</em> looks like: you can tell what everything does
                 just by looking at it. Try calculating something.
@@ -1386,18 +1384,13 @@ This is the language of affordance.</textarea>
         <!-- Manifesto -->
         <footer class="manifesto">
             <p class="manifesto-text">
-                Windows 95 taught a<br>
-                <span class="manifesto-highlight">billion people</span><br>
-                what a button looks like.<br>
-                <span class="manifesto-highlight">Affordance</span> — making things<br>
-                look like what they do —<br>
-                is still the most important<br>
-                principle in <span class="manifesto-highlight">UI design</span>.
+                Make the available action visible.<br>
+                Make the current state distinct.<br>
+                Keep the structure predictable.
             </p>
             <p class="manifesto-sub">
-                Raised means push it. Sunken means type in it.<br>
-                Blue bar means grab it. That's the whole system.<br>
-                Thirty years later, we're still catching up.
+                Keep the clarity of raised, pressed, active, and disabled states.<br>
+                Improve the density, restraint, and flexibility around them.
             </p>
         </footer>
     </div>

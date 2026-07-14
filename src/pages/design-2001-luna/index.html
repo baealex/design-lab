@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Luna (2001) -->
-<!-- description: Blue skies, green hills, you know the vibe -->
+<!-- description: Windows XP's friendly blue, green, and rounded visual language -->
 
 <style>
     :root {
@@ -588,6 +588,19 @@
         background: linear-gradient(180deg, #F5FFF5 0%, #E0F5E0 100%);
     }
 
+    .surface-card.legacy {
+        border-color: #8E8F8A;
+        border-radius: 0;
+        background: linear-gradient(180deg, #ECE9D8 0%, #D8D4C6 100%);
+        box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.65), inset -1px -1px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .surface-card.modern {
+        border-color: #B8C8BE;
+        background: #FFFFFF;
+        box-shadow: 0 2px 6px rgba(42, 74, 52, 0.08);
+    }
+
     .surface-card-icon {
         font-size: 20px;
         margin-bottom: 8px;
@@ -949,11 +962,11 @@
             <div class="hero-badge">Inspired by Windows XP Luna</div>
             <h1 class="hero-title">
                 Luna
-                <span class="hero-title-sub">The visual style that made computers feel like home</span>
+                <span class="hero-title-sub">A warmer visual language for Windows XP</span>
             </h1>
             <p class="hero-tagline">
                 Blue titlebar. Green Start button. Rolling hills.<br>
-                The OS that taught a generation to trust their computer.
+                A friendlier answer to gray desktop chrome.
             </p>
         </header>
 
@@ -971,35 +984,34 @@
             <div class="xp-body">
                 <p class="intro-text">
                     October 25, 2001. Windows XP launched with <strong>Luna</strong> &mdash;
-                    a visual style that threw away every gray, boxy convention of the 90s.
-                    Suddenly, titlebars were blue. The Start button was green. Buttons had
-                    gradient highlights. The default wallpaper was a photograph of a green
-                    hill under a perfect sky called <strong>"Bliss"</strong>, and it became
-                    the most viewed image in human history.
+                    a visual style that replaced much of the previous gray, boxy chrome with
+                    blue title bars, a green Start button, and softly highlighted controls.
+                    The default <strong>"Bliss"</strong> wallpaper extended that blue-and-green
+                    palette from the windows to the desktop.
                     <br><br>
-                    Luna wasn't subtle. It was <strong>aggressively friendly</strong>.
-                    Every pixel said: don't be afraid of this machine.
-                    It's sunny outside. Everything is fine. Click the green button.
+                    As PCs became everyday home and workplace tools, Luna made system structure
+                    feel more approachable through stronger color coding, larger shapes, and
+                    warmer imagery. <strong>Friendliness became part of the interface hierarchy.</strong>
                     <br><br>
-                    The design world mocked it. Users loved it.
-                    And two decades later, that blue-and-green warmth still hits different.
+                    The tradeoff was visual weight: oversized chrome and saturated color could
+                    compete with content. A modern reading keeps the clear grouping and welcoming
+                    tone, then reduces the amount of decoration around routine work.
                 </p>
             </div>
         </div>
 
         <div class="divider"></div>
 
-        <!-- Principle 01: The Glossy Blue Button -->
+        <!-- Principle 01: Soft Highlights, Clear States -->
         <section class="section">
             <div class="section-label">Principle 01</div>
-            <h2 class="section-title">The Glossy Blue Button</h2>
+            <h2 class="section-title">Soft Highlights, Clear States</h2>
             <p class="section-desc">
-                This is the icon of the era. A <em>rounded blue button</em> with a glossy highlight
-                splitting it horizontally &mdash; bright on top, deeper below. It looks like a drop of
-                sky captured in gel. The Koreans have a perfect word for it: <em>tangtanghada</em>
-                (&#53489;&#44544;&#53489;&#44544;) &mdash; something soft but taut, like pressing on a rubber ball that
-                pushes back.
-                That bounce, that friendly resistance &mdash; that is the Luna button.
+                Stock Luna concentrated strong color in blue title bars and the green Start button;
+                common controls were lighter and more restrained. The blue and green actions below
+                deliberately abstract that system palette rather than reproduce a stock dialog button.
+                Their soft satin highlight, border, and slight compression make state changes visible
+                without borrowing Aqua's reflective gel effect.
             </p>
             <div class="xp-window">
                 <div class="xp-titlebar">
@@ -1034,7 +1046,7 @@
                 </div>
             </div>
             <div class="code-block">
-                <span class="cmt">/* The XP Luna button &mdash; satin matte, not gel */</span><br>
+                <span class="cmt">/* Luna palette abstraction &mdash; satin, not Aqua gel */</span><br>
                 <span class="kw">border-radius</span>: <span class="val">3px</span>;<br>
                 <span class="kw">border</span>: <span class="val">1px solid #1840A0</span>;<br>
                 <span class="kw">background</span>: <span class="val">linear-gradient</span>(180deg,<br>
@@ -1061,12 +1073,11 @@
             <div class="section-label">Principle 02</div>
             <h2 class="section-title">Nature as Interface</h2>
             <p class="section-desc">
-                The background <em>is</em> the design. Blue sky at the top, green earth at the bottom.
-                Not a photograph &mdash; a gradient. An <em>emotional gradient</em> that says:
-                it is a clear day, everything is fine, your computer is your friend.
-                Windows XP shipped with "Bliss" &mdash; a photo of a green hill under a blue sky &mdash;
-                and it became the most viewed image in human history.
-                That was not an accident. That was design philosophy.
+                Windows XP shipped with "Bliss" &mdash; a photograph of a green hill under a blue sky &mdash;
+                as the default desktop. Its broad blue-over-green color fields worked with Luna's
+                controls to create a consistent, optimistic environment rather than an unrelated backdrop.
+                The cards below do not reproduce that photograph; they abstract its color structure into
+                gradients so the composition can be studied without presenting the wallpaper as interface chrome.
             </p>
             <div class="xp-window">
                 <div class="xp-titlebar">
@@ -1112,11 +1123,10 @@
             <div class="section-label">Principle 03</div>
             <h2 class="section-title">The Friendly Surface</h2>
             <p class="section-desc">
-                Every panel in Luna says the same thing: <em>welcome</em>.
-                White backgrounds, rounded corners, gentle shadows. No sharp edges, no dark themes,
-                no brutalist aggression. These surfaces feel like a handshake &mdash;
-                open, warm, non-threatening. The rounded corners signal that nothing here will hurt you.
-                The soft shadows say: this floats. It is light. It is easy.
+                Earlier desktop chrome often used the same gray treatment for frames, controls,
+                and content. Luna separated those roles with colored title bars, white work areas,
+                rounded corners, and gentle shadows. The comparison below keeps that clearer grouping,
+                then shows how a modern surface can reduce the decorative weight.
             </p>
             <div class="xp-window">
                 <div class="xp-titlebar">
@@ -1130,23 +1140,23 @@
                 </div>
                 <div class="xp-body">
                     <div class="surface-demo">
-                        <div class="surface-card warm">
-                            <div class="surface-card-icon">&#x2600;</div>
-                            <div class="surface-card-title">Warm</div>
-                            <div class="surface-card-sub">Sunlit surface</div>
-                            <div class="surface-card-shadow-label">golden shadow</div>
+                        <div class="surface-card legacy">
+                            <div class="surface-card-icon">&#9632;</div>
+                            <div class="surface-card-title">Earlier utility</div>
+                            <div class="surface-card-sub">Uniform gray chrome</div>
+                            <div class="surface-card-shadow-label">clear, but visually rigid</div>
                         </div>
                         <div class="surface-card cool">
                             <div class="surface-card-icon">&#x2601;</div>
-                            <div class="surface-card-title">Cool</div>
-                            <div class="surface-card-sub">Sky-touched</div>
-                            <div class="surface-card-shadow-label">blue shadow</div>
+                            <div class="surface-card-title">Luna shift</div>
+                            <div class="surface-card-sub">White content, colored chrome</div>
+                            <div class="surface-card-shadow-label">friendlier grouping</div>
                         </div>
-                        <div class="surface-card neutral">
-                            <div class="surface-card-icon">&#x1F33F;</div>
-                            <div class="surface-card-title">Natural</div>
-                            <div class="surface-card-sub">Forest floor</div>
-                            <div class="surface-card-shadow-label">green shadow</div>
+                        <div class="surface-card modern">
+                            <div class="surface-card-icon">&#x2713;</div>
+                            <div class="surface-card-title">Modern balance</div>
+                            <div class="surface-card-sub">Keep grouping, reduce ornament</div>
+                            <div class="surface-card-shadow-label">calmer hierarchy</div>
                         </div>
                     </div>
                 </div>
@@ -1160,10 +1170,10 @@
             <div class="section-label">All Together</div>
             <h2 class="section-title">A Sunny Day Widget</h2>
             <p class="section-desc">
-                Nature gradient + glossy buttons + friendly white surfaces.
+                Abstracted sky-to-meadow gradient + satin-highlighted controls + friendly white surfaces.
                 Three principles, one interface. A weather widget that feels like opening a window.
-                This is what Luna believed: your screen should feel like looking outside
-                on the best day of the year.
+                It uses Luna's color grouping and approachable tone in a bounded surface rather
+                than spreading the full treatment across every workflow.
             </p>
             <div class="xp-window weather-widget">
                 <div class="xp-titlebar">
@@ -1231,11 +1241,10 @@
                         <li><span class="x">&#x2717;</span> Gradients without purpose or emotional direction</li>
                         <li><span class="x">&#x2717;</span> Corporate wallpaper masquerading as design</li>
                         <li><span class="x">&#x2717;</span> Glossy everything &mdash; some surfaces should breathe</li>
-                        <li><span class="o">&#x2713;</span> Nature gradients as emotional backdrop &mdash; "technology
-                            serves life"</li>
-                        <li><span class="o">&#x2713;</span> Glossy buttons that feel tactile and responsive</li>
+                        <li><span class="o">&#x2713;</span> Abstracted nature color fields as a bounded emotional backdrop</li>
+                        <li><span class="o">&#x2713;</span> Softly highlighted controls with visible state changes</li>
                         <li><span class="o">&#x2713;</span> Warm, optimistic color temperature throughout</li>
-                        <li><span class="o">&#x2713;</span> The radical belief that computers should make you smile</li>
+                        <li><span class="o">&#x2713;</span> A welcoming tone that supports clear system structure</li>
                     </ul>
                 </div>
             </div>
@@ -1244,14 +1253,12 @@
         <!-- Manifesto -->
         <footer class="manifesto">
             <p class="manifesto-text">
-                It wasn't just an OS.<br>
-                It was the first computer that smiled at you.
+                Keep the welcoming hierarchy.<br>
+                Reduce the visual weight.
             </p>
             <p class="manifesto-sub">
-                Luna made a radical bet: that a computer could feel warm, safe, and inviting.
-                That blue titlebar, that green Start button, that impossible hill under a perfect sky
-                &mdash; they weren't decoration. They were a handshake.<br>
-                Every pixel said the same thing: welcome home.
+                Color can distinguish structure without filling every surface.<br>
+                Friendly does not have to mean oversized or ornamental.
             </p>
         </footer>
     </div>

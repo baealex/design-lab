@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Aqua (2000) -->
-<!-- description: That made you want to lick your screen -->
+<!-- description: Gloss, depth, and controls designed to invite a press -->
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
@@ -917,27 +917,26 @@
             <div class="hero-badge">Inspired by Apple Aqua</div>
             <h1 class="hero-title">Apple Aqua</h1>
             <p class="hero-tagline">
-                Jobs said you'd want to lick it.<br>
-                We prove that beauty and usability aren't opposites.
+                Gloss made important actions inviting.<br>
+                Keep the hierarchy. Quiet the surrounding surfaces.
             </p>
         </header>
 
         <!-- Intro -->
         <div class="intro-card">
             <p class="intro-text">
-                Aqua proved that software could be <strong>beautiful</strong>. When Jobs
-                unveiled those wet, translucent buttons at Macworld 2000, he demonstrated
-                that an interface could provoke a physical, emotional response &mdash; delight,
-                desire, trust. People wanted to press those buttons because they looked
-                <strong>delicious</strong>. That was the strength: emotional impact as a
-                design tool.
+                At Macworld 2000, Aqua introduced translucent gel controls, strong highlights,
+                and color-coded window buttons as the face of Mac OS X. Desktop interfaces had
+                often emphasized neutral, utilitarian chrome; Aqua used material, color, and depth
+                to make important actions visible while giving the system a distinct personality.
+                <strong>That was the strength: hierarchy with emotional character.</strong>
                 <br><br>
                 The weakness? The textures fought the content. Pinstripes competed with text.
-                Brushed metal clashed with brushed metal. Every surface screamed for attention
-                and nothing felt quiet. This page keeps the <strong>emotional conviction</strong>
+                Brushed-metal chrome clashed with pinstriped content surfaces. Every surface
+                screamed for attention and nothing felt quiet. This page keeps the <strong>emotional conviction</strong>
                 &mdash; the gel highlights, the traffic lights, the tactile depth &mdash; and
-                strips away the visual noise. The result is an interface that still makes you
-                want to lick it, but also lets you <strong>get your work done</strong>.
+                strips away the visual noise. The modern lesson is to spend that detail on
+                controls and hierarchy, then leave reading and work surfaces calm.
             </p>
         </div>
 
@@ -950,9 +949,9 @@
             <p class="section-desc">
                 The signature move. A rounded pill shape with a three-stop vertical gradient
                 and a white-to-transparent highlight on the top half. That highlight is the whole trick
-                — it simulates light hitting a convex, glossy surface. Like a gumdrop. Like a jellybean.
-                Like something your brain says "this is pressable" before your hand moves.
-                Click them. They want to be clicked.
+                — it simulates light hitting a convex, glossy surface. The brighter top edge and
+                darker lower edge distinguish an action from its surrounding panel. Compare the
+                color roles and pressed feedback below.
             </p>
             <div class="btn-demo">
                 <button class="gel-btn aqua" id="btn-aqua">Aqua Blue</button>
@@ -961,7 +960,7 @@
                 <button class="gel-btn green" id="btn-green">Apply</button>
             </div>
             <div class="code-block">
-                <span class="cmt">/* The Aqua gel button — the lickable gradient */</span><br>
+                <span class="cmt">/* The Aqua gel button — layered highlight and shadow */</span><br>
                 <span class="kw">border-radius</span>: <span class="val">20px</span>;<br>
                 <span class="kw">background</span>: <span class="val">linear-gradient</span>(180deg,<br>
                 &nbsp;&nbsp;<span class="val">#6EC6F5</span> 0%,&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">/* light top — sky reflection */</span><br>
@@ -984,7 +983,7 @@
             <h2 class="section-title">Brushed Metal & Pinstripes</h2>
             <p class="section-desc">
                 Two textures that defined a decade. <strong>Pinstripes</strong> — subtle vertical lines
-                at 2px intervals — covered every window background in early OS X. They whispered
+                at 2px intervals — appeared across window backgrounds in early OS X. They whispered
                 "this is a content area." Then came <strong>brushed metal</strong> for the "pro" apps:
                 iTunes, QuickTime, Finder. Horizontal noise bands that said "this is chrome, this is
                 the frame." Both built with nothing but <code>repeating-linear-gradient</code>.
@@ -1023,8 +1022,8 @@
             <div class="section-label">Principle 03</div>
             <h2 class="section-title">The Traffic Light Controls</h2>
             <p class="section-desc">
-                Red, yellow, green. Close, minimize, zoom. The most recognizable UI element
-                in computing history. Three 12-pixel circles with gel gradients and a tiny
+                Red, yellow, green. Close, minimize, zoom. One of Aqua's most recognizable
+                control groups. Three 12-pixel circles with gel gradients and a tiny
                 white reflection dot. On hover, they reveal their purpose:
                 <strong>&times;</strong>, <strong>&ndash;</strong>, <strong>+</strong>.
                 Apple nailed the principle: consistent, discoverable, and instantly memorable.
@@ -1060,7 +1059,7 @@
             <h2 class="section-title">Put It Together</h2>
             <p class="section-desc">
                 Gel buttons, brushed metal toolbar, pinstripe content area, traffic light controls.
-                An Aqua-era System Preferences panel, rebuilt in CSS. Every surface has a purpose:
+                An Aqua-era System Preferences panel, rebuilt in CSS. Each material has an assigned purpose:
                 metal for chrome, pinstripes for content, gel for actions.
                 It looks like 2003. It runs like 2026. Click the tabs.
             </p>
@@ -1216,7 +1215,7 @@
                     <li><span class="o">&#x2713;</span> Gel highlights as clear affordance — "this is pressable"</li>
                     <li><span class="o">&#x2713;</span> Texture to distinguish surface types (chrome vs content)</li>
                     <li><span class="o">&#x2713;</span> Traffic light pattern — consistent, memorable window controls</li>
-                    <li><span class="o">&#x2713;</span> The radical idea that software should be beautiful</li>
+                    <li><span class="o">&#x2713;</span> Visual character that supports hierarchy and confidence</li>
                 </ul>
             </div>
         </section>
@@ -1224,13 +1223,12 @@
         <!-- Manifesto -->
         <footer class="manifesto">
             <p class="manifesto-text">
-                "You'd want to lick it."<br>
-                That was the point.
+                Detail belongs where it explains<br>
+                priority, state, and action.
             </p>
             <p class="manifesto-sub">
-                Beauty isn't separate from function. It is function.<br>
-                An interface that provokes a physical response — delight, desire, trust —<br>
-                isn't decoration. It's the reason people reach for the mouse.
+                Keep expressive controls and memorable system cues.<br>
+                Improve the quiet surfaces where content and work need focus.
             </p>
         </footer>
     </div>

@@ -1,6 +1,6 @@
 <!-- layout: base.html -->
 <!-- title: Aero (2007) -->
-<!-- description: GPU had power to spare, so let's throw a glass party -->
+<!-- description: Composited windows made translucent chrome part of desktop hierarchy -->
 
 <style>
     :root {
@@ -658,6 +658,13 @@
         background: rgba(69,137,202,0.3);
     }
 
+    .dash-card.opaque-card {
+        background: #164a7d;
+        border: 1px solid rgba(225,244,255,0.34);
+        border-radius: 9px;
+        box-shadow: 0 8px 18px rgba(0,16,47,0.2);
+    }
+
     .dash-label {
         font-size: 0.7rem;
         text-transform: uppercase;
@@ -929,12 +936,17 @@
         <!-- Intro -->
         <div class="glass intro-card">
             <p class="intro-text">
-                Aero treated the desktop as a layered environment: translucent title bars
-                revealed context, hard highlights described curved surfaces, and shadows
-                separated active windows from the world behind them.
+                Windows Vista moved desktop composition into the <strong>Desktop Window Manager</strong>.
+                With windows rendered as composited surfaces, the system could add live previews,
+                shadows, and translucent frames more consistently than earlier opaque window chrome.
+                Aero used that capability to make overlapping windows read as a layered environment:
+                glass kept a trace of the desktop visible, while hard highlights and shadows marked
+                the active window boundary.
                 <br><br>
-                This study keeps that <strong>glass hierarchy and light logic</strong>,
-                rebuilt with modern CSS rather than recreating Vista pixel for pixel.
+                The new freedom also created a restraint problem. Too much blur hid content and
+                made every surface compete. This study keeps the <strong>glass hierarchy and light
+                logic</strong>, confines translucency to structural chrome, and compares it with an
+                opaque alternative rather than recreating Vista pixel for pixel.
             </p>
         </div>
 
@@ -946,8 +958,8 @@
             <h2 class="section-title">Glass That Means Something</h2>
             <p class="section-desc">
                 <code>backdrop-filter: blur()</code>. A few CSS properties and you've got a glass panel.
-                The original Aero used DWM compositing that ate your battery for breakfast.
-                We do it in CSS. The trick is knowing when to stop —
+                The original Aero depended on DWM compositing; modern CSS can approximate the
+                material in a browser. The design question is knowing when to stop —
                 too little blur and it's noisy, too much and you've painted a wall.
             </p>
             <div class="blur-stage">
@@ -979,8 +991,8 @@
                 This is the trick. A <code>linear-gradient</code> with four stops,
                 a hard break at 50%. Top half bright, bottom half dim.
                 It mimics how light hits a convex glass surface.
-                Microsoft's designers figured this out in 2006.
-                It still looks good. Not bad for a technique older than the iPhone.
+                Vista-era controls used that split to separate a bright interactive face from
+                the darker chrome around it. The useful lesson is consistent light, not gloss everywhere.
             </p>
             <div class="btn-demo">
                 <button class="aero-btn">Default Action</button>
@@ -1007,7 +1019,7 @@
                 Every glass panel on this page has a secret: a pseudo-element gradient
                 covering the top half, fading from white to transparent.
                 Same trick photographers use — top-light makes things look three-dimensional.
-                Remove it and the panels look dead. We tested.
+                The side-by-side sample shows how removing it flattens the same material.
             </p>
             <div class="reflection-stage">
                 <div class="compare-row">
@@ -1030,28 +1042,28 @@
         <!-- All Together -->
         <section class="section">
             <div class="section-label">All Together</div>
-            <h2 class="section-title">Put It Together</h2>
+            <h2 class="section-title">Compare the Window Boundary</h2>
             <p class="section-desc">
-                Glass panel + split highlight + top reflection.
-                Three principles, one dashboard. It looks like 2007 but runs like 2026.
+                The same review canvas sits behind two window treatments. The opaque panel creates
+                a firm boundary but removes all surrounding context. Controlled glass keeps a trace
+                of the layer beneath while the split highlight and top reflection preserve legibility.
             </p>
             <div class="dashboard-window">
                 <div class="dashboard-titlebar">
-                    <span>System Overview</span>
+                    <span>Layer Review</span>
                     <span class="dashboard-close" aria-hidden="true">&#x2715;</span>
                 </div>
                 <div class="dashboard-surface">
                     <div class="dashboard-demo">
-                        <div class="glass dash-card">
-                            <div class="dash-label">Clock</div>
-                            <div class="dash-value" id="clock-time"></div>
-                            <div class="dash-sub" id="clock-date"></div>
+                        <div class="dash-card opaque-card">
+                            <div class="dash-label">Opaque chrome</div>
+                            <div class="dash-value">Layer hidden</div>
+                            <div class="dash-sub">Clear edge, but no visual relationship to the canvas beneath.</div>
                         </div>
                         <div class="glass dash-card">
-                            <div class="dash-label">Memory</div>
-                            <div class="dash-value" id="mem-value">4.2 GB</div>
-                            <div class="dash-bar"><div class="dash-bar-fill" id="mem-bar" style="width: 52%"></div></div>
-                            <div class="dash-sub" id="mem-sub">4.2 of 8 GB used</div>
+                            <div class="dash-label">Controlled glass</div>
+                            <div class="dash-value">Layer visible</div>
+                            <div class="dash-sub">Context remains at the edge while the work surface stays readable.</div>
                         </div>
                     </div>
                 </div>
@@ -1090,29 +1102,3 @@
         </footer>
     </div>
 </body>
-
-<script>
-    /* Clock */
-    function updateClock() {
-        const now = new Date();
-        const h = String(now.getHours()).padStart(2, '0');
-        const m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-
-        document.getElementById('clock-time').textContent = `${h}:${m}:${s}`;
-        document.getElementById('clock-date').textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    /* Fake memory fluctuation */
-    setInterval(() => {
-        const val = (3.8 + Math.random() * 1.2).toFixed(1);
-        const pct = Math.round((val / 8) * 100);
-        document.getElementById('mem-value').textContent = val + ' GB';
-        document.getElementById('mem-bar').style.width = pct + '%';
-        document.getElementById('mem-sub').textContent = val + ' of 8 GB used';
-    }, 3000);
-</script>
