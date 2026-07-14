@@ -1,32 +1,32 @@
-# 컨셉 페이지 작성법
+# Concept Page Guide
 
-## 목적
+## Purpose
 
-컨셉 페이지는 이미 존재하는 트렌드를 설명하는 곳이 아닙니다. 직접 만든 시각적 가설이나 인터페이스 아이디어를 시험하고, 어디까지 유효한지 보여주는 곳입니다.
+A concept page does not explain an established trend. It tests an original visual hypothesis or interface idea and shows where that idea remains useful.
 
-새로워 보이는 것보다 생각이 분명한 것이 중요합니다.
+A clear idea matters more than the appearance of novelty.
 
-## 작업 전에 정할 것
+## Before You Start
 
-한 문장으로 컨셉을 설명합니다.
+Describe the concept in one sentence:
 
 ```text
-Sketchomorphism은 매끈한 AI 인터페이스에 손으로 그린 흔적을 섞어 사람의 개입을 드러낸다.
+Sketchomorphism mixes hand-drawn traces into polished AI interfaces to make human involvement visible.
 ```
 
-그리고 아래 내용을 정합니다.
+Then answer these questions:
 
-1. 어떤 느낌이나 문제에서 시작했는가?
-2. 이 컨셉만의 규칙은 무엇인가?
-3. 실제 인터페이스에서 어떻게 동작하는가?
-4. 어디에 어울리고 어디에는 어울리지 않는가?
-5. 참고한 디자인이 있다면 무엇인가?
+1. What feeling or problem prompted the concept?
+2. What rules make it distinct?
+3. How does it work in an actual interface?
+4. Where does it fit, and where does it not?
+5. Which designs influenced it, if any?
 
-색상이나 효과만 있고 규칙이 없다면 아직 페이지로 만들 단계가 아닙니다.
+A color palette or effect without a rule is not yet ready to become a page.
 
-## 이름과 폴더
+## Naming and Folders
 
-폴더는 `concept-{year}-{slug}` 형식을 사용합니다.
+Use the `concept-{year}-{slug}` format:
 
 ```text
 concept-2022-neon-glow
@@ -34,68 +34,68 @@ concept-2025-monochrome
 concept-2026-sketchomorphism
 ```
 
-- 연도는 처음 공개하거나 정리한 시점을 사용합니다.
-- 기존 트렌드명과 혼동될 이름은 피합니다.
-- 직접 만든 아이디어라면 Hero에 `Concept Study` 또는 `Original Concept`이라고 적을 수 있습니다.
-- 다른 작업의 영향을 크게 받았다면 출처를 숨기지 말고 `Inspired by ...`로 밝힙니다.
+- Use the year when the concept was first published or documented.
+- Avoid names that could be mistaken for an established trend.
+- For an original idea, the Hero may use `Concept Study` or `Original Concept`.
+- If another work had a strong influence, credit it with a short `Inspired by ...` line.
 
-## 권장 흐름
+## Recommended Flow
 
 ### 1. Premise
 
-Hero에서 컨셉의 이름과 가설을 바로 보여줍니다. 미래를 예언하거나 이미 유행하는 것처럼 말하지 않습니다.
+Show the concept name and hypothesis in the Hero. Do not present it as a prediction or an established trend.
 
 ### 2. Rules
 
-컨셉을 만드는 규칙을 2~4개로 정리합니다. `예쁘다`, `미래적이다`, `감성적이다` 같은 감상보다 화면에서 확인할 수 있는 규칙을 씁니다.
+Define two to four rules that create the concept. Prefer rules that can be observed on screen over impressions such as `beautiful`, `futuristic`, or `emotional`.
 
-예:
+Examples:
 
-- 모든 선은 조금씩 다른 곡률을 가진다.
-- 발광 강도로 정보의 우선순위를 구분한다.
-- 색을 제거하고 콘텐츠에만 색을 허용한다.
+- Every line has a slightly different curvature.
+- Glow intensity communicates information priority.
+- The interface is monochrome, while color is reserved for content.
 
 ### 3. Working Example
 
-규칙이 실제 UI에서도 성립하는지 하나의 완성된 예시로 보여줍니다. 여러 개의 장식용 카드보다 작은 앱이나 화면 하나를 제대로 만드는 편이 낫습니다.
+Use one complete example to prove that the rules work in a real interface. A well-made small app or screen is more useful than several decorative cards.
 
 ### 4. Limits
 
-어울리는 사용 환경과 피해야 할 환경을 함께 적습니다. 단점이 없는 컨셉처럼 포장하지 않습니다.
+Describe both suitable and unsuitable contexts. Do not present the concept as if it has no drawbacks.
 
-## 시각 기준
+## Visual Guidelines
 
-- 페이지를 보는 순간 핵심 가설이 보여야 합니다.
-- 모든 장식은 컨셉의 규칙으로 설명할 수 있어야 합니다.
-- 내용과 관계없는 글래스 카드, 오로라 배경, 네온 효과를 기본값처럼 사용하지 않습니다.
-- 원칙마다 같은 카드 레이아웃을 반복하지 않아도 됩니다. 컨셉을 가장 잘 보여주는 구조를 선택합니다.
-- 가짜 차트, 의미 없는 지표, 채우기용 아이콘은 넣지 않습니다.
-- 레퍼런스를 그대로 복제하기보다 어떤 부분을 바꿨는지 드러냅니다.
+- The core hypothesis should be visible at a glance.
+- Every decorative choice should be explainable through the concept's rules.
+- Do not default to unrelated glass cards, aurora backgrounds, or neon effects.
+- Each principle does not need the same card layout. Choose the structure that demonstrates the concept best.
+- Avoid fake charts, meaningless metrics, and filler icons.
+- Show how the reference was transformed instead of simply reproducing it.
 
-## 문구 기준
+## Copy Guidelines
 
-- `This concept explores ...`처럼 가설임을 분명히 합니다.
-- `the future of UI`, `changes everything` 같은 표현은 근거가 없으면 쓰지 않습니다.
-- 같은 형용사를 반복하지 말고 규칙과 결과를 설명합니다.
-- `What This Is Not`이나 Manifesto는 내용이 있을 때만 사용합니다. 페이지 형식을 맞추기 위해 억지로 넣지 않습니다.
-- 직접 만든 부분과 참고한 부분의 경계를 숨기지 않습니다.
+- Use language such as `This concept explores ...` to make the hypothetical nature clear.
+- Avoid claims such as `the future of UI` or `changes everything` without evidence.
+- Explain rules and outcomes instead of repeating the same adjectives.
+- Include `What This Is Not` or a Manifesto only when it adds substance, not to fill a template.
+- Keep the boundary between original work and referenced work visible.
 
-## 인터랙션과 성능
+## Interaction and Performance
 
-- 인터랙션은 컨셉의 규칙을 보여줘야 합니다. 단순히 움직이는 장식은 줄입니다.
-- 상태가 바뀌면 화면과 문구가 함께 맞게 바뀌어야 합니다.
-- 터치 환경에서 불가능한 조작은 다른 방식으로 제공하거나 제한을 알립니다.
-- 키보드 포커스와 reduced motion을 지원합니다.
-- 전체 화면 filter와 과한 blur를 피하고, 포인터 이벤트는 프레임 단위로 처리합니다.
-- 모바일에서 핵심 예시가 사라지지 않는지 확인합니다.
+- Interactions should demonstrate the concept's rules. Reduce movement that exists only as decoration.
+- When state changes, both the interface and its copy must remain accurate.
+- Provide an alternative for interactions unavailable on touch devices, or state the limitation.
+- Support visible keyboard focus and `prefers-reduced-motion`.
+- Avoid full-screen filters and excessive blur. Process pointer events at most once per frame.
+- Confirm that the key example remains present on mobile.
 
-## 완료 전 확인
+## Final Checklist
 
-- [ ] 컨셉을 한 문장으로 설명할 수 있는가?
-- [ ] 시각적 규칙이 2개 이상 분명한가?
-- [ ] 완성된 사용 예시가 있는가?
-- [ ] 어울리는 곳과 피해야 할 곳을 적었는가?
-- [ ] 직접 만든 부분과 참고한 부분이 구분되는가?
-- [ ] 의미 없는 카드, 지표, 장식을 제거했는가?
-- [ ] 모바일, 키보드, reduced motion을 확인했는가?
-- [ ] `npm run build`가 통과하는가?
+- [ ] Can the concept be explained in one sentence?
+- [ ] Are at least two visual rules clear?
+- [ ] Is there one complete usage example?
+- [ ] Are suitable and unsuitable contexts documented?
+- [ ] Are original and referenced ideas distinguishable?
+- [ ] Have meaningless cards, metrics, and decorations been removed?
+- [ ] Have mobile, keyboard, and reduced-motion behavior been checked?
+- [ ] Does `npm run build` pass?

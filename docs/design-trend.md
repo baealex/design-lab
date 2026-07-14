@@ -1,26 +1,26 @@
-# 디자인 트렌드 페이지 작성법
+# Design Trend Page Guide
 
-## 목적
+## Purpose
 
-과거 UI를 그대로 복원하는 데서 끝내지 않습니다.
+A design trend page should do more than reproduce an old interface.
 
-당시 무엇을 해결했는지, 지금도 쓸 만한 부분은 무엇인지, 어떤 문제를 고쳐야 하는지를 한 페이지 안에서 보여줍니다. 시대 분위기는 살리되 불편했던 사용성까지 답습하지는 않습니다.
+Use one page to show what the design originally solved, which ideas still hold up, and which problems should be improved. Preserve the character of the period without carrying its usability problems into the whole page.
 
-## 작업 전에 정할 것
+## Before You Start
 
-아래 질문에 먼저 답합니다.
+Answer these questions first:
 
-1. 이 디자인의 정확한 이름과 시기는 무엇인가?
-2. 당시 어떤 문제를 해결했는가?
-3. 지금도 유효한 원칙은 무엇인가?
-4. 시간이 지나며 드러난 문제는 무엇인가?
-5. 현재 환경에 가져온다면 무엇을 바꿔야 하는가?
+1. What is the design's correct name and time period?
+2. What problem did it solve at the time?
+3. Which principles are still useful?
+4. What problems became clear over time?
+5. What would need to change in a modern implementation?
 
-답이 모호하면 화면부터 만들지 않습니다.
+Do not start with the screen if the answers are still vague.
 
-## 이름과 폴더
+## Naming and Folders
 
-폴더는 `design-{year}-{slug}` 형식을 사용합니다.
+Use the `design-{year}-{slug}` format:
 
 ```text
 design-1984-macintosh
@@ -28,77 +28,77 @@ design-2001-luna
 design-2013-flat
 ```
 
-- 운영체제나 제품의 시각 언어를 다룬다면 `Macintosh`, `Luna`처럼 실제 이름을 사용합니다.
-- 넓은 흐름을 다룬다면 `Flat Design`, `Skeuomorphism`처럼 통용되는 트렌드명을 사용합니다.
-- 특정 제품은 사례일 뿐인데 트렌드 전체의 이름처럼 쓰지 않습니다.
-- 연도는 대표적인 등장 시점을 사용하되, 논쟁의 여지가 있으면 본문에서 설명합니다.
+- Use the actual name, such as `Macintosh` or `Luna`, when the page studies the visual language of an operating system or product.
+- Use an established trend name, such as `Flat Design` or `Skeuomorphism`, when the page covers a broader movement.
+- Do not present one product example as the name of an entire trend.
+- Use the most representative year of emergence. Explain disputed dates in the page copy.
 
-## 권장 흐름
+## Recommended Flow
 
-화면 구성을 똑같이 복제할 필요는 없지만 내용은 아래 순서를 따르는 편이 좋습니다.
+The visual layout can vary, but the content should generally follow this order.
 
 ### 1. Hero
 
-- 이름과 연도
-- 페이지 전체를 설명하는 한 문장
-- 특정 제품을 시각적 기준으로 삼았다면 `Inspired by ...` 표기
+- Name and year
+- One sentence that frames the entire page
+- A short `Inspired by ...` credit when a specific product is the visual reference
 
 ### 2. Context
 
-무엇이 유행했는지만 쓰지 말고, 왜 그 디자인이 필요했는지 설명합니다. 기술 변화, 사용 환경, 이전 UI의 한계 중 관련 있는 내용만 짧게 다룹니다.
+Explain why the design was needed, not only what became popular. Briefly cover the relevant change in technology, usage environment, or limitation of the previous interface.
 
 ### 3. Principles
 
-핵심 원칙을 2~4개로 나눕니다. 각 원칙에는 실제로 조작하거나 비교할 수 있는 예시를 붙입니다.
+Break the design into two to four core principles. Pair each principle with an example that can be operated or compared.
 
-좋은 예시:
+Good examples:
 
-- 메뉴를 열어 정보 구조가 어떻게 보이는지 확인
-- 버튼의 상태별 차이를 직접 비교
-- 같은 콘텐츠에 이전 방식과 개선 방식을 나란히 적용
+- Open a menu to reveal the information hierarchy.
+- Compare a button across its interaction states.
+- Apply the old and improved approaches to the same content side by side.
 
-피해야 할 예시:
+Avoid:
 
-- 의미 없는 수치와 진행 막대
-- 눌러도 아무 일도 일어나지 않는 장식용 버튼
-- 같은 카드 모양을 내용만 바꿔 반복
+- Meaningless metrics and progress bars
+- Decorative buttons that do nothing
+- Repeating the same card with different filler copy
 
 ### 4. Keep / Improve
 
-마지막에는 반드시 무엇을 남기고 무엇을 고칠지 정리합니다. 단순한 추억이나 비판으로 끝내지 않습니다.
+End by stating what should be kept and what should be improved. Do not stop at nostalgia or criticism.
 
-## 시각 기준
+## Visual Guidelines
 
-- 색, 글꼴, 테두리, 그림자, 아이콘처럼 시대를 설명하는 단서를 선택해서 사용합니다.
-- 페이지 전체를 운영체제 화면처럼 만들 필요는 없습니다. 작업 표시줄이나 메뉴 바처럼 화면을 계속 점유하는 요소는 학습에 꼭 필요할 때만 사용합니다.
-- 당시의 약점을 보여주려면 작은 데모 안에서 재현합니다. 페이지 전체의 가독성과 조작성은 현재 기준을 지킵니다.
-- 배경과 장식이 본문보다 먼저 보이면 줄입니다.
-- 유행과 무관한 글래스 카드, 그라데이션, 가짜 대시보드를 습관적으로 넣지 않습니다.
+- Select clues that explain the period, such as color, typography, borders, shadows, and icons.
+- The whole page does not need to imitate an operating system. Persistent elements such as taskbars and menu bars should appear only when they are necessary to the lesson.
+- Reproduce historical weaknesses inside a small demo. Keep the page itself readable and operable by current standards.
+- Reduce backgrounds and decoration when they attract attention before the content.
+- Do not add unrelated glass cards, gradients, or fake dashboards by habit.
 
-## 문구 기준
+## Copy Guidelines
 
-- `legendary`, `radical`, `finally` 같은 과장된 표현을 반복하지 않습니다.
-- 디자인이 좋았다고 선언하기보다 어떤 문제를 어떻게 해결했는지 씁니다.
-- 단점은 `촌스럽다`, `불편하다`로 끝내지 않고 구체적인 사용성 문제로 설명합니다.
-- 이름, 연도, 역사적 사실은 확인하고 씁니다. 확실하지 않은 내용은 단정하지 않습니다.
-- 같은 의미를 Hero, Context, Manifesto에서 반복하지 않습니다.
+- Avoid repeatedly using exaggerated words such as `legendary`, `radical`, and `finally`.
+- Explain what problem the design solved and how instead of simply declaring it good.
+- Describe drawbacks as specific usability problems, not merely as dated or inconvenient.
+- Verify names, years, and historical claims. Do not state uncertain details as facts.
+- Do not repeat the same point in the Hero, Context, and Manifesto.
 
-## 인터랙션과 성능
+## Interaction and Performance
 
-- 버튼처럼 보이는 것은 실제로 동작해야 합니다.
-- 키보드 포커스가 보이고, 필요한 조작은 키보드로도 가능해야 합니다.
-- 모바일에서는 데모가 잘리거나 가로로 넘치지 않아야 합니다.
-- `prefers-reduced-motion`을 지원합니다.
-- 큰 blur, 전체 화면 filter, 매 프레임 레이아웃 측정은 피합니다.
-- 애니메이션은 장식보다 상태 변화를 설명하는 데 우선 사용합니다.
+- Anything that looks like a button must work.
+- Keyboard focus must be visible, and essential controls must work with a keyboard.
+- Demos must not be clipped or overflow horizontally on mobile.
+- Support `prefers-reduced-motion`.
+- Avoid large blurs, full-screen filters, and layout measurements on every frame.
+- Use animation primarily to explain state changes, not as decoration.
 
-## 완료 전 확인
+## Final Checklist
 
-- [ ] 이름과 연도가 적절한가?
-- [ ] 특정 제품과 트렌드를 혼동하지 않았는가?
-- [ ] 당시 해결한 문제가 설명되어 있는가?
-- [ ] 남길 점과 개선할 점이 구분되어 있는가?
-- [ ] 데모가 원칙을 실제로 보여주는가?
-- [ ] 장식용 카드나 문구 반복을 줄였는가?
-- [ ] 모바일, 키보드, reduced motion을 확인했는가?
-- [ ] `npm run build`가 통과하는가?
+- [ ] Are the name and year appropriate?
+- [ ] Is a specific product clearly distinguished from a broader trend?
+- [ ] Does the page explain the problem the design originally solved?
+- [ ] Are the ideas to keep separated from the problems to improve?
+- [ ] Do the demos demonstrate the stated principles?
+- [ ] Have decorative cards and repeated copy been reduced?
+- [ ] Have mobile, keyboard, and reduced-motion behavior been checked?
+- [ ] Does `npm run build` pass?
