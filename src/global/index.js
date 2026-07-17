@@ -15,16 +15,25 @@ function createReferenceUrls(slug) {
 
 function createAiPrompt(slug, urls) {
     var isConcept = slug.indexOf('concept-') === 0;
-    var referenceType = isConcept ? 'Original concept study' : 'Design trend study';
+    var isEffect = slug.indexOf('effect-') === 0;
+    var referenceType = isConcept
+        ? 'Original concept study'
+        : (isEffect ? 'Interactive visual effect' : 'Design trend study');
     var contentFlow = isConcept
         ? 'Premise → Rules → Working Example → Limits'
-        : 'Context → Principles → Working Example → Keep / Improve';
+        : (isEffect
+            ? 'Result → Mechanism and Passes → Interactive Demo → Limits'
+            : 'Context → Principles → Working Example → Keep / Improve');
     var guardrails = isConcept
         ? 'Limits, plus What This Is Not when the source includes it'
-        : 'the distinction between what to keep and what to improve';
+        : (isEffect
+            ? 'the implementation assumptions, rendering passes, performance limits, and fallbacks'
+            : 'the distinction between what to keep and what to improve');
     var categoryRule = isConcept
         ? 'Do not present this original concept as an established trend. Keep its hypothesis and limits explicit.'
-        : 'Translate the historical visual language into the current context without reproducing its usability problems.';
+        : (isEffect
+            ? 'Treat the source as a bounded visual implementation, not an established trend or a production-ready component. Preserve its assumptions and limits.'
+            : 'Translate the historical visual language into the current context without reproducing its usability problems.');
 
     return [
         'Use the following GitHub source as a design reference and turn its core ideas into an implementation guide for my project.',
@@ -83,7 +92,9 @@ function initializePageTools() {
     if (self !== top) return;
 
     var slug = getPageSlug();
-    if (slug.indexOf('design-') !== 0 && slug.indexOf('concept-') !== 0) return;
+    if (slug.indexOf('design-') !== 0
+        && slug.indexOf('concept-') !== 0
+        && slug.indexOf('effect-') !== 0) return;
 
     var pageTools = document.getElementById('page-tools');
     var viewCode = document.getElementById('view-code');

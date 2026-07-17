@@ -92,7 +92,7 @@ export function getPagesData(): PageData[] {
             const file = pageFile(page);
             const source = fs.readFileSync(file, 'utf8');
             const { metadata } = parsePage(source, file);
-            const yearValue = page.match(/^(?:design|concept)-(\d{4})/)?.[1];
+            const yearValue = page.match(/^(?:design|concept|effect)-(\d{4})/)?.[1];
             return {
                 name: page,
                 title: metadata.title,

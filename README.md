@@ -1,8 +1,8 @@
 # Design Lab by BaeJino
 
-Interactive studies of interface history, design trends, and original UI concepts.
+An interactive archive of interface history, design trends, original UI concepts, and visual effects.
 
-Each study recreates or reinterprets an interface to examine what worked, what did not, and what remains useful today. Original concept studies are documented alongside historical work.
+Each page recreates, reinterprets, or isolates an interface technique to show what worked, how it works, and where its limits are. Original concepts and interactive effects are documented alongside historical work.
 
 See the [page authoring guides](./docs/README.md) before adding or revising a page.
 

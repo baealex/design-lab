@@ -1,7 +1,7 @@
 {
   "name": "design-lab",
   "version": "1.0.0",
-  "description": "Interactive studies of interface history, design trends, and original UI concepts.",
+  "description": "An interactive archive of interface history, design trends, original UI concepts, and visual effects.",
   "scripts": {
     "dev": "ts-node cli/dev.ts",
     "build": "ts-node cli/build.ts",

@@ -1,6 +1,6 @@
 {
-    "pageCount": 29,
-    "catalogCount": 27,
+    "pageCount": 32,
+    "catalogCount": 30,
     "pages": [
         "404",
         "concept-2022-cotton-candy",
@@ -30,7 +30,9 @@
         "design-2022-neubrutalism",
         "design-2025-liquid-glass",
         "design-2025-material-3-expressive",
+        "effect-2022-reveal",
+        "effect-2022-stack",
+        "effect-2026-water-rendering",
         "index"
     ]
 }
-

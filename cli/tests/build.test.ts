@@ -16,6 +16,16 @@ test('Production build preserves the full Page baseline and emits reproducible h
     assert.deepEqual(getPages(), baseline.pages);
     assert.equal(getPages().length, baseline.pageCount);
     assert.equal(getPagesData().length, baseline.catalogCount);
+    assert.deepEqual(
+        getPagesData().find(page => page.name === 'effect-2026-water-rendering'),
+        {
+            name: 'effect-2026-water-rendering',
+            title: 'Water Rendering (2026)',
+            description: 'Displacement, normals, and Fresnel reflection on one interactive surface',
+            year: 2026,
+            category: 'effect',
+        },
+    );
 
     const firstAssets = {
         styles: assetNames('assets/styles'),

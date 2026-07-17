@@ -2,10 +2,11 @@
 
 - [Design trend pages](./design-trend.md)
 - [Concept pages](./concept.md)
+- [Visual effect pages](./effect.md)
 - [Layouts and partials](./template-system.md)
 - [Development server](./dev-server.md)
 
-Both page types live in a single HTML file under `src/pages`. Keep page-specific styles and scripts in that file as well.
+All three page types live in a single HTML file under `src/pages`. Keep page-specific styles and scripts in that file as well.
 
 Add the following metadata at the top of the file:
 

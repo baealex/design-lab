@@ -1,0 +1,568 @@
+<!-- layout: base.html -->
+<!-- title: Reveal Effect (2022) -->
+<!-- description: Layered color wipes that conceal and reveal the next scene -->
+
+<!-- lab:template:bundle -->
+<style>
+    :root {
+        --reveal-accent: #ffb7dc;
+        --reveal-ink: #f8f7ff;
+        --reveal-muted: rgba(248, 247, 255, 0.68);
+        --reveal-panel: rgba(13, 12, 22, 0.72);
+    }
+
+    body {
+        overflow: hidden;
+        background: #08070d;
+        color: var(--reveal-ink);
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button {
+        color: inherit;
+        font: inherit;
+    }
+
+    button:focus-visible {
+        outline: 3px solid var(--reveal-accent);
+        outline-offset: 3px;
+    }
+
+    .reveal-app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        isolation: isolate;
+        background: #08070d;
+    }
+
+    .scene-stage,
+    .scene {
+        position: absolute;
+        inset: 0;
+    }
+
+    .scene {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.36s ease;
+    }
+
+    .scene.is-active {
+        z-index: 1;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .scene img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--scene-position, center);
+        transform: scale(1.035);
+        animation: scene-breathe 12s ease-out both;
+    }
+
+    .scene::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg, rgba(5, 4, 10, 0.28), transparent 34%),
+            linear-gradient(90deg, rgba(6, 5, 12, 0.74), transparent 56%),
+            linear-gradient(0deg, rgba(6, 5, 12, 0.72), transparent 38%);
+        pointer-events: none;
+    }
+
+    @keyframes scene-breathe {
+        from { transform: scale(1.055); }
+        to { transform: scale(1.015); }
+    }
+
+    .effect-header {
+        position: absolute;
+        top: 28px;
+        right: 32px;
+        left: 32px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        pointer-events: none;
+    }
+
+    .effect-badge,
+    .effect-state {
+        min-height: 32px;
+        box-sizing: border-box;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+        background: rgba(10, 9, 18, 0.46);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+    }
+
+    .effect-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 0 13px;
+        font-size: 0.7rem;
+        font-weight: 750;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .effect-badge::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--reveal-accent);
+        box-shadow: 0 0 14px var(--reveal-accent);
+    }
+
+    .effect-state {
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        color: rgba(255, 255, 255, 0.62);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+    }
+
+    .scene-copy {
+        position: absolute;
+        bottom: 40px;
+        left: 40px;
+        z-index: 10;
+        width: min(470px, calc(100% - 440px));
+        pointer-events: none;
+    }
+
+    .scene-index {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--reveal-accent);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .scene-title {
+        margin: 0;
+        font-size: clamp(2.8rem, 7vw, 7rem);
+        font-weight: 680;
+        line-height: 0.86;
+        letter-spacing: -0.065em;
+    }
+
+    .scene-note {
+        max-width: 420px;
+        margin: 20px 0 0;
+        color: var(--reveal-muted);
+        font-size: 0.92rem;
+        line-height: 1.65;
+    }
+
+    .effect-controls {
+        position: absolute;
+        right: 32px;
+        bottom: 32px;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 18px;
+        background: var(--reveal-panel);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.34);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .palette-picker,
+    .scene-nav {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .palette-picker {
+        padding-right: 10px;
+        border-right: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .palette-button {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border: 0;
+        border-radius: 10px;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .palette-button::before {
+        content: '';
+        position: absolute;
+        inset: 7px;
+        border-radius: 50%;
+        background: var(--swatch);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
+    }
+
+    .palette-button[aria-pressed="true"] {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+        border: 0;
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.08);
+        cursor: pointer;
+    }
+
+    .nav-button:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-button:disabled,
+    .palette-button:disabled {
+        cursor: wait;
+        opacity: 0.45;
+    }
+
+    .nav-button--icon {
+        width: 38px;
+        padding: 0;
+        font-size: 1.1rem;
+    }
+
+    .nav-button--next {
+        min-width: 118px;
+        padding: 0 16px;
+        background: var(--reveal-accent);
+        color: #121018;
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .nav-button--next:hover {
+        background: #fff;
+    }
+
+    .keyboard-hint {
+        position: absolute;
+        right: 38px;
+        bottom: 92px;
+        z-index: 10;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.48);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.64rem;
+        letter-spacing: 0.04em;
+        pointer-events: none;
+    }
+
+    .reveal-layers {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .reveal-layer {
+        position: absolute;
+        inset: 0;
+        will-change: transform;
+    }
+
+    @media screen and (max-width: 760px) {
+        .effect-header {
+            top: 18px;
+            right: 18px;
+            left: 18px;
+        }
+
+        .effect-state {
+            display: none;
+        }
+
+        .scene::after {
+            background:
+                linear-gradient(180deg, rgba(5, 4, 10, 0.22), transparent 28%),
+                linear-gradient(0deg, rgba(6, 5, 12, 0.86), transparent 60%);
+        }
+
+        .scene-copy {
+            right: 20px;
+            bottom: 152px;
+            left: 20px;
+            width: auto;
+        }
+
+        .scene-title {
+            font-size: clamp(3rem, 16vw, 5rem);
+        }
+
+        .scene-note {
+            display: none;
+        }
+
+        .effect-controls {
+            right: 12px;
+            bottom: 66px;
+            left: 12px;
+            justify-content: space-between;
+            border-radius: 15px;
+        }
+
+        .keyboard-hint {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 390px) {
+        .nav-button--next {
+            min-width: 94px;
+            padding: 0 12px;
+        }
+
+        .palette-button {
+            width: 30px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .scene,
+        .scene img {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+
+<!-- lab:template -->
+<body>
+    <main id="root" class="reveal-app">
+        <div class="scene-stage" aria-hidden="true">
+            <article class="scene is-active" style="--scene-position: 50% 38%;">
+                <img src="/assets/images/iu/1.jpg" alt="" />
+            </article>
+            <article class="scene" style="--scene-position: 54% 42%;">
+                <img src="/assets/images/iu/2.jpg" alt="" />
+            </article>
+            <article class="scene" style="--scene-position: 48% 35%;">
+                <img src="/assets/images/iu/3.jpg" alt="" />
+            </article>
+            <article class="scene" style="--scene-position: 50% 42%;">
+                <img src="/assets/images/iu/4.jpg" alt="" />
+            </article>
+        </div>
+
+        <header class="effect-header">
+            <div class="effect-badge">Layered Reveal · 2022</div>
+            <div class="effect-state" id="effect-state">ready / ink</div>
+        </header>
+
+        <section class="scene-copy" aria-live="polite" aria-atomic="true">
+            <span class="scene-index" id="scene-index">01 / 04</span>
+            <h1 class="scene-title" id="scene-title">Between lights.</h1>
+            <p class="scene-note" id="scene-note">Five color planes hide the cut, then leave in reverse order so the next scene arrives without a crossfade.</p>
+        </section>
+
+        <div class="effect-controls">
+            <div class="palette-picker" aria-label="Reveal palette">
+                <button class="palette-button" type="button" data-palette="ink" aria-label="Ink palette" aria-pressed="true" style="--swatch: #ffb7dc;"></button>
+                <button class="palette-button" type="button" data-palette="citrus" aria-label="Citrus palette" aria-pressed="false" style="--swatch: #ffc44d;"></button>
+                <button class="palette-button" type="button" data-palette="ocean" aria-label="Ocean palette" aria-pressed="false" style="--swatch: #77e4d4;"></button>
+            </div>
+            <div class="scene-nav">
+                <button class="nav-button nav-button--icon" id="scene-previous" type="button" aria-label="Previous scene">←</button>
+                <button class="nav-button nav-button--next" id="scene-next" type="button">Reveal next</button>
+            </div>
+        </div>
+
+        <p class="keyboard-hint">← → scene · 1–3 palette</p>
+        <div class="reveal-layers" id="reveal-layers" aria-hidden="true"></div>
+    </main>
+</body>
+
+<!-- lab:template:bundle -->
+<script>
+    const scenes = Array.from(document.querySelectorAll('.scene'));
+    const paletteButtons = Array.from(document.querySelectorAll('[data-palette]'));
+    const previousButton = document.getElementById('scene-previous');
+    const nextButton = document.getElementById('scene-next');
+    const sceneIndex = document.getElementById('scene-index');
+    const sceneTitle = document.getElementById('scene-title');
+    const sceneNote = document.getElementById('scene-note');
+    const effectState = document.getElementById('effect-state');
+    const revealLayers = document.getElementById('reveal-layers');
+    const root = document.getElementById('root');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const sceneCopy = [
+        {
+            title: 'Between lights.',
+            note: 'Five color planes hide the cut, then leave in reverse order so the next scene arrives without a crossfade.',
+        },
+        {
+            title: 'Hold the frame.',
+            note: 'The scene changes only while the viewport is fully covered. Timing, not opacity, makes the transition feel continuous.',
+        },
+        {
+            title: 'Change the rhythm.',
+            note: 'A small delay between planes turns one wipe into a layered transition without adding more content.',
+        },
+        {
+            title: 'Exit cleanly.',
+            note: 'Every temporary plane is removed after its animation so repeated transitions leave no invisible layers behind.',
+        },
+    ];
+
+    const palettes = {
+        ink: ['#171123', '#7058e8', '#ffb7dc'],
+        citrus: ['#21170a', '#ef6f3a', '#ffc44d'],
+        ocean: ['#061e2a', '#168a9b', '#77e4d4'],
+    };
+
+    let activeScene = 0;
+    let activePalette = 'ink';
+    let transitioning = false;
+
+    function formatIndex(index) {
+        return String(index + 1).padStart(2, '0') + ' / ' + String(scenes.length).padStart(2, '0');
+    }
+
+    function setScene(index) {
+        activeScene = (index + scenes.length) % scenes.length;
+        scenes.forEach((scene, scenePosition) => {
+            scene.classList.toggle('is-active', scenePosition === activeScene);
+        });
+        sceneIndex.textContent = formatIndex(activeScene);
+        sceneTitle.textContent = sceneCopy[activeScene].title;
+        sceneNote.textContent = sceneCopy[activeScene].note;
+    }
+
+    function setPalette(name) {
+        if (!palettes[name] || transitioning) return;
+        activePalette = name;
+        paletteButtons.forEach(button => {
+            button.setAttribute('aria-pressed', String(button.dataset.palette === name));
+        });
+        root.style.setProperty('--reveal-accent', palettes[name][2]);
+        effectState.textContent = 'ready / ' + name;
+    }
+
+    function setControlsDisabled(disabled) {
+        previousButton.disabled = disabled;
+        nextButton.disabled = disabled;
+        paletteButtons.forEach(button => {
+            button.disabled = disabled;
+        });
+    }
+
+    function createLayers(direction) {
+        const colors = palettes[activePalette];
+        const sequence = [colors[0], colors[1], colors[2], colors[1], colors[0]];
+
+        return sequence.map((color, index) => {
+            const layer = document.createElement('div');
+            layer.className = 'reveal-layer';
+            layer.style.background = color;
+            layer.style.zIndex = String(index + 1);
+            layer.style.transform = 'translate3d(' + (direction > 0 ? '-105%' : '105%') + ', 0, 0)';
+            revealLayers.appendChild(layer);
+            return layer;
+        });
+    }
+
+    async function revealScene(offset) {
+        if (transitioning) return;
+        const direction = offset < 0 ? -1 : 1;
+        const nextScene = (activeScene + offset + scenes.length) % scenes.length;
+
+        if (motionQuery.matches || typeof Element.prototype.animate !== 'function') {
+            setScene(nextScene);
+            return;
+        }
+
+        transitioning = true;
+        setControlsDisabled(true);
+        effectState.textContent = 'transition / ' + activePalette;
+        const layers = createLayers(direction);
+
+        const enterAnimations = layers.map((layer, index) => layer.animate([
+            { transform: 'translate3d(' + (direction > 0 ? '-105%' : '105%') + ', 0, 0)' },
+            { transform: 'translate3d(0, 0, 0)' },
+        ], {
+            duration: 660,
+            delay: index * 52,
+            easing: 'cubic-bezier(0.76, 0, 0.24, 1)',
+            fill: 'forwards',
+        }).finished);
+
+        await Promise.all(enterAnimations);
+        setScene(nextScene);
+
+        const exitAnimations = layers.map((layer, index) => layer.animate([
+            { transform: 'translate3d(0, 0, 0)' },
+            { transform: 'translate3d(' + (direction > 0 ? '105%' : '-105%') + ', 0, 0)' },
+        ], {
+            duration: 580,
+            delay: (layers.length - index - 1) * 46,
+            easing: 'cubic-bezier(0.76, 0, 0.24, 1)',
+            fill: 'forwards',
+        }).finished);
+
+        await Promise.all(exitAnimations);
+        layers.forEach(layer => layer.remove());
+        transitioning = false;
+        setControlsDisabled(false);
+        effectState.textContent = 'ready / ' + activePalette;
+    }
+
+    paletteButtons.forEach((button, index) => {
+        button.addEventListener('click', () => setPalette(button.dataset.palette));
+        button.dataset.shortcut = String(index + 1);
+    });
+
+    previousButton.addEventListener('click', () => revealScene(-1));
+    nextButton.addEventListener('click', () => revealScene(1));
+
+    document.addEventListener('keydown', event => {
+        const target = event.target instanceof Element ? event.target : document.body;
+        if (target.matches('input, textarea, select, [contenteditable="true"]')) return;
+
+        if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            revealScene(-1);
+        } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            revealScene(1);
+        } else if (/^[1-3]$/.test(event.key)) {
+            const button = paletteButtons[Number(event.key) - 1];
+            if (button) setPalette(button.dataset.palette);
+        }
+    });
+
+    setScene(0);
+    setPalette('ink');
+</script>

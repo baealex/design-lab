@@ -19,6 +19,10 @@
         --active-accent: 45, 212, 191;
     }
 
+    body[data-active-category="effect"] {
+        --active-accent: 251, 146, 60;
+    }
+
     /* Quiet ambient field behind the catalog */
     .bg-ambient {
         position: fixed;
@@ -608,6 +612,10 @@
         --card-accent: 45, 212, 191;
     }
 
+    .card[data-category="effect"] {
+        --card-accent: 251, 146, 60;
+    }
+
     .card::after {
         content: '';
         position: absolute;
@@ -861,10 +869,22 @@
 
         .catalog-row {
             gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .catalog-filters {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            width: 100%;
         }
 
         .catalog-filter {
+            justify-content: center;
             padding: 5px 7px;
+        }
+
+        .catalog-result {
+            margin-left: auto;
         }
 
         .card-desc {
@@ -955,6 +975,9 @@
                             <button class="catalog-filter" type="button" data-filter="concept" aria-pressed="false">
                                 <span>Concepts</span><span class="filter-count" id="filter-count-concept"></span>
                             </button>
+                            <button class="catalog-filter" type="button" data-filter="effect" aria-pressed="false">
+                                <span>Effects</span><span class="filter-count" id="filter-count-effect"></span>
+                            </button>
                         </div>
                         <span class="catalog-result" id="catalog-result" role="status" aria-live="polite"></span>
                     </div>
@@ -982,6 +1005,7 @@
     var pages = [];
     var designPages = [];
     var conceptPages = [];
+    var effectPages = [];
     var allPages = [];
 
     function setPageCollections(nextPages) {
@@ -992,7 +1016,10 @@
         conceptPages = pages
             .filter(function(p) { return p.category === 'concept' && p.year !== null; })
             .sort(function(a, b) { return a.year - b.year; });
-        allPages = designPages.concat(conceptPages);
+        effectPages = pages
+            .filter(function(p) { return p.category === 'effect' && p.year !== null; })
+            .sort(function(a, b) { return a.year - b.year; });
+        allPages = designPages.concat(conceptPages, effectPages);
     }
 
     setPageCollections(readPageData().pages);
@@ -1015,6 +1042,7 @@
     var $filterCountAll = document.getElementById('filter-count-all');
     var $filterCountDesign = document.getElementById('filter-count-design');
     var $filterCountConcept = document.getElementById('filter-count-concept');
+    var $filterCountEffect = document.getElementById('filter-count-effect');
 
     var currentPage = null;
     var activeCard = null;
@@ -1026,6 +1054,17 @@
         return title.replace(/\s*\((?:19|20)\d{2}s?\)\s*$/, '');
     }
 
+    function categoryLabel(category) {
+        if (category === 'concept') return 'Concept study';
+        if (category === 'effect') return 'Visual effect';
+        return 'Design trend';
+    }
+
+    function headerSummary() {
+        var effectLabel = effectPages.length === 1 ? 'effect' : 'effects';
+        return designPages.length + ' trends · ' + conceptPages.length + ' concepts · ' + effectPages.length + ' ' + effectLabel;
+    }
+
     function pageMatchesQuery(page) {
         if (!searchQuery) return true;
 
@@ -1033,7 +1072,7 @@
             page.title,
             page.description,
             page.year,
-            page.category === 'concept' ? 'concept study' : 'design trend'
+            categoryLabel(page.category)
         ].join(' ').toLowerCase();
 
         return haystack.indexOf(searchQuery) > -1;
@@ -1108,10 +1147,12 @@
         var queryMatches = allPages.filter(pageMatchesQuery);
         var matchingDesigns = queryMatches.filter(function(page) { return page.category === 'design'; });
         var matchingConcepts = queryMatches.filter(function(page) { return page.category === 'concept'; });
+        var matchingEffects = queryMatches.filter(function(page) { return page.category === 'effect'; });
 
         $filterCountAll.textContent = queryMatches.length;
         $filterCountDesign.textContent = matchingDesigns.length;
         $filterCountConcept.textContent = matchingConcepts.length;
+        $filterCountEffect.textContent = matchingEffects.length;
     }
 
     function renderCards() {
@@ -1119,6 +1160,7 @@
         var visible = getVisiblePages();
         var visibleDesigns = visible.filter(function(page) { return page.category === 'design'; });
         var visibleConcepts = visible.filter(function(page) { return page.category === 'concept'; });
+        var visibleEffects = visible.filter(function(page) { return page.category === 'effect'; });
 
         $sidebarScroll.textContent = '';
         activeCard = null;
@@ -1138,6 +1180,7 @@
         } else {
             appendSection(fragment, 'Trends', visibleDesigns);
             appendSection(fragment, 'Concepts', visibleConcepts);
+            appendSection(fragment, 'Effects', visibleEffects);
         }
 
         $sidebarScroll.appendChild(fragment);
@@ -1208,7 +1251,7 @@
         currentPage = page;
         document.body.dataset.activeCategory = page.category;
 
-        $previewCategory.textContent = page.category === 'concept' ? 'Concept study' : 'Design trend';
+        $previewCategory.textContent = categoryLabel(page.category);
         $previewYear.textContent = page.year;
         $previewTitle.textContent = cleanTitle(page.title);
         $previewDesc.textContent = page.description;
@@ -1352,7 +1395,7 @@
 
         var currentName = currentPage && currentPage.name;
         setPageCollections(event.detail.pages);
-        $headerSummary.textContent = designPages.length + ' trends · ' + conceptPages.length + ' concepts';
+        $headerSummary.textContent = headerSummary();
         $catalogTotal.textContent = allPages.length;
         $catalogTotal.setAttribute('title', allPages.length + ' exhibits');
         renderCards();
@@ -1366,7 +1409,7 @@
         }
     });
 
-    $headerSummary.textContent = designPages.length + ' trends · ' + conceptPages.length + ' concepts';
+    $headerSummary.textContent = headerSummary();
     $catalogTotal.textContent = allPages.length;
     $catalogTotal.setAttribute('title', allPages.length + ' exhibits');
     renderCards();

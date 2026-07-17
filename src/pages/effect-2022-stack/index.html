@@ -1,0 +1,765 @@
+<!-- layout: base.html -->
+<!-- title: Stack Effect (2022) -->
+<!-- description: A scroll-driven image deck that releases one card at a time -->
+
+<!-- lab:template:bundle -->
+<style>
+    :root {
+        --stack-ink: #f5f2ea;
+        --stack-muted: rgba(245, 242, 234, 0.56);
+        --stack-orange: #ff8452;
+        --stack-panel: rgba(14, 15, 19, 0.76);
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        overflow-x: hidden;
+        background: #0b0c0f;
+        color: var(--stack-ink);
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button {
+        color: inherit;
+        font: inherit;
+    }
+
+    button:focus-visible {
+        outline: 3px solid var(--stack-orange);
+        outline-offset: 3px;
+    }
+
+    .stack-page {
+        position: relative;
+        min-height: 540vh;
+        background:
+            radial-gradient(circle at 50% 42%, rgba(255, 132, 82, 0.09), transparent 31rem),
+            linear-gradient(180deg, #121318, #090a0c);
+    }
+
+    .stack-page::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 54px 54px;
+        mask-image: radial-gradient(circle at center, #000, transparent 74%);
+    }
+
+    .stack-stage {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        height: 100svh;
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    .stack-intro {
+        position: absolute;
+        inset: 0;
+        z-index: 70;
+        display: grid;
+        overflow: hidden;
+        place-items: center;
+        background:
+            radial-gradient(circle at center, rgba(255, 132, 82, 0.1), transparent 28rem),
+            #0b0c0f;
+        pointer-events: none;
+    }
+
+    .stack-intro[hidden] {
+        display: none;
+    }
+
+    .stack-intro-deck {
+        position: relative;
+        width: min(760px, calc(100vw - 110px));
+        max-height: calc(100svh - 250px);
+        aspect-ratio: 16 / 9;
+        perspective: 1600px;
+    }
+
+    .stack-intro-card {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        object-fit: cover;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 26px;
+        box-shadow:
+            0 32px 80px rgba(0, 0, 0, 0.58),
+            0 0 0 1px rgba(0, 0, 0, 0.28);
+        will-change: transform, opacity;
+    }
+
+    .stack-header,
+    .deck,
+    .stack-progress,
+    .stack-controls,
+    .scroll-hint {
+        transition:
+            opacity 0.5s ease,
+            transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stack-page.is-intro .stack-header,
+    .stack-page.is-intro .deck,
+    .stack-page.is-intro .stack-progress,
+    .stack-page.is-intro .stack-controls,
+    .stack-page.is-intro .scroll-hint {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .stack-page.is-intro .stack-header {
+        transform: translateY(-12px);
+    }
+
+    .stack-page.is-intro .deck {
+        transform: scale(0.96);
+    }
+
+    .stack-page.is-intro .stack-progress,
+    .stack-page.is-intro .stack-controls,
+    .stack-page.is-intro .scroll-hint {
+        transform: translateY(12px);
+    }
+
+    .stack-header {
+        position: absolute;
+        top: 28px;
+        right: 32px;
+        left: 32px;
+        z-index: 30;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        pointer-events: none;
+    }
+
+    .stack-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        min-height: 32px;
+        padding: 0 13px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 999px;
+        background: rgba(13, 14, 18, 0.58);
+        font-size: 0.7rem;
+        font-weight: 750;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+    }
+
+    .stack-badge::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--stack-orange);
+        box-shadow: 0 0 14px rgba(255, 132, 82, 0.86);
+    }
+
+    .stack-heading {
+        max-width: 460px;
+        text-align: right;
+    }
+
+    .stack-heading h1 {
+        margin: 0;
+        font-size: clamp(1.6rem, 3.2vw, 3.5rem);
+        font-weight: 650;
+        line-height: 0.96;
+        letter-spacing: -0.055em;
+    }
+
+    .stack-heading p {
+        margin: 9px 0 0;
+        color: var(--stack-muted);
+        font-size: 0.76rem;
+        line-height: 1.5;
+    }
+
+    .deck {
+        position: absolute;
+        inset: 116px 32px 120px;
+        z-index: 10;
+        display: grid;
+        place-items: center;
+        perspective: 1600px;
+    }
+
+    .stack-card {
+        position: absolute;
+        width: min(760px, calc(100vw - 110px));
+        max-height: calc(100svh - 250px);
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 26px;
+        background: #18191e;
+        box-shadow:
+            0 32px 80px rgba(0, 0, 0, 0.52),
+            0 0 0 1px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.13);
+        transform-origin: 48% 115%;
+        will-change: transform, opacity;
+    }
+
+    .stack-card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .stack-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg, transparent 46%, rgba(7, 8, 10, 0.78)),
+            linear-gradient(90deg, rgba(8, 8, 11, 0.16), transparent 46%);
+        pointer-events: none;
+    }
+
+    .card-caption {
+        position: absolute;
+        right: 22px;
+        bottom: 20px;
+        left: 22px;
+        z-index: 2;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        pointer-events: none;
+    }
+
+    .card-caption strong {
+        font-size: clamp(1.25rem, 3vw, 2.4rem);
+        font-weight: 650;
+        letter-spacing: -0.045em;
+    }
+
+    .card-caption span {
+        color: rgba(255, 255, 255, 0.68);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+    }
+
+    .stack-progress {
+        position: absolute;
+        bottom: 32px;
+        left: 32px;
+        z-index: 30;
+        min-width: min(390px, calc(100% - 440px));
+        pointer-events: none;
+    }
+
+    .progress-index {
+        color: var(--stack-orange);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+    }
+
+    .progress-title {
+        display: block;
+        margin-top: 7px;
+        font-size: clamp(1.35rem, 2.6vw, 2.3rem);
+        font-weight: 650;
+        letter-spacing: -0.04em;
+    }
+
+    .progress-track {
+        width: min(340px, 100%);
+        height: 2px;
+        margin-top: 13px;
+        overflow: hidden;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.13);
+    }
+
+    .progress-fill {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: var(--stack-orange);
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+
+    .stack-controls {
+        position: absolute;
+        right: 32px;
+        bottom: 32px;
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 16px;
+        background: var(--stack-panel);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.34);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .stack-control {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 0;
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.08);
+        cursor: pointer;
+    }
+
+    .stack-control:hover {
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+    .stack-control:disabled {
+        cursor: default;
+        opacity: 0.28;
+    }
+
+    .stack-control--reset {
+        width: auto;
+        min-width: 92px;
+        padding: 0 14px;
+        background: var(--stack-orange);
+        color: #17100d;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .stack-control--reset:hover {
+        background: #fff;
+    }
+
+    .scroll-hint {
+        position: absolute;
+        right: 36px;
+        bottom: 92px;
+        z-index: 30;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.42);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.64rem;
+        letter-spacing: 0.04em;
+        pointer-events: none;
+    }
+
+    @media screen and (max-width: 720px) {
+        .stack-page {
+            min-height: 500vh;
+        }
+
+        .stack-header {
+            top: 18px;
+            right: 18px;
+            left: 18px;
+            display: block;
+        }
+
+        .stack-heading {
+            margin-top: 14px;
+            text-align: left;
+        }
+
+        .stack-heading h1 {
+            font-size: 2rem;
+        }
+
+        .stack-heading p {
+            display: none;
+        }
+
+        .deck {
+            inset: 132px 14px 170px;
+        }
+
+        .stack-card {
+            width: calc(100vw - 44px);
+            max-height: calc(100svh - 320px);
+            border-radius: 18px;
+        }
+
+        .stack-intro-deck {
+            width: calc(100vw - 44px);
+            max-height: calc(100svh - 320px);
+        }
+
+        .stack-intro-card {
+            border-radius: 18px;
+        }
+
+        .card-caption {
+            right: 14px;
+            bottom: 13px;
+            left: 14px;
+        }
+
+        .card-caption strong {
+            font-size: 1.12rem;
+        }
+
+        .stack-progress {
+            right: 18px;
+            bottom: 130px;
+            left: 18px;
+            min-width: 0;
+        }
+
+        .progress-title {
+            font-size: 1.3rem;
+        }
+
+        .stack-controls {
+            right: 12px;
+            bottom: 66px;
+        }
+
+        .scroll-hint {
+            display: none;
+        }
+    }
+
+    @media screen and (max-height: 650px) and (min-width: 721px) {
+        .deck {
+            top: 92px;
+        }
+
+        .stack-heading p {
+            display: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+    }
+</style>
+
+<!-- lab:template -->
+<body>
+    <main id="root" class="stack-page is-intro" aria-busy="true">
+        <section class="stack-stage" aria-labelledby="stack-title">
+            <div class="stack-intro" id="stack-intro" aria-hidden="true">
+                <div class="stack-intro-deck" id="stack-intro-deck"></div>
+            </div>
+
+            <header class="stack-header">
+                <div class="stack-badge">Scroll Deck · 2022</div>
+                <div class="stack-heading">
+                    <h1 id="stack-title">Stack, then release.</h1>
+                    <p>The next card waits behind the current one. Scroll or use the arrows to peel the deck apart.</p>
+                </div>
+            </header>
+
+            <div class="deck" id="deck">
+                <article class="stack-card" data-title="Tiny Living">
+                    <img src="/assets/images/sims4/1.jpg" alt="" />
+                    <div class="card-caption"><strong>Tiny Living</strong><span>01</span></div>
+                </article>
+                <article class="stack-card" data-title="Get Famous">
+                    <img src="/assets/images/sims4/2.jpg" alt="" />
+                    <div class="card-caption"><strong>Get Famous</strong><span>02</span></div>
+                </article>
+                <article class="stack-card" data-title="Snowy Escape">
+                    <img src="/assets/images/sims4/3.jpg" alt="" />
+                    <div class="card-caption"><strong>Snowy Escape</strong><span>03</span></div>
+                </article>
+                <article class="stack-card" data-title="Island Living">
+                    <img src="/assets/images/sims4/4.jpg" alt="" />
+                    <div class="card-caption"><strong>Island Living</strong><span>04</span></div>
+                </article>
+                <article class="stack-card" data-title="Cottage Living">
+                    <img src="/assets/images/sims4/5.jpg" alt="" />
+                    <div class="card-caption"><strong>Cottage Living</strong><span>05</span></div>
+                </article>
+                <article class="stack-card" data-title="City Living">
+                    <img src="/assets/images/sims4/6.jpg" alt="" />
+                    <div class="card-caption"><strong>City Living</strong><span>06</span></div>
+                </article>
+            </div>
+
+            <div class="stack-progress" aria-live="polite" aria-atomic="true">
+                <span class="progress-index" id="progress-index">01 / 06</span>
+                <strong class="progress-title" id="progress-title">Tiny Living</strong>
+                <div class="progress-track" aria-hidden="true">
+                    <span class="progress-fill" id="progress-fill"></span>
+                </div>
+            </div>
+
+            <div class="stack-controls">
+                <button class="stack-control" id="stack-previous" type="button" aria-label="Previous card">←</button>
+                <button class="stack-control" id="stack-next" type="button" aria-label="Next card">→</button>
+                <button class="stack-control stack-control--reset" id="stack-reset" type="button">Reset</button>
+            </div>
+
+            <p class="scroll-hint">scroll / ↑ ↓ / ← →</p>
+        </section>
+    </main>
+</body>
+
+<!-- lab:template:bundle -->
+<script>
+    const root = document.getElementById('root');
+    const cards = Array.from(document.querySelectorAll('.stack-card'));
+    const intro = document.getElementById('stack-intro');
+    const introDeck = document.getElementById('stack-intro-deck');
+    const progressIndex = document.getElementById('progress-index');
+    const progressTitle = document.getElementById('progress-title');
+    const progressFill = document.getElementById('progress-fill');
+    const previousButton = document.getElementById('stack-previous');
+    const nextButton = document.getElementById('stack-next');
+    const resetButton = document.getElementById('stack-reset');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const introRotations = [-7, 5, -4, 7, -6, 3];
+    const introEntries = [
+        [-46, -32, -15],
+        [42, -28, 14],
+        [-38, 30, -13],
+        [44, 26, 16],
+        [-12, -42, -11],
+        [16, 38, 12],
+    ];
+    const introExits = [
+        [-112, -56, -24],
+        [108, -48, 22],
+        [-106, 64, -28],
+        [114, 58, 26],
+        [-28, -112, -20],
+        [34, 114, 24],
+    ];
+
+    let framePending = false;
+    let activeCard = -1;
+
+    function clamp(value, minimum, maximum) {
+        return Math.min(Math.max(value, minimum), maximum);
+    }
+
+    function formatIndex(index) {
+        return String(index + 1).padStart(2, '0') + ' / ' + String(cards.length).padStart(2, '0');
+    }
+
+    function maxScroll() {
+        return Math.max(root.offsetHeight - window.innerHeight, 1);
+    }
+
+    function cardPosition() {
+        return clamp(window.scrollY / maxScroll(), 0, 1) * (cards.length - 1);
+    }
+
+    function updateActiveCard(index) {
+        if (index === activeCard) return;
+        activeCard = index;
+        progressIndex.textContent = formatIndex(index);
+        progressTitle.textContent = cards[index].dataset.title;
+        previousButton.disabled = index === 0;
+        nextButton.disabled = index === cards.length - 1;
+        cards.forEach((card, cardIndex) => {
+            card.setAttribute('aria-hidden', String(cardIndex !== index));
+        });
+    }
+
+    function renderStack() {
+        const position = cardPosition();
+        const nearest = clamp(Math.round(position), 0, cards.length - 1);
+        const normalizedProgress = cards.length > 1 ? position / (cards.length - 1) : 0;
+
+        cards.forEach((card, index) => {
+            const delta = index - position;
+            let x;
+            let y;
+            let rotate;
+            let scale;
+            let opacity;
+
+            if (delta < 0) {
+                const exit = clamp(-delta, 0, 1);
+                x = -exit * (window.innerWidth * 0.82 + 180);
+                y = -exit * 70;
+                rotate = -exit * 10;
+                scale = 1 - exit * 0.08;
+                opacity = 1 - exit;
+            } else {
+                const depth = Math.min(delta, 5);
+                x = depth * 9;
+                y = depth * 15;
+                rotate = depth * 1.15;
+                scale = 1 - depth * 0.045;
+                opacity = 1 - Math.max(depth - 3, 0) * 0.28;
+            }
+
+            card.style.zIndex = String(cards.length - index);
+            card.style.opacity = String(clamp(opacity, 0, 1));
+            card.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0) rotate(' + rotate + 'deg) scale(' + scale + ')';
+        });
+
+        progressFill.style.transform = 'scaleX(' + normalizedProgress + ')';
+        updateActiveCard(nearest);
+        framePending = false;
+    }
+
+    function requestRender() {
+        if (framePending) return;
+        framePending = true;
+        window.requestAnimationFrame(renderStack);
+    }
+
+    function finishIntro() {
+        root.classList.remove('is-intro');
+        root.removeAttribute('aria-busy');
+        intro.hidden = true;
+        introDeck.replaceChildren();
+    }
+
+    async function playIntro() {
+        if (motionQuery.matches) {
+            finishIntro();
+            return;
+        }
+
+        const introCards = cards.map((card, index) => {
+            const image = card.querySelector('img').cloneNode();
+            image.className = 'stack-intro-card';
+            image.alt = '';
+            image.style.zIndex = String(index + 1);
+            introDeck.appendChild(image);
+            return image;
+        });
+
+        await Promise.allSettled(introCards.map(image => image.decode()));
+
+        const landings = introCards.map((card, index) => {
+            const [entryX, entryY, entryRotate] = introEntries[index];
+            const rotation = introRotations[index];
+
+            return card.animate([
+                {
+                    opacity: 0,
+                    transform: 'translate3d(' + entryX + 'px, ' + entryY + 'px, 0) rotate(' + entryRotate + 'deg) scale(0.88)',
+                },
+                {
+                    offset: 0.78,
+                    opacity: 1,
+                    transform: 'translate3d(0, 0, 0) rotate(' + rotation + 'deg) scale(1.025)',
+                },
+                {
+                    opacity: 1,
+                    transform: 'translate3d(0, 0, 0) rotate(' + rotation + 'deg) scale(1)',
+                },
+            ], {
+                duration: 300,
+                delay: index * 125,
+                easing: 'cubic-bezier(0.2, 0.85, 0.25, 1)',
+                fill: 'forwards',
+            }).finished;
+        });
+
+        await Promise.all(landings);
+        await new Promise(resolve => window.setTimeout(resolve, 90));
+
+        const exits = introCards.map((card, index) => {
+            const [exitX, exitY, exitRotate] = introExits[index];
+
+            return card.animate([
+                {
+                    opacity: 1,
+                    transform: 'translate3d(0, 0, 0) rotate(' + introRotations[index] + 'deg) scale(1)',
+                },
+                {
+                    opacity: 0,
+                    transform: 'translate3d(' + exitX + 'vw, ' + exitY + 'vh, 0) rotate(' + exitRotate + 'deg) scale(0.82)',
+                },
+            ], {
+                duration: 520,
+                easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
+                fill: 'forwards',
+            }).finished;
+        });
+
+        window.setTimeout(() => root.classList.remove('is-intro'), 90);
+        await Promise.all(exits);
+
+        const fade = intro.animate([
+            { opacity: 1 },
+            { opacity: 0 },
+        ], {
+            duration: 180,
+            easing: 'ease-out',
+            fill: 'forwards',
+        });
+
+        await fade.finished;
+        finishIntro();
+    }
+
+    function scrollToCard(index) {
+        const nextIndex = clamp(index, 0, cards.length - 1);
+        const target = maxScroll() * (nextIndex / Math.max(cards.length - 1, 1));
+        window.scrollTo({
+            top: target,
+            behavior: motionQuery.matches ? 'auto' : 'smooth',
+        });
+    }
+
+    previousButton.addEventListener('click', () => scrollToCard(activeCard - 1));
+    nextButton.addEventListener('click', () => scrollToCard(activeCard + 1));
+    resetButton.addEventListener('click', () => scrollToCard(0));
+
+    document.addEventListener('keydown', event => {
+        const target = event.target instanceof Element ? event.target : document.body;
+        if (target.matches('input, textarea, select, [contenteditable="true"]')) return;
+
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            scrollToCard(activeCard - 1);
+        } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+            event.preventDefault();
+            scrollToCard(activeCard + 1);
+        } else if (event.key === 'Home') {
+            event.preventDefault();
+            scrollToCard(0);
+        } else if (event.key === 'End') {
+            event.preventDefault();
+            scrollToCard(cards.length - 1);
+        }
+    });
+
+    window.addEventListener('scroll', requestRender, { passive: true });
+    window.addEventListener('resize', requestRender);
+    renderStack();
+    playIntro();
+</script>

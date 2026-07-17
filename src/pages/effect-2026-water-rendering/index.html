@@ -1,0 +1,1965 @@
+<!-- layout: base.html -->
+<!-- title: Water Rendering (2026) -->
+<!-- description: Displacement, normals, and Fresnel reflection on one interactive surface -->
+
+<!-- lab:template:bundle -->
+<style>
+    :root {
+        --ink: #eafcff;
+        --ink-muted: rgba(220, 248, 250, 0.68);
+        --ink-faint: rgba(220, 248, 250, 0.42);
+        --night: #031216;
+        --night-deep: #020b0e;
+        --panel: rgba(7, 31, 37, 0.78);
+        --panel-solid: #082229;
+        --line: rgba(151, 235, 239, 0.15);
+        --line-strong: rgba(151, 235, 239, 0.28);
+        --aqua: #72f1e8;
+        --aqua-bright: #b8fff9;
+        --blue: #68b8ff;
+        --warm: #ffd8a8;
+        --radius-large: 32px;
+        --radius-medium: 20px;
+        --radius-small: 12px;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100%;
+        overflow-x: hidden;
+        background: var(--night-deep);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at 50% -10%, rgba(38, 190, 194, 0.18), transparent 30rem),
+            radial-gradient(circle at 92% 78%, rgba(35, 102, 132, 0.08), transparent 34rem),
+            linear-gradient(180deg, var(--night) 0%, var(--night-deep) 100%);
+    }
+
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.3;
+        background-image:
+            linear-gradient(rgba(164, 240, 241, 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(164, 240, 241, 0.035) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: linear-gradient(to bottom, #000, transparent 78%);
+    }
+
+    button,
+    input {
+        font: inherit;
+    }
+
+    button {
+        color: inherit;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    a:focus-visible {
+        outline: 3px solid var(--aqua-bright);
+        outline-offset: 3px;
+    }
+
+    .effect-page {
+        position: relative;
+        z-index: 1;
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        padding: 32px 24px 112px;
+    }
+
+    .hero {
+        padding: 64px 0 48px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        min-height: 30px;
+        padding: 0 12px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        background: rgba(7, 35, 41, 0.72);
+        color: var(--aqua-bright);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .hero-badge::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--aqua);
+        box-shadow: 0 0 14px rgba(114, 241, 232, 0.8);
+    }
+
+    .hero-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 0.36fr);
+        align-items: end;
+        gap: 44px;
+        margin-top: 28px;
+    }
+
+    .hero-title {
+        max-width: 850px;
+        font-size: clamp(3.4rem, 8.3vw, 7.4rem);
+        font-weight: 650;
+        line-height: 0.88;
+        letter-spacing: -0.075em;
+    }
+
+    .hero-title span {
+        display: block;
+        color: transparent;
+        background: linear-gradient(105deg, var(--aqua-bright), var(--blue));
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+
+    .hero-copy {
+        padding-bottom: 8px;
+        color: var(--ink-muted);
+        font-size: 0.96rem;
+        line-height: 1.75;
+    }
+
+    .hero-copy strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--ink);
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .water-lab {
+        overflow: hidden;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-large);
+        background: rgba(1, 11, 15, 0.9);
+        box-shadow:
+            0 36px 100px rgba(0, 0, 0, 0.44),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .water-stage {
+        position: relative;
+        min-height: 570px;
+        overflow: hidden;
+        isolation: isolate;
+        background:
+            radial-gradient(circle at 58% 12%, rgba(124, 226, 237, 0.22), transparent 22rem),
+            linear-gradient(180deg, #0a3540, #03151b 70%);
+    }
+
+    .water-stage::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        right: 11%;
+        z-index: 0;
+        width: 280px;
+        height: 150px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse, rgba(149, 244, 236, 0.24), rgba(98, 184, 205, 0.08) 42%, transparent 72%);
+        filter: blur(10px);
+        pointer-events: none;
+    }
+
+    .water-stage canvas {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+        cursor: crosshair;
+    }
+
+    .stage-chrome {
+        position: absolute;
+        z-index: 3;
+        inset: 0;
+        pointer-events: none;
+    }
+
+    .stage-topbar,
+    .stage-footer {
+        position: absolute;
+        right: 22px;
+        left: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .stage-topbar {
+        top: 20px;
+    }
+
+    .stage-footer {
+        bottom: 20px;
+        align-items: flex-end;
+    }
+
+    .stage-id,
+    .stage-status,
+    .gesture-hint {
+        border: 1px solid rgba(207, 252, 255, 0.14);
+        background: rgba(2, 18, 23, 0.62);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+    }
+
+    .stage-id {
+        padding: 9px 12px;
+        border-radius: 999px;
+        color: rgba(232, 255, 255, 0.82);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.05em;
+    }
+
+    .stage-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border-radius: 999px;
+        color: rgba(232, 255, 255, 0.68);
+        font-size: 0.68rem;
+        font-weight: 650;
+    }
+
+    .stage-status::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--aqua);
+        box-shadow: 0 0 10px rgba(114, 241, 232, 0.7);
+    }
+
+    .gesture-hint {
+        max-width: 210px;
+        padding: 10px 12px;
+        border-radius: var(--radius-small);
+        color: rgba(232, 255, 255, 0.66);
+        font-size: 0.72rem;
+        line-height: 1.45;
+    }
+
+    .view-switcher {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+        max-width: 500px;
+        padding: 6px;
+        border: 1px solid rgba(207, 252, 255, 0.15);
+        border-radius: 15px;
+        background: rgba(2, 18, 23, 0.72);
+        pointer-events: auto;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .view-button {
+        min-height: 36px;
+        padding: 0 13px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        background: transparent;
+        color: rgba(226, 251, 252, 0.58);
+        font-size: 0.7rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+    }
+
+    .view-button:hover {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .view-button[aria-pressed='true'] {
+        border-color: rgba(184, 255, 249, 0.24);
+        background: var(--aqua-bright);
+        color: #032126;
+    }
+
+    .stage-loader {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: rgba(230, 255, 255, 0.7);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: opacity 240ms ease;
+    }
+
+    .stage-loader::before {
+        content: '';
+        position: absolute;
+        width: 52px;
+        height: 52px;
+        border: 1px solid rgba(184, 255, 249, 0.18);
+        border-top-color: var(--aqua);
+        border-radius: 50%;
+        animation: loader-spin 1.2s linear infinite;
+    }
+
+    .stage-loader span {
+        transform: translateY(48px);
+    }
+
+    .water-stage.is-ready .stage-loader {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .water-stage.has-error .stage-loader::before {
+        display: none;
+    }
+
+    .water-stage.has-error .stage-loader {
+        padding: 32px;
+        color: #ffd5cd;
+        line-height: 1.6;
+        text-align: center;
+        text-transform: none;
+    }
+
+    .water-stage.has-error .stage-loader span {
+        transform: none;
+    }
+
+    @keyframes loader-spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .lab-console {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 260px;
+        border-top: 1px solid var(--line);
+        background: rgba(4, 23, 28, 0.96);
+    }
+
+    .control-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0;
+    }
+
+    .control {
+        min-width: 0;
+        padding: 22px 24px;
+        border-right: 1px solid var(--line);
+    }
+
+    .control:last-child {
+        border-right: 0;
+    }
+
+    .control-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+        color: var(--ink-muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .control-output {
+        color: var(--aqua-bright);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.68rem;
+    }
+
+    .control input[type='range'] {
+        width: 100%;
+        height: 22px;
+        appearance: none;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .control input[type='range']::-webkit-slider-runnable-track {
+        height: 3px;
+        border-radius: 999px;
+        background: rgba(206, 252, 255, 0.16);
+    }
+
+    .control input[type='range']::-webkit-slider-thumb {
+        width: 16px;
+        height: 16px;
+        margin-top: -6.5px;
+        appearance: none;
+        border: 3px solid #062329;
+        border-radius: 50%;
+        background: var(--aqua-bright);
+        box-shadow: 0 0 0 1px rgba(184, 255, 249, 0.36);
+    }
+
+    .control input[type='range']::-moz-range-track {
+        height: 3px;
+        border-radius: 999px;
+        background: rgba(206, 252, 255, 0.16);
+    }
+
+    .control input[type='range']::-moz-range-thumb {
+        width: 12px;
+        height: 12px;
+        border: 3px solid #062329;
+        border-radius: 50%;
+        background: var(--aqua-bright);
+        box-shadow: 0 0 0 1px rgba(184, 255, 249, 0.36);
+    }
+
+    .preset-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 20px;
+        border-left: 1px solid var(--line);
+    }
+
+    .preset-label {
+        color: var(--ink-faint);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .preset-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .preset-button,
+    .motion-button,
+    .inspect-button,
+    .return-button {
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--ink-muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 160ms ease, color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+    }
+
+    .preset-button {
+        min-height: 34px;
+        padding: 0 10px;
+    }
+
+    .preset-button:hover,
+    .motion-button:hover,
+    .inspect-button:hover,
+    .return-button:hover {
+        border-color: rgba(184, 255, 249, 0.54);
+        color: var(--ink);
+        transform: translateY(-1px);
+    }
+
+    .preset-button[aria-pressed='true'] {
+        border-color: rgba(184, 255, 249, 0.28);
+        background: rgba(114, 241, 232, 0.14);
+        color: var(--aqua-bright);
+    }
+
+    .motion-button {
+        min-height: 36px;
+        padding: 0 12px;
+        align-self: flex-start;
+    }
+
+    .divider {
+        height: 1px;
+        margin: 88px 0;
+        background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+    }
+
+    .premise {
+        display: grid;
+        grid-template-columns: 0.7fr 1.3fr;
+        gap: 64px;
+        align-items: start;
+    }
+
+    .eyebrow {
+        color: var(--aqua);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+    }
+
+    .premise h2,
+    .working-copy h2,
+    .limits h2 {
+        margin-top: 16px;
+        font-size: clamp(2rem, 4vw, 3.8rem);
+        font-weight: 620;
+        line-height: 1.03;
+        letter-spacing: -0.055em;
+    }
+
+    .premise-copy {
+        color: var(--ink-muted);
+        font-size: clamp(1.08rem, 2vw, 1.45rem);
+        line-height: 1.75;
+    }
+
+    .premise-copy strong {
+        color: var(--ink);
+        font-weight: 650;
+    }
+
+    .boundary-note {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 14px;
+        margin-top: 26px;
+        padding: 18px;
+        border-left: 2px solid var(--aqua);
+        background: rgba(114, 241, 232, 0.055);
+        color: var(--ink-faint);
+        font-size: 0.82rem;
+        line-height: 1.65;
+    }
+
+    .boundary-note span {
+        color: var(--aqua-bright);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .rule-list {
+        border-top: 1px solid var(--line);
+    }
+
+    .rule {
+        display: grid;
+        grid-template-columns: 88px minmax(0, 0.9fr) minmax(300px, 1.1fr);
+        gap: 34px;
+        align-items: start;
+        padding: 64px 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .rule-index {
+        color: var(--aqua);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+    }
+
+    .rule h2 {
+        max-width: 430px;
+        margin-bottom: 18px;
+        font-size: clamp(1.8rem, 3.4vw, 3rem);
+        font-weight: 620;
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+    }
+
+    .rule-copy p {
+        max-width: 470px;
+        color: var(--ink-muted);
+        font-size: 0.94rem;
+        line-height: 1.75;
+    }
+
+    .inspect-button {
+        min-height: 38px;
+        margin-top: 24px;
+        padding: 0 13px;
+    }
+
+    .effect-visual {
+        min-height: 260px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-medium);
+        background: rgba(5, 25, 31, 0.72);
+    }
+
+    .code-visual {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .visual-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 46px;
+        padding: 0 16px;
+        border-bottom: 1px solid var(--line);
+        color: var(--ink-faint);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.64rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .visual-dots {
+        display: flex;
+        gap: 5px;
+    }
+
+    .visual-dots i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(205, 251, 253, 0.24);
+    }
+
+    .shader-code {
+        flex: 1;
+        padding: 25px;
+        overflow-x: auto;
+        color: rgba(230, 253, 254, 0.74);
+        font: 0.76rem/1.8 ui-monospace, SFMono-Regular, Menlo, monospace;
+        white-space: pre;
+    }
+
+    .shader-code .kw { color: #8bd7ff; }
+    .shader-code .fn { color: #ffe2ac; }
+    .shader-code .val { color: #99f5dc; }
+    .shader-code .cmt { color: rgba(206, 246, 248, 0.35); }
+
+    .normal-visual {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 300px;
+        background:
+            linear-gradient(rgba(167, 240, 241, 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(167, 240, 241, 0.055) 1px, transparent 1px),
+            rgba(5, 25, 31, 0.72);
+        background-size: 24px 24px;
+    }
+
+    .normal-surface {
+        position: relative;
+        width: 76%;
+        height: 90px;
+        border-bottom: 2px solid rgba(114, 241, 232, 0.72);
+        border-radius: 50%;
+        transform: rotate(-5deg);
+        box-shadow: 0 28px 70px rgba(70, 218, 225, 0.08);
+    }
+
+    .normal-arrow {
+        position: absolute;
+        top: -80px;
+        left: 50%;
+        width: 2px;
+        height: 104px;
+        background: linear-gradient(to top, var(--aqua), var(--blue));
+        transform: rotate(18deg);
+        transform-origin: bottom;
+    }
+
+    .normal-arrow::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        width: 9px;
+        height: 9px;
+        border-top: 2px solid var(--blue);
+        border-left: 2px solid var(--blue);
+        transform: translateX(-50%) rotate(45deg);
+    }
+
+    .normal-arrow::after {
+        content: 'N';
+        position: absolute;
+        top: 14px;
+        left: 12px;
+        color: var(--aqua-bright);
+        font: 700 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .normal-caption {
+        position: absolute;
+        right: 16px;
+        bottom: 14px;
+        left: 16px;
+        color: var(--ink-faint);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.64rem;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .fresnel-visual {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 300px;
+    }
+
+    .fresnel-diagram {
+        position: relative;
+        min-height: 300px;
+        overflow: hidden;
+        border-right: 1px solid var(--line);
+        background: linear-gradient(150deg, rgba(111, 213, 235, 0.18), transparent 52%);
+    }
+
+    .fresnel-plane {
+        position: absolute;
+        right: -18%;
+        bottom: 44px;
+        left: -18%;
+        height: 120px;
+        border-top: 1px solid rgba(184, 255, 249, 0.72);
+        background: linear-gradient(180deg, rgba(49, 187, 198, 0.28), rgba(3, 28, 35, 0.2));
+        transform: perspective(240px) rotateX(58deg);
+    }
+
+    .view-ray,
+    .reflect-ray {
+        position: absolute;
+        bottom: 118px;
+        left: 50%;
+        width: 2px;
+        height: 120px;
+        transform-origin: bottom;
+    }
+
+    .view-ray {
+        background: linear-gradient(to top, rgba(255, 216, 168, 0.9), transparent);
+        transform: rotate(-42deg);
+    }
+
+    .reflect-ray {
+        background: linear-gradient(to top, rgba(104, 184, 255, 0.9), transparent);
+        transform: rotate(42deg);
+    }
+
+    .fresnel-label {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        left: 18px;
+        color: var(--ink-faint);
+        font-size: 0.68rem;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .fresnel-curve {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 16px;
+        padding: 24px;
+    }
+
+    .fresnel-curve svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
+
+    .curve-caption {
+        color: var(--ink-faint);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.64rem;
+        line-height: 1.55;
+        text-align: center;
+    }
+
+    .working-example {
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(300px, 1.18fr);
+        gap: 58px;
+        align-items: center;
+        padding: 58px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-large);
+        background:
+            radial-gradient(circle at 85% 0%, rgba(104, 184, 255, 0.12), transparent 25rem),
+            rgba(6, 29, 35, 0.8);
+    }
+
+    .working-copy p {
+        margin: 22px 0 28px;
+        color: var(--ink-muted);
+        font-size: 0.95rem;
+        line-height: 1.75;
+    }
+
+    .return-button {
+        min-height: 44px;
+        padding: 0 16px;
+        background: var(--aqua-bright);
+        color: #032126;
+    }
+
+    .pass-stack {
+        display: grid;
+        gap: 10px;
+        counter-reset: pass;
+    }
+
+    .pass-item {
+        display: grid;
+        grid-template-columns: 38px 1fr auto;
+        align-items: center;
+        gap: 14px;
+        min-height: 64px;
+        padding: 0 18px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(2, 18, 23, 0.58);
+    }
+
+    .pass-item::before {
+        counter-increment: pass;
+        content: '0' counter(pass);
+        color: var(--aqua);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.66rem;
+    }
+
+    .pass-name {
+        color: var(--ink);
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .pass-output {
+        color: var(--ink-faint);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.62rem;
+    }
+
+    .limits {
+        display: grid;
+        grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+        gap: 64px;
+        align-items: start;
+    }
+
+    .limit-list {
+        display: grid;
+        gap: 12px;
+    }
+
+    .limit-item {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 22px;
+        padding: 22px 0;
+        border-top: 1px solid var(--line);
+    }
+
+    .limit-item:last-child {
+        border-bottom: 1px solid var(--line);
+    }
+
+    .limit-item strong {
+        color: var(--aqua-bright);
+        font-size: 0.68rem;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    .limit-item p {
+        color: var(--ink-muted);
+        font-size: 0.86rem;
+        line-height: 1.7;
+    }
+
+    .effect-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin-top: 88px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        color: var(--ink-faint);
+        font-size: 0.68rem;
+    }
+
+    .effect-footer code {
+        color: var(--aqua-bright);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    @media (max-width: 860px) {
+        .hero-layout,
+        .premise,
+        .working-example,
+        .limits {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-layout {
+            gap: 24px;
+        }
+
+        .hero-copy {
+            max-width: 560px;
+        }
+
+        .water-stage {
+            min-height: 520px;
+        }
+
+        .lab-console {
+            grid-template-columns: 1fr;
+        }
+
+        .preset-panel {
+            border-top: 1px solid var(--line);
+            border-left: 0;
+        }
+
+        .rule {
+            grid-template-columns: 58px minmax(0, 1fr);
+        }
+
+        .effect-visual {
+            grid-column: 2;
+        }
+
+        .working-example {
+            padding: 42px;
+        }
+    }
+
+    @media (max-width: 620px) {
+        .effect-page {
+            padding: 32px 16px 96px;
+        }
+
+        .hero {
+            padding-top: 64px;
+        }
+
+        .hero-title {
+            font-size: clamp(3.25rem, 18vw, 5.1rem);
+        }
+
+        .water-lab,
+        .working-example {
+            border-radius: 22px;
+        }
+
+        .water-stage {
+            min-height: 540px;
+        }
+
+        .stage-topbar,
+        .stage-footer {
+            right: 12px;
+            left: 12px;
+        }
+
+        .stage-topbar {
+            top: 12px;
+        }
+
+        .stage-footer {
+            bottom: 12px;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .gesture-hint {
+            max-width: none;
+            align-self: flex-start;
+        }
+
+        .view-switcher {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: none;
+        }
+
+        .view-button {
+            padding: 0 6px;
+            font-size: 0.64rem;
+        }
+
+        .control-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .control {
+            padding: 18px 20px;
+            border-right: 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .control:last-child {
+            border-bottom: 0;
+        }
+
+        .divider {
+            margin: 68px 0;
+        }
+
+        .premise {
+            gap: 30px;
+        }
+
+        .boundary-note {
+            grid-template-columns: 1fr;
+        }
+
+        .rule {
+            grid-template-columns: 1fr;
+            gap: 18px;
+            padding: 50px 0;
+        }
+
+        .effect-visual {
+            grid-column: auto;
+            min-width: 0;
+        }
+
+        .fresnel-visual {
+            grid-template-columns: 1fr;
+        }
+
+        .fresnel-diagram {
+            border-right: 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .working-example {
+            gap: 36px;
+            padding: 30px 22px;
+        }
+
+        .pass-item {
+            grid-template-columns: 32px 1fr;
+            padding: 12px 15px;
+        }
+
+        .pass-output {
+            grid-column: 2;
+        }
+
+        .limits {
+            gap: 34px;
+        }
+
+        .limit-item {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .effect-footer {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            scroll-behavior: auto !important;
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+        }
+    }
+</style>
+
+<!-- lab:template -->
+<body>
+    <main class="effect-page">
+        <header class="hero">
+            <div class="hero-badge">Three.js Water Effect</div>
+            <div class="hero-layout">
+                <h1 class="hero-title">Water is not <span>a texture.</span></h1>
+                <p class="hero-copy">
+                    <strong>WebGL · 2026</strong>
+                    One plane, a persistent ripple field, rebuilt normals, and a view-dependent reflection.
+                    The surface below exposes each pass instead of hiding the shader behind a finished ocean.
+                </p>
+            </div>
+        </header>
+
+        <section class="water-lab" id="water-lab" aria-labelledby="lab-title">
+            <h2 id="lab-title" hidden>Interactive water rendering laboratory</h2>
+            <div class="water-stage" id="water-stage">
+                <div class="stage-loader" id="stage-loader" role="status" aria-live="polite">
+                    <span>Loading GPU surface</span>
+                </div>
+                <div class="stage-chrome">
+                    <div class="stage-topbar">
+                        <div class="stage-id">water_surface.frag</div>
+                        <div class="stage-status" id="stage-status" aria-live="polite">Final material</div>
+                    </div>
+                    <div class="stage-footer">
+                        <p class="gesture-hint">Press or drag across the surface to disturb the shader.</p>
+                        <div class="view-switcher" role="group" aria-label="Shader output view">
+                            <button class="view-button" type="button" data-view="final" aria-pressed="true">Final</button>
+                            <button class="view-button" type="button" data-view="height" aria-pressed="false">Height</button>
+                            <button class="view-button" type="button" data-view="normals" aria-pressed="false">Normals</button>
+                            <button class="view-button" type="button" data-view="fresnel" aria-pressed="false">Fresnel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lab-console">
+                <div class="control-grid">
+                    <label class="control" for="wave-energy">
+                        <span class="control-heading">Wave energy <output class="control-output" id="wave-energy-output">0.58</output></span>
+                        <input id="wave-energy" type="range" min="0" max="100" value="58">
+                    </label>
+                    <label class="control" for="surface-detail">
+                        <span class="control-heading">Surface detail <output class="control-output" id="surface-detail-output">0.62</output></span>
+                        <input id="surface-detail" type="range" min="0" max="100" value="45">
+                    </label>
+                    <label class="control" for="edge-reflection">
+                        <span class="control-heading">Edge reflection <output class="control-output" id="edge-reflection-output">0.70</output></span>
+                        <input id="edge-reflection" type="range" min="0" max="100" value="66">
+                    </label>
+                </div>
+                <div class="preset-panel">
+                    <span class="preset-label">Surface preset</span>
+                    <div class="preset-row" role="group" aria-label="Water presets">
+                        <button class="preset-button" type="button" data-preset="calm" aria-pressed="false">Calm</button>
+                        <button class="preset-button" type="button" data-preset="wind" aria-pressed="true">Wind</button>
+                        <button class="preset-button" type="button" data-preset="rain" aria-pressed="false">Rain</button>
+                    </div>
+                    <button class="motion-button" id="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="premise" aria-labelledby="premise-title">
+            <div>
+                <div class="eyebrow">Premise</div>
+                <h2 id="premise-title">A surface becomes water through relationships.</h2>
+            </div>
+            <div>
+                <p class="premise-copy">
+                    A height field remembers motion. <strong>Normals turn that motion into light,</strong>
+                    and Fresnel reflectance makes the result respond to the viewer. Remove any one layer
+                    and the illusion becomes easier to read—and easier to learn.
+                </p>
+                <div class="boundary-note">
+                    <span>Scope</span>
+                    <p>This is a two-dimensional wave simulation, not a volumetric fluid solver. It stores surface height and velocity, but has no shoreline, buoyancy, or physically traced reflection.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <div class="rule-list">
+            <section class="rule" aria-labelledby="rule-displacement">
+                <div class="rule-index">01 / 03</div>
+                <div class="rule-copy">
+                    <h2 id="rule-displacement">Add energy. Keep the old waves.</h2>
+                    <p>A GPU texture stores height and velocity at every point. New touches add energy to that field instead of replacing an animation origin, so earlier ripples keep travelling and collide with the next ones.</p>
+                    <button class="inspect-button" type="button" data-inspect="height">Inspect height output</button>
+                </div>
+                <div class="effect-visual code-visual" aria-label="Simplified height-field simulation shader">
+                    <div class="visual-head">
+                        <span>simulation pass</span>
+                        <span class="visual-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                    </div>
+                    <pre class="shader-code"><span class="kw">vec2</span> state = texture(field, uv).rg;
+<span class="kw">float</span> laplacian = left + right + up + down
+                  - <span class="val">4.0</span> * state.x;
+
+state.y += laplacian * <span class="val">0.28</span>; <span class="cmt">// velocity</span>
+state.y *= damping;
+state.x += state.y + impulse;   <span class="cmt">// height</span>
+
+<span class="fn">write</span>(state); <span class="cmt">// becomes the next frame</span></pre>
+                </div>
+            </section>
+
+            <section class="rule" aria-labelledby="rule-normals">
+                <div class="rule-index">02 / 03</div>
+                <div class="rule-copy">
+                    <h2 id="rule-normals">Rebuild what the light sees.</h2>
+                    <p>Moving vertices without updating their normals produces a bent plane that still shades like a flat sheet. Sampling the height nearby reveals the local slope and gives every highlight a direction.</p>
+                    <button class="inspect-button" type="button" data-inspect="normals">Inspect normal output</button>
+                </div>
+                <div class="effect-visual normal-visual" aria-label="Surface normal reconstructed from nearby height samples">
+                    <div class="normal-surface">
+                        <div class="normal-arrow"></div>
+                    </div>
+                    <p class="normal-caption">N = cross(tangent X, tangent Y)<br>Two nearby height samples rebuild the slope.</p>
+                </div>
+            </section>
+
+            <section class="rule" aria-labelledby="rule-fresnel">
+                <div class="rule-index">03 / 03</div>
+                <div class="rule-copy">
+                    <h2 id="rule-fresnel">Let the viewing angle choose the reflection.</h2>
+                    <p>Water reflects more at grazing angles and reveals more of its body color when viewed head-on. A Fresnel term connects those two states without painting a fake reflection onto the mesh.</p>
+                    <button class="inspect-button" type="button" data-inspect="fresnel">Inspect Fresnel output</button>
+                </div>
+                <div class="effect-visual fresnel-visual">
+                    <div class="fresnel-diagram" aria-label="View and reflection rays above a water plane">
+                        <div class="fresnel-plane"></div>
+                        <div class="view-ray"></div>
+                        <div class="reflect-ray"></div>
+                        <p class="fresnel-label">Shallow angle → stronger reflection</p>
+                    </div>
+                    <div class="fresnel-curve">
+                        <svg viewBox="0 0 180 120" role="img" aria-label="Reflection rises rapidly near grazing angles">
+                            <path d="M16 10V104H166" fill="none" stroke="rgba(205,251,253,.18)" stroke-width="1"/>
+                            <path d="M18 92C86 91 120 88 139 67C151 54 158 32 164 14" fill="none" stroke="#72f1e8" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="139" cy="67" r="4" fill="#b8fff9"/>
+                            <text x="17" y="116" fill="rgba(205,251,253,.42)" font-size="8">front</text>
+                            <text x="139" y="116" fill="rgba(205,251,253,.42)" font-size="8">edge</text>
+                        </svg>
+                        <p class="curve-caption">F = F₀ + (1 − F₀)(1 − V·N)⁵</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="divider"></div>
+
+        <section class="working-example" aria-labelledby="working-title">
+            <div class="working-copy">
+                <div class="eyebrow">Working Example</div>
+                <h2 id="working-title">One draw call, four ways to read it.</h2>
+                <p>The laboratory keeps the camera, geometry, and accumulated wave state fixed. Switching outputs changes only what the material reveals, so each stage can be compared against the same interacting surface.</p>
+                <button class="return-button" id="return-to-water" type="button">Return to the surface</button>
+            </div>
+            <div class="pass-stack" aria-label="Water rendering pass order">
+                <div class="pass-item"><span class="pass-name">Height-field simulation</span><span class="pass-output">height + velocity</span></div>
+                <div class="pass-item"><span class="pass-name">Normal reconstruction</span><span class="pass-output">direction</span></div>
+                <div class="pass-item"><span class="pass-name">Fresnel response</span><span class="pass-output">reflectance</span></div>
+                <div class="pass-item"><span class="pass-name">Material composition</span><span class="pass-output">water</span></div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="limits" aria-labelledby="limits-title">
+            <div>
+                <div class="eyebrow">Limits</div>
+                <h2 id="limits-title">Know what the shortcut cannot do.</h2>
+            </div>
+            <div class="limit-list">
+                <div class="limit-item">
+                    <strong>Good for</strong>
+                    <p>Stylized pools, product backdrops, shallow interactive scenes, and learning how a surface shader is assembled.</p>
+                </div>
+                <div class="limit-item">
+                    <strong>Not enough for</strong>
+                    <p>Breaking waves, objects displacing volume, accurate caustics, underwater views, or reflections that must match a real environment.</p>
+                </div>
+                <div class="limit-item">
+                    <strong>Performance</strong>
+                    <p>Pixel ratio and mesh resolution are reduced on narrow screens. Rendering pauses when the surface is off-screen or the document is hidden.</p>
+                </div>
+                <div class="limit-item">
+                    <strong>Motion</strong>
+                    <p>The system motion preference is respected on first load, and the animation can always be paused without disabling shader inspection.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="effect-footer">
+            <span>Interactive effect · simplified wave simulation</span>
+            <code>Three.js r185 · custom GLSL</code>
+        </footer>
+    </main>
+</body>
+
+<!-- lab:template:bundle -->
+<script>
+    var THREE_MODULE_URL = 'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js';
+    var stage = document.getElementById('water-stage');
+    var loader = document.getElementById('stage-loader');
+    var status = document.getElementById('stage-status');
+    var motionButton = document.getElementById('motion-toggle');
+    var returnButton = document.getElementById('return-to-water');
+    var viewButtons = Array.from(document.querySelectorAll('[data-view]'));
+    var inspectButtons = Array.from(document.querySelectorAll('[data-inspect]'));
+    var presetButtons = Array.from(document.querySelectorAll('[data-preset]'));
+    var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var activeView = 'final';
+    var activePreset = 'wind';
+    var isPaused = motionQuery.matches;
+    var waterApi = null;
+
+    var controls = {
+        energy: {
+            input: document.getElementById('wave-energy'),
+            output: document.getElementById('wave-energy-output'),
+            map: function(value) { return 0.08 + value * 0.0086; }
+        },
+        detail: {
+            input: document.getElementById('surface-detail'),
+            output: document.getElementById('surface-detail-output'),
+            map: function(value) { return 0.26 + value * 0.008; }
+        },
+        fresnel: {
+            input: document.getElementById('edge-reflection'),
+            output: document.getElementById('edge-reflection-output'),
+            map: function(value) { return 0.24 + value * 0.007; }
+        }
+    };
+
+    var viewLabels = {
+        final: 'Final material',
+        height: 'Vertex height',
+        normals: 'Rebuilt normals',
+        fresnel: 'Fresnel response'
+    };
+
+    var viewModes = {
+        final: 0,
+        height: 1,
+        normals: 2,
+        fresnel: 3
+    };
+
+    var presets = {
+        calm: { energy: 24, detail: 20, fresnel: 58 },
+        wind: { energy: 58, detail: 45, fresnel: 66 },
+        rain: { energy: 42, detail: 78, fresnel: 72 }
+    };
+
+    function mappedControl(name) {
+        var control = controls[name];
+        return control.map(Number(control.input.value));
+    }
+
+    function updateControlOutput(name) {
+        var control = controls[name];
+        control.output.value = mappedControl(name).toFixed(2);
+    }
+
+    function syncControls() {
+        Object.keys(controls).forEach(updateControlOutput);
+        if (!waterApi) return;
+        waterApi.setEnergy(mappedControl('energy'));
+        waterApi.setDetail(mappedControl('detail'));
+        waterApi.setFresnel(mappedControl('fresnel'));
+    }
+
+    function setView(name, shouldFocusStage) {
+        if (!(name in viewModes)) return;
+        activeView = name;
+        viewButtons.forEach(function(button) {
+            button.setAttribute('aria-pressed', String(button.dataset.view === name));
+        });
+        status.textContent = viewLabels[name];
+        if (waterApi) waterApi.setMode(viewModes[name]);
+        if (shouldFocusStage) {
+            stage.scrollIntoView({ behavior: motionQuery.matches ? 'auto' : 'smooth', block: 'center' });
+        }
+    }
+
+    function setPaused(nextPaused) {
+        isPaused = nextPaused;
+        motionButton.setAttribute('aria-pressed', String(isPaused));
+        motionButton.textContent = isPaused ? 'Play motion' : 'Pause motion';
+        if (waterApi) waterApi.setPaused(isPaused);
+    }
+
+    function setPreset(name) {
+        var preset = presets[name];
+        if (!preset) return;
+        activePreset = name;
+        Object.keys(preset).forEach(function(controlName) {
+            controls[controlName].input.value = preset[controlName];
+        });
+        presetButtons.forEach(function(button) {
+            button.setAttribute('aria-pressed', String(button.dataset.preset === name));
+        });
+        syncControls();
+        if (waterApi) waterApi.setPreset(name);
+    }
+
+    Object.keys(controls).forEach(function(name) {
+        controls[name].input.addEventListener('input', function() {
+            activePreset = '';
+            presetButtons.forEach(function(button) {
+                button.setAttribute('aria-pressed', 'false');
+            });
+            updateControlOutput(name);
+            syncControls();
+        });
+    });
+
+    viewButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            setView(button.dataset.view, false);
+        });
+    });
+
+    inspectButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            setView(button.dataset.inspect, true);
+        });
+    });
+
+    presetButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            setPreset(button.dataset.preset);
+        });
+    });
+
+    motionButton.addEventListener('click', function() {
+        setPaused(!isPaused);
+    });
+
+    returnButton.addEventListener('click', function() {
+        setView('final', true);
+        window.setTimeout(function() {
+            var finalButton = document.querySelector('[data-view="final"]');
+            if (finalButton) finalButton.focus({ preventScroll: true });
+        }, motionQuery.matches ? 0 : 420);
+    });
+
+    function handleMotionPreference(event) {
+        setPaused(event.matches);
+    }
+
+    if (typeof motionQuery.addEventListener === 'function') {
+        motionQuery.addEventListener('change', handleMotionPreference);
+    } else if (typeof motionQuery.addListener === 'function') {
+        motionQuery.addListener(handleMotionPreference);
+    }
+
+    syncControls();
+    setPaused(isPaused);
+
+    function showError(message, error) {
+        stage.classList.add('has-error');
+        loader.querySelector('span').textContent = message;
+        status.textContent = 'Renderer unavailable';
+        if (error) console.error('Water rendering failed.', error);
+    }
+
+    import(THREE_MODULE_URL).then(function(THREE) {
+        var renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+        } catch (error) {
+            showError('WebGL could not start on this device.', error);
+            return;
+        }
+
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 720 ? 1.35 : 1.8));
+        renderer.setClearColor(0x061d24, 0);
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.94;
+        renderer.domElement.setAttribute('aria-label', 'Interactive Three.js water surface');
+        renderer.domElement.setAttribute('role', 'img');
+        stage.insertBefore(renderer.domElement, stage.firstChild);
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+        camera.position.set(0, -15.5, 10.5);
+        camera.lookAt(0, 1.4, 0);
+
+        var narrow = window.innerWidth < 720;
+        var segmentsX = narrow ? 128 : 192;
+        var segmentsY = narrow ? 96 : 144;
+        var surfaceWidth = 64;
+        var surfaceDepth = 28;
+        var geometry = new THREE.PlaneGeometry(surfaceWidth, surfaceDepth, segmentsX, segmentsY);
+        var simulationWidth = narrow ? 128 : 192;
+        var simulationHeight = narrow ? 96 : 144;
+
+        function createSimulationTarget() {
+            return new THREE.WebGLRenderTarget(simulationWidth, simulationHeight, {
+                type: THREE.HalfFloatType,
+                format: THREE.RGBAFormat,
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.LinearFilter,
+                wrapS: THREE.ClampToEdgeWrapping,
+                wrapT: THREE.ClampToEdgeWrapping,
+                depthBuffer: false,
+                stencilBuffer: false,
+                generateMipmaps: false
+            });
+        }
+
+        var stateRead = createSimulationTarget();
+        var stateWrite = createSimulationTarget();
+        var simulationUniforms = {
+            uState: { value: stateRead.texture },
+            uTexel: { value: new THREE.Vector2(1 / simulationWidth, 1 / simulationHeight) },
+            uImpulse: { value: new THREE.Vector3(-10, -10, 0) },
+            uDamping: { value: 0.988 }
+        };
+        var simulationVertexShader = [
+            'varying vec2 vUv;',
+            'void main() {',
+            '  vUv = uv;',
+            '  gl_Position = vec4(position.xy, 0.0, 1.0);',
+            '}'
+        ].join('\n');
+        var simulationFragmentShader = [
+            'precision highp float;',
+            'uniform sampler2D uState;',
+            'uniform vec2 uTexel;',
+            'uniform vec3 uImpulse;',
+            'uniform float uDamping;',
+            'varying vec2 vUv;',
+            'void main() {',
+            '  vec2 state = texture2D(uState, vUv).rg;',
+            '  float left = texture2D(uState, vUv - vec2(uTexel.x, 0.0)).r;',
+            '  float right = texture2D(uState, vUv + vec2(uTexel.x, 0.0)).r;',
+            '  float down = texture2D(uState, vUv - vec2(0.0, uTexel.y)).r;',
+            '  float up = texture2D(uState, vUv + vec2(0.0, uTexel.y)).r;',
+            '  float laplacian = left + right + down + up - 4.0 * state.x;',
+            '  state.y = (state.y + laplacian * 0.265) * uDamping;',
+            '  vec2 impulseDelta = vUv - uImpulse.xy;',
+            '  float impulseDistance = dot(impulseDelta, impulseDelta);',
+            '  float impulseCore = exp(-impulseDistance * 1550.0);',
+            '  float impulseWake = exp(-impulseDistance * 460.0);',
+            '  state.y += (impulseCore - impulseWake * 0.26) * uImpulse.z;',
+            '  state.x += state.y;',
+            '  float edge = min(min(vUv.x, 1.0 - vUv.x), min(vUv.y, 1.0 - vUv.y));',
+            '  float boundary = smoothstep(0.0, 0.065, edge);',
+            '  state.x *= mix(0.92, 1.0, boundary);',
+            '  state.y *= mix(0.82, 1.0, boundary);',
+            '  gl_FragColor = vec4(state, 0.0, 1.0);',
+            '}'
+        ].join('\n');
+        var simulationMaterial = new THREE.ShaderMaterial({
+            uniforms: simulationUniforms,
+            vertexShader: simulationVertexShader,
+            fragmentShader: simulationFragmentShader,
+            depthTest: false,
+            depthWrite: false,
+            blending: THREE.NoBlending,
+            toneMapped: false
+        });
+        var simulationGeometry = new THREE.PlaneGeometry(2, 2);
+        var simulationScene = new THREE.Scene();
+        var simulationCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        var simulationQuad = new THREE.Mesh(simulationGeometry, simulationMaterial);
+        simulationScene.add(simulationQuad);
+
+        var savedClearColor = renderer.getClearColor(new THREE.Color()).clone();
+        var savedClearAlpha = renderer.getClearAlpha();
+        renderer.setClearColor(0x000000, 0);
+        renderer.setRenderTarget(stateRead);
+        renderer.clear(true, false, false);
+        renderer.setRenderTarget(stateWrite);
+        renderer.clear(true, false, false);
+        renderer.setRenderTarget(null);
+        renderer.setClearColor(savedClearColor, savedClearAlpha);
+
+        var uniforms = {
+            uTime: { value: 0 },
+            uAmplitude: { value: mappedControl('energy') },
+            uDetail: { value: mappedControl('detail') },
+            uFresnel: { value: mappedControl('fresnel') },
+            uHeightMap: { value: stateRead.texture },
+            uSimTexel: { value: new THREE.Vector2(1 / simulationWidth, 1 / simulationHeight) },
+            uWorldStep: { value: new THREE.Vector2(surfaceWidth / simulationWidth, surfaceDepth / simulationHeight) },
+            uFieldScale: { value: 2.7 },
+            uMode: { value: viewModes[activeView] }
+        };
+
+        var vertexShader = [
+            'uniform float uTime;',
+            'uniform float uAmplitude;',
+            'uniform float uDetail;',
+            'uniform sampler2D uHeightMap;',
+            'uniform vec2 uSimTexel;',
+            'uniform vec2 uWorldStep;',
+            'uniform float uFieldScale;',
+            'varying vec2 vSurfaceUv;',
+            'varying vec3 vWorldPosition;',
+            'varying vec3 vWorldNormal;',
+            'varying float vHeight;',
+            'float baseHeight(vec2 p) {',
+            '  vec2 d1 = normalize(vec2(1.0, 0.32));',
+            '  vec2 d2 = normalize(vec2(-0.46, 1.0));',
+            '  vec2 d3 = normalize(vec2(0.72, 1.0));',
+            '  vec2 d4 = normalize(vec2(-1.0, 0.14));',
+            '  float waveA = sin(dot(p, d1) * 0.48 * uDetail + uTime * 0.76) * 0.24;',
+            '  float waveB = sin(dot(p, d2) * 0.66 * uDetail - uTime * 0.58) * 0.15;',
+            '  float waveC = sin(dot(p, d3) * 0.93 * uDetail + uTime * 0.47) * 0.085;',
+            '  float waveD = sin(dot(p, d4) * 1.42 * uDetail - uTime * 0.91) * 0.035;',
+            '  return (waveA + waveB + waveC + waveD) * uAmplitude;',
+            '}',
+            'float fieldHeight(vec2 sampleUv) {',
+            '  return texture2D(uHeightMap, clamp(sampleUv, vec2(0.0), vec2(1.0))).r * uFieldScale;',
+            '}',
+            'float waterHeight(vec2 p, vec2 sampleUv) {',
+            '  return baseHeight(p) + fieldHeight(sampleUv);',
+            '}',
+            'void main() {',
+            '  vec3 displaced = position;',
+            '  float h = waterHeight(position.xy, uv);',
+            '  float hLeft = waterHeight(position.xy - vec2(uWorldStep.x, 0.0), uv - vec2(uSimTexel.x, 0.0));',
+            '  float hRight = waterHeight(position.xy + vec2(uWorldStep.x, 0.0), uv + vec2(uSimTexel.x, 0.0));',
+            '  float hDown = waterHeight(position.xy - vec2(0.0, uWorldStep.y), uv - vec2(0.0, uSimTexel.y));',
+            '  float hUp = waterHeight(position.xy + vec2(0.0, uWorldStep.y), uv + vec2(0.0, uSimTexel.y));',
+            '  displaced.z += h;',
+            '  vec3 tangentX = normalize(vec3(uWorldStep.x * 2.0, 0.0, hRight - hLeft));',
+            '  vec3 tangentY = normalize(vec3(0.0, uWorldStep.y * 2.0, hUp - hDown));',
+            '  vec3 rebuiltNormal = normalize(cross(tangentX, tangentY));',
+            '  vec4 world = modelMatrix * vec4(displaced, 1.0);',
+            '  vSurfaceUv = uv;',
+            '  vWorldPosition = world.xyz;',
+            '  vWorldNormal = normalize(mat3(modelMatrix) * rebuiltNormal);',
+            '  vHeight = h;',
+            '  gl_Position = projectionMatrix * viewMatrix * world;',
+            '}'
+        ].join('\n');
+
+        var fragmentShader = [
+            'precision highp float;',
+            'uniform float uTime;',
+            'uniform float uFresnel;',
+            'uniform sampler2D uHeightMap;',
+            'uniform vec2 uSimTexel;',
+            'uniform float uFieldScale;',
+            'uniform int uMode;',
+            'varying vec2 vSurfaceUv;',
+            'varying vec3 vWorldPosition;',
+            'varying vec3 vWorldNormal;',
+            'varying float vHeight;',
+            'void main() {',
+            '  float fieldLeft = texture2D(uHeightMap, vSurfaceUv - vec2(uSimTexel.x, 0.0)).r;',
+            '  float fieldRight = texture2D(uHeightMap, vSurfaceUv + vec2(uSimTexel.x, 0.0)).r;',
+            '  float fieldDown = texture2D(uHeightMap, vSurfaceUv - vec2(0.0, uSimTexel.y)).r;',
+            '  float fieldUp = texture2D(uHeightMap, vSurfaceUv + vec2(0.0, uSimTexel.y)).r;',
+            '  vec2 fieldSlope = vec2(fieldLeft - fieldRight, fieldDown - fieldUp) * uFieldScale;',
+            '  vec2 p = vWorldPosition.xy;',
+            '  vec2 d1 = normalize(vec2(1.0, 0.38));',
+            '  vec2 d2 = normalize(vec2(-0.62, 1.0));',
+            '  vec2 d3 = normalize(vec2(0.76, -1.0));',
+            '  vec2 d4 = normalize(vec2(0.18, 1.0));',
+            '  vec2 capillary = d1 * cos(dot(p, d1) * 1.44 + uTime * 1.12) * 0.052;',
+            '  capillary += d2 * cos(dot(p, d2) * 2.16 - uTime * 0.84) * 0.036;',
+            '  capillary += d3 * cos(dot(p, d3) * 3.24 + uTime * 1.46) * 0.021;',
+            '  capillary += d4 * cos(dot(p, d4) * 5.10 - uTime * 1.82) * 0.009;',
+            '  capillary *= 0.72 + 0.28 * sin(dot(p, vec2(0.18, -0.12)) + uTime * 0.17);',
+            '  vec3 normal = normalize(vec3(vWorldNormal.xy + fieldSlope * 0.42 + capillary, vWorldNormal.z));',
+            '  vec3 viewDirection = normalize(cameraPosition - vWorldPosition);',
+            '  vec3 lightDirection = normalize(vec3(-0.38, -0.28, 0.88));',
+            '  float facing = clamp(dot(normal, viewDirection), 0.0, 1.0);',
+            '  float exponent = mix(2.2, 5.6, uFresnel);',
+            '  float fresnel = 0.035 + 0.965 * pow(1.0 - facing, exponent);',
+            '  float heightView = clamp(vHeight * 0.72 + 0.5, 0.0, 1.0);',
+            '  if (uMode == 1) {',
+            '    vec3 low = vec3(0.025, 0.10, 0.19);',
+            '    vec3 neutral = vec3(0.045, 0.12, 0.14);',
+            '    vec3 high = vec3(0.48, 0.98, 0.90);',
+            '    vec3 heightColor = heightView < 0.5',
+            '      ? mix(low, neutral, heightView * 2.0)',
+            '      : mix(neutral, high, (heightView - 0.5) * 2.0);',
+            '    gl_FragColor = vec4(heightColor, 1.0);',
+            '    return;',
+            '  }',
+            '  if (uMode == 2) {',
+            '    gl_FragColor = vec4(normal * 0.5 + 0.5, 1.0);',
+            '    return;',
+            '  }',
+            '  if (uMode == 3) {',
+            '    vec3 diagnostic = mix(vec3(0.012, 0.09, 0.11), vec3(0.65, 0.97, 0.95), fresnel);',
+            '    gl_FragColor = vec4(diagnostic, 1.0);',
+            '    return;',
+            '  }',
+            '  vec3 deepWater = vec3(0.003, 0.038, 0.060);',
+            '  vec3 waterBody = vec3(0.012, 0.29, 0.35);',
+            '  float diffuse = max(dot(normal, lightDirection), 0.0);',
+            '  vec3 halfVector = normalize(lightDirection + viewDirection);',
+            '  vec3 reflectionRay = reflect(-viewDirection, normal);',
+            '  float skyHeight = smoothstep(-0.18, 0.82, reflectionRay.z);',
+            '  float horizonBand = pow(1.0 - abs(clamp(reflectionRay.z, -1.0, 1.0)), 5.0);',
+            '  float horizonLine = exp(-abs(reflectionRay.z) * 38.0);',
+            '  vec3 horizonSky = vec3(0.34, 0.76, 0.78);',
+            '  vec3 zenithSky = vec3(0.034, 0.18, 0.28);',
+            '  vec3 skyReflection = mix(horizonSky, zenithSky, skyHeight);',
+            '  float cloudA = sin(reflectionRay.x * 8.0 + reflectionRay.y * 3.2);',
+            '  float cloudB = sin(reflectionRay.x * -4.6 + reflectionRay.y * 7.4);',
+            '  float cloudField = smoothstep(0.42, 0.86, 0.54 + cloudA * 0.22 + cloudB * 0.18);',
+            '  cloudField *= smoothstep(-0.05, 0.72, reflectionRay.z);',
+            '  skyReflection = mix(skyReflection, vec3(0.62, 0.87, 0.89), cloudField * 0.52);',
+            '  skyReflection += vec3(0.17, 0.55, 0.62) * horizonBand * 0.42;',
+            '  skyReflection += vec3(0.50, 0.92, 0.86) * horizonLine * 0.16;',
+            '  vec3 sunDirection = normalize(vec3(0.44, 0.72, 0.54));',
+            '  float skyGlow = pow(max(dot(reflectionRay, sunDirection), 0.0), 11.0);',
+            '  float sunCore = pow(max(dot(reflectionRay, sunDirection), 0.0), 760.0);',
+            '  float sunGlow = pow(max(dot(reflectionRay, sunDirection), 0.0), 96.0);',
+            '  float sharpSpecular = pow(max(dot(normal, halfVector), 0.0), 150.0);',
+            '  float broadSpecular = pow(max(dot(normal, halfVector), 0.0), 18.0);',
+            '  float slopeLight = smoothstep(0.015, 0.28, length(normal.xy));',
+            '  float depthTone = 0.25 + diffuse * 0.38 + heightView * 0.07 + slopeLight * 0.12;',
+            '  vec3 body = mix(deepWater, waterBody, depthTone);',
+            '  float reflectionMix = 0.16 + fresnel * 0.74;',
+            '  vec3 color = mix(body, skyReflection, reflectionMix);',
+            '  color += vec3(0.20, 0.62, 0.66) * skyGlow * 0.13;',
+            '  color += vec3(0.32, 0.88, 0.86) * broadSpecular * 0.14;',
+            '  color += vec3(1.0, 0.72, 0.42) * sunGlow * 0.025;',
+            '  color += vec3(1.0, 0.91, 0.72) * (sunCore * 0.13 + sharpSpecular * 0.11);',
+            '  float horizonFade = smoothstep(-13.0, 12.0, vWorldPosition.y);',
+            '  color = mix(color * 0.78, color, horizonFade);',
+            '  gl_FragColor = vec4(color, 1.0);',
+            '}'
+        ].join('\n');
+
+        var material = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            side: THREE.DoubleSide
+        });
+        var water = new THREE.Mesh(geometry, material);
+        scene.add(water);
+
+        var raycaster = new THREE.Raycaster();
+        var pointer = new THREE.Vector2();
+        var impulseQueue = [];
+        var dragging = false;
+        var lastPointerUpdate = 0;
+        var rainEnabled = activePreset === 'rain';
+        var rainElapsed = 0;
+        var simulationAccumulator = 0;
+        var simulationStep = 1 / 90;
+        var paused = isPaused;
+        var visible = true;
+        var dirty = true;
+        var disposed = false;
+        var previousTime = performance.now();
+        var elapsed = 0;
+
+        function resize() {
+            var width = Math.max(stage.clientWidth, 1);
+            var height = Math.max(stage.clientHeight, 1);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height, false);
+            dirty = true;
+        }
+
+        function disturb(u, v, strength) {
+            if (impulseQueue.length >= 32) impulseQueue.shift();
+            impulseQueue.push({
+                u: THREE.MathUtils.clamp(u, 0.02, 0.98),
+                v: THREE.MathUtils.clamp(v, 0.02, 0.98),
+                strength: strength
+            });
+            dirty = true;
+        }
+
+        function runSimulationStep() {
+            var impulse = impulseQueue.shift();
+            var energy = uniforms.uAmplitude.value;
+            if (impulse) {
+                simulationUniforms.uImpulse.value.set(
+                    impulse.u,
+                    impulse.v,
+                    impulse.strength * (0.055 + energy * 0.06)
+                );
+            } else {
+                simulationUniforms.uImpulse.value.set(-10, -10, 0);
+            }
+
+            simulationUniforms.uState.value = stateRead.texture;
+            renderer.setRenderTarget(stateWrite);
+            renderer.render(simulationScene, simulationCamera);
+            renderer.setRenderTarget(null);
+
+            var previousRead = stateRead;
+            stateRead = stateWrite;
+            stateWrite = previousRead;
+            uniforms.uHeightMap.value = stateRead.texture;
+            dirty = true;
+        }
+
+        function disturbFromPointer(event) {
+            var rect = renderer.domElement.getBoundingClientRect();
+            pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            raycaster.setFromCamera(pointer, camera);
+            var hits = raycaster.intersectObject(water, false);
+            if (hits.length && hits[0].uv) disturb(hits[0].uv.x, hits[0].uv.y, 1);
+        }
+
+        renderer.domElement.addEventListener('pointerdown', function(event) {
+            dragging = true;
+            renderer.domElement.setPointerCapture(event.pointerId);
+            disturbFromPointer(event);
+        });
+
+        renderer.domElement.addEventListener('pointermove', function(event) {
+            if (!dragging) return;
+            var now = performance.now();
+            if (now - lastPointerUpdate < 54) return;
+            lastPointerUpdate = now;
+            disturbFromPointer(event);
+        });
+
+        renderer.domElement.addEventListener('pointerup', function(event) {
+            dragging = false;
+            if (renderer.domElement.hasPointerCapture(event.pointerId)) {
+                renderer.domElement.releasePointerCapture(event.pointerId);
+            }
+        });
+
+        renderer.domElement.addEventListener('pointercancel', function() {
+            dragging = false;
+        });
+
+        renderer.domElement.addEventListener('webglcontextlost', function(event) {
+            event.preventDefault();
+            showError('The WebGL context was lost. Reload to restart the renderer.');
+        });
+
+        var resizeObserver = new ResizeObserver(resize);
+        resizeObserver.observe(stage);
+        resize();
+
+        var intersectionObserver = new IntersectionObserver(function(entries) {
+            visible = Boolean(entries[0] && entries[0].isIntersecting);
+            if (visible) dirty = true;
+        }, { rootMargin: '160px' });
+        intersectionObserver.observe(stage);
+
+        function frame(now) {
+            if (disposed) return;
+            var delta = Math.min((now - previousTime) / 1000, 0.05);
+            previousTime = now;
+            var shouldAnimate = visible && !document.hidden && !paused;
+
+            if (shouldAnimate) {
+                elapsed += delta;
+                uniforms.uTime.value = elapsed;
+                if (rainEnabled) {
+                    rainElapsed += delta;
+                    if (rainElapsed > 0.28) {
+                        rainElapsed = 0;
+                        disturb(
+                            0.1 + Math.random() * 0.8,
+                            0.1 + Math.random() * 0.8,
+                            0.56 + Math.random() * 0.22
+                        );
+                    }
+                }
+                simulationAccumulator = Math.min(simulationAccumulator + delta, simulationStep * 3);
+                var steps = 0;
+                while (simulationAccumulator >= simulationStep && steps < 3) {
+                    runSimulationStep();
+                    simulationAccumulator -= simulationStep;
+                    steps += 1;
+                }
+                if (impulseQueue.length && steps === 0) runSimulationStep();
+                dirty = true;
+            } else if (visible && impulseQueue.length) {
+                runSimulationStep();
+            }
+
+            if (visible && dirty) {
+                renderer.render(scene, camera);
+                dirty = shouldAnimate;
+            }
+            requestAnimationFrame(frame);
+        }
+
+        waterApi = {
+            setEnergy: function(value) { uniforms.uAmplitude.value = value; dirty = true; },
+            setDetail: function(value) { uniforms.uDetail.value = value; dirty = true; },
+            setFresnel: function(value) { uniforms.uFresnel.value = value; dirty = true; },
+            setMode: function(value) { uniforms.uMode.value = value; dirty = true; },
+            setPaused: function(value) { paused = value; dirty = true; },
+            setPreset: function(name) {
+                rainEnabled = name === 'rain';
+                rainElapsed = 0;
+                simulationUniforms.uDamping.value = name === 'calm' ? 0.979 : (name === 'rain' ? 0.993 : 0.988);
+                dirty = true;
+            }
+        };
+
+        syncControls();
+        setView(activeView, false);
+        setPaused(isPaused);
+        setPreset(activePreset);
+        stage.classList.add('is-ready');
+        loader.querySelector('span').textContent = 'Surface ready';
+        requestAnimationFrame(frame);
+
+        window.addEventListener('beforeunload', function() {
+            disposed = true;
+            resizeObserver.disconnect();
+            intersectionObserver.disconnect();
+            geometry.dispose();
+            material.dispose();
+            simulationGeometry.dispose();
+            simulationMaterial.dispose();
+            stateRead.dispose();
+            stateWrite.dispose();
+            renderer.dispose();
+        }, { once: true });
+    }).catch(function(error) {
+        showError('Three.js could not be loaded. Check the network connection and reload.', error);
+    });
+</script>
