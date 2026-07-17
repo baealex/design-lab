@@ -78,6 +78,12 @@
         border: 1px solid var(--surface-border);
         color: var(--gray-600);
         margin-bottom: 24px;
+        text-decoration: none;
+    }
+
+    .hero-badge:focus-visible {
+        outline: 2px solid var(--gray-800);
+        outline-offset: 3px;
     }
 
     .hero-title {
@@ -95,24 +101,6 @@
         margin-top: 20px;
         line-height: 1.7;
         font-weight: 300;
-    }
-
-    .hero-used {
-        font-size: 0.75rem;
-        color: var(--gray-400);
-        margin-top: 16px;
-    }
-
-    .mono-link {
-        color: var(--gray-600);
-        text-decoration: none;
-        border-bottom: 1px solid var(--gray-300);
-        transition: color 150ms var(--ease), border-color 150ms var(--ease);
-    }
-
-    .mono-link:hover {
-        color: var(--gray-800);
-        border-color: var(--gray-600);
     }
 
     /* Grounded panel: blur is reserved for floating tools */
@@ -845,14 +833,11 @@
 
         <!-- Hero -->
         <header class="hero">
-            <div class="hero-badge">Personal System</div>
+            <a href="https://github.com/baealex/BLEX" target="_blank" rel="noopener" class="hero-badge">Used in BLEX</a>
             <h1 class="hero-title">Mono</h1>
             <p class="hero-tagline">
                 Content is the only color.<br>
                 Everything else whispers.
-            </p>
-            <p class="hero-used">
-                Used in <a href="https://github.com/baealex/BLEX" target="_blank" rel="noopener" class="mono-link">BLEX</a>
             </p>
         </header>
 

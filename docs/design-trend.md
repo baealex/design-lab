@@ -42,6 +42,7 @@ The visual layout can vary, but the content should generally follow this order.
 - Name and year
 - One sentence that frames the entire page
 - A short `Inspired by ...` credit when a specific product is the visual reference
+- Place the top edge of `.hero-badge` `96px` below the viewport top on both desktop and mobile. The usual structure is `32px` of page-container padding followed by `64px` of Hero padding; custom Heroes should preserve the same rendered start line.
 
 ### 2. Context
 

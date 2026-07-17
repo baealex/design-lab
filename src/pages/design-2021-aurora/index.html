@@ -46,7 +46,7 @@
         position: relative;
         border-radius: 20px;
         overflow: hidden;
-        padding: 80px 40px;
+        padding: 64px 40px 80px;
         text-align: center;
         margin-bottom: 48px;
     }
@@ -56,11 +56,11 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(ellipse 80% 60% at 10% 40%, rgba(169, 96, 238, 0.8) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 80% at 90% 20%, rgba(99, 91, 255, 0.7) 0%, transparent 55%),
-            radial-gradient(ellipse 70% 50% at 50% 90%, rgba(0, 212, 170, 0.6) 0%, transparent 55%),
-            radial-gradient(ellipse 50% 60% at 80% 70%, rgba(245, 100, 138, 0.5) 0%, transparent 50%),
-            linear-gradient(135deg, #1a0533 0%, #0b0d1a 50%, #071a2c 100%);
+            radial-gradient(circle clamp(190px, 32vw, 260px) at -2% 42%, rgba(169, 96, 238, 0.86) 0%, rgba(169, 96, 238, 0.5) 32%, rgba(169, 96, 238, 0.16) 58%, transparent 76%),
+            radial-gradient(circle clamp(180px, 30vw, 245px) at 102% 4%, rgba(99, 91, 255, 0.76) 0%, rgba(99, 91, 255, 0.38) 36%, rgba(99, 91, 255, 0.12) 60%, transparent 78%),
+            radial-gradient(circle clamp(170px, 28vw, 230px) at 52% 116%, rgba(0, 212, 170, 0.62) 0%, rgba(0, 212, 170, 0.28) 40%, rgba(0, 212, 170, 0.08) 62%, transparent 78%),
+            radial-gradient(circle clamp(150px, 24vw, 190px) at 94% 84%, rgba(245, 100, 138, 0.46) 0%, rgba(245, 100, 138, 0.18) 46%, transparent 76%),
+            linear-gradient(135deg, #16062d 0%, #0b0d1a 52%, #061a28 100%);
         animation: mesh-drift 18s ease-in-out infinite alternate;
     }
 
@@ -270,10 +270,10 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(ellipse 70% 60% at 20% 50%, rgba(99, 91, 255, 0.7) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 70% at 80% 30%, rgba(0, 212, 170, 0.5) 0%, transparent 55%),
-            radial-gradient(ellipse 50% 50% at 50% 80%, rgba(169, 96, 238, 0.4) 0%, transparent 55%),
-            #0e0b24;
+            radial-gradient(circle clamp(150px, 25vw, 210px) at 18% 126%, rgba(99, 91, 255, 0.76) 0%, rgba(99, 91, 255, 0.3) 42%, transparent 76%),
+            radial-gradient(circle clamp(140px, 23vw, 195px) at 82% -28%, rgba(0, 212, 170, 0.58) 0%, rgba(0, 212, 170, 0.2) 44%, transparent 76%),
+            radial-gradient(circle clamp(130px, 21vw, 180px) at 52% 48%, rgba(169, 96, 238, 0.34) 0%, rgba(169, 96, 238, 0.1) 48%, transparent 78%),
+            linear-gradient(120deg, #0d102c 0%, #0e0b24 52%, #061d20 100%);
         animation: layer-bg-drift 20s ease-in-out infinite alternate;
     }
 
@@ -429,10 +429,10 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(ellipse 60% 80% at 0% 50%, rgba(99, 91, 255, 0.8) 0%, transparent 60%),
-            radial-gradient(ellipse 50% 70% at 100% 50%, rgba(0, 212, 170, 0.6) 0%, transparent 55%),
-            radial-gradient(ellipse 80% 40% at 50% 100%, rgba(169, 96, 238, 0.4) 0%, transparent 50%),
-            #120a30;
+            radial-gradient(circle clamp(160px, 26vw, 220px) at -6% 112%, rgba(169, 96, 238, 0.82) 0%, rgba(169, 96, 238, 0.34) 42%, transparent 76%),
+            radial-gradient(circle clamp(140px, 22vw, 190px) at 54% -82%, rgba(245, 100, 138, 0.5) 0%, rgba(245, 100, 138, 0.14) 48%, transparent 78%),
+            radial-gradient(circle clamp(150px, 24vw, 205px) at 108% 108%, rgba(0, 212, 170, 0.66) 0%, rgba(0, 212, 170, 0.24) 44%, transparent 76%),
+            linear-gradient(110deg, #180936 0%, #100b2a 52%, #061f27 100%);
         animation: banner-drift 16s ease-in-out infinite alternate;
     }
 
@@ -571,10 +571,10 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(ellipse 60% 60% at 30% 50%, rgba(99, 91, 255, 0.6) 0%, transparent 55%),
-            radial-gradient(ellipse 50% 60% at 70% 40%, rgba(169, 96, 238, 0.5) 0%, transparent 55%),
-            radial-gradient(ellipse 60% 40% at 50% 80%, rgba(0, 212, 170, 0.3) 0%, transparent 50%),
-            #0e0824;
+            radial-gradient(circle clamp(180px, 30vw, 250px) at 50% -38%, rgba(169, 96, 238, 0.64) 0%, rgba(169, 96, 238, 0.24) 46%, transparent 78%),
+            radial-gradient(circle clamp(150px, 25vw, 210px) at -8% 112%, rgba(99, 91, 255, 0.56) 0%, rgba(99, 91, 255, 0.18) 48%, transparent 78%),
+            radial-gradient(circle clamp(150px, 25vw, 210px) at 108% 112%, rgba(0, 212, 170, 0.38) 0%, rgba(0, 212, 170, 0.1) 50%, transparent 78%),
+            linear-gradient(180deg, #12072e 0%, #0e0824 54%, #071923 100%);
         animation: mesh-drift 22s ease-in-out infinite alternate;
     }
 
@@ -603,7 +603,7 @@
        RESPONSIVE
        ========================================= */
     @media screen and (max-width: 600px) {
-        .hero { padding: 56px 24px; }
+        .hero { padding: 64px 24px 56px; }
         .hero-title { font-size: 2.6rem; }
 
         .gradient-showcase,
@@ -669,8 +669,10 @@
             <p class="section-desc">
                 Layer <code>radial-gradient()</code> blobs at different positions
                 and sizes. Each blob is a single saturated color fading to transparent.
-                Three to five layers are a useful starting point. If the field moves,
-                use a long cycle and provide a static reduced-motion state.
+                Give each field an explicit circular radius so wide and narrow containers
+                do not squeeze it into a pill shape. Three to five layers are a useful
+                starting point. If the field moves, use a long cycle and provide a static
+                reduced-motion state.
             </p>
             <div class="gradient-showcase">
                 <div class="gradient-swatch dusk">
@@ -687,11 +689,11 @@
                 </div>
             </div>
             <div class="code-block">
-                <span class="cmt">/* Mesh gradient — layered radial blobs, each one color */</span><br>
+                <span class="cmt">/* Mesh gradient — soft circles placed beyond the edges */</span><br>
                 <span class="kw">background</span>:<br>
-                &nbsp;&nbsp;<span class="fn">radial-gradient</span>(ellipse at 10% 40%, <span class="val">rgba(169,96,238,0.8)</span>, transparent),<br>
-                &nbsp;&nbsp;<span class="fn">radial-gradient</span>(ellipse at 90% 20%, <span class="val">rgba(99,91,255,0.7)</span>, transparent),<br>
-                &nbsp;&nbsp;<span class="fn">radial-gradient</span>(ellipse at 50% 90%, <span class="val">rgba(0,212,170,0.6)</span>, transparent),<br>
+                &nbsp;&nbsp;<span class="fn">radial-gradient</span>(circle 260px at -2% 42%, <span class="val">rgba(169,96,238,0.86)</span>, transparent 76%),<br>
+                &nbsp;&nbsp;<span class="fn">radial-gradient</span>(circle 245px at 102% 4%, <span class="val">rgba(99,91,255,0.76)</span>, transparent 78%),<br>
+                &nbsp;&nbsp;<span class="fn">radial-gradient</span>(circle 230px at 52% 116%, <span class="val">rgba(0,212,170,0.62)</span>, transparent 78%),<br>
                 &nbsp;&nbsp;<span class="val">#0b0d1a</span>;<br>
                 <span class="kw">animation</span>: <span class="val">drift 18s ease-in-out infinite</span>;
             </div>

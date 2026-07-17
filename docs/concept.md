@@ -36,14 +36,18 @@ concept-2026-sketchomorphism
 
 - Use the year when the concept was first published or documented.
 - Avoid names that could be mistaken for an established trend.
-- For an original idea, the Hero may use `Concept Study` or `Original Concept`.
-- If another work had a strong influence, credit it with a short `Inspired by ...` line.
+- Start every Hero with a compact badge above the concept name. The badge is a shared signature across the catalog, not optional decoration.
+- Use the badge to show the most useful origin or context: `Inspired by ...`, `Used in ...`, or a concrete label such as `One-Hue Interface Study`.
+- Avoid generic category labels such as `Original Concept`, `Concept Study`, or `Personal System` when the page can say something specific.
+- Keep an `Inspired by ...` credit short and name only the strongest influence.
 
 ## Recommended Flow
 
 ### 1. Premise
 
 Show the concept name and hypothesis in the Hero. Do not present it as a prediction or an established trend.
+
+Place the top edge of `.hero-badge` `96px` below the viewport top on both desktop and mobile. The usual structure is `32px` of page-container padding followed by `64px` of Hero padding; custom Heroes should preserve the same rendered start line.
 
 ### 2. Rules
 
